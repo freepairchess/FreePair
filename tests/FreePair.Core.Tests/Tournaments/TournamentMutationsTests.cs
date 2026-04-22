@@ -133,6 +133,33 @@ public class TournamentMutationsTests
     }
 
     [Fact]
+    public async Task AppendRound_awards_half_point_bye_for_HalfPointByePlayerPairs()
+    {
+        // Requested ½-pt bye: the player was pre-flagged (via a TRF 'H'
+        // cell) before BBP ran, so BBP didn't pair them. TournamentMutations
+        // must still stamp a HalfPointBye history entry so standings /
+        // wall chart reflect the ½ point.
+        var t = await LoadAsync();
+
+        var bbpResult = new BbpPairingResult(
+            System.Array.Empty<BbpPairing>(),
+            ByePlayerPairs: System.Array.Empty<int>(),
+            HalfPointByePlayerPairs: new[] { 7 });
+
+        var updated = TournamentMutations.AppendRound(t, "Open I", bbpResult);
+        var pair7 = updated.Sections.Single(s => s.Name == "Open I")
+            .Players.Single(p => p.PairNumber == 7);
+
+        Assert.Equal(RoundResultKind.HalfPointBye, pair7.History[3].Kind);
+        Assert.Equal(0.5m, pair7.History[3].Score);
+
+        // New round's bye assignments expose it too.
+        var newRound = updated.Sections.Single(s => s.Name == "Open I")
+            .Rounds.Last();
+        Assert.Contains(newRound.Byes, b => b.PlayerPair == 7 && b.Kind == ByeKind.Half);
+    }
+
+    [Fact]
     public async Task IsRoundComplete_reflects_result_state()
     {
         var t = await LoadAsync();

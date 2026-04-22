@@ -196,4 +196,111 @@ public class TrfWriterTests
         Assert.All(line, c => Assert.InRange((int)c, 0x09, 0x7E));
         Assert.Contains("Ka?parov", line);
     }
+
+    // ---------------------------------------------------------------
+    // Requested-bye enforcement (SwissSys parity feature #1).
+    //
+    // When a player has pre-requested a half-point bye for the round
+    // about to be paired, the TRF line must carry an extra round cell
+    // at position <pairingRound> with opponent=0000, color='-',
+    // result='H'. bbpPairings treats that as "player is already
+    // scheduled for H in round N; don't try to pair them".
+    // ---------------------------------------------------------------
+
+    [Fact]
+    public void FormatPlayerLine_emits_H_cell_for_requested_bye_at_pairing_round()
+    {
+        // Player with 2 rounds of history and a requested ½-pt bye for
+        // round 3. When we ask TRF to pair round 3, cell 3 must be H.
+        var history = new[]
+        {
+            new RoundResult(RoundResultKind.Win,  12, PlayerColor.White, 1, 0, 0, 0m),
+            new RoundResult(RoundResultKind.Draw, 8,  PlayerColor.Black, 1, 0, 0, 0m),
+        };
+
+        var player = new Player(
+            PairNumber: 1,
+            Name: "Alice",
+            UscfId: null,
+            Rating: 1800,
+            SecondaryRating: null,
+            MembershipExpiration: null,
+            Club: null,
+            State: null,
+            Team: null,
+            RequestedByeRounds: new[] { 3 },
+            History: history);
+
+        var line = TrfWriter.FormatPlayerLine(player, roundsPlayed: 2, pairingRound: 3);
+
+        // Must still have both history cells AND a new H cell.
+        Assert.Contains("  12 w 1", line);  // round 1 history
+        Assert.Contains("   8 b =", line);  // round 2 history
+        Assert.Contains("0000 - H", line);  // round 3 pre-bye
+    }
+
+    [Fact]
+    public void FormatPlayerLine_skips_H_cell_when_player_has_no_requested_bye_for_pairing_round()
+    {
+        var player = new Player(
+            PairNumber: 1,
+            Name: "Alice",
+            UscfId: null,
+            Rating: 1800,
+            SecondaryRating: null,
+            MembershipExpiration: null,
+            Club: null,
+            State: null,
+            Team: null,
+            RequestedByeRounds: new[] { 5 }, // asks for bye in round 5, not 3
+            History: System.Array.Empty<RoundResult>());
+
+        var line = TrfWriter.FormatPlayerLine(player, roundsPlayed: 0, pairingRound: 3);
+
+        // No H cell because requested bye is for round 5, not the one
+        // being paired.
+        Assert.DoesNotContain("0000 - H", line);
+    }
+
+    [Fact]
+    public async Task Write_emits_H_cells_for_players_with_requested_byes_at_next_round()
+    {
+        // The sample has 3 rounds already played. The "next round to
+        // pair" is therefore round 4. Seed one player with a requested
+        // bye for round 4 and confirm the emitted TRF carries the H.
+        var t = await LoadAsync();
+        var section = t.Sections.Single(s => s.Name == "Open I");
+
+        const int pairingRound = 4;
+        var first = section.Players.First();
+        var patched = first with { RequestedByeRounds = new[] { pairingRound } };
+        var patchedSection = section with
+        {
+            Players = section.Players
+                .Select(p => p.PairNumber == first.PairNumber ? patched : p)
+                .ToArray(),
+        };
+        var patchedTournament = t with
+        {
+            Sections = t.Sections
+                .Select(s => s.Name == section.Name ? patchedSection : s)
+                .ToArray(),
+        };
+
+        var trf = TrfWriter.Write(
+            patchedTournament,
+            patchedSection,
+            pairingRound: pairingRound);
+
+        // Find the first player's 001 line by pair number (unambiguous).
+        var firstPairSlug = $"001 {first.PairNumber,4}";
+        var firstLine = trf.Split('\n').Single(l => l.StartsWith(firstPairSlug));
+        Assert.Contains("0000 - H", firstLine);
+
+        // A non-bye player's line must NOT have an H cell.
+        var other = section.Players.Skip(1).First();
+        var otherPairSlug = $"001 {other.PairNumber,4}";
+        var otherLine = trf.Split('\n').Single(l => l.StartsWith(otherPairSlug));
+        Assert.DoesNotContain("0000 - H", otherLine);
+    }
 }

@@ -89,8 +89,12 @@ public static class TournamentMutations
             .Select((p, i) => new Pairing(i + 1, p.WhitePair, p.BlackPair, PairingResult.Unplayed))
             .ToArray();
 
-        var byeAssignments = pairings.ByePlayerPairs
-            .Select(pair => new ByeAssignment(pair, ByeKind.Full))
+        var fullByeAssignments = pairings.ByePlayerPairs
+            .Select(pair => new ByeAssignment(pair, ByeKind.Full));
+        var halfByeAssignments = pairings.HalfPointByes
+            .Select(pair => new ByeAssignment(pair, ByeKind.Half));
+        var byeAssignments = fullByeAssignments
+            .Concat(halfByeAssignments)
             .ToArray();
 
         var newRound = new Round(newRoundNumber, boardPairings, byeAssignments);
@@ -102,10 +106,11 @@ public static class TournamentMutations
             pairingByPlayer[bp.WhitePair] = (bp.BlackPair, PlayerColor.White, bp.Board);
             pairingByPlayer[bp.BlackPair] = (bp.WhitePair, PlayerColor.Black, bp.Board);
         }
-        var byeSet = new HashSet<int>(pairings.ByePlayerPairs);
+        var fullByeSet = new HashSet<int>(pairings.ByePlayerPairs);
+        var halfByeSet = new HashSet<int>(pairings.HalfPointByes);
 
         var updatedPlayers = section.Players
-            .Select(p => AppendHistoryEntry(p, pairingByPlayer, byeSet))
+            .Select(p => AppendHistoryEntry(p, pairingByPlayer, fullByeSet, halfByeSet))
             .ToArray();
 
         var updatedSection = section with
@@ -246,7 +251,8 @@ public static class TournamentMutations
     private static Player AppendHistoryEntry(
         Player player,
         IReadOnlyDictionary<int, (int Opponent, PlayerColor Color, int Board)> pairingByPlayer,
-        IReadOnlySet<int> byeSet)
+        IReadOnlySet<int> fullByeSet,
+        IReadOnlySet<int> halfByeSet)
     {
         RoundResult entry;
         if (pairingByPlayer.TryGetValue(player.PairNumber, out var info))
@@ -264,7 +270,7 @@ public static class TournamentMutations
                 Logic2: 0,
                 GamePoints: 0m);
         }
-        else if (byeSet.Contains(player.PairNumber))
+        else if (fullByeSet.Contains(player.PairNumber))
         {
             entry = new RoundResult(
                 Kind: RoundResultKind.FullPointBye,
@@ -274,6 +280,19 @@ public static class TournamentMutations
                 Logic1: 0,
                 Logic2: 0,
                 GamePoints: 1m);
+        }
+        else if (halfByeSet.Contains(player.PairNumber))
+        {
+            // Requested / TD-granted half-point bye (pre-flagged via the
+            // TRF 'H' cell so BBP never attempted to pair them this round).
+            entry = new RoundResult(
+                Kind: RoundResultKind.HalfPointBye,
+                Opponent: -1,
+                Color: PlayerColor.None,
+                Board: 0,
+                Logic1: 0,
+                Logic2: 0,
+                GamePoints: 0.5m);
         }
         else
         {

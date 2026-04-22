@@ -49,11 +49,24 @@ public class BbpPairingEngine : IBbpPairingEngine
         var pairingsPath = Path.Combine(Path.GetTempPath(),
             $"freepair-{Guid.NewGuid():N}.pairings.txt");
 
+        // The round BBP is about to pair — one past the completed ones.
+        // Used to pre-flag requested-bye players in the TRF so BBP honours
+        // them instead of pairing them.
+        var pairingRound = section.RoundsPlayed + 1;
+
+        // Pair numbers whose RequestedByeRounds contain the upcoming
+        // round. We pass this back in the result so AppendRound can
+        // stamp a HalfPointBye history entry for them.
+        var requestedHalfByes = section.Players
+            .Where(p => p.RequestedByeRounds.Contains(pairingRound))
+            .Select(p => p.PairNumber)
+            .ToArray();
+
         try
         {
             await using (var writer = new StreamWriter(trfPath, append: false, Encoding.ASCII))
             {
-                TrfWriter.Write(tournament, section, writer, initialColor);
+                TrfWriter.Write(tournament, section, writer, initialColor, pairingRound);
             }
 
             var psi = new ProcessStartInfo
@@ -113,7 +126,15 @@ public class BbpPairingEngine : IBbpPairingEngine
 
             var text = await File.ReadAllTextAsync(pairingsPath, cancellationToken)
                 .ConfigureAwait(false);
-            return BbpPairingsParser.Parse(text);
+            var parsed = BbpPairingsParser.Parse(text);
+
+            // Merge the requested-bye pair numbers into the result so
+            // the caller (TournamentMutations.AppendRound) records the
+            // HalfPointBye history entry for those players.
+            return new BbpPairingResult(
+                parsed.Pairings,
+                parsed.ByePlayerPairs,
+                HalfPointByePlayerPairs: requestedHalfByes);
         }
         finally
         {
