@@ -1,0 +1,66 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="460" d:DesignHeight="280"
+        x:Class="FreePair.App.Views.InitialColorDialog"
+        Title="Round 1 color assignment"
+        Width="460"
+        SizeToContent="Height"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+
+    <StackPanel Margin="20" Spacing="12">
+
+        <TextBlock Text="Who plays White on board 1 of round 1?"
+                   FontWeight="SemiBold"
+                   TextWrapping="Wrap"/>
+
+        <TextBlock Text="This sets the color pattern for the whole section. Later rounds are determined automatically by the pairing engine based on color history."
+                   Foreground="Gray"
+                   FontSize="11"
+                   TextWrapping="Wrap"/>
+
+        <StackPanel Spacing="6" Margin="0,4,0,0">
+            <RadioButton x:Name="TopWhiteRadio"
+                         GroupName="InitColor"
+                         Content="Top seed plays White"
+                         IsCheckedChanged="OnSelectionChanged"/>
+            <RadioButton x:Name="TopBlackRadio"
+                         GroupName="InitColor"
+                         Content="Top seed plays Black"
+                         IsCheckedChanged="OnSelectionChanged"/>
+            <RadioButton x:Name="CoinTossRadio"
+                         GroupName="InitColor"
+                         Content="Coin toss (random)"
+                         IsChecked="True"
+                         IsCheckedChanged="OnSelectionChanged"/>
+        </StackPanel>
+
+        <Border Background="#F0F4FF"
+                BorderBrush="#C7D4F2"
+                BorderThickness="1"
+                CornerRadius="4"
+                Padding="10">
+            <TextBlock x:Name="PreviewText"
+                       Foreground="DarkBlue"
+                       TextWrapping="Wrap"
+                       Text="Rolling coin..."/>
+        </Border>
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="8"
+                    Margin="0,4,0,0">
+            <Button Content="Cancel" Click="OnCancel" MinWidth="80"/>
+            <Button Content="Pair round 1"
+                    Click="OnPair"
+                    IsDefault="True"
+                    MinWidth="110"
+                    Classes="accent"/>
+        </StackPanel>
+
+    </StackPanel>
+
+</Window>

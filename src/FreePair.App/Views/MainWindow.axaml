@@ -7,7 +7,7 @@
         x:Class="FreePair.App.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="FreePair.App">
+        Title="FreePair">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -15,6 +15,21 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <DockPanel Margin="16" LastChildFill="True">
+        <TextBlock DockPanel.Dock="Top"
+                   Text="{Binding Greeting}"
+                   FontSize="20"
+                   FontWeight="SemiBold"
+                   Margin="0,0,0,16"/>
+
+        <TabControl>
+            <TabItem Header="Tournament">
+                <ContentControl Content="{Binding Tournament}"/>
+            </TabItem>
+            <TabItem Header="Settings">
+                <ContentControl Content="{Binding Settings}"/>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
 
 </Window>

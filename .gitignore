@@ -485,6 +485,7 @@ $RECYCLE.BIN/
 # Do not commit bundled third-party pairing engine binaries
 src/FreePair.App/PairingEngine/bbpPairings
 src/FreePair.App/PairingEngine/bbpPairings.exe
+src/FreePair.App/PairingEngine/bbpPairings-*/
 
 # User-specific IDE files
 .vs/
