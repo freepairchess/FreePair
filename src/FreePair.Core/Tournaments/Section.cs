@@ -19,7 +19,8 @@ public sealed record Section(
     IReadOnlyList<Player> Players,
     IReadOnlyList<Team> Teams,
     IReadOnlyList<Round> Rounds,
-    Prizes Prizes)
+    Prizes Prizes,
+    bool UseAcceleration = false)
 {
     /// <summary>True when this section tracks teams in addition to individuals.</summary>
     public bool HasTeams => Teams.Count > 0;

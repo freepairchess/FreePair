@@ -55,7 +55,8 @@ public static class SwissSysMapper
             Players: players,
             Teams: teams,
             Rounds: rounds,
-            Prizes: prizes);
+            Prizes: prizes,
+            UseAcceleration: raw.Acceleration != 0);
     }
 
     internal static Player MapPlayer(RawPlayer raw)

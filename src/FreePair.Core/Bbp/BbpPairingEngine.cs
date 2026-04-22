@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -77,10 +79,10 @@ public class BbpPairingEngine : IBbpPairingEngine
                 UseShellExecute = false,
                 CreateNoWindow = true,
             };
-            psi.ArgumentList.Add("--dutch");
-            psi.ArgumentList.Add(trfPath);
-            psi.ArgumentList.Add("-p");
-            psi.ArgumentList.Add(pairingsPath);
+            foreach (var arg in BuildArguments(section, trfPath, pairingsPath))
+            {
+                psi.ArgumentList.Add(arg);
+            }
 
             using var process = new Process { StartInfo = psi };
             process.Start();
@@ -156,5 +158,35 @@ public class BbpPairingEngine : IBbpPairingEngine
         {
             // Best effort — don't mask the real exception.
         }
+    }
+
+    /// <summary>
+    /// Builds the bbpPairings command-line arguments for
+    /// <paramref name="section"/>. Exposed as <c>internal</c> so tests
+    /// can assert flag decisions without spawning a subprocess.
+    /// </summary>
+    /// <remarks>
+    /// Emits <c>--dutch</c> by default. When
+    /// <see cref="Tournaments.Section.UseAcceleration"/> is true, also
+    /// emits <c>--baku</c> — bbpPairings' FIDE Baku-style
+    /// acceleration, the same technique SwissSys applies for its
+    /// "Acceleration" section setting. Accelerated pairings give the
+    /// top half a virtual score bump in early rounds so a large field
+    /// splits correctly in a short Swiss.
+    /// </remarks>
+    internal static IReadOnlyList<string> BuildArguments(
+        Tournaments.Section section,
+        string trfPath,
+        string pairingsPath)
+    {
+        var args = new List<string> { "--dutch" };
+        if (section.UseAcceleration)
+        {
+            args.Add("--baku");
+        }
+        args.Add(trfPath);
+        args.Add("-p");
+        args.Add(pairingsPath);
+        return args;
     }
 }
