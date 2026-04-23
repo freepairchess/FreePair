@@ -31,7 +31,43 @@ public static class SwissSysMapper
             EndDate: ParseIsoDate(raw.Overview?.EndingDate),
             TimeControl: raw.Overview?.TournamentTimeControls,
             NachEventId: raw.Overview?.NachEventId,
-            Sections: sections);
+            Sections: sections,
+
+            NachOrganizerId: raw.Overview?.NachOrganizerId,
+            StartDateTime:   ParseIsoDateTime(raw.Overview?.StartingDateTime),
+            EndDateTime:     ParseIsoDateTime(raw.Overview?.EndingDateTime),
+            TimeZone:        raw.Overview?.TimeZone,
+
+            EventAddress: raw.Overview?.EventAddress,
+            EventCity:    raw.Overview?.EventCity,
+            EventState:   raw.Overview?.EventState,
+            EventZipCode: raw.Overview?.EventZipCode?.Trim(),
+            EventCountry: raw.Overview?.EventCountry,
+
+            EventFormat:     raw.Overview?.EventFormat,
+            EventType:       raw.Overview?.EventType,
+            PairingRule:     raw.Overview?.PairingRule,
+            TimeControlType: raw.Overview?.TimeControlType,
+            RatingType:      raw.Overview?.RatingType,
+
+            RoundsPlanned:        raw.Overview?.Rounds,
+            HalfPointByesAllowed: raw.Overview?.HalfPointByes);
+    }
+
+    /// <summary>
+    /// Parses a best-effort ISO 8601 timestamp. Returns null on any
+    /// failure rather than throwing — the writer's raw-JSON pass-through
+    /// will preserve the original text even if we couldn't understand it.
+    /// </summary>
+    private static DateTimeOffset? ParseIsoDateTime(string? s)
+    {
+        if (string.IsNullOrWhiteSpace(s)) return null;
+        if (DateTimeOffset.TryParse(s, CultureInfo.InvariantCulture,
+                DateTimeStyles.AssumeLocal, out var dto))
+        {
+            return dto;
+        }
+        return null;
     }
 
     internal static Section MapSection(RawSection raw)

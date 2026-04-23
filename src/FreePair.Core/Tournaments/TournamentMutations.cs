@@ -14,37 +14,67 @@ namespace FreePair.Core.Tournaments;
 public static class TournamentMutations
 {
     /// <summary>
-    /// Applies a batch of event-level metadata edits (title, location,
-    /// date range, time control, default pairing kind, default rating
-    /// type) in a single immutable step. Any parameter left at its
-    /// default sentinel (<see langword="null"/> for the nullables or
-    /// <see cref="SectionKind.Unknown"/> for the enum) is treated as
-    /// "leave unchanged". Used by the Event-configuration tab so the
-    /// TD can edit several fields and apply them as one unit.
+    /// Applies a batch of event-level metadata edits in a single
+    /// immutable step. Any parameter left at its default sentinel
+    /// (<see langword="null"/>) is treated as "leave unchanged". Used
+    /// by the Event-configuration tab so the TD can edit several
+    /// fields and apply them as one unit.
     /// </summary>
     public static Tournament SetTournamentInfo(
         Tournament tournament,
         string? title = null,
-        string? location = null,
         System.DateOnly? startDate = null,
         System.DateOnly? endDate = null,
         string? timeControl = null,
-        SectionKind defaultPairingKind = SectionKind.Unknown,
-        string? defaultRatingType = null)
+        // address
+        string? eventAddress = null,
+        string? eventCity = null,
+        string? eventState = null,
+        string? eventZipCode = null,
+        string? eventCountry = null,
+        // classifications — use Box<T> so the caller can distinguish
+        // "leave alone" (null box) from "set to null" (non-null box
+        // with Value == null).
+        Box<FreePair.Core.Tournaments.Enums.EventFormat?>?     eventFormat     = null,
+        Box<FreePair.Core.Tournaments.Enums.EventType?>?       eventType       = null,
+        Box<FreePair.Core.Tournaments.Enums.PairingRule?>?     pairingRule     = null,
+        Box<FreePair.Core.Tournaments.Enums.TimeControlType?>? timeControlType = null,
+        Box<FreePair.Core.Tournaments.Enums.RatingType?>?      ratingType      = null,
+        // extended
+        string? nachOrganizerId = null,
+        System.DateTimeOffset? startDateTime = null,
+        System.DateTimeOffset? endDateTime = null,
+        string? timeZone = null,
+        int? roundsPlanned = null,
+        int? halfPointByesAllowed = null)
     {
         ArgumentNullException.ThrowIfNull(tournament);
 
         return tournament with
         {
-            Title             = title             ?? tournament.Title,
-            Location          = location          ?? tournament.Location,
-            StartDate         = startDate         ?? tournament.StartDate,
-            EndDate           = endDate           ?? tournament.EndDate,
-            TimeControl       = timeControl       ?? tournament.TimeControl,
-            DefaultPairingKind = defaultPairingKind == SectionKind.Unknown
-                ? tournament.DefaultPairingKind
-                : defaultPairingKind,
-            DefaultRatingType = defaultRatingType ?? tournament.DefaultRatingType,
+            Title              = title           ?? tournament.Title,
+            StartDate          = startDate       ?? tournament.StartDate,
+            EndDate            = endDate         ?? tournament.EndDate,
+            TimeControl        = timeControl     ?? tournament.TimeControl,
+
+            EventAddress       = eventAddress    ?? tournament.EventAddress,
+            EventCity          = eventCity       ?? tournament.EventCity,
+            EventState         = eventState      ?? tournament.EventState,
+            EventZipCode       = eventZipCode    ?? tournament.EventZipCode,
+            EventCountry       = eventCountry    ?? tournament.EventCountry,
+
+            EventFormat        = eventFormat     is not null ? eventFormat.Value     : tournament.EventFormat,
+            EventType          = eventType       is not null ? eventType.Value       : tournament.EventType,
+            PairingRule        = pairingRule     is not null ? pairingRule.Value     : tournament.PairingRule,
+            TimeControlType    = timeControlType is not null ? timeControlType.Value : tournament.TimeControlType,
+            RatingType         = ratingType      is not null ? ratingType.Value      : tournament.RatingType,
+
+            NachOrganizerId    = nachOrganizerId ?? tournament.NachOrganizerId,
+            StartDateTime      = startDateTime   ?? tournament.StartDateTime,
+            EndDateTime        = endDateTime     ?? tournament.EndDateTime,
+            TimeZone           = timeZone        ?? tournament.TimeZone,
+            RoundsPlanned      = roundsPlanned   ?? tournament.RoundsPlanned,
+            HalfPointByesAllowed = halfPointByesAllowed ?? tournament.HalfPointByesAllowed,
         };
     }
 

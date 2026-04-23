@@ -1,28 +1,15 @@
 using System;
 using System.Collections.Generic;
+using FreePair.Core.Tournaments.Enums;
 
 namespace FreePair.Core.Tournaments;
 
 /// <summary>
 /// Root of the FreePair domain model for a loaded tournament.
+/// Most event-level metadata mirrors the NAChessHub top-level block
+/// in a SwissSys <c>.sjson</c> file. All new fields are nullable so
+/// legacy files that pre-date the extended metadata still load.
 /// </summary>
-/// <param name="Location">
-/// Free-form venue / city string (session-only for v1 — not yet
-/// round-tripped through SwissSys save/load to avoid inventing
-/// extra JSON fields). Editable via
-/// <see cref="TournamentMutations.SetTournamentInfo"/>.
-/// </param>
-/// <param name="DefaultPairingKind">
-/// Event-wide default pairing system. New sections the TD creates
-/// inherit this value; existing sections retain whatever they
-/// imported with. Inheritance propagation onto existing sections is
-/// a later feature — for now this is just a recorded default.
-/// </param>
-/// <param name="DefaultRatingType">
-/// Event-wide default rating federation ("USCF" / "FIDE" / "CFC" /
-/// "NWSRS" / free-form). Same session-only / default-only semantics
-/// as <see cref="DefaultPairingKind"/>.
-/// </param>
 public sealed record Tournament(
     string? Title,
     DateOnly? StartDate,
@@ -30,6 +17,56 @@ public sealed record Tournament(
     string? TimeControl,
     string? NachEventId,
     IReadOnlyList<Section> Sections,
-    string? Location = null,
-    SectionKind DefaultPairingKind = SectionKind.Swiss,
-    string? DefaultRatingType = null);
+
+    // ============= extended NAChessHub metadata =============
+
+    /// <summary>NAChessHub organiser GUID / id string.</summary>
+    string? NachOrganizerId = null,
+
+    /// <summary>Timed start, superset of <see cref="StartDate"/>.</summary>
+    DateTimeOffset? StartDateTime = null,
+    /// <summary>Timed end, superset of <see cref="EndDate"/>.</summary>
+    DateTimeOffset? EndDateTime = null,
+    /// <summary>Windows time-zone id, e.g. <c>"Pacific Standard Time"</c>.</summary>
+    string? TimeZone = null,
+
+    // --- address ---
+    string? EventAddress = null,
+    string? EventCity = null,
+    string? EventState = null,
+    string? EventZipCode = null,
+    string? EventCountry = null,
+
+    // --- classifications ---
+    EventFormat? EventFormat = null,
+    EventType? EventType = null,
+    PairingRule? PairingRule = null,
+    TimeControlType? TimeControlType = null,
+    RatingType? RatingType = null,
+
+    /// <summary>Total rounds planned at the event level (SwissSys <c>"Rounds"</c>).</summary>
+    int? RoundsPlanned = null,
+    /// <summary>Max half-point byes a player may request (SwissSys <c>"Half point byes"</c>).</summary>
+    int? HalfPointByesAllowed = null)
+{
+    /// <summary>
+    /// Human-readable one-line location summary built from the
+    /// address parts (City, State, Country — Country omitted for USA
+    /// to keep the header tight). Empty when no address is set.
+    /// </summary>
+    public string LocationSummary
+    {
+        get
+        {
+            var parts = new List<string>(3);
+            if (!string.IsNullOrWhiteSpace(EventCity))  parts.Add(EventCity!);
+            if (!string.IsNullOrWhiteSpace(EventState)) parts.Add(EventState!);
+            if (!string.IsNullOrWhiteSpace(EventCountry)
+                && !string.Equals(EventCountry.Trim(), "USA", StringComparison.OrdinalIgnoreCase))
+            {
+                parts.Add(EventCountry!);
+            }
+            return string.Join(", ", parts);
+        }
+    }
+}

@@ -200,14 +200,14 @@ public static class PdfReportBuilder
                     txt.Span(s.TimeControl!);
                 }
             });
-            if (t.StartDate is not null || t.EndDate is not null || !string.IsNullOrWhiteSpace(t.Location))
+            if (t.StartDate is not null || t.EndDate is not null || t.LocationSummary.Length > 0)
             {
                 col.Item().Text(txt =>
                 {
-                    if (!string.IsNullOrWhiteSpace(t.Location))
+                    if (t.LocationSummary.Length > 0)
                     {
                         txt.Span("Location: ").Bold();
-                        txt.Span(t.Location!);
+                        txt.Span(t.LocationSummary);
                         txt.Span("   •   ").Light();
                     }
                     if (t.StartDate is not null)
