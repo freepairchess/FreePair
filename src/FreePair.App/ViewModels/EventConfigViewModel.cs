@@ -40,8 +40,13 @@ public sealed partial class EventConfigViewModel : ViewModelBase
     // ============ scheduling / counts ============
     [ObservableProperty] private int? _roundsPlanned;
     [ObservableProperty] private int? _halfPointByesAllowed;
-    [ObservableProperty] private string? _organizerId;
-    [ObservableProperty] private FreePair.Core.Tournaments.Enums.UserIDType? _organizerIdType;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(UscfAffiliateUrl))]
+    private string? _organizerId;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(UscfAffiliateUrl))]
+    private FreePair.Core.Tournaments.Enums.UserIDType? _organizerIdType;
     [ObservableProperty] private string? _organizerName;
     [ObservableProperty] private string? _nachPasscode;
 
@@ -117,6 +122,19 @@ public sealed partial class EventConfigViewModel : ViewModelBase
     };
 
     public string? NachEventId => _getTournament().NachEventId;
+
+    /// <summary>
+    /// US Chess affiliate URL derived from <see cref="OrganizerId"/>
+    /// when the id type is <see cref="FreePair.Core.Tournaments.Enums.UserIDType.USCFAffiliateID"/>,
+    /// otherwise null. Bound in the view as a clickable link next to
+    /// the Organizer ID textbox; auto-refreshes when either source
+    /// property changes via <c>NotifyPropertyChangedFor</c>.
+    /// </summary>
+    public string? UscfAffiliateUrl =>
+        OrganizerIdType == FreePair.Core.Tournaments.Enums.UserIDType.USCFAffiliateID
+        && !string.IsNullOrWhiteSpace(OrganizerId)
+            ? $"https://ratings.uschess.org/affiliate/{OrganizerId.Trim()}"
+            : null;
 
     public EventConfigViewModel(
         Func<Tournament> getTournament,

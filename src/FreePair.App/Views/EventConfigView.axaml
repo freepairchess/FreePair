@@ -120,7 +120,22 @@
                     <TextBox   Grid.Row="3" Grid.Column="1" Text="{Binding OrganizerName}"/>
 
                     <TextBlock Grid.Row="4" Grid.Column="0" Classes="label" Text="Organizer ID"/>
-                    <TextBox   Grid.Row="4" Grid.Column="1" Text="{Binding OrganizerId}" Watermark="e.g. A10034449"/>
+                    <Grid      Grid.Row="4" Grid.Column="1" ColumnDefinitions="*,Auto">
+                        <TextBox Grid.Column="0" Text="{Binding OrganizerId}" Watermark="e.g. A10034449"/>
+                        <!-- Visible only when Organizer ID Type = USCFAffiliateID; opens the
+                             US Chess affiliate lookup page in the default browser. -->
+                        <Button Grid.Column="1"
+                                Content="↗ US Chess lookup"
+                                Margin="6,0,0,0"
+                                Padding="10,0"
+                                Foreground="#0E5DAA"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Tag="{Binding UscfAffiliateUrl}"
+                                Click="OnOpenUrlClick"
+                                ToolTip.Tip="{Binding UscfAffiliateUrl}"
+                                IsVisible="{Binding UscfAffiliateUrl, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                    </Grid>
 
                     <TextBlock Grid.Row="5" Grid.Column="0" Classes="label" Text="Organizer ID type"/>
                     <ComboBox  Grid.Row="5" Grid.Column="1"
