@@ -11,12 +11,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="12.0.1" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="12.0.0" />
-    <PackageReference Include="Avalonia.Desktop" Version="12.0.1" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.0.1" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="12.0.1" />
-    <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.1">
+    <!-- Floating to the latest 12.0.x patch. The NRE you are hitting originates
+         inside Avalonia.Win32's WinUI-Composition path (see the
+         "ICompositor5.RequestCommitAsync timed out" log line immediately
+         before the throw). Several Win32 compositor fixes have shipped in
+         12.0.x patch releases, so pulling the latest 12.0 should resolve it. -->
+    <PackageReference Include="Avalonia" Version="12.0.*" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="12.0.*" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.0.*" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.0.*" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="12.0.*" />
+    <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.*">
       <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
