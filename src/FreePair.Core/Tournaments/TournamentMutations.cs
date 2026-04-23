@@ -42,6 +42,7 @@ public static class TournamentMutations
         Box<FreePair.Core.Tournaments.Enums.RatingType?>?      ratingType      = null,
         // extended
         string? nachOrganizerId = null,
+        string? nachPasscode = null,
         System.DateTimeOffset? startDateTime = null,
         System.DateTimeOffset? endDateTime = null,
         string? timeZone = null,
@@ -70,6 +71,7 @@ public static class TournamentMutations
             RatingType         = ratingType      is not null ? ratingType.Value      : tournament.RatingType,
 
             NachOrganizerId    = nachOrganizerId ?? tournament.NachOrganizerId,
+            NachPasscode       = nachPasscode    ?? tournament.NachPasscode,
             StartDateTime      = startDateTime   ?? tournament.StartDateTime,
             EndDateTime        = endDateTime     ?? tournament.EndDateTime,
             TimeZone           = timeZone        ?? tournament.TimeZone,

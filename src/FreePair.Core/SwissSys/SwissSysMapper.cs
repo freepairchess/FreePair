@@ -34,6 +34,7 @@ public static class SwissSysMapper
             Sections: sections,
 
             NachOrganizerId: raw.Overview?.NachOrganizerId,
+            NachPasscode:    raw.Overview?.NachPasscode,
             StartDateTime:   ParseIsoDateTime(raw.Overview?.StartingDateTime),
             EndDateTime:     ParseIsoDateTime(raw.Overview?.EndingDateTime),
             TimeZone:        raw.Overview?.TimeZone,

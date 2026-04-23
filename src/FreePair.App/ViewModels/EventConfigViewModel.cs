@@ -41,6 +41,15 @@ public sealed partial class EventConfigViewModel : ViewModelBase
     [ObservableProperty] private int? _roundsPlanned;
     [ObservableProperty] private int? _halfPointByesAllowed;
     [ObservableProperty] private string? _nachOrganizerId;
+    [ObservableProperty] private string? _nachPasscode;
+
+    /// <summary>
+    /// When <c>false</c>, the NACH passcode textbox renders as dots
+    /// (UI toggle). Doesn't affect storage — the raw value stays in
+    /// <see cref="NachPasscode"/>.
+    /// </summary>
+    [ObservableProperty] private bool _showNachPasscode;
+
     [ObservableProperty] private string? _timeZone;
 
     // ============ UI choice lists ============
@@ -135,6 +144,8 @@ public sealed partial class EventConfigViewModel : ViewModelBase
         RoundsPlanned        = t.RoundsPlanned;
         HalfPointByesAllowed = t.HalfPointByesAllowed;
         NachOrganizerId      = t.NachOrganizerId;
+        NachPasscode         = t.NachPasscode;
+        ShowNachPasscode     = false;  // always reset to masked on reload
         TimeZone             = t.TimeZone;
 
         OnPropertyChanged(nameof(NachEventId));

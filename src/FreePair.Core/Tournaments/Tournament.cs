@@ -23,6 +23,10 @@ public sealed record Tournament(
     /// <summary>NAChessHub organiser GUID / id string.</summary>
     string? NachOrganizerId = null,
 
+    /// <summary>NAChessHub passcode (secret). Handled as a password
+    /// field in the UI — round-tripped as-is through SwissSys.</summary>
+    string? NachPasscode = null,
+
     /// <summary>Timed start, superset of <see cref="StartDate"/>.</summary>
     DateTimeOffset? StartDateTime = null,
     /// <summary>Timed end, superset of <see cref="EndDate"/>.</summary>

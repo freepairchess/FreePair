@@ -95,7 +95,7 @@
             <!-- ============ Scheduling ============ -->
             <TextBlock Text="Scheduling" FontWeight="SemiBold" Margin="0,6,0,0"/>
             <Border Background="#F6F6F6" BorderBrush="LightGray" BorderThickness="1" CornerRadius="4" Padding="16">
-                <Grid ColumnDefinitions="160,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                <Grid ColumnDefinitions="160,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
                     <Grid.Styles>
                         <Style Selector="TextBlock.label">
                             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -114,8 +114,28 @@
                     <TextBox   Grid.Row="2" Grid.Column="1" Text="{Binding TimeZone}" Watermark="Windows id, e.g. Pacific Standard Time"/>
                     <TextBlock Grid.Row="3" Grid.Column="0" Classes="label" Text="NACH organizer ID"/>
                     <TextBox   Grid.Row="3" Grid.Column="1" Text="{Binding NachOrganizerId}"/>
-                    <TextBlock Grid.Row="4" Grid.Column="0" Classes="label" Text="NACH event ID"/>
-                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding NachEventId}" VerticalAlignment="Center" Foreground="Gray" FontFamily="Consolas,monospace" FontSize="11"/>
+
+                    <!-- Passcode row: masked by default. The 'Show' toggle ToggleButton flips
+                         PasswordChar to '\0' (rendered empty), unmasking the value in-place.
+                         The value itself stays bound to NachPasscode regardless. -->
+                    <TextBlock Grid.Row="4" Grid.Column="0" Classes="label" Text="NACH passcode"/>
+                    <Grid      Grid.Row="4" Grid.Column="1" ColumnDefinitions="*,Auto">
+                        <TextBox Grid.Column="0"
+                                 Text="{Binding NachPasscode}"
+                                 PasswordChar="●"
+                                 RevealPassword="{Binding ShowNachPasscode}"
+                                 Watermark="Secret passcode"/>
+                        <ToggleButton Grid.Column="1"
+                                      Margin="6,0,0,0"
+                                      IsChecked="{Binding ShowNachPasscode, Mode=TwoWay}"
+                                      Padding="10,0"
+                                      ToolTip.Tip="Show / hide the passcode">
+                            <TextBlock Text="👁" FontSize="14"/>
+                        </ToggleButton>
+                    </Grid>
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Classes="label" Text="NACH event ID"/>
+                    <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding NachEventId}" VerticalAlignment="Center" Foreground="Gray" FontFamily="Consolas,monospace" FontSize="11"/>
                 </Grid>
             </Border>
 
