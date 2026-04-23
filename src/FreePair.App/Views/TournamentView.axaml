@@ -35,11 +35,31 @@
                            Foreground="Gray"
                            VerticalAlignment="Center"
                            TextTrimming="CharacterEllipsis"/>
+                <!-- In-progress status ("Saving...", "Publishing...") shown
+                     as plain italic text; only visible while a background
+                     op is running. -->
                 <TextBlock Text="{Binding SaveStatus}"
                            Foreground="DarkBlue"
                            FontStyle="Italic"
                            VerticalAlignment="Center"
-                           IsVisible="{Binding IsSaving}"/>
+                           IsVisible="{Binding IsSaving}"
+                           IsEnabled="{Binding !HasLastPublishedUrl}"/>
+                <!-- Post-publish success: same text rendered as a clickable
+                     hyperlink pointing at the hub's EventFiles page for
+                     this event. Visible only when HasLastPublishedUrl is
+                     true; mutually exclusive with the in-progress block
+                     above via the IsEnabled guard. -->
+                <Button Content="{Binding SaveStatus}"
+                        Tag="{Binding LastPublishedUrl}"
+                        Click="OnOpenPublishedUrl"
+                        Foreground="#0E5DAA"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Padding="0"
+                        FontStyle="Italic"
+                        VerticalAlignment="Center"
+                        ToolTip.Tip="{Binding LastPublishedUrl}"
+                        IsVisible="{Binding HasLastPublishedUrl}"/>
             </StackPanel>
 
             <TextBlock Text="Loading..."

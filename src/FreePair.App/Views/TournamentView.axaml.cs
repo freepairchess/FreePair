@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using FreePair.App.ViewModels;
 using FreePair.Core.Bbp;
@@ -144,5 +145,22 @@ public partial class TournamentView : UserControl
         var dialog = new PublishingDialog { DataContext = vm };
         var result = await dialog.ShowDialog<object?>(owner);
         return result as PublishingDialogViewModel;
+    }
+
+    /// <summary>
+    /// Opens the hub's EventFiles page for the last successful
+    /// publish in the default browser. URL is bound to the clicked
+    /// button's <c>Tag</c> via <c>TournamentViewModel.LastPublishedUrl</c>.
+    /// </summary>
+    private void OnOpenPublishedUrl(object? sender, RoutedEventArgs e)
+    {
+        if (sender is not Button btn || btn.Tag is not string url || string.IsNullOrWhiteSpace(url))
+            return;
+        try
+        {
+            System.Diagnostics.Process.Start(
+                new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true });
+        }
+        catch { /* best-effort */ }
     }
 }

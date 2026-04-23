@@ -145,6 +145,19 @@ public partial class TournamentViewModel : ViewModelBase
     [ObservableProperty] private bool _autoPublishResults;
 
     /// <summary>
+    /// Browser URL for the most recent successful publish (points at
+    /// <c>{hubBaseUrl}/EventFiles?EventID={nachEventId}</c>). Reset to
+    /// <see langword="null"/> on every publish attempt; set on success
+    /// so the toolbar's "Published to …" message can be rendered as a
+    /// clickable link. Consumed by <c>TournamentView</c>'s toolbar.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasLastPublishedUrl))]
+    private string? _lastPublishedUrl;
+
+    public bool HasLastPublishedUrl => !string.IsNullOrEmpty(LastPublishedUrl);
+
+    /// <summary>
     /// Flag set by <see cref="OnSectionResultChanged"/> /
     /// <see cref="OnSectionPairNextRoundAsync"/> immediately before the
     /// triggered auto-save so the subsequent
@@ -685,6 +698,9 @@ public partial class TournamentViewModel : ViewModelBase
         _autoPublishCts = new CancellationTokenSource();
         var ct = _autoPublishCts.Token;
 
+        // Reset the last-published hyperlink — re-populated on success.
+        LastPublishedUrl = null;
+
         try
         {
             SaveStatus = "Publishing…";
@@ -724,6 +740,8 @@ public partial class TournamentViewModel : ViewModelBase
             if (result2.Success)
             {
                 SaveStatus = $"Published to {_publishingClient.DisplayName}.";
+                var root = (PublishBaseUrl ?? "").TrimEnd('/');
+                LastPublishedUrl = $"{root}/EventFiles?EventID={System.Uri.EscapeDataString(t.NachEventId!)}";
             }
             else
             {
