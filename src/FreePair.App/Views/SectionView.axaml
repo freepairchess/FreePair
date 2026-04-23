@@ -72,40 +72,228 @@
             <!-- =============== Players =============== -->
             <TabItem Header="Players">
                 <DockPanel LastChildFill="True" Margin="8">
-                    <Grid DockPanel.Dock="Top"
-                          ColumnDefinitions="50,70,*,80,60,60,100,70,100"
-                          Margin="0,0,0,4">
-                        <TextBlock Grid.Column="0" Classes="colHeader" Text="Pair"/>
-                        <TextBlock Grid.Column="1" Classes="colHeader" Text="USCF"/>
-                        <TextBlock Grid.Column="2" Classes="colHeader" Text="Name"/>
-                        <TextBlock Grid.Column="3" Classes="colHeader" Text="Rating"/>
-                        <TextBlock Grid.Column="4" Classes="colHeader" Text="Club"/>
-                        <TextBlock Grid.Column="5" Classes="colHeader" Text="State"/>
-                        <TextBlock Grid.Column="6" Classes="colHeader" Text="Team"/>
-                        <TextBlock Grid.Column="7" Classes="colHeader" Text="Score" HorizontalAlignment="Right"/>
-                        <TextBlock Grid.Column="8" Classes="colHeader" Text="Status"/>
-                    </Grid>
-                    <ScrollViewer>
-                        <ItemsControl ItemsSource="{Binding Players}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="vm:PlayerRow">
-                                    <Border Classes="row">
-                                        <Grid ColumnDefinitions="50,70,*,80,60,60,100,70,100">
-                                            <TextBlock Grid.Column="0" Classes="cell" Text="{Binding PairNumber}"/>
-                                            <TextBlock Grid.Column="1" Classes="cell" Text="{Binding UscfId}" Foreground="Gray"/>
-                                            <TextBlock Grid.Column="2" Classes="cell" Text="{Binding Name}"/>
-                                            <TextBlock Grid.Column="3" Classes="cell" Text="{Binding Rating}"/>
-                                            <TextBlock Grid.Column="4" Classes="cell" Text="{Binding Club}"/>
-                                            <TextBlock Grid.Column="5" Classes="cell" Text="{Binding State}"/>
-                                            <TextBlock Grid.Column="6" Classes="cell" Text="{Binding Team}"/>
-                                            <TextBlock Grid.Column="7" Classes="cell" Text="{Binding ScoreText}" HorizontalAlignment="Right"/>
-                                            <TextBlock Grid.Column="8" Classes="cell" Text="{Binding Status}" Foreground="DarkBlue"/>
+
+                    <!-- Filter bar -->
+                    <Border DockPanel.Dock="Top"
+                            Background="#F6F6F6"
+                            BorderBrush="LightGray"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="8"
+                            Margin="0,0,0,8">
+                        <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                            <TextBlock Grid.Column="0"
+                                       Text="Filter:"
+                                       VerticalAlignment="Center"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,8,0"/>
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding PlayerFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Watermark="Search by name, ID, club, state, team, email, phone, or pair #"
+                                     MinWidth="280"/>
+                            <Button Grid.Column="2"
+                                    Content="Clear"
+                                    Click="OnClearPlayerFilter"
+                                    Margin="8,0,0,0"
+                                    IsVisible="{Binding PlayerFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                            <TextBlock Grid.Column="3"
+                                       Text="{Binding FilteredPlayerCountText}"
+                                       VerticalAlignment="Center"
+                                       Foreground="Gray"
+                                       FontSize="11"
+                                       Margin="12,0,0,0"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Sortable, resizable grid. Column sorting is built into the DataGrid;
+                         SortMemberPath identifies the underlying value used (so e.g. Rating
+                         sorts numerically rather than as text). -->
+                    <DataGrid ItemsSource="{Binding FilteredPlayers}"
+                              CanUserSortColumns="True"
+                              CanUserResizeColumns="True"
+                              CanUserReorderColumns="True"
+                              IsReadOnly="True"
+                              GridLinesVisibility="Horizontal"
+                              HeadersVisibility="Column"
+                              SelectionMode="Single"
+                              AutoGenerateColumns="False"
+                              HorizontalScrollBarVisibility="Auto">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Pair"
+                                                Binding="{Binding PairNumber}"
+                                                SortMemberPath="PairNumber"
+                                                Width="60"/>
+
+                            <!-- USCF id: value + copy button (shown only when the id is set). -->
+                            <DataGridTemplateColumn Header="USCF" SortMemberPath="UscfId" Width="110">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="vm:PlayerRow">
+                                        <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+                                            <TextBlock Grid.Column="0"
+                                                       Text="{Binding UscfId}"
+                                                       Foreground="Gray"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       VerticalAlignment="Center"
+                                                       Padding="8,0,0,0"/>
+                                            <Button Grid.Column="1"
+                                                    Content="⧉"
+                                                    Tag="{Binding UscfId}"
+                                                    Click="OnCopyFieldClick"
+                                                    Padding="4,0" MinHeight="20" FontSize="11"
+                                                    Background="Transparent" BorderThickness="0"
+                                                    IsVisible="{Binding UscfId, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                                    ToolTip.Tip="Copy USCF id to clipboard"/>
                                         </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Name: value + copy button (always present). -->
+                            <DataGridTemplateColumn Header="Name" SortMemberPath="Name" Width="*" MinWidth="180">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="vm:PlayerRow">
+                                        <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+                                            <TextBlock Grid.Column="0"
+                                                       Text="{Binding Name}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       ToolTip.Tip="{Binding Name}"
+                                                       VerticalAlignment="Center"
+                                                       Padding="8,0,0,0"/>
+                                            <Button Grid.Column="1"
+                                                    Content="⧉"
+                                                    Tag="{Binding Name}"
+                                                    Click="OnCopyFieldClick"
+                                                    Padding="4,0" MinHeight="20" FontSize="11"
+                                                    Background="Transparent" BorderThickness="0"
+                                                    IsVisible="{Binding Name, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                                    ToolTip.Tip="Copy name to clipboard"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Rating: value + copy (always shown; numeric Tag coerced via ToString in the handler). -->
+                            <DataGridTemplateColumn Header="Rating" SortMemberPath="Rating" Width="110">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="vm:PlayerRow">
+                                        <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+                                            <TextBlock Grid.Column="0"
+                                                       Text="{Binding Rating}"
+                                                       VerticalAlignment="Center"
+                                                       Padding="8,0,0,0"/>
+                                            <Button Grid.Column="1"
+                                                    Content="⧉"
+                                                    Tag="{Binding Rating}"
+                                                    Click="OnCopyFieldClick"
+                                                    Padding="4,0" MinHeight="20" FontSize="11"
+                                                    Background="Transparent" BorderThickness="0"
+                                                    ToolTip.Tip="Copy rating to clipboard"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn Header="Club"
+                                                Binding="{Binding Club}"
+                                                SortMemberPath="Club"
+                                                Width="80"/>
+                            <DataGridTextColumn Header="State"
+                                                Binding="{Binding State}"
+                                                SortMemberPath="State"
+                                                Width="60"/>
+
+                            <!-- Team: value + copy button (shown only when team name is set). -->
+                            <DataGridTemplateColumn Header="Team" SortMemberPath="Team" Width="130">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="vm:PlayerRow">
+                                        <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+                                            <TextBlock Grid.Column="0"
+                                                       Text="{Binding Team}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       ToolTip.Tip="{Binding Team}"
+                                                       VerticalAlignment="Center"
+                                                       Padding="8,0,0,0"/>
+                                            <Button Grid.Column="1"
+                                                    Content="⧉"
+                                                    Tag="{Binding Team}"
+                                                    Click="OnCopyFieldClick"
+                                                    Padding="4,0" MinHeight="20" FontSize="11"
+                                                    Background="Transparent" BorderThickness="0"
+                                                    IsVisible="{Binding Team, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                                    ToolTip.Tip="Copy team to clipboard"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Email: value + inline copy button. Template column so we can
+                                 embed a Button; sort-member points at the plain string so
+                                 the sort indicator still works. -->
+                            <DataGridTemplateColumn Header="Email" SortMemberPath="Email" Width="200">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="vm:PlayerRow">
+                                        <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+                                            <TextBlock Grid.Column="0"
+                                                       Text="{Binding Email}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       ToolTip.Tip="{Binding Email}"
+                                                       VerticalAlignment="Center"
+                                                       Padding="8,0,0,0"/>
+                                            <Button Grid.Column="1"
+                                                    Content="⧉"
+                                                    Tag="{Binding Email}"
+                                                    Click="OnCopyFieldClick"
+                                                    Padding="4,0"
+                                                    MinHeight="20"
+                                                    FontSize="11"
+                                                    Background="Transparent"
+                                                    BorderThickness="0"
+                                                    IsVisible="{Binding Email, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                                    ToolTip.Tip="Copy email to clipboard"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Phone: same pattern as Email. -->
+                            <DataGridTemplateColumn Header="Phone" SortMemberPath="Phone" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="vm:PlayerRow">
+                                        <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+                                            <TextBlock Grid.Column="0"
+                                                       Text="{Binding Phone}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       ToolTip.Tip="{Binding Phone}"
+                                                       VerticalAlignment="Center"
+                                                       Padding="8,0,0,0"/>
+                                            <Button Grid.Column="1"
+                                                    Content="⧉"
+                                                    Tag="{Binding Phone}"
+                                                    Click="OnCopyFieldClick"
+                                                    Padding="4,0"
+                                                    MinHeight="20"
+                                                    FontSize="11"
+                                                    Background="Transparent"
+                                                    BorderThickness="0"
+                                                    IsVisible="{Binding Phone, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                                    ToolTip.Tip="Copy phone to clipboard"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Sort by the numeric Score (not the pre-formatted text) so
+                                 "½" sorts between 0 and 1 correctly. -->
+                            <DataGridTextColumn Header="Score"
+                                                Binding="{Binding ScoreText}"
+                                                SortMemberPath="Score"
+                                                Width="70"/>
+                            <DataGridTextColumn Header="Status"
+                                                Binding="{Binding Status}"
+                                                SortMemberPath="Status"
+                                                Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </DockPanel>
             </TabItem>
 

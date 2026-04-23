@@ -159,6 +159,27 @@ public class SwissSysMapperTests
     }
 
     [Fact]
+    public void MapPlayer_round_trips_email_and_phone_from_raw()
+    {
+        // The bundled sample pre-dates the Email/Phone feature, so we
+        // exercise the mapper directly against a synthesised RawPlayer
+        // to lock down the JSON key mapping.
+        var raw = new FreePair.Core.SwissSys.Raw.RawPlayer
+        {
+            PairNumber = 1,
+            Name = "Test Player",
+            Rating = 1500,
+            Email = "player@example.com",
+            Phone = "+1-555-0100",
+        };
+
+        var p = SwissSysMapper.MapPlayer(raw);
+
+        Assert.Equal("player@example.com", p.Email);
+        Assert.Equal("+1-555-0100",       p.Phone);
+    }
+
+    [Fact]
     public async Task Map_preserves_place_prizes()
     {
         var t = await LoadAsync();

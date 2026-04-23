@@ -36,6 +36,12 @@ public sealed class RawPlayer
     [JsonPropertyName("State")]
     public string? State { get; set; }
 
+    [JsonPropertyName("Email")]
+    public string? Email { get; set; }
+
+    [JsonPropertyName("Phone")]
+    public string? Phone { get; set; }
+
     [JsonPropertyName("Reserved byes")]
     public string? ReservedByes { get; set; }
 
