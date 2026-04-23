@@ -1,0 +1,106 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:FreePair.App.ViewModels"
+             xmlns:core="using:FreePair.Core.Tournaments"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="520"
+             x:Class="FreePair.App.Views.EventConfigView"
+             x:DataType="vm:EventConfigViewModel">
+
+    <ScrollViewer>
+        <StackPanel Margin="0" Spacing="12">
+
+            <TextBlock Text="Event configuration"
+                       FontSize="18"
+                       FontWeight="SemiBold"/>
+            <TextBlock Text="Edit the event-level metadata and defaults. Changes are applied to the in-memory tournament as one batch; close the event (or reload) to discard unsaved edits."
+                       Foreground="Gray"
+                       FontSize="11"
+                       TextWrapping="Wrap"/>
+
+            <Border Background="#F6F6F6"
+                    BorderBrush="LightGray"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Padding="16">
+                <Grid ColumnDefinitions="150,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                      HorizontalAlignment="Stretch"
+                      Margin="0">
+                    <Grid.Styles>
+                        <Style Selector="TextBlock.label">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="0,6,12,6"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                        </Style>
+                        <Style Selector="TextBox">
+                            <Setter Property="Margin" Value="0,4"/>
+                        </Style>
+                        <Style Selector="DatePicker">
+                            <Setter Property="Margin" Value="0,4"/>
+                        </Style>
+                        <Style Selector="ComboBox">
+                            <Setter Property="Margin" Value="0,4"/>
+                        </Style>
+                        <Style Selector="AutoCompleteBox">
+                            <Setter Property="Margin" Value="0,4"/>
+                        </Style>
+                    </Grid.Styles>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Classes="label" Text="Title"/>
+                    <TextBox   Grid.Row="0" Grid.Column="1" Text="{Binding Title}" Watermark="Event title"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Classes="label" Text="Location"/>
+                    <TextBox   Grid.Row="1" Grid.Column="1" Text="{Binding Location}" Watermark="Venue / city / state"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Classes="label" Text="Start date"/>
+                    <DatePicker Grid.Row="2" Grid.Column="1" SelectedDate="{Binding StartDate}"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Classes="label" Text="End date"/>
+                    <DatePicker Grid.Row="3" Grid.Column="1" SelectedDate="{Binding EndDate}"/>
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Classes="label" Text="Time control"/>
+                    <TextBox   Grid.Row="4" Grid.Column="1" Text="{Binding TimeControl}" Watermark="e.g. G/45;d5"/>
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Classes="label" Text="Pairing system"/>
+                    <ComboBox  Grid.Row="5" Grid.Column="1"
+                               ItemsSource="{Binding AvailablePairingKinds}"
+                               SelectedItem="{Binding DefaultPairingKind}"
+                               HorizontalAlignment="Stretch"/>
+
+                    <TextBlock Grid.Row="6" Grid.Column="0" Classes="label" Text="Rating system"/>
+                    <AutoCompleteBox Grid.Row="6" Grid.Column="1"
+                                     Text="{Binding DefaultRatingType}"
+                                     ItemsSource="{Binding KnownRatingTypes}"
+                                     HorizontalAlignment="Stretch"
+                                     Watermark="USCF / FIDE / CFC / NWSRS"/>
+
+                    <TextBlock Grid.Row="7" Grid.Column="0" Classes="label" Text="NACH event ID"/>
+                    <TextBlock Grid.Row="7" Grid.Column="1"
+                               Text="{Binding NachEventId}"
+                               VerticalAlignment="Center"
+                               Foreground="Gray"
+                               FontFamily="Consolas,monospace"
+                               FontSize="11"
+                               IsEnabled="False"/>
+                </Grid>
+            </Border>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+                <Button Content="Discard changes" Command="{Binding DiscardCommand}" MinWidth="140"/>
+                <Button Content="Apply"
+                        Command="{Binding ApplyCommand}"
+                        IsDefault="True"
+                        MinWidth="100"
+                        Background="#0E5DAA"
+                        Foreground="White"/>
+            </StackPanel>
+
+            <TextBlock Text="Note: these fields are session-only today. Persisting them back to the SwissSys file is a later feature."
+                       Foreground="Gray"
+                       FontStyle="Italic"
+                       FontSize="10"
+                       TextWrapping="Wrap"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

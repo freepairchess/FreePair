@@ -14,6 +14,41 @@ namespace FreePair.Core.Tournaments;
 public static class TournamentMutations
 {
     /// <summary>
+    /// Applies a batch of event-level metadata edits (title, location,
+    /// date range, time control, default pairing kind, default rating
+    /// type) in a single immutable step. Any parameter left at its
+    /// default sentinel (<see langword="null"/> for the nullables or
+    /// <see cref="SectionKind.Unknown"/> for the enum) is treated as
+    /// "leave unchanged". Used by the Event-configuration tab so the
+    /// TD can edit several fields and apply them as one unit.
+    /// </summary>
+    public static Tournament SetTournamentInfo(
+        Tournament tournament,
+        string? title = null,
+        string? location = null,
+        System.DateOnly? startDate = null,
+        System.DateOnly? endDate = null,
+        string? timeControl = null,
+        SectionKind defaultPairingKind = SectionKind.Unknown,
+        string? defaultRatingType = null)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+
+        return tournament with
+        {
+            Title             = title             ?? tournament.Title,
+            Location          = location          ?? tournament.Location,
+            StartDate         = startDate         ?? tournament.StartDate,
+            EndDate           = endDate           ?? tournament.EndDate,
+            TimeControl       = timeControl       ?? tournament.TimeControl,
+            DefaultPairingKind = defaultPairingKind == SectionKind.Unknown
+                ? tournament.DefaultPairingKind
+                : defaultPairingKind,
+            DefaultRatingType = defaultRatingType ?? tournament.DefaultRatingType,
+        };
+    }
+
+    /// <summary>
     /// Returns a new tournament in which the pairing identified by the
     /// given <paramref name="sectionName"/>, <paramref name="round"/> and
     /// (<paramref name="whitePair"/>, <paramref name="blackPair"/>) has

@@ -71,21 +71,47 @@
                     BorderThickness="0,0,1,0"
                     Padding="0,0,8,0">
                 <DockPanel LastChildFill="True">
-                    <StackPanel DockPanel.Dock="Top" Spacing="4" Margin="0,0,0,12">
-                        <TextBlock Text="{Binding Tournament.Title}"
-                                   FontSize="16"
-                                   FontWeight="SemiBold"
-                                   TextWrapping="Wrap"/>
-                        <TextBlock Foreground="Gray" FontSize="11">
-                            <Run Text="Time control: "/>
-                            <Run Text="{Binding Tournament.TimeControl}"/>
-                        </TextBlock>
-                        <TextBlock Foreground="Gray" FontSize="11">
-                            <Run Text="{Binding Tournament.StartDate}"/>
-                            <Run Text=" — "/>
-                            <Run Text="{Binding Tournament.EndDate}"/>
-                        </TextBlock>
-                    </StackPanel>
+                    <Button DockPanel.Dock="Top"
+                            Command="{Binding ShowEventConfigCommand}"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Left"
+                            Padding="6"
+                            Margin="0,0,0,12"
+                            Background="Transparent"
+                            BorderThickness="1"
+                            BorderBrush="Transparent"
+                            ToolTip.Tip="Open event configuration">
+                        <Button.Styles>
+                            <Style Selector="Button:pointerover /template/ ContentPresenter">
+                                <Setter Property="Background" Value="#F0F4FF"/>
+                                <Setter Property="BorderBrush" Value="#C7D4F2"/>
+                            </Style>
+                        </Button.Styles>
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="{Binding Tournament.Title}"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Tournament.Location}"
+                                       Foreground="Gray"
+                                       FontSize="11"
+                                       TextWrapping="Wrap"
+                                       IsVisible="{Binding Tournament.Location, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                            <TextBlock Foreground="Gray" FontSize="11">
+                                <Run Text="Time control: "/>
+                                <Run Text="{Binding Tournament.TimeControl}"/>
+                            </TextBlock>
+                            <TextBlock Foreground="Gray" FontSize="11">
+                                <Run Text="{Binding Tournament.StartDate}"/>
+                                <Run Text=" — "/>
+                                <Run Text="{Binding Tournament.EndDate}"/>
+                            </TextBlock>
+                            <TextBlock Text="⚙ Click to edit"
+                                       Foreground="#0E5DAA"
+                                       FontSize="10"
+                                       Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Button>
 
                     <TextBlock DockPanel.Dock="Top"
                                Text="SECTIONS"
@@ -115,10 +141,13 @@
                 </DockPanel>
             </Border>
 
-            <!-- Right: selected section content (resolved via ViewLocator → SectionView) -->
-            <ContentControl Grid.Column="1"
-                            Content="{Binding SelectedSection}"
-                            Margin="12,0,0,0"/>
+            <!-- Right: event-config form OR selected-section content -->
+            <Grid Grid.Column="1" Margin="12,0,0,0">
+                <ContentControl Content="{Binding EventConfig}"
+                                IsVisible="{Binding IsEventConfigSelected}"/>
+                <ContentControl Content="{Binding SelectedSection}"
+                                IsVisible="{Binding !IsEventConfigSelected}"/>
+            </Grid>
         </Grid>
 
     </DockPanel>
