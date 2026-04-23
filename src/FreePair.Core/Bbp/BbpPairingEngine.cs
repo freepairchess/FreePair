@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FreePair.Core.Tournaments;
+using FreePair.Core.Tournaments.Constraints;
 using FreePair.Core.Trf;
 
 namespace FreePair.Core.Bbp;
@@ -135,19 +136,48 @@ public class BbpPairingEngine : IBbpPairingEngine
                 .ConfigureAwait(false);
             var parsed = BbpPairingsParser.Parse(text);
 
+            // Post-process BBP's output through the TD-configured
+            // constraint set (same-team / same-club / do-not-pair).
+            // Swaps happen inside same-score groups and never change
+            // colours, so Swiss quality is preserved. Unresolvable
+            // conflicts are returned alongside the (possibly) swapped
+            // pairings so the TD can surface them in the UI.
+            var resolved = PairingSwapper.Apply(
+                parsed.Pairings,
+                section,
+                BuildConstraints(section));
+
             // Merge the requested-bye pair numbers into the result so
             // the caller (TournamentMutations.AppendRound) records the
             // HalfPointBye history entry for those players.
             return new BbpPairingResult(
-                parsed.Pairings,
+                resolved.Pairings,
                 parsed.ByePlayerPairs,
-                HalfPointByePlayerPairs: requestedHalfByes);
+                HalfPointByePlayerPairs: requestedHalfByes,
+                UnresolvedConflicts: resolved.UnresolvedConflicts);
         }
         finally
         {
             TryDelete(trfPath);
             TryDelete(pairingsPath);
         }
+    }
+
+    /// <summary>
+    /// Assembles the section-specific list of active pairing
+    /// constraints from <see cref="Section.AvoidSameTeam"/>,
+    /// <see cref="Section.AvoidSameClub"/>, and
+    /// <see cref="Section.DoNotPairs"/>. Exposed as <c>internal</c>
+    /// so tests can assert which constraints light up for a given
+    /// section configuration.
+    /// </summary>
+    internal static IReadOnlyList<IPairingConstraint> BuildConstraints(Section section)
+    {
+        var list = new List<IPairingConstraint>();
+        if (section.AvoidSameTeam) list.Add(new SameTeamConstraint());
+        if (section.AvoidSameClub) list.Add(new SameClubConstraint());
+        if (section.DoNotPairs.Count > 0) list.Add(new DoNotPairConstraint(section.DoNotPairs));
+        return list;
     }
 
     private static void TryDelete(string path)

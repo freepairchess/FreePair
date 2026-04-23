@@ -139,13 +139,6 @@ public static class TournamentMutations
 
     /// <summary>
     /// Sets the <see cref="Player.Withdrawn"/> flag on a single player
-    /// in <paramref name="sectionName"/>. Withdrawn players are skipped
-    /// by <see cref="Trf.TrfWriter.Write"/> (they disappear from BBP's
-    /// pool) and by <see cref="AppendRound"/> (their history is not
-    /// extended), while their existing history remains intact so the
-    /// wall chart / standings / tiebreaks continue to reflect any games
-    /// they did play. Pass <c>false</c> to re-activate a player.
-    /// </summary>
     public static Tournament SetPlayerWithdrawn(
         Tournament tournament,
         string sectionName,
@@ -173,16 +166,78 @@ public static class TournamentMutations
     }
 
     /// <summary>
-    /// Appends the next round to a round-robin section using
-    /// <see cref="RoundRobinScheduler"/>. The full Berger schedule is
-    /// computed up-front; this method selects the row for
-    /// <c>section.Rounds.Count + 1</c> and applies it via the same
-    /// history-stamping path as <see cref="AppendRound"/>.
+    /// Toggles the section-level <see cref="Section.AvoidSameTeam"/>
+    /// / <see cref="Section.AvoidSameClub"/> flags. When enabled,
+    /// <see cref="PairingSwapper"/> post-processes BBP's output and
+    /// attempts same-score-group swaps to avoid pairings between
+    /// players sharing the corresponding field.
     /// </summary>
-    /// <exception cref="InvalidOperationException">
-    /// The section is not a round-robin, or every scheduled round has
-    /// already been played.
-    /// </exception>
+    public static Tournament SetAvoidSameTeam(
+        Tournament tournament, string sectionName, bool avoid) =>
+        UpdateSection(tournament, sectionName, s =>
+            s.AvoidSameTeam == avoid ? s : s with { AvoidSameTeam = avoid });
+
+    /// <inheritdoc cref="SetAvoidSameTeam"/>
+    public static Tournament SetAvoidSameClub(
+        Tournament tournament, string sectionName, bool avoid) =>
+        UpdateSection(tournament, sectionName, s =>
+            s.AvoidSameClub == avoid ? s : s with { AvoidSameClub = avoid });
+
+    /// <summary>
+    /// Adds an unordered <c>(A, B)</c> pair to the section's
+    /// do-not-pair blacklist (used by
+    /// <see cref="Constraints.DoNotPairConstraint"/>). Duplicates are
+    /// collapsed; self-pairs are silently rejected.
+    /// </summary>
+    public static Tournament AddDoNotPair(
+        Tournament tournament, string sectionName, int a, int b)
+    {
+        if (a == b) return tournament;
+        var lo = System.Math.Min(a, b);
+        var hi = System.Math.Max(a, b);
+        return UpdateSection(tournament, sectionName, s =>
+        {
+            if (s.DoNotPairs.Any(p => p.A == lo && p.B == hi)) return s;
+            var updated = s.DoNotPairs.Append((lo, hi)).ToArray();
+            return s with { DoNotPairPairs = updated };
+        });
+    }
+
+    /// <summary>
+    /// Removes an unordered <c>(A, B)</c> pair from the section's
+    /// do-not-pair blacklist. No-op when the pair isn't present.
+    /// </summary>
+    public static Tournament RemoveDoNotPair(
+        Tournament tournament, string sectionName, int a, int b)
+    {
+        var lo = System.Math.Min(a, b);
+        var hi = System.Math.Max(a, b);
+        return UpdateSection(tournament, sectionName, s =>
+        {
+            var updated = s.DoNotPairs
+                .Where(p => !(p.A == lo && p.B == hi))
+                .ToArray();
+            if (updated.Length == s.DoNotPairs.Count) return s;
+            return s with { DoNotPairPairs = updated };
+        });
+    }
+
+    private static Tournament UpdateSection(
+        Tournament tournament,
+        string sectionName,
+        System.Func<Section, Section> transform)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+        var section = FindSection(tournament, sectionName);
+        var updated = transform(section);
+        return ReferenceEquals(updated, section)
+            ? tournament
+            : ReplaceSection(tournament, sectionName, updated);
+    }
+
+    /// <summary>
+    /// Appends the next round to a round-robin section using
     public static Tournament AppendRoundRobinRound(
         Tournament tournament,
         string sectionName)
