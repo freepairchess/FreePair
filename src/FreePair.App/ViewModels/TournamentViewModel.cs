@@ -351,6 +351,31 @@ public partial class TournamentViewModel : ViewModelBase
 
         try
         {
+            // Round-robin sections don't need BBP — the Berger
+            // schedule is deterministic and computed in-process.
+            // Short-circuit before prompting for the engine path or
+            // round-1 initial colour.
+            if (section.Section.Kind == SectionKind.RoundRobin)
+            {
+                Tournament = TournamentMutations.AppendRoundRobinRound(
+                    Tournament,
+                    section.Name);
+
+                var currentRr = SelectedSection;
+                if (currentRr is not null)
+                {
+                    var newRoundRr = currentRr.AvailableRounds
+                        .FirstOrDefault(r => r.Number == currentRr.Section.Rounds.Count);
+                    if (newRoundRr is not null)
+                    {
+                        currentRr.SelectedRound = newRoundRr;
+                    }
+                }
+
+                await PersistCurrentTournamentAsync().ConfigureAwait(true);
+                return;
+            }
+
             var settings = await _settingsService.LoadAsync().ConfigureAwait(true);
             var enginePath = settings.PairingEngineBinaryPath;
             var sectionSnapshot = section.Section;
