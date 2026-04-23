@@ -131,6 +131,7 @@ public static class SwissSysMapper
     internal static SectionKind MapKind(int type) => type switch
     {
         0 => SectionKind.Swiss,
+        1 => SectionKind.RoundRobin,
         _ => SectionKind.Unknown,
     };
 

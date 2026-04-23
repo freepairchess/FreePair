@@ -41,6 +41,14 @@ public class SwissSysMapperTests
     }
 
     [Fact]
+    public void MapKind_maps_SwissSys_Type_0_to_Swiss_and_1_to_RoundRobin()
+    {
+        Assert.Equal(SectionKind.Swiss,      SwissSysMapper.MapKind(0));
+        Assert.Equal(SectionKind.RoundRobin, SwissSysMapper.MapKind(1));
+        Assert.Equal(SectionKind.Unknown,    SwissSysMapper.MapKind(99));
+    }
+
+    [Fact]
     public async Task Map_open_I_player_scores_match_expected_standings()
     {
         var t = await LoadAsync();
