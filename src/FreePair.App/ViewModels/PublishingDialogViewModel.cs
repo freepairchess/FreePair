@@ -36,6 +36,7 @@ public sealed partial class PublishingDialogViewModel : ViewModelBase
     private readonly IReadOnlyDictionary<string, IPublishingClient> _clients;
     private readonly Func<string?> _getTournamentFilePath;
     private readonly Func<Tournament?> _getTournament;
+    private readonly Action<DateTimeOffset>? _onPublishSucceeded;
 
     // ============== destination picker ==============
 
@@ -106,11 +107,13 @@ public sealed partial class PublishingDialogViewModel : ViewModelBase
         Func<string?> getTournamentFilePath,
         string baseUrlDefault,
         bool autoPublishPairingsDefault,
-        bool autoPublishResultsDefault)
+        bool autoPublishResultsDefault,
+        Action<DateTimeOffset>? onPublishSucceeded = null)
     {
         _clients = clients ?? throw new ArgumentNullException(nameof(clients));
         _getTournament = getTournament ?? throw new ArgumentNullException(nameof(getTournament));
         _getTournamentFilePath = getTournamentFilePath ?? throw new ArgumentNullException(nameof(getTournamentFilePath));
+        _onPublishSucceeded = onPublishSucceeded;
 
         // Build destination options from the client dictionary. Keys
         // are stable identifiers ("nachesshub"); DisplayName comes
@@ -206,6 +209,10 @@ public sealed partial class PublishingDialogViewModel : ViewModelBase
                 StatusMessage = $"✅ Uploaded to {client.DisplayName} (pairings + results). Results JSON saved to: {System.IO.Path.GetFileName(derivedPath)}";
                 var root = (BaseUrl ?? "").TrimEnd('/');
                 PublishedUrl = $"{root}/EventFiles?EventID={System.Uri.EscapeDataString(EventId!)}";
+                // Tell the parent to stamp the tournament's
+                // LastPublishedAt so the toolbar label persists
+                // through save/reopen.
+                _onPublishSucceeded?.Invoke(DateTimeOffset.Now);
             }
             else
             {

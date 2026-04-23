@@ -763,32 +763,7 @@ public partial class TournamentViewModel : ViewModelBase
                 var root = (PublishBaseUrl ?? "").TrimEnd('/');
                 LastPublishedUrl = $"{root}/EventFiles?EventID={System.Uri.EscapeDataString(t.NachEventId!)}";
                 LastPublishedAt  = DateTimeOffset.Now;
-
-                // Persist the publish timestamp on the tournament so the
-                // toolbar label survives an app restart. We save directly
-                // via the writer rather than routing through
-                // PersistCurrentTournamentAsync so this doesn't
-                // re-trigger the auto-publish hook.
-                try
-                {
-                    Tournament = TournamentMutations.SetTournamentInfo(
-                        Tournament!,
-                        lastPublishedAt: new Box<DateTimeOffset?>(LastPublishedAt));
-                    await _saveGate.WaitAsync().ConfigureAwait(true);
-                    try
-                    {
-                        await _writer.SaveAsync(CurrentFilePath!, Tournament!).ConfigureAwait(true);
-                    }
-                    finally
-                    {
-                        _saveGate.Release();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Non-fatal — the in-session label still shows.
-                    ErrorMessage = $"Could not stamp publish timestamp: {ex.Message}";
-                }
+                await StampLastPublishedAtAsync(LastPublishedAt.Value).ConfigureAwait(true);
             }
             else
             {
@@ -801,6 +776,38 @@ public partial class TournamentViewModel : ViewModelBase
         {
             ErrorMessage = $"Publish failed: {ex.Message}";
             SaveStatus = null;
+        }
+    }
+
+    /// <summary>
+    /// Stamps <see cref="Tournament.LastPublishedAt"/> with the given
+    /// timestamp and writes the tournament directly via the writer so
+    /// the <c>"FreePair last published at"</c> Overview key persists
+    /// across restarts. Saves under <c>_saveGate</c> to serialise with
+    /// auto-saves. Failures here are non-fatal — the in-session
+    /// toolbar label still renders; only persistence is lost.
+    /// </summary>
+    private async Task StampLastPublishedAtAsync(DateTimeOffset at)
+    {
+        if (Tournament is null || string.IsNullOrWhiteSpace(CurrentFilePath)) return;
+        try
+        {
+            Tournament = TournamentMutations.SetTournamentInfo(
+                Tournament,
+                lastPublishedAt: new Box<DateTimeOffset?>(at));
+            await _saveGate.WaitAsync().ConfigureAwait(true);
+            try
+            {
+                await _writer.SaveAsync(CurrentFilePath!, Tournament).ConfigureAwait(true);
+            }
+            finally
+            {
+                _saveGate.Release();
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Could not stamp publish timestamp: {ex.Message}";
         }
     }
 
@@ -830,7 +837,20 @@ public partial class TournamentViewModel : ViewModelBase
                                        ? settings.NaChessHubBaseUrl
                                        : PublishBaseUrl,
             autoPublishPairingsDefault: AutoPublishPairings,
-            autoPublishResultsDefault:  AutoPublishResults);
+            autoPublishResultsDefault:  AutoPublishResults,
+            onPublishSucceeded:    async ts =>
+            {
+                // Mirror the auto-publish path's bookkeeping: populate
+                // the toolbar label + persist the timestamp onto the
+                // tournament so it survives app restart.
+                LastPublishedAt  = ts;
+                var root = (PublishBaseUrl ?? "").TrimEnd('/');
+                if (Tournament?.NachEventId is { } eid)
+                {
+                    LastPublishedUrl = $"{root}/EventFiles?EventID={System.Uri.EscapeDataString(eid)}";
+                }
+                await StampLastPublishedAtAsync(ts).ConfigureAwait(true);
+            });
 
         var result = await ShowPublishingDialogAsync(vm).ConfigureAwait(true);
         if (result is null) return;
