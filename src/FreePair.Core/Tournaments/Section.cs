@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using FreePair.Core.Bbp;
 using FreePair.Core.SwissSys;
 
 namespace FreePair.Core.Tournaments;
@@ -20,7 +21,8 @@ public sealed record Section(
     IReadOnlyList<Team> Teams,
     IReadOnlyList<Round> Rounds,
     Prizes Prizes,
-    bool UseAcceleration = false)
+    bool UseAcceleration = false,
+    InitialColor InitialColor = InitialColor.White)
 {
     /// <summary>True when this section tracks teams in addition to individuals.</summary>
     public bool HasTeams => Teams.Count > 0;

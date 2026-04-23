@@ -56,8 +56,21 @@ public static class SwissSysMapper
             Teams: teams,
             Rounds: rounds,
             Prizes: prizes,
-            UseAcceleration: raw.Acceleration != 0);
+            UseAcceleration: raw.Acceleration != 0,
+            InitialColor: MapCoinToss(raw.CoinToss));
     }
+
+    /// <summary>
+    /// Maps SwissSys's per-section <c>Coin toss</c> field to our
+    /// <see cref="Bbp.InitialColor"/> enum. SwissSys convention:
+    /// 0 = board-1 white, 1 = board-1 black; anything else defaults
+    /// to white to match bbpPairings' own default.
+    /// </summary>
+    internal static Bbp.InitialColor MapCoinToss(int coinToss) => coinToss switch
+    {
+        1 => Bbp.InitialColor.Black,
+        _ => Bbp.InitialColor.White,
+    };
 
     internal static Player MapPlayer(RawPlayer raw)
     {

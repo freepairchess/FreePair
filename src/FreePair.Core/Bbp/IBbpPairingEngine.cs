@@ -16,8 +16,10 @@ public interface IBbpPairingEngine
     /// </summary>
     /// <param name="initialColor">
     /// Colour the top seed receives on board 1 of round 1. Ignored once
-    /// the section already has played rounds. Defaults to
-    /// <see cref="InitialColor.White"/>.
+    /// the section already has played rounds. When <c>null</c>, the
+    /// engine falls back to <see cref="Section.InitialColor"/> (which
+    /// is populated from SwissSys's per-section <c>Coin toss</c>
+    /// field on load).
     /// </param>
     /// <exception cref="BbpNotConfiguredException">
     /// The <paramref name="executablePath"/> is null/empty or does not refer
@@ -31,6 +33,6 @@ public interface IBbpPairingEngine
         string? executablePath,
         Tournament tournament,
         Section section,
-        InitialColor initialColor = InitialColor.White,
+        InitialColor? initialColor = null,
         CancellationToken cancellationToken = default);
 }

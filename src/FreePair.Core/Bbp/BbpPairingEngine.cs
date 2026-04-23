@@ -35,11 +35,16 @@ public class BbpPairingEngine : IBbpPairingEngine
         string? executablePath,
         Tournament tournament,
         Section section,
-        InitialColor initialColor = InitialColor.White,
+        InitialColor? initialColor = null,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(tournament);
         ArgumentNullException.ThrowIfNull(section);
+
+        // Fall back to the section's own initial colour (loaded from
+        // SwissSys's per-section "Coin toss" field) when the caller
+        // doesn't supply an explicit override.
+        var effectiveInitialColor = initialColor ?? section.InitialColor;
 
         if (string.IsNullOrWhiteSpace(executablePath) || !File.Exists(executablePath))
         {
@@ -68,7 +73,7 @@ public class BbpPairingEngine : IBbpPairingEngine
         {
             await using (var writer = new StreamWriter(trfPath, append: false, Encoding.ASCII))
             {
-                TrfWriter.Write(tournament, section, writer, initialColor, pairingRound);
+                TrfWriter.Write(tournament, section, writer, effectiveInitialColor, pairingRound);
             }
 
             var psi = new ProcessStartInfo
