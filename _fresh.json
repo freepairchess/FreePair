@@ -1,0 +1,642 @@
+{
+  "NACHEventID": "644c6f5b-9e15-4314-a814-5d3f99280050",
+  "NACHEventPasscode": "8c347dc0-8ab8-4b5d-bab9-7c8e08a9530a",
+  "tournament": "PNWCC Norm RR - Artist Point 2024",
+  "date": "2024/8/29",
+  "city": "Bellevue",
+  "state": "WA",
+  "country": "USA",
+  "td": "",
+  "bye_message": "",
+  "sections": [
+    {
+      "section": "IM_Norm_RR_7_9_IM_Norm",
+      "rounds_paired": 1,
+      "rounds_played": 0,
+      "time_stamp": "4/23/2026 - 12:57",
+      "standings": [
+        4,
+        6,
+        8,
+        2,
+        7,
+        1,
+        3,
+        5,
+        9,
+        10
+      ],
+      "place": [
+        "1-3",
+        "1-3",
+        "1-3",
+        "4-5",
+        "4-5",
+        "6-10",
+        "6-10",
+        "6-10",
+        "6-10",
+        "6-10"
+      ],
+      "tiebreaks": [
+        "Mod. Med",
+        "Solk",
+        "Cumul.",
+        "Op. cumul."
+      ],
+      "rounds": [
+        {
+          "pairings": [
+            {
+              "white": 6,
+              "black": 1,
+              "board": 1,
+              "result": "(1-0)"
+            },
+            {
+              "white": 2,
+              "black": 7,
+              "board": 2,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 8,
+              "black": 3,
+              "board": 3,
+              "result": "(1-0)"
+            },
+            {
+              "white": 4,
+              "black": 9,
+              "board": 4,
+              "result": "(1-0)"
+            },
+            {
+              "white": 10,
+              "black": 5,
+              "board": 5,
+              "result": ""
+            }
+          ]
+        }
+      ],
+      "players": [
+        {
+          "name": "Willy, Stephen John",
+          "id1": "30981468",
+          "rating": 2232,
+          "rating2": 2285,
+          "club": "USA",
+          "state": "WA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [
+            ""
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            9
+          ],
+          "boards": [
+            4
+          ]
+        },
+        {
+          "name": "Pham, Ngoc",
+          "id1": "12401285",
+          "rating": 2203,
+          "rating2": 2233,
+          "club": "CAN",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [
+            ""
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            1
+          ],
+          "boards": [
+            1
+          ]
+        },
+        {
+          "name": "Tang, Benjamin Benchen",
+          "id1": "30964342",
+          "rating": 2135,
+          "rating2": 2280,
+          "club": "USA",
+          "state": "CA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [
+            ""
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            3
+          ],
+          "boards": [
+            3
+          ]
+        },
+        {
+          "name": "Nagy, Gabor",
+          "id1": "737119",
+          "rating": 2443,
+          "rating2": 2537,
+          "club": "HUN",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [
+            ""
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            7
+          ],
+          "boards": [
+            2
+          ]
+        },
+        {
+          "name": "Vijayakumar, Advaith",
+          "id1": "30933196",
+          "rating": 2188,
+          "rating2": 2248,
+          "club": "USA",
+          "state": "WA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [
+            ""
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            2
+          ],
+          "boards": [
+            2
+          ]
+        },
+        {
+          "name": "Plat, Vojtech",
+          "id1": "325740",
+          "rating": 2463,
+          "rating2": 2545,
+          "club": "CZE",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [
+            ""
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            6
+          ],
+          "boards": [
+            1
+          ]
+        },
+        {
+          "name": "Le, Quang Long",
+          "id1": "12401749",
+          "rating": 2380,
+          "rating2": 2494,
+          "club": "CAN",
+          "state": "FL",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [
+            ""
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            8
+          ],
+          "boards": [
+            3
+          ]
+        },
+        {
+          "name": "Lee, Megan",
+          "id1": "2029618",
+          "rating": 2230,
+          "rating2": 2306,
+          "club": "USA",
+          "state": "WA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [
+            ""
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            10
+          ],
+          "boards": [
+            5
+          ]
+        },
+        {
+          "name": "Lu, Yiding",
+          "id1": "30970237",
+          "rating": 2100,
+          "rating2": 2208,
+          "club": "USA",
+          "state": "WA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [
+            ""
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            4
+          ],
+          "boards": [
+            4
+          ]
+        },
+        {
+          "name": "Yang, Alexander",
+          "id1": "30964598",
+          "rating": 2014,
+          "rating2": 2043,
+          "club": "USA",
+          "state": "WA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [
+            ""
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            5
+          ],
+          "boards": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "section": "Arbiter",
+      "rounds_paired": 0,
+      "rounds_played": 0,
+      "time_stamp": "4/23/2026 - 12:57",
+      "standings": [
+        1,
+        2
+      ],
+      "place": [
+        "1-2",
+        "1-2"
+      ],
+      "tiebreaks": [
+        "Mod. Med",
+        "Solk",
+        "Cumul.",
+        "Op. cumul."
+      ],
+      "rounds": [],
+      "players": [
+        {
+          "name": "Jagathisun, Shri Humrudha",
+          "id1": "5037522",
+          "rating": 1863,
+          "rating2": 1560,
+          "club": "IND",
+          "state": "WA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [],
+          "colors": [],
+          "ops": [],
+          "boards": []
+        },
+        {
+          "name": "Venugopalan, Suresh Balaji",
+          "id1": "39915760",
+          "rating": 0,
+          "rating2": 1233,
+          "club": "IND",
+          "state": "WA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [],
+          "colors": [],
+          "ops": [],
+          "boards": []
+        }
+      ]
+    },
+    {
+      "section": "Organizer",
+      "rounds_paired": 0,
+      "rounds_played": 0,
+      "time_stamp": "4/23/2026 - 12:57",
+      "standings": [
+        1
+      ],
+      "place": [
+        "1"
+      ],
+      "tiebreaks": [
+        "Mod. Med",
+        "Solk",
+        "Cumul.",
+        "Op. cumul."
+      ],
+      "rounds": [],
+      "players": [
+        {
+          "name": "Sankaran, Vijay",
+          "id1": "30991137",
+          "rating": 0,
+          "rating2": 425,
+          "club": "USA",
+          "state": "WA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [],
+          "colors": [],
+          "ops": [],
+          "boards": []
+        }
+      ]
+    },
+    {
+      "section": "Waiting_List",
+      "rounds_paired": 0,
+      "rounds_played": 0,
+      "time_stamp": "4/23/2026 - 12:57",
+      "standings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "place": [
+        "1-9",
+        "1-9",
+        "1-9",
+        "1-9",
+        "1-9",
+        "1-9",
+        "1-9",
+        "1-9",
+        "1-9"
+      ],
+      "tiebreaks": [
+        "Mod. Med",
+        "Solk",
+        "Cumul.",
+        "Op. cumul."
+      ],
+      "rounds": [],
+      "players": [
+        {
+          "name": "Tang, Zoey",
+          "id1": "30952530",
+          "rating": 2366,
+          "rating2": 2442,
+          "club": "USA",
+          "state": "OR",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [],
+          "colors": [],
+          "ops": [],
+          "boards": []
+        },
+        {
+          "name": "Wang, Ted",
+          "id1": "30990459",
+          "rating": 2216,
+          "rating2": 2286,
+          "club": "USA",
+          "state": "WA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [],
+          "colors": [],
+          "ops": [],
+          "boards": []
+        },
+        {
+          "name": "Bian, Erin",
+          "id1": "30966043",
+          "rating": 2091,
+          "rating2": 2127,
+          "club": "USA",
+          "state": "WA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [],
+          "colors": [],
+          "ops": [],
+          "boards": []
+        },
+        {
+          "name": "Kona, Vidip Kumar",
+          "id1": "30990440",
+          "rating": 2071,
+          "rating2": 2208,
+          "club": "USA",
+          "state": "WA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [],
+          "colors": [],
+          "ops": [],
+          "boards": []
+        },
+        {
+          "name": "Karthikeyan, Harishkumar",
+          "id1": "30990467",
+          "rating": 2055,
+          "rating2": 2164,
+          "club": "USA",
+          "state": "WA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [],
+          "colors": [],
+          "ops": [],
+          "boards": []
+        },
+        {
+          "name": "Chinni, Rishabh",
+          "id1": "30966060",
+          "rating": 2050,
+          "rating2": 2175,
+          "club": "USA",
+          "state": "WA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [],
+          "colors": [],
+          "ops": [],
+          "boards": []
+        },
+        {
+          "name": "Palathingal, Rafael",
+          "id1": "39927580",
+          "rating": 1960,
+          "rating2": 2074,
+          "club": "USA",
+          "state": "WA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [],
+          "colors": [],
+          "ops": [],
+          "boards": []
+        },
+        {
+          "name": "Ramkumar, Nikhil",
+          "id1": "150111234",
+          "rating": 1871,
+          "rating2": 1925,
+          "club": "USA",
+          "state": "WA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [],
+          "colors": [],
+          "ops": [],
+          "boards": []
+        },
+        {
+          "name": "Nadig, Anuj Malathesha",
+          "id1": "00000000",
+          "rating": 1644,
+          "rating2": 1604,
+          "club": "",
+          "state": "WA",
+          "tiebreaks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "results": [],
+          "colors": [],
+          "ops": [],
+          "boards": []
+        }
+      ]
+    }
+  ]
+}
+

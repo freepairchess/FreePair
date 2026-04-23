@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using FreePair.App.ViewModels;
 using FreePair.Core.Bbp;
@@ -24,6 +25,7 @@ public partial class TournamentView : UserControl
             vm.PromptInitialColorAsync = PromptInitialColorAsync;
             vm.PromptConfirmAsync = PromptConfirmAsync;
             vm.PromptPairingPreviewAsync = PromptPairingPreviewAsync;
+            vm.ShowPublishingDialogAsync = ShowPublishingDialogAsync;
         }
     }
 
@@ -125,5 +127,40 @@ public partial class TournamentView : UserControl
         var dialog = new PairingPreviewDialog();
         dialog.Configure(new PairingPreviewViewModel(tournament, sectionName, round, conflicts));
         return await dialog.ShowDialog<FreePair.Core.Tournaments.Tournament?>(owner);
+    }
+
+    /// <summary>
+    /// Shows the Publish-online dialog modally against the owning
+    /// window. Returns the VM on close so the caller can read the
+    /// edited URL + auto-flags + passcode, or null on a force-close.
+    /// </summary>
+    private async Task<PublishingDialogViewModel?> ShowPublishingDialogAsync(
+        PublishingDialogViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner)
+        {
+            return null;
+        }
+
+        var dialog = new PublishingDialog { DataContext = vm };
+        var result = await dialog.ShowDialog<object?>(owner);
+        return result as PublishingDialogViewModel;
+    }
+
+    /// <summary>
+    /// Opens the hub's EventFiles page for the last successful
+    /// publish in the default browser. URL is bound to the clicked
+    /// button's <c>Tag</c> via <c>TournamentViewModel.LastPublishedUrl</c>.
+    /// </summary>
+    private void OnOpenPublishedUrl(object? sender, RoutedEventArgs e)
+    {
+        if (sender is not Button btn || btn.Tag is not string url || string.IsNullOrWhiteSpace(url))
+            return;
+        try
+        {
+            System.Diagnostics.Process.Start(
+                new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true });
+        }
+        catch { /* best-effort */ }
     }
 }

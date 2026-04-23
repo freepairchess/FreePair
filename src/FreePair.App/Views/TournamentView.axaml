@@ -23,6 +23,10 @@
                 <Button Content="Close"
                         Command="{Binding CloseCommand}"
                         IsVisible="{Binding HasTournament}"/>
+                <Button Content="📡 Publish online..."
+                        Command="{Binding PublishCommand}"
+                        IsVisible="{Binding HasTournament}"
+                        ToolTip.Tip="Upload the current .sjson to a publishing destination (NA Chess Hub, …), with optional auto-publish on every pairing update / result entry."/>
                 <Button Content="Export section to TRF..."
                         Command="{Binding ExportTrfCommand}"
                         IsVisible="{Binding HasSelectedSection}"
@@ -31,11 +35,45 @@
                            Foreground="Gray"
                            VerticalAlignment="Center"
                            TextTrimming="CharacterEllipsis"/>
+
+                <!-- Transient status shown only while a save / publish is
+                     in flight (SaveStatus is set while the op is running
+                     and cleared on completion). -->
                 <TextBlock Text="{Binding SaveStatus}"
                            Foreground="DarkBlue"
                            FontStyle="Italic"
                            VerticalAlignment="Center"
                            IsVisible="{Binding IsSaving}"/>
+            </StackPanel>
+
+            <!-- Persistent "last published" row, sitting below the main
+                 toolbar so a long file path never shoves it off-screen.
+                 Visible only after a successful publish (both URL and
+                 timestamp set atomically; both cleared on every new
+                 attempt). The 'NA Chess Hub' span is a button styled as
+                 an inline hyperlink that opens the hub's EventFiles
+                 page for this tournament. -->
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        Spacing="0"
+                        Margin="0,2,0,0"
+                        IsVisible="{Binding HasLastPublishedUrl}">
+                <TextBlock Text="last published to " Foreground="Gray" FontSize="11" VerticalAlignment="Center"/>
+                <Button Content="NA Chess Hub"
+                        Tag="{Binding LastPublishedUrl}"
+                        Click="OnOpenPublishedUrl"
+                        Foreground="#0E5DAA"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Padding="0"
+                        FontSize="11"
+                        VerticalAlignment="Center"
+                        ToolTip.Tip="{Binding LastPublishedUrl}"/>
+                <TextBlock Text=" at " Foreground="Gray" FontSize="11" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding LastPublishedAtDisplay}"
+                           Foreground="Gray"
+                           FontSize="11"
+                           VerticalAlignment="Center"/>
             </StackPanel>
 
             <TextBlock Text="Loading..."

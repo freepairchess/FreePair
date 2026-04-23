@@ -1,0 +1,164 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:FreePair.App.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="560" d:DesignHeight="460"
+        x:Class="FreePair.App.Views.PublishingDialog"
+        x:DataType="vm:PublishingDialogViewModel"
+        Title="Publish pairing and results online"
+        Width="560"
+        SizeToContent="Height"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+
+    <DockPanel Margin="16">
+
+        <!-- Header -->
+        <StackPanel DockPanel.Dock="Top" Spacing="4" Margin="0,0,0,10">
+            <TextBlock Text="Publish online" FontSize="16" FontWeight="SemiBold"/>
+            <TextBlock Text="Uploads the current SwissSys tournament file to the selected destination. Choose 'Publish now' to push immediately, or enable auto-publish so every pairing update / result entry uploads in the background."
+                       Foreground="Gray" FontSize="11" TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <!-- Action row at the bottom -->
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
+                    HorizontalAlignment="Right" Spacing="8" Margin="0,12,0,0">
+            <Button Content="Close" Click="OnClose" MinWidth="90"/>
+            <Button Content="📡 Publish now"
+                    Command="{Binding PublishNowCommand}"
+                    IsEnabled="{Binding !IsPublishing}"
+                    IsDefault="True"
+                    MinWidth="130"
+                    Background="#0E5DAA"
+                    Foreground="White"/>
+        </StackPanel>
+
+        <!-- Inline status message. Green on success, red on failure.
+             StatusIsError gets projected through the Classes collection
+             (set in code-behind on property change) so we can swap the
+             Border + TextBlock colours via a Classes selector. -->
+        <Border DockPanel.Dock="Bottom"
+                x:Name="StatusBanner"
+                Margin="0,8,0,0"
+                Padding="10,6"
+                CornerRadius="4"
+                BorderThickness="1"
+                Background="#E8F5E9"
+                BorderBrush="#A5D6A7"
+                IsVisible="{Binding HasStatusMessage}">
+            <Border.Styles>
+                <Style Selector="Border.error">
+                    <Setter Property="Background"  Value="#FDECEA"/>
+                    <Setter Property="BorderBrush" Value="#F5A39A"/>
+                </Style>
+                <Style Selector="Border.error TextBlock">
+                    <Setter Property="Foreground" Value="#7A1B10"/>
+                </Style>
+            </Border.Styles>
+            <TextBlock Text="{Binding StatusMessage}" FontSize="12" TextWrapping="Wrap"/>
+        </Border>
+
+        <!-- On success, show a clickable verification link just below
+             the status banner. Uses the same Tag + Process.Start
+             pattern we use for the USCF affiliate lookup button. -->
+        <Button DockPanel.Dock="Bottom"
+                Margin="0,4,0,0"
+                Padding="10,4"
+                HorizontalAlignment="Left"
+                Background="Transparent"
+                BorderThickness="0"
+                Foreground="#0E5DAA"
+                Content="↗ View uploaded files on NA Chess Hub"
+                Tag="{Binding PublishedUrl}"
+                Click="OnOpenPublishedUrl"
+                ToolTip.Tip="{Binding PublishedUrl}"
+                IsVisible="{Binding HasPublishedUrl}"/>
+
+        <!-- Form -->
+        <StackPanel Spacing="12">
+
+            <Grid ColumnDefinitions="140,*" RowDefinitions="Auto">
+                <Grid.Styles>
+                    <Style Selector="TextBlock.label">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="0,0,12,0"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                    </Style>
+                </Grid.Styles>
+                <TextBlock Grid.Column="0" Classes="label" Text="Destination"/>
+                <ComboBox  Grid.Column="1"
+                           ItemsSource="{Binding Destinations}"
+                           SelectedItem="{Binding SelectedDestination}"
+                           HorizontalAlignment="Stretch">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="vm:PublishingDestinationOption">
+                            <TextBlock Text="{Binding DisplayName}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
+
+            <Border Background="#F6F6F6" BorderBrush="LightGray" BorderThickness="1"
+                    CornerRadius="4" Padding="14">
+                <Grid ColumnDefinitions="140,*" RowDefinitions="Auto,Auto,Auto">
+                    <Grid.Styles>
+                        <Style Selector="TextBlock.label">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="0,6,12,6"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                        </Style>
+                        <Style Selector="TextBox"><Setter Property="Margin" Value="0,4"/></Style>
+                    </Grid.Styles>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Classes="label" Text="Hub URL"/>
+                    <TextBox   Grid.Row="0" Grid.Column="1" Text="{Binding BaseUrl}"
+                               Watermark="e.g. https://nachesshub.com"/>
+
+                    <!-- Event ID + passcode come from the .sjson Overview block
+                         and are edited on the Event tab. Show them read-only
+                         here for confirmation. -->
+                    <TextBlock Grid.Row="1" Grid.Column="0" Classes="label" Text="Event ID"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1"
+                               Text="{Binding EventId}"
+                               VerticalAlignment="Center"
+                               Foreground="Gray"
+                               FontFamily="Consolas,monospace"
+                               FontSize="11"
+                               IsVisible="{Binding HasEventId}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1"
+                               Text="(not set — set it on the Event tab)"
+                               VerticalAlignment="Center"
+                               Foreground="#B00020"
+                               FontSize="11"
+                               FontStyle="Italic"
+                               IsVisible="{Binding !HasEventId}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Classes="label" Text="Passcode"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1"
+                               Text="{Binding PasscodeMasked}"
+                               VerticalAlignment="Center"
+                               Foreground="Gray"
+                               FontFamily="Consolas,monospace"
+                               FontSize="11"/>
+                </Grid>
+            </Border>
+
+            <!-- Auto-publish flags (session-only per tournament; defaults seeded from Settings) -->
+            <Border Background="#F6F6F6" BorderBrush="LightGray" BorderThickness="1"
+                    CornerRadius="4" Padding="14">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Auto-publish" FontWeight="SemiBold"/>
+                    <CheckBox Content="Automatically publish pairings when a new round is paired"
+                              IsChecked="{Binding AutoPublishPairings, Mode=TwoWay}"/>
+                    <CheckBox Content="Automatically publish results when an individual game result is entered"
+                              IsChecked="{Binding AutoPublishResults, Mode=TwoWay}"/>
+                    <TextBlock Text="These toggles apply to the current tournament only. Their starting values come from the Settings tab."
+                               Foreground="Gray" FontSize="11" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </DockPanel>
+</Window>

@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FreePair.Core.Bbp;
 using FreePair.Core.Formatting;
+using FreePair.Core.Publishing;
 using FreePair.Core.Settings;
 using FreePair.Core.Tournaments;
 
@@ -25,6 +28,20 @@ public partial class TournamentViewModel : ViewModelBase
     private readonly IBbpPairingEngine _pairingEngine;
     private readonly ITournamentWriter _writer;
     private readonly System.Threading.SemaphoreSlim _saveGate = new(1, 1);
+
+    /// <summary>
+    /// Publishing client used for online uploads (NA Chess Hub etc.).
+    /// Injected via the secondary ctor so tests can stub it; the
+    /// parameterless ctor wires up a default
+    /// <see cref="NaChessHubPublishingClient"/>.
+    /// </summary>
+    private readonly IPublishingClient _publishingClient;
+
+    /// <summary>
+    /// Cancels any in-flight auto-publish when a newer save lands
+    /// (last-write-wins coalescing).
+    /// </summary>
+    private CancellationTokenSource? _autoPublishCts;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasTournament))]
@@ -72,7 +89,8 @@ public partial class TournamentViewModel : ViewModelBase
     private string? _errorMessage;
 
     public TournamentViewModel()
-        : this(new TournamentLoader(), new SettingsService(), new ScoreFormatter(), new BbpPairingEngine(), new SwissSysTournamentWriter())
+        : this(new TournamentLoader(), new SettingsService(), new ScoreFormatter(), new BbpPairingEngine(), new SwissSysTournamentWriter(),
+               new NaChessHubPublishingClient(new HttpClient()))
     {
     }
 
@@ -81,13 +99,15 @@ public partial class TournamentViewModel : ViewModelBase
         ISettingsService settingsService,
         IScoreFormatter formatter,
         IBbpPairingEngine pairingEngine,
-        ITournamentWriter writer)
+        ITournamentWriter writer,
+        IPublishingClient? publishingClient = null)
     {
         _loader = loader ?? throw new ArgumentNullException(nameof(loader));
         _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
         _formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
         _pairingEngine = pairingEngine ?? throw new ArgumentNullException(nameof(pairingEngine));
         _writer = writer ?? throw new ArgumentNullException(nameof(writer));
+        _publishingClient = publishingClient ?? new NaChessHubPublishingClient(new HttpClient());
     }
 
     /// <summary>
@@ -103,6 +123,70 @@ public partial class TournamentViewModel : ViewModelBase
     /// user cancelled.
     /// </summary>
     public Func<string, Task<string?>>? PickExportTrfPathAsync { get; set; }
+
+    /// <summary>
+    /// View-supplied callback that opens the Publish-online dialog.
+    /// The delegate receives a preconfigured
+    /// <see cref="PublishingDialogViewModel"/>; the view shows the
+    /// dialog as modal and returns the same VM on close so the
+    /// caller can read the TD's chosen auto-flags.
+    /// </summary>
+    public Func<PublishingDialogViewModel, Task<PublishingDialogViewModel?>>? ShowPublishingDialogAsync { get; set; }
+
+    // ============ Online publishing (session-only, per-tournament) ============
+
+    /// <summary>Sticky URL used by the Publish dialog. Seeded from <see cref="AppSettings.NaChessHubBaseUrl"/>.</summary>
+    [ObservableProperty] private string _publishBaseUrl = "https://nachesshub.com";
+
+    /// <summary>When true, auto-publish the current <c>.sjson</c> after a pair-next-round save.</summary>
+    [ObservableProperty] private bool _autoPublishPairings;
+
+    /// <summary>When true, auto-publish the current <c>.sjson</c> after a result is entered.</summary>
+    [ObservableProperty] private bool _autoPublishResults;
+
+    /// <summary>
+    /// Browser URL for the most recent successful publish (points at
+    /// <c>{hubBaseUrl}/EventFiles?EventID={nachEventId}</c>). Reset to
+    /// <see langword="null"/> on every publish attempt; set on success
+    /// so the toolbar's "Published to …" message can be rendered as a
+    /// clickable link. Consumed by <c>TournamentView</c>'s toolbar.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasLastPublishedUrl))]
+    private string? _lastPublishedUrl;
+
+    public bool HasLastPublishedUrl => !string.IsNullOrEmpty(LastPublishedUrl);
+
+    /// <summary>
+    /// Wall-clock timestamp of the most recent successful publish.
+    /// Paired with <see cref="LastPublishedUrl"/> — both are set on
+    /// success and cleared to <see langword="null"/> at the start of
+    /// every new publish attempt, so a failed retry doesn't display
+    /// a stale "last published at…" label in the toolbar.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(LastPublishedAtDisplay))]
+    private DateTimeOffset? _lastPublishedAt;
+
+    /// <summary>
+    /// Short local-time rendering of <see cref="LastPublishedAt"/> for
+    /// the toolbar label (e.g. <c>"15:42:03"</c>). Empty when the
+    /// timestamp is null so the binding renders nothing.
+    /// </summary>
+    public string LastPublishedAtDisplay =>
+        LastPublishedAt is { } ts ? ts.ToLocalTime().ToString("HH:mm:ss") : "";
+
+    /// <summary>
+    /// Flag set by <see cref="OnSectionResultChanged"/> /
+    /// <see cref="OnSectionPairNextRoundAsync"/> immediately before the
+    /// triggered auto-save so the subsequent
+    /// <see cref="PersistCurrentTournamentAsync"/> call knows whether to
+    /// consult <see cref="AutoPublishPairings"/> /
+    /// <see cref="AutoPublishResults"/>. Cleared after each publish
+    /// attempt.
+    /// </summary>
+    private bool _autoPublishPairingsPending;
+    private bool _autoPublishResultsPending;
 
     /// <summary>
     /// Callback used when pairing round 1 to let the view show a dialog
@@ -379,6 +463,9 @@ public partial class TournamentViewModel : ViewModelBase
             return;
         }
 
+        // Flag for the imminent save so PersistCurrentTournamentAsync
+        // knows to run an auto-publish (when the results flag is on).
+        _autoPublishResultsPending = true;
         await PersistCurrentTournamentAsync().ConfigureAwait(true);
     }
 
@@ -465,6 +552,7 @@ public partial class TournamentViewModel : ViewModelBase
                     }
                 }
 
+                _autoPublishPairingsPending = true;
                 await PersistCurrentTournamentAsync().ConfigureAwait(true);
                 return;
             }
@@ -535,6 +623,7 @@ public partial class TournamentViewModel : ViewModelBase
                 }
             }
 
+            _autoPublishPairingsPending = true;
             await PersistCurrentTournamentAsync().ConfigureAwait(true);
         }
         catch (BbpNotConfiguredException ex)
@@ -562,6 +651,8 @@ public partial class TournamentViewModel : ViewModelBase
     {
         if (Tournament is null || string.IsNullOrWhiteSpace(CurrentFilePath))
         {
+            _autoPublishPairingsPending = false;
+            _autoPublishResultsPending  = false;
             return;
         }
 
@@ -576,10 +667,211 @@ public partial class TournamentViewModel : ViewModelBase
         {
             ErrorMessage = $"Failed to auto-save tournament: {ex.Message}";
             SaveStatus = null;
+            _autoPublishPairingsPending = false;
+            _autoPublishResultsPending  = false;
+            return;
         }
         finally
         {
             _saveGate.Release();
+        }
+
+        // After a successful save, consult the session auto-publish
+        // flags. We fire-and-forget so the result-entry path stays
+        // snappy; any newer save cancels the in-flight upload via
+        // _autoPublishCts (last-write-wins).
+        var shouldPublish =
+            (_autoPublishPairingsPending && AutoPublishPairings) ||
+            (_autoPublishResultsPending  && AutoPublishResults);
+        _autoPublishPairingsPending = false;
+        _autoPublishResultsPending  = false;
+
+        if (shouldPublish)
+        {
+            _ = AutoPublishAsync();
+        }
+    }
+
+    /// <summary>
+    /// Fire-and-forget auto-publish triggered after an auto-save.
+    /// Uses the session <see cref="PublishBaseUrl"/> +
+    /// <see cref="Tournament"/>'s event id / passcode. Failures land
+    /// in <see cref="ErrorMessage"/>; successes flash a brief
+    /// <see cref="SaveStatus"/> note.
+    /// </summary>
+    private async Task AutoPublishAsync()
+    {
+        var t = Tournament;
+        var path = CurrentFilePath;
+        if (t is null || string.IsNullOrWhiteSpace(path)) return;
+        if (string.IsNullOrWhiteSpace(t.NachEventId) || string.IsNullOrWhiteSpace(t.NachPasscode))
+        {
+            ErrorMessage = "Auto-publish skipped — no NACH event ID or passcode set.";
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(PublishBaseUrl)) return;
+
+        // Cancel any in-flight upload from an earlier save.
+        _autoPublishCts?.Cancel();
+        _autoPublishCts?.Dispose();
+        _autoPublishCts = new CancellationTokenSource();
+        var ct = _autoPublishCts.Token;
+
+        // Reset the last-published hyperlink + timestamp — re-populated on success.
+        LastPublishedUrl = null;
+        LastPublishedAt  = null;
+
+        try
+        {
+            SaveStatus = "Publishing…";
+
+            // Upload the raw .sjson first.
+            var result = await _publishingClient.PublishAsync(
+                PublishBaseUrl, t.NachEventId!, t.NachPasscode!,
+                FileType.SwissSys11SJson,
+                path!, ct).ConfigureAwait(true);
+
+            if (ct.IsCancellationRequested) return;
+
+            if (!result.Success)
+            {
+                ErrorMessage = $"Publish failed: {result.ErrorMessage ?? "Unknown error."}";
+                SaveStatus = null;
+                return;
+            }
+
+            // Then upload the derived results/pairings JSON that
+            // NAChessHub uses to render public pages. Written next to
+            // the .sjson (NAChessHub naming convention) so the TD can
+            // inspect it after the fact — kept on disk, not deleted.
+            var derivedPath = PublishingDialogViewModel.DeriveResultJsonPath(path!);
+            await System.IO.File.WriteAllTextAsync(
+                derivedPath,
+                SwissSysResultJsonBuilder.Build(t),
+                ct).ConfigureAwait(true);
+
+            var result2 = await _publishingClient.PublishAsync(
+                PublishBaseUrl, t.NachEventId!, t.NachPasscode!,
+                FileType.SwissSysJSON,
+                derivedPath, ct).ConfigureAwait(true);
+
+            if (ct.IsCancellationRequested) return;
+
+            if (result2.Success)
+            {
+                SaveStatus = $"Published to {_publishingClient.DisplayName}.";
+                var root = (PublishBaseUrl ?? "").TrimEnd('/');
+                LastPublishedUrl = $"{root}/EventFiles?EventID={System.Uri.EscapeDataString(t.NachEventId!)}";
+                LastPublishedAt  = DateTimeOffset.Now;
+                await StampLastPublishedAtAsync(LastPublishedAt.Value).ConfigureAwait(true);
+            }
+            else
+            {
+                ErrorMessage = $"Publish (results JSON) failed: {result2.ErrorMessage ?? "Unknown error."} (see {derivedPath})";
+                SaveStatus = null;
+            }
+        }
+        catch (OperationCanceledException) { /* superseded by a newer save */ }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Publish failed: {ex.Message}";
+            SaveStatus = null;
+        }
+    }
+
+    /// <summary>
+    /// Stamps <see cref="Tournament.LastPublishedAt"/> with the given
+    /// timestamp and writes the tournament directly via the writer so
+    /// the <c>"FreePair last published at"</c> Overview key persists
+    /// across restarts. Saves under <c>_saveGate</c> to serialise with
+    /// auto-saves. Failures here are non-fatal — the in-session
+    /// toolbar label still renders; only persistence is lost.
+    /// </summary>
+    private async Task StampLastPublishedAtAsync(DateTimeOffset at)
+    {
+        if (Tournament is null || string.IsNullOrWhiteSpace(CurrentFilePath)) return;
+        try
+        {
+            Tournament = TournamentMutations.SetTournamentInfo(
+                Tournament,
+                lastPublishedAt: new Box<DateTimeOffset?>(at));
+            await _saveGate.WaitAsync().ConfigureAwait(true);
+            try
+            {
+                await _writer.SaveAsync(CurrentFilePath!, Tournament).ConfigureAwait(true);
+            }
+            finally
+            {
+                _saveGate.Release();
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Could not stamp publish timestamp: {ex.Message}";
+        }
+    }
+
+    /// <summary>
+    /// Opens the Publish dialog, then copies the TD's choices (URL +
+    /// auto-flags + edited event id/passcode) back onto the VM /
+    /// tournament. Noop when the view hasn't wired
+    /// <see cref="ShowPublishingDialogAsync"/> or no tournament is
+    /// loaded.
+    /// </summary>
+    [RelayCommand]
+    private async Task PublishAsync()
+    {
+        if (Tournament is null || ShowPublishingDialogAsync is null) return;
+
+        var settings = await _settingsService.LoadAsync().ConfigureAwait(true);
+        var clients = new Dictionary<string, IPublishingClient>
+        {
+            ["nachesshub"] = _publishingClient,
+        };
+
+        var vm = new PublishingDialogViewModel(
+            clients,
+            getTournament:         () => Tournament,
+            getTournamentFilePath: () => CurrentFilePath,
+            baseUrlDefault:        string.IsNullOrWhiteSpace(PublishBaseUrl)
+                                       ? settings.NaChessHubBaseUrl
+                                       : PublishBaseUrl,
+            autoPublishPairingsDefault: AutoPublishPairings,
+            autoPublishResultsDefault:  AutoPublishResults,
+            onPublishSucceeded:    async ts =>
+            {
+                // Mirror the auto-publish path's bookkeeping: populate
+                // the toolbar label + persist the timestamp onto the
+                // tournament so it survives app restart.
+                LastPublishedAt  = ts;
+                var root = (PublishBaseUrl ?? "").TrimEnd('/');
+                if (Tournament?.NachEventId is { } eid)
+                {
+                    LastPublishedUrl = $"{root}/EventFiles?EventID={System.Uri.EscapeDataString(eid)}";
+                }
+                await StampLastPublishedAtAsync(ts).ConfigureAwait(true);
+            });
+
+        var result = await ShowPublishingDialogAsync(vm).ConfigureAwait(true);
+        if (result is null) return;
+
+        // Pull edits back onto the session state.
+        PublishBaseUrl      = result.BaseUrl ?? PublishBaseUrl;
+        AutoPublishPairings = result.AutoPublishPairings;
+        AutoPublishResults  = result.AutoPublishResults;
+
+        // Event ID / passcode are edited on the Event tab, not here —
+        // only the two auto-flags round-trip through the Overview. Fold
+        // them onto the tournament and trigger an auto-save so the
+        // FreePair keys persist right away.
+        if (Tournament is not null)
+        {
+            Tournament = TournamentMutations.SetTournamentInfo(
+                Tournament,
+                autoPublishPairings: new Box<bool?>(AutoPublishPairings),
+                autoPublishResults:  new Box<bool?>(AutoPublishResults));
+
+            await PersistCurrentTournamentAsync().ConfigureAwait(true);
         }
     }
 
@@ -593,6 +885,35 @@ public partial class TournamentViewModel : ViewModelBase
             var tournament = await _loader.LoadAsync(filePath).ConfigureAwait(true);
             Tournament = tournament;
             CurrentFilePath = filePath;
+
+            // Seed session publishing state from app-wide defaults.
+            // Per-tournament auto-flags override when the .sjson
+            // carried them (FreePair auto publish pairings/results
+            // keys in the Overview block); otherwise we inherit the
+            // app-wide defaults from Settings.
+            var pubSettings = await _settingsService.LoadAsync().ConfigureAwait(true);
+            PublishBaseUrl      = pubSettings.NaChessHubBaseUrl;
+            AutoPublishPairings = tournament.AutoPublishPairings ?? pubSettings.AutoPublishPairingsDefault;
+            AutoPublishResults  = tournament.AutoPublishResults  ?? pubSettings.AutoPublishResultsDefault;
+
+            // Seed the "last published" toolbar label from the persisted
+            // timestamp, if any. The URL is rebuilt from the current
+            // PublishBaseUrl + the tournament's NACH event id so it
+            // follows any URL change the TD has made since the last
+            // publish. Only populated when both pieces of info exist.
+            if (tournament.LastPublishedAt is { } ts
+                && !string.IsNullOrWhiteSpace(tournament.NachEventId))
+            {
+                LastPublishedAt  = ts;
+                var root = PublishBaseUrl.TrimEnd('/');
+                LastPublishedUrl = $"{root}/EventFiles?EventID={System.Uri.EscapeDataString(tournament.NachEventId!)}";
+            }
+            else
+            {
+                LastPublishedAt  = null;
+                LastPublishedUrl = null;
+            }
+
             await PersistLastPathAsync(filePath).ConfigureAwait(true);
         }
         catch (FileNotFoundException)

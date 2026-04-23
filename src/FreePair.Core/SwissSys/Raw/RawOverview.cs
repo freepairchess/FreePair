@@ -104,4 +104,34 @@ public sealed class RawOverview
     [JsonPropertyName("Rating type")]
     [JsonConverter(typeof(JsonStringEnumConverter<RatingType>))]
     public RatingType? RatingType { get; set; }
+
+    // ==== FreePair-specific extensions ====================================
+    // Harmless to SwissSys (it ignores unknown keys); persisted at the
+    // top of the Overview block so the writer can pass them through
+    // without inventing a new nested structure.
+
+    /// <summary>
+    /// When <c>true</c>, FreePair will auto-upload this tournament's
+    /// <c>.sjson</c> after every pairing update. Round-trips through
+    /// the Overview block so it's sticky per-tournament.
+    /// </summary>
+    [JsonPropertyName("FreePair auto publish pairings")]
+    public bool? FreePairAutoPublishPairings { get; set; }
+
+    /// <summary>
+    /// When <c>true</c>, FreePair will auto-upload this tournament's
+    /// <c>.sjson</c> after every individual result entry.
+    /// </summary>
+    [JsonPropertyName("FreePair auto publish results")]
+    public bool? FreePairAutoPublishResults { get; set; }
+
+    /// <summary>
+    /// ISO-8601 UTC timestamp of the most recent successful publish to
+    /// NA Chess Hub (or any configured publishing destination). Stamped
+    /// after both the <c>.sjson</c> and the derived results JSON upload
+    /// succeed. Present only when the tournament has been published at
+    /// least once.
+    /// </summary>
+    [JsonPropertyName("FreePair last published at")]
+    public string? FreePairLastPublishedAt { get; set; }
 }
