@@ -53,5 +53,22 @@ public partial class PublishingDialog : Window
 
     private void OnClose(object? sender, RoutedEventArgs e)
         => Close(DataContext);
+
+    /// <summary>
+    /// Opens the post-upload verification URL (bound to the button's
+    /// Tag via <c>PublishingDialogViewModel.PublishedUrl</c>) in the
+    /// user's default browser via the OS shell.
+    /// </summary>
+    private void OnOpenPublishedUrl(object? sender, RoutedEventArgs e)
+    {
+        if (sender is not Button btn || btn.Tag is not string url || string.IsNullOrWhiteSpace(url))
+            return;
+        try
+        {
+            System.Diagnostics.Process.Start(
+                new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true });
+        }
+        catch { /* best-effort */ }
+    }
 }
 

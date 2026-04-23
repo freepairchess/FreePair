@@ -705,30 +705,30 @@ public partial class TournamentViewModel : ViewModelBase
             }
 
             // Then upload the derived results/pairings JSON that
-            // NAChessHub uses to render public pages.
-            var derivedPath = await WriteDerivedResultJsonAsync(t, ct).ConfigureAwait(true);
-            try
+            // NAChessHub uses to render public pages. Written next to
+            // the .sjson (NAChessHub naming convention) so the TD can
+            // inspect it after the fact — kept on disk, not deleted.
+            var derivedPath = PublishingDialogViewModel.DeriveResultJsonPath(path!);
+            await System.IO.File.WriteAllTextAsync(
+                derivedPath,
+                SwissSysResultJsonBuilder.Build(t),
+                ct).ConfigureAwait(true);
+
+            var result2 = await _publishingClient.PublishAsync(
+                PublishBaseUrl, t.NachEventId!, t.NachPasscode!,
+                FileType.SwissSysJSON,
+                derivedPath, ct).ConfigureAwait(true);
+
+            if (ct.IsCancellationRequested) return;
+
+            if (result2.Success)
             {
-                var result2 = await _publishingClient.PublishAsync(
-                    PublishBaseUrl, t.NachEventId!, t.NachPasscode!,
-                    FileType.SwissSysJSON,
-                    derivedPath, ct).ConfigureAwait(true);
-
-                if (ct.IsCancellationRequested) return;
-
-                if (result2.Success)
-                {
-                    SaveStatus = $"Published to {_publishingClient.DisplayName}.";
-                }
-                else
-                {
-                    ErrorMessage = $"Publish (results JSON) failed: {result2.ErrorMessage ?? "Unknown error."}";
-                    SaveStatus = null;
-                }
+                SaveStatus = $"Published to {_publishingClient.DisplayName}.";
             }
-            finally
+            else
             {
-                try { System.IO.File.Delete(derivedPath); } catch { /* best-effort */ }
+                ErrorMessage = $"Publish (results JSON) failed: {result2.ErrorMessage ?? "Unknown error."} (see {derivedPath})";
+                SaveStatus = null;
             }
         }
         catch (OperationCanceledException) { /* superseded by a newer save */ }
@@ -737,20 +737,6 @@ public partial class TournamentViewModel : ViewModelBase
             ErrorMessage = $"Publish failed: {ex.Message}";
             SaveStatus = null;
         }
-    }
-
-    /// <summary>
-    /// Writes <see cref="SwissSysResultJsonBuilder"/>'s output to a
-    /// temp file and returns its path. Caller owns cleanup.
-    /// </summary>
-    private static async Task<string> WriteDerivedResultJsonAsync(Tournament t, CancellationToken ct)
-    {
-        var json = SwissSysResultJsonBuilder.Build(t);
-        var tmp  = System.IO.Path.Combine(
-            System.IO.Path.GetTempPath(),
-            $"fp-results-{System.Guid.NewGuid():N}.json");
-        await System.IO.File.WriteAllTextAsync(tmp, json, ct).ConfigureAwait(true);
-        return tmp;
     }
 
     /// <summary>

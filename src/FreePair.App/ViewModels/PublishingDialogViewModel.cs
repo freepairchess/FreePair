@@ -84,6 +84,18 @@ public sealed partial class PublishingDialogViewModel : ViewModelBase
 
     [ObservableProperty] private bool _isPublishing;
 
+    /// <summary>
+    /// On a successful publish, the URL the TD can click to see the
+    /// uploaded files on NA Chess Hub
+    /// (<c>{baseUrl}/EventFiles?EventID={eventId}</c>). Null at rest
+    /// and on failures; the dialog shows it as a hyperlink under the
+    /// status banner.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasPublishedUrl))]
+    private string? _publishedUrl;
+
+    public bool HasPublishedUrl    => !string.IsNullOrEmpty(PublishedUrl);
     public bool HasStatusMessage => !string.IsNullOrEmpty(StatusMessage);
     public bool StatusIsError    => _lastResultWasError;
     private bool _lastResultWasError;
@@ -150,6 +162,7 @@ public sealed partial class PublishingDialogViewModel : ViewModelBase
             IsPublishing = true;
             StatusMessage = "Publishing…";
             _lastResultWasError = false;
+            PublishedUrl = null;
 
             // 1) Upload the raw .sjson.
             var result = await client.PublishAsync(
@@ -166,7 +179,9 @@ public sealed partial class PublishingDialogViewModel : ViewModelBase
 
             // 2) Generate + upload the derived NAChessHub results JSON
             // that the hub uses to render public pages (pairings,
-            // standings, wall chart, etc.).
+            // standings, wall chart, etc.). The file is written next
+            // to the .sjson (naming convention: <base>_SwissSysJSON.json)
+            // and kept on disk so the TD can inspect it after the fact.
             var t = _getTournament();
             if (t is null)
             {
@@ -174,34 +189,27 @@ public sealed partial class PublishingDialogViewModel : ViewModelBase
                 return;
             }
 
-            var tmp = System.IO.Path.Combine(
-                System.IO.Path.GetTempPath(),
-                $"fp-results-{System.Guid.NewGuid():N}.json");
-            try
+            var derivedPath = DeriveResultJsonPath(path!);
+            await System.IO.File.WriteAllTextAsync(
+                derivedPath,
+                FreePair.Core.Tournaments.SwissSysResultJsonBuilder.Build(t),
+                ct).ConfigureAwait(true);
+
+            var result2 = await client.PublishAsync(
+                BaseUrl!, EventId!, Passcode!,
+                FreePair.Core.Publishing.FileType.SwissSysJSON,
+                derivedPath, ct).ConfigureAwait(true);
+
+            if (result2.Success)
             {
-                await System.IO.File.WriteAllTextAsync(
-                    tmp,
-                    FreePair.Core.Tournaments.SwissSysResultJsonBuilder.Build(t),
-                    ct).ConfigureAwait(true);
-
-                var result2 = await client.PublishAsync(
-                    BaseUrl!, EventId!, Passcode!,
-                    FreePair.Core.Publishing.FileType.SwissSysJSON,
-                    tmp, ct).ConfigureAwait(true);
-
-                if (result2.Success)
-                {
-                    _lastResultWasError = false;
-                    StatusMessage = $"✅ Uploaded to {client.DisplayName} (pairings + results).";
-                }
-                else
-                {
-                    Fail($"❌ Results JSON upload failed: {result2.ErrorMessage ?? "Unknown error."}");
-                }
+                _lastResultWasError = false;
+                StatusMessage = $"✅ Uploaded to {client.DisplayName} (pairings + results). Results JSON saved to: {System.IO.Path.GetFileName(derivedPath)}";
+                var root = (BaseUrl ?? "").TrimEnd('/');
+                PublishedUrl = $"{root}/EventFiles?EventID={System.Uri.EscapeDataString(EventId!)}";
             }
-            finally
+            else
             {
-                try { System.IO.File.Delete(tmp); } catch { /* best-effort */ }
+                Fail($"❌ Results JSON upload failed: {result2.ErrorMessage ?? "Unknown error."} (see {derivedPath})");
             }
         }
         catch (OperationCanceledException)
@@ -220,5 +228,26 @@ public sealed partial class PublishingDialogViewModel : ViewModelBase
     {
         _lastResultWasError = true;
         StatusMessage = msg;
+    }
+
+    /// <summary>
+    /// Returns the sibling path for the derived results JSON. For
+    /// <c>C:\foo\Event.sjson</c> this yields
+    /// <c>C:\foo\Event_SwissSysJSON.json</c>, matching NAChessHub's
+    /// own naming convention so the two files sort next to each other
+    /// in a file browser.
+    /// </summary>
+    internal static string DeriveResultJsonPath(string sjsonPath)
+    {
+        var dir  = System.IO.Path.GetDirectoryName(sjsonPath) ?? "";
+        var stem = System.IO.Path.GetFileNameWithoutExtension(sjsonPath);
+        // Strip a trailing "_SwissSys11" if present so the names pair
+        // up cleanly: Event_SwissSys11.sjson → Event_SwissSysJSON.json.
+        const string legacySuffix = "_SwissSys11";
+        if (stem.EndsWith(legacySuffix, System.StringComparison.OrdinalIgnoreCase))
+        {
+            stem = stem[..^legacySuffix.Length];
+        }
+        return System.IO.Path.Combine(dir, $"{stem}_SwissSysJSON.json");
     }
 }

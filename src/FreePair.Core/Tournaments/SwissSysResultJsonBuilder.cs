@@ -101,6 +101,18 @@ public static class SwissSysResultJsonBuilder
 
         // ---- standings (pair numbers) + place labels ----
         var standings = StandingsBuilder.Build(section);
+
+        // NAChessHub's wire format uses 1-based INDEXES INTO the
+        // standings array (not raw pair numbers) for the
+        // rounds[].pairings[].white / .black fields. Pre-compute the
+        // lookup once per section so emission is O(1) per pairing.
+        // Pair number 0 means "no opponent" (solo bye) and must stay 0.
+        var pairToStandingsIndex = new Dictionary<int, int>(standings.Count);
+        for (var i = 0; i < standings.Count; i++)
+        {
+            pairToStandingsIndex[standings[i].PairNumber] = i + 1;
+        }
+
         w.WritePropertyName("standings");
         w.WriteStartArray();
         foreach (var row in standings) w.WriteNumberValue(row.PairNumber);
@@ -133,7 +145,7 @@ public static class SwissSysResultJsonBuilder
         w.WriteStartArray();
         foreach (var round in section.Rounds)
         {
-            WriteRound(w, round, section);
+            WriteRound(w, round, section, pairToStandingsIndex);
         }
         w.WriteEndArray();
 
@@ -157,7 +169,9 @@ public static class SwissSysResultJsonBuilder
     // rounds / pairings
     // ========================================================================
 
-    private static void WriteRound(Utf8JsonWriter w, Round round, Section section)
+    private static void WriteRound(
+        Utf8JsonWriter w, Round round, Section section,
+        IReadOnlyDictionary<int, int> pairToStandingsIndex)
     {
         w.WriteStartObject();
         w.WritePropertyName("pairings");
@@ -167,20 +181,21 @@ public static class SwissSysResultJsonBuilder
         foreach (var p in round.Pairings.OrderBy(p => p.Board))
         {
             w.WriteStartObject();
-            w.WriteNumber("white",  p.WhitePair);
-            w.WriteNumber("black",  p.BlackPair);
+            // Emit white / black as 1-based standings indexes
+            // (NAChessHub's wire convention), not raw pair numbers.
+            w.WriteNumber("white",  StandingsIndex(pairToStandingsIndex, p.WhitePair));
+            w.WriteNumber("black",  StandingsIndex(pairToStandingsIndex, p.BlackPair));
             w.WriteNumber("board",  p.Board);
             WriteString(w, "result", FormatTwoPlayerResult(p.Result));
             w.WriteEndObject();
         }
 
         // Solo entries (byes / unpaired withdrawals) after the head-to-heads.
-        // In the reference JSONs these come with board=0 and black=0, the
-        // single-player result token in parens e.g. "(0.5)".
+        // Convention: white = standings index, black = 0, board = 0.
         foreach (var bye in round.Byes)
         {
             w.WriteStartObject();
-            w.WriteNumber("white", bye.PlayerPair);
+            w.WriteNumber("white", StandingsIndex(pairToStandingsIndex, bye.PlayerPair));
             w.WriteNumber("black", 0);
             w.WriteNumber("board", 0);
             WriteString(w, "result", FormatSoloResult(bye.Kind));
@@ -189,6 +204,18 @@ public static class SwissSysResultJsonBuilder
 
         w.WriteEndArray();
         w.WriteEndObject();
+    }
+
+    /// <summary>
+    /// Converts a domain pair number to NAChessHub's 1-based standings
+    /// index. Pair 0 (no opponent / solo bye) stays 0. Pair numbers not
+    /// present in the standings (shouldn't happen; belt-and-braces) also
+    /// map to 0.
+    /// </summary>
+    private static int StandingsIndex(IReadOnlyDictionary<int, int> lookup, int pairNumber)
+    {
+        if (pairNumber <= 0) return 0;
+        return lookup.TryGetValue(pairNumber, out var idx) ? idx : 0;
     }
 
     private static string FormatTwoPlayerResult(PairingResult r) => r switch
@@ -238,36 +265,47 @@ public static class SwissSysResultJsonBuilder
         w.WriteEndArray();
 
         // results / colors / ops / boards: per-round parallel arrays.
-        var playedCount = Math.Min(section.RoundsPlayed, p.History.Count);
+        // Length = rounds_paired (NOT rounds_played) — NAChessHub's
+        // Razor templates iterate `rounds_played + 1..rounds_paired`
+        // when showing upcoming-round pairings, and index straight
+        // into these arrays. Emitting only up to rounds_played throws
+        // ArgumentOutOfRangeException on the server.
+        var roundCount = Math.Min(section.RoundsPaired, p.History.Count);
 
         w.WritePropertyName("results");
         w.WriteStartArray();
-        for (var i = 0; i < playedCount; i++)
+        for (var i = 0; i < roundCount; i++)
             w.WriteStringValue(MapRoundResultLetter(p.History[i]));
         w.WriteEndArray();
 
         w.WritePropertyName("colors");
         w.WriteStartArray();
-        for (var i = 0; i < playedCount; i++)
+        for (var i = 0; i < roundCount; i++)
             w.WriteStringValue(MapColorLetter(p.History[i]));
         w.WriteEndArray();
 
         w.WritePropertyName("ops");
         w.WriteStartArray();
-        for (var i = 0; i < playedCount; i++)
+        for (var i = 0; i < roundCount; i++)
             w.WriteNumberValue(p.History[i].Opponent);
         w.WriteEndArray();
 
         w.WritePropertyName("boards");
         w.WriteStartArray();
-        for (var i = 0; i < playedCount; i++)
+        for (var i = 0; i < roundCount; i++)
             w.WriteNumberValue(p.History[i].Board);
         w.WriteEndArray();
 
         w.WriteEndObject();
     }
 
-    /// <summary>Per-round result letter expected by NAChessHub.</summary>
+    /// <summary>
+    /// Per-round result letter expected by NAChessHub. Slots with
+    /// <see cref="RoundResultKind.None"/> (paired-unplayed AND unpaired)
+    /// emit an empty string — the hub's template branches on a blank
+    /// result letter to render just color + opponent for future rounds,
+    /// or "~" for in-progress pairings.
+    /// </summary>
     private static string MapRoundResultLetter(RoundResult r) => r.Kind switch
     {
         RoundResultKind.Win          => "W",
@@ -275,7 +313,7 @@ public static class SwissSysResultJsonBuilder
         RoundResultKind.Draw         => "D",
         RoundResultKind.FullPointBye => "B",
         RoundResultKind.HalfPointBye => "H",
-        _                            => "U",  // unplayed / unpaired
+        _                            => "",  // unplayed / paired-unplayed / unpaired
     };
 
     private static string MapColorLetter(RoundResult r) => r.Color switch

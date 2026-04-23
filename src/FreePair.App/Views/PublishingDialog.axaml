@@ -60,6 +60,22 @@
             <TextBlock Text="{Binding StatusMessage}" FontSize="12" TextWrapping="Wrap"/>
         </Border>
 
+        <!-- On success, show a clickable verification link just below
+             the status banner. Uses the same Tag + Process.Start
+             pattern we use for the USCF affiliate lookup button. -->
+        <Button DockPanel.Dock="Bottom"
+                Margin="0,4,0,0"
+                Padding="10,4"
+                HorizontalAlignment="Left"
+                Background="Transparent"
+                BorderThickness="0"
+                Foreground="#0E5DAA"
+                Content="↗ View uploaded files on NA Chess Hub"
+                Tag="{Binding PublishedUrl}"
+                Click="OnOpenPublishedUrl"
+                ToolTip.Tip="{Binding PublishedUrl}"
+                IsVisible="{Binding HasPublishedUrl}"/>
+
         <!-- Form -->
         <StackPanel Spacing="12">
 
