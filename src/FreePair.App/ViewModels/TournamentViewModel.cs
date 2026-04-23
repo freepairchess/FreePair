@@ -158,6 +158,25 @@ public partial class TournamentViewModel : ViewModelBase
     public bool HasLastPublishedUrl => !string.IsNullOrEmpty(LastPublishedUrl);
 
     /// <summary>
+    /// Wall-clock timestamp of the most recent successful publish.
+    /// Paired with <see cref="LastPublishedUrl"/> — both are set on
+    /// success and cleared to <see langword="null"/> at the start of
+    /// every new publish attempt, so a failed retry doesn't display
+    /// a stale "last published at…" label in the toolbar.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(LastPublishedAtDisplay))]
+    private DateTimeOffset? _lastPublishedAt;
+
+    /// <summary>
+    /// Short local-time rendering of <see cref="LastPublishedAt"/> for
+    /// the toolbar label (e.g. <c>"15:42:03"</c>). Empty when the
+    /// timestamp is null so the binding renders nothing.
+    /// </summary>
+    public string LastPublishedAtDisplay =>
+        LastPublishedAt is { } ts ? ts.ToLocalTime().ToString("HH:mm:ss") : "";
+
+    /// <summary>
     /// Flag set by <see cref="OnSectionResultChanged"/> /
     /// <see cref="OnSectionPairNextRoundAsync"/> immediately before the
     /// triggered auto-save so the subsequent
@@ -698,8 +717,9 @@ public partial class TournamentViewModel : ViewModelBase
         _autoPublishCts = new CancellationTokenSource();
         var ct = _autoPublishCts.Token;
 
-        // Reset the last-published hyperlink — re-populated on success.
+        // Reset the last-published hyperlink + timestamp — re-populated on success.
         LastPublishedUrl = null;
+        LastPublishedAt  = null;
 
         try
         {
@@ -742,6 +762,7 @@ public partial class TournamentViewModel : ViewModelBase
                 SaveStatus = $"Published to {_publishingClient.DisplayName}.";
                 var root = (PublishBaseUrl ?? "").TrimEnd('/');
                 LastPublishedUrl = $"{root}/EventFiles?EventID={System.Uri.EscapeDataString(t.NachEventId!)}";
+                LastPublishedAt  = DateTimeOffset.Now;
             }
             else
             {

@@ -35,31 +35,41 @@
                            Foreground="Gray"
                            VerticalAlignment="Center"
                            TextTrimming="CharacterEllipsis"/>
-                <!-- In-progress status ("Saving...", "Publishing...") shown
-                     as plain italic text; only visible while a background
-                     op is running. -->
+
+                <!-- Transient status shown only while a save / publish is
+                     in flight (SaveStatus is set while the op is running
+                     and cleared on completion). -->
                 <TextBlock Text="{Binding SaveStatus}"
                            Foreground="DarkBlue"
                            FontStyle="Italic"
                            VerticalAlignment="Center"
-                           IsVisible="{Binding IsSaving}"
-                           IsEnabled="{Binding !HasLastPublishedUrl}"/>
-                <!-- Post-publish success: same text rendered as a clickable
-                     hyperlink pointing at the hub's EventFiles page for
-                     this event. Visible only when HasLastPublishedUrl is
-                     true; mutually exclusive with the in-progress block
-                     above via the IsEnabled guard. -->
-                <Button Content="{Binding SaveStatus}"
-                        Tag="{Binding LastPublishedUrl}"
-                        Click="OnOpenPublishedUrl"
-                        Foreground="#0E5DAA"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Padding="0"
-                        FontStyle="Italic"
-                        VerticalAlignment="Center"
-                        ToolTip.Tip="{Binding LastPublishedUrl}"
-                        IsVisible="{Binding HasLastPublishedUrl}"/>
+                           IsVisible="{Binding IsSaving}"/>
+
+                <!-- Persistent "last published" label. Visible only when
+                     the most recent publish attempt succeeded (both URL
+                     and timestamp are set atomically on success, cleared
+                     at the start of every new attempt). The 'NA Chess Hub'
+                     span is a button styled as an inline hyperlink that
+                     opens the event's pairing page. -->
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            Spacing="0"
+                            IsVisible="{Binding HasLastPublishedUrl}">
+                    <TextBlock Text="last published to " Foreground="Gray" VerticalAlignment="Center"/>
+                    <Button Content="NA Chess Hub"
+                            Tag="{Binding LastPublishedUrl}"
+                            Click="OnOpenPublishedUrl"
+                            Foreground="#0E5DAA"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Padding="0"
+                            VerticalAlignment="Center"
+                            ToolTip.Tip="{Binding LastPublishedUrl}"/>
+                    <TextBlock Text=" at " Foreground="Gray" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding LastPublishedAtDisplay}"
+                               Foreground="Gray"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
             </StackPanel>
 
             <TextBlock Text="Loading..."
