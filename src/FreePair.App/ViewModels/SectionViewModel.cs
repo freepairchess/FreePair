@@ -241,8 +241,16 @@ public partial class SectionViewModel : ViewModelBase
     /// <summary>Underlying domain section.</summary>
     public Section Section { get; }
 
-    /// <summary>Active score formatter used to project display strings.</summary>
     public IScoreFormatter Formatter { get; }
+
+    /// <summary>
+    /// Reference back to the hosting <see cref="TournamentViewModel"/>
+    /// so code-behind for SectionView can reach the tournament snapshot
+    /// (e.g. PDF export of reports that span the whole event header).
+    /// Set by <see cref="TournamentViewModel.AttachSectionEvents"/>;
+    /// null in isolated tests / design-time.
+    /// </summary>
+    public TournamentViewModel? ParentTournamentVm { get; internal set; }
 
     public string Name => Section.Name;
 

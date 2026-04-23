@@ -81,7 +81,7 @@
                             CornerRadius="4"
                             Padding="8"
                             Margin="0,0,0,8">
-                        <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                        <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto">
                             <TextBlock Grid.Column="0"
                                        Text="Filter:"
                                        VerticalAlignment="Center"
@@ -102,6 +102,11 @@
                                        Foreground="Gray"
                                        FontSize="11"
                                        Margin="12,0,0,0"/>
+                            <Button Grid.Column="4"
+                                    Content="📄 Print as PDF"
+                                    Click="OnPrintPlayersPdf"
+                                    Margin="12,0,0,0"
+                                    ToolTip.Tip="Export the Players list as a PDF."/>
                         </Grid>
                     </Border>
 
@@ -314,6 +319,10 @@
                                 IsEnabled="{Binding CanDeleteLastRound}"
                                 Foreground="DarkRed"
                                 ToolTip.Tip="Remove the most recent round's pairings and results. Useful for fixing mistakes; cannot be undone."/>
+                        <Button Content="📄 Print as PDF"
+                                Click="OnPrintPairingsPdf"
+                                IsEnabled="{Binding HasSelectedRound}"
+                                ToolTip.Tip="Export the selected round's pairings as a PDF."/>
                         <TextBlock Text="{Binding PairNextRoundBlockReason}"
                                    Foreground="DimGray"
                                    FontSize="11"
@@ -391,6 +400,14 @@
             <!-- =============== Standings =============== -->
             <TabItem Header="Standings">
                 <DockPanel LastChildFill="True" Margin="8">
+                    <StackPanel DockPanel.Dock="Top"
+                                Orientation="Horizontal"
+                                Spacing="8"
+                                Margin="0,0,0,8">
+                        <Button Content="📄 Print as PDF"
+                                Click="OnPrintStandingsPdf"
+                                ToolTip.Tip="Export the current standings as a PDF."/>
+                    </StackPanel>
                     <Grid DockPanel.Dock="Top"
                           ColumnDefinitions="60,50,*,70,60,70,70,70,80"
                           Margin="0,0,0,4">
@@ -430,7 +447,16 @@
 
             <!-- =============== Wall Chart =============== -->
             <TabItem Header="Wall Chart">
-                <ScrollViewer Margin="8">
+                <DockPanel LastChildFill="True" Margin="8">
+                    <StackPanel DockPanel.Dock="Top"
+                                Orientation="Horizontal"
+                                Spacing="8"
+                                Margin="0,0,0,8">
+                        <Button Content="📄 Print as PDF"
+                                Click="OnPrintWallChartPdf"
+                                ToolTip.Tip="Export the wall chart as a PDF (landscape orientation)."/>
+                    </StackPanel>
+                    <ScrollViewer>
                     <ItemsControl ItemsSource="{Binding WallChart}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="wc:WallChartRow">
@@ -469,11 +495,21 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
+                </DockPanel>
             </TabItem>
 
             <!-- =============== Prizes =============== -->
             <TabItem Header="Prizes">
-                <ScrollViewer Margin="8">
+                <DockPanel LastChildFill="True" Margin="8">
+                    <StackPanel DockPanel.Dock="Top"
+                                Orientation="Horizontal"
+                                Spacing="8"
+                                Margin="0,0,0,8">
+                        <Button Content="📄 Print as PDF"
+                                Click="OnPrintPrizesPdf"
+                                ToolTip.Tip="Export the prize-fund summary as a PDF."/>
+                    </StackPanel>
+                    <ScrollViewer>
                     <StackPanel Spacing="16">
                         <StackPanel Spacing="4">
                             <TextBlock Text="Place prizes" FontWeight="SemiBold"/>
@@ -514,6 +550,7 @@
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
+                </DockPanel>
             </TabItem>
 
             <!-- =============== Byes & Withdrawals =============== -->
