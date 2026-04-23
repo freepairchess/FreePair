@@ -455,6 +455,11 @@ public partial class SectionViewModel : ViewModelBase
     {
         get
         {
+            if (IsSoftDeleted)
+            {
+                return "This section is soft-deleted. Undelete it before making changes.";
+            }
+
             if (IsPairingNextRound)
             {
                 return "Pairing in progress...";
@@ -514,7 +519,7 @@ public partial class SectionViewModel : ViewModelBase
     /// True when the section has at least one paired round that can be
     /// rolled back via <see cref="DeleteLastRoundCommand"/>.
     /// </summary>
-    public bool CanDeleteLastRound => Section.Rounds.Count > 0 && !IsPairingNextRound;
+    public bool CanDeleteLastRound => Section.Rounds.Count > 0 && !IsPairingNextRound && !IsSoftDeleted;
 
     /// <summary>
     /// Label for the delete-round button, e.g. "Delete round 3".
@@ -533,6 +538,77 @@ public partial class SectionViewModel : ViewModelBase
             return;
         }
 
+        await handler(this).ConfigureAwait(true);
+    }
+
+    // ================================================================
+    // Soft-delete / undelete / hard-delete
+    // ================================================================
+
+    /// <summary>
+    /// True when the section has been marked as soft-deleted. Used by
+    /// the view to show the yellow "This section is soft-deleted…"
+    /// banner and to disable every interactive control on the Pairings
+    /// tab. The mutations layer ALSO refuses to touch soft-deleted
+    /// sections, so the UI guard is defense-in-depth.
+    /// </summary>
+    public bool IsSoftDeleted => Section.SoftDeleted;
+
+    /// <summary>
+    /// Convenience inverse for binding <c>IsEnabled</c>-style
+    /// properties without an explicit converter.
+    /// </summary>
+    public bool IsLive => !IsSoftDeleted;
+
+    /// <summary>
+    /// Suffix appended to the section's left-tab label when it's
+    /// soft-deleted (empty string for live sections). Keeps the
+    /// existing <see cref="Name"/> binding intact while letting the
+    /// tab template show a " [deleted]" hint.
+    /// </summary>
+    public string TabLabelSuffix => IsSoftDeleted ? " [deleted]" : "";
+
+    /// <summary>
+    /// Raised when the TD clicks "🗑 Delete section…" on the Pairings
+    /// tab. The parent <c>TournamentViewModel</c> handles the confirm
+    /// prompt, the mutation, and the auto-save.
+    /// </summary>
+    public event Func<SectionViewModel, Task>? SoftDeleteRequested;
+
+    /// <summary>
+    /// Raised when the TD clicks "Undelete" on the soft-deleted
+    /// banner. No confirm prompt — this is a reversible operation.
+    /// </summary>
+    public event Func<SectionViewModel, Task>? UndeleteRequested;
+
+    /// <summary>
+    /// Raised when the TD clicks "Permanently delete…" on the
+    /// soft-deleted banner. Parent VM prompts with an extra-scary
+    /// confirm before invoking <c>HardDeleteSection</c>.
+    /// </summary>
+    public event Func<SectionViewModel, Task>? HardDeleteRequested;
+
+    [RelayCommand]
+    private async Task SoftDeleteSectionAsync()
+    {
+        var handler = SoftDeleteRequested;
+        if (handler is null) return;
+        await handler(this).ConfigureAwait(true);
+    }
+
+    [RelayCommand]
+    private async Task UndeleteSectionAsync()
+    {
+        var handler = UndeleteRequested;
+        if (handler is null) return;
+        await handler(this).ConfigureAwait(true);
+    }
+
+    [RelayCommand]
+    private async Task HardDeleteSectionAsync()
+    {
+        var handler = HardDeleteRequested;
+        if (handler is null) return;
         await handler(this).ConfigureAwait(true);
     }
 

@@ -44,6 +44,39 @@
             </TextBlock>
         </StackPanel>
 
+        <!-- Soft-deleted banner. Visible only when the section has
+             IsSoftDeleted=true. Offers Undelete (reversible) and
+             Permanently delete (with scary confirm). Every downstream
+             control on the Pairings tab is disabled by binding to
+             IsLive via CanPairNextRound / CanDeleteLastRound, and the
+             domain mutations refuse soft-deleted sections too. -->
+        <Border DockPanel.Dock="Top"
+                Margin="0,0,0,10"
+                Padding="12,8"
+                CornerRadius="4"
+                Background="#FFF8E1"
+                BorderBrush="#F6C66C"
+                BorderThickness="1"
+                IsVisible="{Binding IsSoftDeleted}">
+            <DockPanel LastChildFill="True">
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="8">
+                    <Button Content="Undelete"
+                            Command="{Binding UndeleteSectionCommand}"
+                            ToolTip.Tip="Restore this section. All data is intact; mutations and publishing resume normally."/>
+                    <Button Content="Permanently delete…"
+                            Command="{Binding HardDeleteSectionCommand}"
+                            Foreground="DarkRed"
+                            ToolTip.Tip="Discard this section forever. All players, rounds, pairings, and results are lost; cannot be undone short of restoring a backup."/>
+                </StackPanel>
+                <StackPanel Spacing="2" VerticalAlignment="Center">
+                    <TextBlock FontWeight="SemiBold" Text="This section is soft-deleted."/>
+                    <TextBlock Foreground="#6A5200" FontSize="12"
+                               Text="No further edits are allowed, and it will not appear in published NA Chess Hub results. All data is preserved — click Undelete to restore it."
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
         <TabControl SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
 
             <!-- =============== Overview =============== -->
@@ -323,6 +356,15 @@
                                 Click="OnPrintPairingsPdf"
                                 IsEnabled="{Binding HasSelectedRound}"
                                 ToolTip.Tip="Export the selected round's pairings as a PDF."/>
+                        <!-- Soft-delete entry point. Hidden once the section
+                             is already soft-deleted (banner above takes over).
+                             Uses a confirm prompt in the parent VM; the
+                             action is reversible via the banner's Undelete. -->
+                        <Button Content="🗑 Delete section…"
+                                Command="{Binding SoftDeleteSectionCommand}"
+                                IsVisible="{Binding IsLive}"
+                                Foreground="DarkRed"
+                                ToolTip.Tip="Soft-delete this section. Locks it against edits and excludes it from published results; reversible via the Undelete button that appears afterwards."/>
                         <TextBlock Text="{Binding PairNextRoundBlockReason}"
                                    Foreground="DimGray"
                                    FontSize="11"
@@ -362,12 +404,15 @@
 
                             <!-- Sortable / resizable pairings grid. Result is a template-column ComboBox
                                  so the TD can still enter a result directly; SortMemberPath points at
-                                 the text version so sort order makes sense. -->
+                                 the text version so sort order makes sense. When the section is
+                                 soft-deleted the whole grid is disabled so the Result ComboBoxes
+                                 can't fire mutations (which would throw at the domain layer anyway). -->
                             <DataGrid ItemsSource="{Binding FilteredPairings}"
                                       CanUserSortColumns="True"
                                       CanUserResizeColumns="True"
                                       CanUserReorderColumns="True"
                                       IsReadOnly="True"
+                                      IsEnabled="{Binding IsLive}"
                                       GridLinesVisibility="Horizontal"
                                       HeadersVisibility="Column"
                                       SelectionMode="Single"

@@ -163,7 +163,21 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="vm:SectionViewModel">
                                 <StackPanel Spacing="2" Margin="0,4">
-                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                    <!-- Soft-deleted sections are rendered
+                                         strike-through + gray and gain a
+                                         "[deleted]" suffix so the TD can
+                                         tell at a glance. -->
+                                    <TextBlock FontWeight="SemiBold"
+                                               Classes.deleted="{Binding IsSoftDeleted}">
+                                        <TextBlock.Styles>
+                                            <Style Selector="TextBlock.deleted">
+                                                <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                <Setter Property="Foreground" Value="Gray"/>
+                                                <Setter Property="FontStyle" Value="Italic"/>
+                                            </Style>
+                                        </TextBlock.Styles>
+                                        <Run Text="{Binding Name}"/><Run Text="{Binding TabLabelSuffix}"/>
+                                    </TextBlock>
                                     <TextBlock FontSize="11" Foreground="Gray">
                                         <Run Text="{Binding PlayerCount}"/>
                                         <Run Text=" players · "/>

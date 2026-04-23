@@ -422,6 +422,9 @@ public partial class TournamentViewModel : ViewModelBase
         vm.ResultChanged += OnSectionResultChanged;
         vm.PairNextRoundRequested += OnSectionPairNextRoundAsync;
         vm.DeleteLastRoundRequested += OnSectionDeleteLastRoundAsync;
+        vm.SoftDeleteRequested += OnSectionSoftDeleteAsync;
+        vm.UndeleteRequested   += OnSectionUndeleteAsync;
+        vm.HardDeleteRequested += OnSectionHardDeleteAsync;
     }
 
     private void DetachSectionEvents()
@@ -432,6 +435,9 @@ public partial class TournamentViewModel : ViewModelBase
             vm.ResultChanged -= OnSectionResultChanged;
             vm.PairNextRoundRequested -= OnSectionPairNextRoundAsync;
             vm.DeleteLastRoundRequested -= OnSectionDeleteLastRoundAsync;
+            vm.SoftDeleteRequested -= OnSectionSoftDeleteAsync;
+            vm.UndeleteRequested   -= OnSectionUndeleteAsync;
+            vm.HardDeleteRequested -= OnSectionHardDeleteAsync;
         }
     }
 
@@ -505,6 +511,86 @@ public partial class TournamentViewModel : ViewModelBase
         catch (Exception ex)
         {
             ErrorMessage = $"Failed to delete round: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnSectionSoftDeleteAsync(SectionViewModel section)
+    {
+        if (Tournament is null) return;
+
+        if (PromptConfirmAsync is not null)
+        {
+            var confirmed = await PromptConfirmAsync(
+                "Soft-delete section",
+                $"Mark '{section.Name}' as soft-deleted? " +
+                $"All of the section's data (players, pairings, results, prizes) is kept intact " +
+                $"but the section will be locked against further edits and will NOT be included " +
+                $"in published results. You can undo this at any time by clicking 'Undelete' on " +
+                $"the section.",
+                "Soft-delete").ConfigureAwait(true);
+            if (!confirmed) return;
+        }
+
+        try
+        {
+            Tournament = TournamentMutations.SoftDeleteSection(Tournament, section.Name);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to soft-delete section: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnSectionUndeleteAsync(SectionViewModel section)
+    {
+        if (Tournament is null) return;
+
+        try
+        {
+            Tournament = TournamentMutations.UndeleteSection(Tournament, section.Name);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to undelete section: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnSectionHardDeleteAsync(SectionViewModel section)
+    {
+        if (Tournament is null) return;
+
+        if (PromptConfirmAsync is not null)
+        {
+            var confirmed = await PromptConfirmAsync(
+                "Permanently delete section",
+                $"PERMANENTLY DELETE '{section.Name}'?\n\n" +
+                $"Every player, round, pairing, result, and prize in this section will be " +
+                $"discarded. This change cannot be undone short of restoring a backup of your " +
+                $".sjson file.\n\n" +
+                $"Are you sure you want to continue?",
+                "Permanently delete").ConfigureAwait(true);
+            if (!confirmed) return;
+        }
+
+        try
+        {
+            Tournament = TournamentMutations.HardDeleteSection(Tournament, section.Name);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to delete section: {ex.Message}";
             return;
         }
 
