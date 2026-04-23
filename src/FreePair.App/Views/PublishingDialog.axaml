@@ -92,25 +92,32 @@
                     <TextBox   Grid.Row="0" Grid.Column="1" Text="{Binding BaseUrl}"
                                Watermark="e.g. https://nachesshub.com"/>
 
+                    <!-- Event ID + passcode come from the .sjson Overview block
+                         and are edited on the Event tab. Show them read-only
+                         here for confirmation. -->
                     <TextBlock Grid.Row="1" Grid.Column="0" Classes="label" Text="Event ID"/>
-                    <TextBox   Grid.Row="1" Grid.Column="1" Text="{Binding EventId}"
-                               Watermark="Prefilled from the .sjson overview"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1"
+                               Text="{Binding EventId}"
+                               VerticalAlignment="Center"
+                               Foreground="Gray"
+                               FontFamily="Consolas,monospace"
+                               FontSize="11"
+                               IsVisible="{Binding HasEventId}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1"
+                               Text="(not set — set it on the Event tab)"
+                               VerticalAlignment="Center"
+                               Foreground="#B00020"
+                               FontSize="11"
+                               FontStyle="Italic"
+                               IsVisible="{Binding !HasEventId}"/>
 
                     <TextBlock Grid.Row="2" Grid.Column="0" Classes="label" Text="Passcode"/>
-                    <Grid      Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,Auto">
-                        <TextBox Grid.Column="0"
-                                 Text="{Binding Passcode}"
-                                 PasswordChar="●"
-                                 RevealPassword="{Binding ShowPasscode}"
-                                 Watermark="Upload passcode"/>
-                        <ToggleButton Grid.Column="1"
-                                      Margin="6,0,0,0"
-                                      IsChecked="{Binding ShowPasscode, Mode=TwoWay}"
-                                      Padding="10,0"
-                                      ToolTip.Tip="Show / hide the passcode">
-                            <TextBlock Text="👁" FontSize="14"/>
-                        </ToggleButton>
-                    </Grid>
+                    <TextBlock Grid.Row="2" Grid.Column="1"
+                               Text="{Binding PasscodeMasked}"
+                               VerticalAlignment="Center"
+                               Foreground="Gray"
+                               FontFamily="Consolas,monospace"
+                               FontSize="11"/>
                 </Grid>
             </Border>
 

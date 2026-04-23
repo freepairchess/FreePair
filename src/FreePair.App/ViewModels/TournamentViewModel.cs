@@ -749,19 +749,17 @@ public partial class TournamentViewModel : ViewModelBase
         AutoPublishPairings = result.AutoPublishPairings;
         AutoPublishResults  = result.AutoPublishResults;
 
-        // Persist the edited fields back onto the tournament. Event id
-        // stays read-only here (plumbing for editing it is a separate
-        // follow-up). The two auto-flags + passcode round-trip through
-        // the Overview block on the next auto-save.
+        // Event ID / passcode are edited on the Event tab, not here —
+        // only the two auto-flags round-trip through the Overview. Fold
+        // them onto the tournament and trigger an auto-save so the
+        // FreePair keys persist right away.
         if (Tournament is not null)
         {
             Tournament = TournamentMutations.SetTournamentInfo(
                 Tournament,
-                nachPasscode:        result.Passcode ?? Tournament.NachPasscode,
                 autoPublishPairings: new Box<bool?>(AutoPublishPairings),
                 autoPublishResults:  new Box<bool?>(AutoPublishResults));
 
-            // Trigger an auto-save so the Overview persists immediately.
             await PersistCurrentTournamentAsync().ConfigureAwait(true);
         }
     }

@@ -52,13 +52,24 @@ public sealed partial class PublishingDialogViewModel : ViewModelBase
     // ============== editable fields ==============
 
     [ObservableProperty] private string? _baseUrl;
-    [ObservableProperty] private string? _eventId;
-    [ObservableProperty] private string? _passcode;
 
-    /// <summary>UI-only toggle for masking <see cref="Passcode"/>.</summary>
-    [ObservableProperty] private bool _showPasscode;
+    // ============== read-only mirrors (sourced from the tournament) ==============
+    // Event ID + passcode live in the .sjson Overview and are edited
+    // on the Event config tab. The dialog shows them for confirmation
+    // only — no duplicate editor here.
 
-    // ============== auto-publish toggles (session-only, per-tournament) ==============
+    public string? EventId   { get; }
+    public string? Passcode  { get; }
+
+    /// <summary>Masked preview of the passcode for display.</summary>
+    public string  PasscodeMasked =>
+        string.IsNullOrEmpty(Passcode) ? "(not set)" : new string('●', Math.Min(Passcode!.Length, 12));
+
+    public bool HasEventId  => !string.IsNullOrWhiteSpace(EventId);
+    public bool HasPasscode => !string.IsNullOrWhiteSpace(Passcode);
+    public bool IsReadyToPublish => HasEventId && HasPasscode;
+
+    // ============== auto-publish toggles (persisted via Tournament record) ==============
 
     [ObservableProperty] private bool _autoPublishPairings;
     [ObservableProperty] private bool _autoPublishResults;
@@ -131,8 +142,8 @@ public sealed partial class PublishingDialogViewModel : ViewModelBase
         }
 
         if (string.IsNullOrWhiteSpace(BaseUrl))  { Fail("Hub URL is required.");  return; }
-        if (string.IsNullOrWhiteSpace(EventId))  { Fail("Event ID is required."); return; }
-        if (string.IsNullOrWhiteSpace(Passcode)) { Fail("Passcode is required."); return; }
+        if (string.IsNullOrWhiteSpace(EventId))  { Fail("Event ID is required — set it on the Event tab."); return; }
+        if (string.IsNullOrWhiteSpace(Passcode)) { Fail("Passcode is required — set it on the Event tab."); return; }
 
         try
         {
