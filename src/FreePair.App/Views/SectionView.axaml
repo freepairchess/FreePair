@@ -339,41 +339,59 @@
                     <ScrollViewer>
                         <StackPanel Spacing="12">
 
-                            <StackPanel Spacing="0">
-                                <Grid ColumnDefinitions="50,50,*,60,60,*,50,120"
-                                      Margin="0,0,0,4">
-                                    <TextBlock Grid.Column="0" Classes="colHeader" Text="Bd"/>
-                                    <TextBlock Grid.Column="1" Classes="colHeader" Text="White#"/>
-                                    <TextBlock Grid.Column="2" Classes="colHeader" Text="White"/>
-                                    <TextBlock Grid.Column="3" Classes="colHeader" Text="Rtg"/>
-                                    <TextBlock Grid.Column="4" Classes="colHeader" Text="Black#"/>
-                                    <TextBlock Grid.Column="5" Classes="colHeader" Text="Black"/>
-                                    <TextBlock Grid.Column="6" Classes="colHeader" Text="Rtg"/>
-                                    <TextBlock Grid.Column="7" Classes="colHeader" Text="Result"/>
+                            <!-- Filter bar for the Pairings DataGrid. -->
+                            <Border Background="#F6F6F6"
+                                    BorderBrush="LightGray"
+                                    BorderThickness="1"
+                                    CornerRadius="4"
+                                    Padding="8">
+                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                    <TextBlock Grid.Column="0" Text="Filter:"
+                                               VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,8,0"/>
+                                    <TextBox Grid.Column="1"
+                                             Text="{Binding PairingFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Watermark="Search by board, pair #, or player name"
+                                             MinWidth="260"/>
+                                    <Button Grid.Column="2"
+                                            Content="Clear"
+                                            Click="OnClearPairingFilter"
+                                            Margin="8,0,0,0"
+                                            IsVisible="{Binding PairingFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
                                 </Grid>
-                                <ItemsControl ItemsSource="{Binding CurrentRoundPairings}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate DataType="vm:PairingRow">
-                                            <Border Classes="row">
-                                                <Grid ColumnDefinitions="50,50,*,60,60,*,50,120">
-                                                    <TextBlock Grid.Column="0" Classes="cell" Text="{Binding Board}"/>
-                                                    <TextBlock Grid.Column="1" Classes="cell" Text="{Binding WhitePair}"/>
-                                                    <TextBlock Grid.Column="2" Classes="cell" Text="{Binding WhiteName}"/>
-                                                    <TextBlock Grid.Column="3" Classes="cell" Text="{Binding WhiteRating}"/>
-                                                    <TextBlock Grid.Column="4" Classes="cell" Text="{Binding BlackPair}"/>
-                                                    <TextBlock Grid.Column="5" Classes="cell" Text="{Binding BlackName}"/>
-                                                    <TextBlock Grid.Column="6" Classes="cell" Text="{Binding BlackRating}"/>
-                                                    <ComboBox Grid.Column="7"
-                                                              ItemsSource="{Binding AvailableResults}"
-                                                              SelectedItem="{Binding SelectedResult}"
-                                                              MinWidth="100"
-                                                              Margin="4,2"/>
-                                                </Grid>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </StackPanel>
+                            </Border>
+
+                            <!-- Sortable / resizable pairings grid. Result is a template-column ComboBox
+                                 so the TD can still enter a result directly; SortMemberPath points at
+                                 the text version so sort order makes sense. -->
+                            <DataGrid ItemsSource="{Binding FilteredPairings}"
+                                      CanUserSortColumns="True"
+                                      CanUserResizeColumns="True"
+                                      CanUserReorderColumns="True"
+                                      IsReadOnly="True"
+                                      GridLinesVisibility="Horizontal"
+                                      HeadersVisibility="Column"
+                                      SelectionMode="Single"
+                                      AutoGenerateColumns="False"
+                                      HorizontalScrollBarVisibility="Auto">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Bd"       Binding="{Binding Board}"       SortMemberPath="Board"       Width="50"/>
+                                    <DataGridTextColumn Header="White #"  Binding="{Binding WhitePair}"   SortMemberPath="WhitePair"   Width="70"/>
+                                    <DataGridTextColumn Header="White"    Binding="{Binding WhiteName}"   SortMemberPath="WhiteName"   Width="*" MinWidth="140"/>
+                                    <DataGridTextColumn Header="Rtg"      Binding="{Binding WhiteRating}" SortMemberPath="WhiteRating" Width="70"/>
+                                    <DataGridTextColumn Header="Black #"  Binding="{Binding BlackPair}"   SortMemberPath="BlackPair"   Width="70"/>
+                                    <DataGridTextColumn Header="Black"    Binding="{Binding BlackName}"   SortMemberPath="BlackName"   Width="*" MinWidth="140"/>
+                                    <DataGridTextColumn Header="Rtg"      Binding="{Binding BlackRating}" SortMemberPath="BlackRating" Width="70"/>
+                                    <DataGridTemplateColumn Header="Result" SortMemberPath="ResultText" Width="140">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate DataType="vm:PairingRow">
+                                                <ComboBox ItemsSource="{Binding AvailableResults}"
+                                                          SelectedItem="{Binding SelectedResult}"
+                                                          Margin="4,2" MinWidth="120"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
 
                             <StackPanel IsVisible="{Binding CurrentRoundByes.Count}" Spacing="4">
                                 <TextBlock Text="Byes this round" FontWeight="SemiBold" Foreground="DimGray"/>
@@ -408,40 +426,48 @@
                                 Click="OnPrintStandingsPdf"
                                 ToolTip.Tip="Export the current standings as a PDF."/>
                     </StackPanel>
-                    <Grid DockPanel.Dock="Top"
-                          ColumnDefinitions="60,50,*,70,60,70,70,70,80"
-                          Margin="0,0,0,4">
-                        <TextBlock Grid.Column="0" Classes="colHeader" Text="Place"/>
-                        <TextBlock Grid.Column="1" Classes="colHeader" Text="Pair"/>
-                        <TextBlock Grid.Column="2" Classes="colHeader" Text="Name"/>
-                        <TextBlock Grid.Column="3" Classes="colHeader" Text="Rating"/>
-                        <TextBlock Grid.Column="4" Classes="colHeader" Text="Score" HorizontalAlignment="Right"/>
-                        <TextBlock Grid.Column="5" Classes="colHeader" Text="Mod.Med" HorizontalAlignment="Right"/>
-                        <TextBlock Grid.Column="6" Classes="colHeader" Text="Solk" HorizontalAlignment="Right"/>
-                        <TextBlock Grid.Column="7" Classes="colHeader" Text="Cumul" HorizontalAlignment="Right"/>
-                        <TextBlock Grid.Column="8" Classes="colHeader" Text="Op.Cumul" HorizontalAlignment="Right"/>
-                    </Grid>
-                    <ScrollViewer>
-                        <ItemsControl ItemsSource="{Binding StandingsDisplay}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="vm:StandingsDisplayRow">
-                                    <Border Classes="row">
-                                        <Grid ColumnDefinitions="60,50,*,70,60,70,70,70,80">
-                                            <TextBlock Grid.Column="0" Classes="cell" Text="{Binding Row.Place}" FontWeight="SemiBold"/>
-                                            <TextBlock Grid.Column="1" Classes="cell" Text="{Binding Row.PairNumber}"/>
-                                            <TextBlock Grid.Column="2" Classes="cell" Text="{Binding Row.Name}"/>
-                                            <TextBlock Grid.Column="3" Classes="cell" Text="{Binding Row.Rating}"/>
-                                            <TextBlock Grid.Column="4" Classes="cell" Text="{Binding ScoreText}" HorizontalAlignment="Right"/>
-                                            <TextBlock Grid.Column="5" Classes="cell" Text="{Binding ModMedText}" HorizontalAlignment="Right"/>
-                                            <TextBlock Grid.Column="6" Classes="cell" Text="{Binding SolkoffText}" HorizontalAlignment="Right"/>
-                                            <TextBlock Grid.Column="7" Classes="cell" Text="{Binding CumulativeText}" HorizontalAlignment="Right"/>
-                                            <TextBlock Grid.Column="8" Classes="cell" Text="{Binding OppCumulativeText}" HorizontalAlignment="Right"/>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
+
+                    <Border DockPanel.Dock="Top"
+                            Background="#F6F6F6"
+                            BorderBrush="LightGray"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="8"
+                            Margin="0,0,0,8">
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <TextBlock Grid.Column="0" Text="Filter:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,8,0"/>
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding StandingsFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Watermark="Search by name, pair #, place, or rating"
+                                     MinWidth="260"/>
+                            <Button Grid.Column="2" Content="Clear" Click="OnClearStandingsFilter"
+                                    Margin="8,0,0,0"
+                                    IsVisible="{Binding StandingsFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                        </Grid>
+                    </Border>
+
+                    <DataGrid ItemsSource="{Binding FilteredStandings}"
+                              CanUserSortColumns="True"
+                              CanUserResizeColumns="True"
+                              CanUserReorderColumns="True"
+                              IsReadOnly="True"
+                              GridLinesVisibility="Horizontal"
+                              HeadersVisibility="Column"
+                              SelectionMode="Single"
+                              AutoGenerateColumns="False"
+                              HorizontalScrollBarVisibility="Auto">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Place"   Binding="{Binding Row.Place}"       SortMemberPath="Row.Rank"   Width="70"/>
+                            <DataGridTextColumn Header="Pair"    Binding="{Binding Row.PairNumber}"  SortMemberPath="Row.PairNumber" Width="60"/>
+                            <DataGridTextColumn Header="Name"    Binding="{Binding Row.Name}"        SortMemberPath="Row.Name"   Width="*" MinWidth="160"/>
+                            <DataGridTextColumn Header="Rating"  Binding="{Binding Row.Rating}"      SortMemberPath="Row.Rating" Width="70"/>
+                            <DataGridTextColumn Header="Score"   Binding="{Binding ScoreText}"       SortMemberPath="Row.Score"  Width="70"/>
+                            <DataGridTextColumn Header="Mod.Med" Binding="{Binding ModMedText}"      SortMemberPath="Row.Tiebreaks.ModifiedMedian"     Width="80"/>
+                            <DataGridTextColumn Header="Solk"    Binding="{Binding SolkoffText}"     SortMemberPath="Row.Tiebreaks.Solkoff"            Width="80"/>
+                            <DataGridTextColumn Header="Cumul"   Binding="{Binding CumulativeText}"  SortMemberPath="Row.Tiebreaks.Cumulative"         Width="80"/>
+                            <DataGridTextColumn Header="Op.Cumul" Binding="{Binding OppCumulativeText}" SortMemberPath="Row.Tiebreaks.OpponentCumulative" Width="90"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </DockPanel>
             </TabItem>
 
@@ -456,16 +482,47 @@
                                 Click="OnPrintWallChartPdf"
                                 ToolTip.Tip="Export the wall chart as a PDF (landscape orientation)."/>
                     </StackPanel>
-                    <ScrollViewer>
-                    <ItemsControl ItemsSource="{Binding WallChart}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="wc:WallChartRow">
-                                <Border Classes="row">
-                                    <Grid ColumnDefinitions="50,*,70,Auto,70,70,70,70,80" Margin="0,2">
-                                        <TextBlock Grid.Column="0" Classes="cell" Text="{Binding PairNumber}"/>
-                                        <TextBlock Grid.Column="1" Classes="cell" Text="{Binding Name}"/>
-                                        <TextBlock Grid.Column="2" Classes="cell" Text="{Binding Rating}"/>
-                                        <ItemsControl Grid.Column="3" ItemsSource="{Binding Cells}">
+
+                    <Border DockPanel.Dock="Top"
+                            Background="#F6F6F6"
+                            BorderBrush="LightGray"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="8"
+                            Margin="0,0,0,8">
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <TextBlock Grid.Column="0" Text="Filter:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,8,0"/>
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding WallChartFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Watermark="Search by name, pair #, club, state, or team"
+                                     MinWidth="260"/>
+                            <Button Grid.Column="2" Content="Clear" Click="OnClearWallChartFilter"
+                                    Margin="8,0,0,0"
+                                    IsVisible="{Binding WallChartFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Wall-chart DataGrid keeps the inline round-code cells as a template column
+                         so the per-round glyphs still render; the rest of the columns gain sort +
+                         resize + reorder like every other tab. -->
+                    <DataGrid ItemsSource="{Binding FilteredWallChart}"
+                              CanUserSortColumns="True"
+                              CanUserResizeColumns="True"
+                              CanUserReorderColumns="True"
+                              IsReadOnly="True"
+                              GridLinesVisibility="Horizontal"
+                              HeadersVisibility="Column"
+                              SelectionMode="Single"
+                              AutoGenerateColumns="False"
+                              HorizontalScrollBarVisibility="Auto">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Pair"   Binding="{Binding Row.PairNumber}" SortMemberPath="Row.PairNumber" Width="60"/>
+                            <DataGridTextColumn Header="Name"   Binding="{Binding Row.Name}"       SortMemberPath="Row.Name"       Width="*" MinWidth="160"/>
+                            <DataGridTextColumn Header="Rating" Binding="{Binding Row.Rating}"     SortMemberPath="Row.Rating"     Width="70"/>
+                            <DataGridTemplateColumn Header="Rounds" Width="Auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="vm:WallChartDisplayRow">
+                                        <ItemsControl ItemsSource="{Binding Row.Cells}">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <StackPanel Orientation="Horizontal"/>
@@ -473,8 +530,7 @@
                                             </ItemsControl.ItemsPanel>
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate DataType="wc:WallChartCell">
-                                                    <Border MinWidth="56"
-                                                            Padding="4,3"
+                                                    <Border MinWidth="56" Padding="4,3"
                                                             BorderBrush="#EEEEEE"
                                                             BorderThickness="1,0,0,0">
                                                         <TextBlock Classes="mono"
@@ -484,17 +540,16 @@
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                        <TextBlock Grid.Column="4" Classes="cell" Text="{Binding Score}" HorizontalAlignment="Right" FontWeight="SemiBold"/>
-                                        <TextBlock Grid.Column="5" Classes="cell" Text="{Binding Tiebreaks.ModifiedMedian}" HorizontalAlignment="Right" Foreground="Gray"/>
-                                        <TextBlock Grid.Column="6" Classes="cell" Text="{Binding Tiebreaks.Solkoff}" HorizontalAlignment="Right" Foreground="Gray"/>
-                                        <TextBlock Grid.Column="7" Classes="cell" Text="{Binding Tiebreaks.Cumulative}" HorizontalAlignment="Right" Foreground="Gray"/>
-                                        <TextBlock Grid.Column="8" Classes="cell" Text="{Binding Tiebreaks.OpponentCumulative}" HorizontalAlignment="Right" Foreground="Gray"/>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Score"    Binding="{Binding ScoreText}"       SortMemberPath="Row.Score" Width="70"/>
+                            <DataGridTextColumn Header="Mod.Med"  Binding="{Binding ModMedText}"      SortMemberPath="Row.Tiebreaks.ModifiedMedian" Width="80"/>
+                            <DataGridTextColumn Header="Solk"     Binding="{Binding SolkoffText}"     SortMemberPath="Row.Tiebreaks.Solkoff" Width="80"/>
+                            <DataGridTextColumn Header="Cumul"    Binding="{Binding CumulativeText}"  SortMemberPath="Row.Tiebreaks.Cumulative" Width="80"/>
+                            <DataGridTextColumn Header="Op.Cumul" Binding="{Binding OppCumulativeText}" SortMemberPath="Row.Tiebreaks.OpponentCumulative" Width="90"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </DockPanel>
             </TabItem>
 
@@ -555,56 +610,76 @@
 
             <!-- =============== Byes & Withdrawals =============== -->
             <TabItem Header="Byes &amp; Withdrawals">
-                <ScrollViewer Margin="8">
-                    <StackPanel Spacing="16">
+                <DockPanel LastChildFill="True" Margin="8">
 
-                        <StackPanel Spacing="4">
-                            <TextBlock Text="All byes and unpaired rounds" FontWeight="SemiBold"/>
-                            <Grid ColumnDefinitions="60,60,*,160" Margin="0,0,0,4">
-                                <TextBlock Grid.Column="0" Classes="colHeader" Text="Round"/>
-                                <TextBlock Grid.Column="1" Classes="colHeader" Text="Pair"/>
-                                <TextBlock Grid.Column="2" Classes="colHeader" Text="Name"/>
-                                <TextBlock Grid.Column="3" Classes="colHeader" Text="Kind"/>
-                            </Grid>
-                            <TextBlock Text="None recorded."
-                                       Foreground="Gray"
-                                       IsVisible="{Binding !AllByes.Count}"/>
-                            <ItemsControl ItemsSource="{Binding AllByes}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="vm:ByeRow">
-                                        <Border Classes="row">
-                                            <Grid ColumnDefinitions="60,60,*,160">
-                                                <TextBlock Grid.Column="0" Classes="cell" Text="{Binding Round}"/>
-                                                <TextBlock Grid.Column="1" Classes="cell" Text="{Binding PairNumber}"/>
-                                                <TextBlock Grid.Column="2" Classes="cell" Text="{Binding Name}"/>
-                                                <TextBlock Grid.Column="3" Classes="cell" Text="{Binding Kind}" Foreground="DarkBlue"/>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                    <Border DockPanel.Dock="Top"
+                            Background="#F6F6F6"
+                            BorderBrush="LightGray"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="8"
+                            Margin="0,0,0,8">
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <TextBlock Grid.Column="0" Text="Filter:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,8,0"/>
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding ByesFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Watermark="Search by round, pair #, name, or kind (Full / Half)"
+                                     MinWidth="260"/>
+                            <Button Grid.Column="2" Content="Clear" Click="OnClearByesFilter"
+                                    Margin="8,0,0,0"
+                                    IsVisible="{Binding ByesFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                        </Grid>
+                    </Border>
+
+                    <ScrollViewer>
+                        <StackPanel Spacing="16">
+
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="All byes and unpaired rounds" FontWeight="SemiBold"/>
+                                <TextBlock Text="None recorded."
+                                           Foreground="Gray"
+                                           IsVisible="{Binding !AllByes.Count}"/>
+                                <DataGrid ItemsSource="{Binding FilteredAllByes}"
+                                          CanUserSortColumns="True"
+                                          CanUserResizeColumns="True"
+                                          CanUserReorderColumns="True"
+                                          IsReadOnly="True"
+                                          GridLinesVisibility="Horizontal"
+                                          HeadersVisibility="Column"
+                                          SelectionMode="Single"
+                                          AutoGenerateColumns="False"
+                                          HorizontalScrollBarVisibility="Auto"
+                                          MaxHeight="380">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Round" Binding="{Binding Round}"      SortMemberPath="Round"      Width="70"/>
+                                        <DataGridTextColumn Header="Pair"  Binding="{Binding PairNumber}" SortMemberPath="PairNumber" Width="70"/>
+                                        <DataGridTextColumn Header="Name"  Binding="{Binding Name}"       SortMemberPath="Name"       Width="*" MinWidth="160"/>
+                                        <DataGridTextColumn Header="Kind"  Binding="{Binding Kind}"       SortMemberPath="Kind"       Width="140"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="Players with requested (future) byes" FontWeight="SemiBold"/>
+                                <ItemsControl ItemsSource="{Binding Players}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="vm:PlayerRow">
+                                            <Border Classes="row"
+                                                    IsVisible="{Binding RequestedByes, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                                <Grid ColumnDefinitions="60,*,120">
+                                                    <TextBlock Grid.Column="0" Classes="cell" Text="{Binding PairNumber}"/>
+                                                    <TextBlock Grid.Column="1" Classes="cell" Text="{Binding Name}"/>
+                                                    <TextBlock Grid.Column="2" Classes="cell" Text="{Binding RequestedByes}" Foreground="DarkBlue"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
                         </StackPanel>
-
-                        <StackPanel Spacing="4">
-                            <TextBlock Text="Players with requested (future) byes" FontWeight="SemiBold"/>
-                            <ItemsControl ItemsSource="{Binding Players}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="vm:PlayerRow">
-                                        <Border Classes="row"
-                                                IsVisible="{Binding RequestedByes, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                                            <Grid ColumnDefinitions="60,*,120">
-                                                <TextBlock Grid.Column="0" Classes="cell" Text="{Binding PairNumber}"/>
-                                                <TextBlock Grid.Column="1" Classes="cell" Text="{Binding Name}"/>
-                                                <TextBlock Grid.Column="2" Classes="cell" Text="{Binding RequestedByes}" Foreground="DarkBlue"/>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-
-                    </StackPanel>
-                </ScrollViewer>
+                    </ScrollViewer>
+                </DockPanel>
             </TabItem>
 
         </TabControl>

@@ -62,6 +62,26 @@ public partial class SectionView : UserControl
         }
     }
 
+    private void OnClearPairingFilter(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is ViewModels.SectionViewModel vm) vm.PairingFilter = string.Empty;
+    }
+
+    private void OnClearStandingsFilter(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is ViewModels.SectionViewModel vm) vm.StandingsFilter = string.Empty;
+    }
+
+    private void OnClearWallChartFilter(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is ViewModels.SectionViewModel vm) vm.WallChartFilter = string.Empty;
+    }
+
+    private void OnClearByesFilter(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is ViewModels.SectionViewModel vm) vm.ByesFilter = string.Empty;
+    }
+
     // =========================================================
     //  Print as PDF
     // =========================================================
