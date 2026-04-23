@@ -763,6 +763,32 @@ public partial class TournamentViewModel : ViewModelBase
                 var root = (PublishBaseUrl ?? "").TrimEnd('/');
                 LastPublishedUrl = $"{root}/EventFiles?EventID={System.Uri.EscapeDataString(t.NachEventId!)}";
                 LastPublishedAt  = DateTimeOffset.Now;
+
+                // Persist the publish timestamp on the tournament so the
+                // toolbar label survives an app restart. We save directly
+                // via the writer rather than routing through
+                // PersistCurrentTournamentAsync so this doesn't
+                // re-trigger the auto-publish hook.
+                try
+                {
+                    Tournament = TournamentMutations.SetTournamentInfo(
+                        Tournament!,
+                        lastPublishedAt: new Box<DateTimeOffset?>(LastPublishedAt));
+                    await _saveGate.WaitAsync().ConfigureAwait(true);
+                    try
+                    {
+                        await _writer.SaveAsync(CurrentFilePath!, Tournament!).ConfigureAwait(true);
+                    }
+                    finally
+                    {
+                        _saveGate.Release();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Non-fatal — the in-session label still shows.
+                    ErrorMessage = $"Could not stamp publish timestamp: {ex.Message}";
+                }
             }
             else
             {
@@ -849,6 +875,24 @@ public partial class TournamentViewModel : ViewModelBase
             PublishBaseUrl      = pubSettings.NaChessHubBaseUrl;
             AutoPublishPairings = tournament.AutoPublishPairings ?? pubSettings.AutoPublishPairingsDefault;
             AutoPublishResults  = tournament.AutoPublishResults  ?? pubSettings.AutoPublishResultsDefault;
+
+            // Seed the "last published" toolbar label from the persisted
+            // timestamp, if any. The URL is rebuilt from the current
+            // PublishBaseUrl + the tournament's NACH event id so it
+            // follows any URL change the TD has made since the last
+            // publish. Only populated when both pieces of info exist.
+            if (tournament.LastPublishedAt is { } ts
+                && !string.IsNullOrWhiteSpace(tournament.NachEventId))
+            {
+                LastPublishedAt  = ts;
+                var root = PublishBaseUrl.TrimEnd('/');
+                LastPublishedUrl = $"{root}/EventFiles?EventID={System.Uri.EscapeDataString(tournament.NachEventId!)}";
+            }
+            else
+            {
+                LastPublishedAt  = null;
+                LastPublishedUrl = null;
+            }
 
             await PersistLastPathAsync(filePath).ConfigureAwait(true);
         }

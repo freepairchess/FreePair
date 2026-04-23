@@ -51,7 +51,8 @@ public static class TournamentMutations
         int? roundsPlanned = null,
         int? halfPointByesAllowed = null,
         Box<bool?>? autoPublishPairings = null,
-        Box<bool?>? autoPublishResults  = null)
+        Box<bool?>? autoPublishResults  = null,
+        Box<System.DateTimeOffset?>? lastPublishedAt = null)
     {
         ArgumentNullException.ThrowIfNull(tournament);
 
@@ -85,6 +86,7 @@ public static class TournamentMutations
             HalfPointByesAllowed = halfPointByesAllowed ?? tournament.HalfPointByesAllowed,
             AutoPublishPairings = autoPublishPairings is not null ? autoPublishPairings.Value : tournament.AutoPublishPairings,
             AutoPublishResults  = autoPublishResults  is not null ? autoPublishResults.Value  : tournament.AutoPublishResults,
+            LastPublishedAt     = lastPublishedAt     is not null ? lastPublishedAt.Value     : tournament.LastPublishedAt,
         };
     }
 

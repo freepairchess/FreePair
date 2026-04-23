@@ -124,4 +124,14 @@ public sealed class RawOverview
     /// </summary>
     [JsonPropertyName("FreePair auto publish results")]
     public bool? FreePairAutoPublishResults { get; set; }
+
+    /// <summary>
+    /// ISO-8601 UTC timestamp of the most recent successful publish to
+    /// NA Chess Hub (or any configured publishing destination). Stamped
+    /// after both the <c>.sjson</c> and the derived results JSON upload
+    /// succeed. Present only when the tournament has been published at
+    /// least once.
+    /// </summary>
+    [JsonPropertyName("FreePair last published at")]
+    public string? FreePairLastPublishedAt { get; set; }
 }

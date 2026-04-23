@@ -73,7 +73,14 @@ public sealed record Tournament(
     /// When <c>true</c>, FreePair auto-uploads after every individual
     /// result entry. Persisted as <c>"FreePair auto publish results"</c>.
     /// </summary>
-    bool? AutoPublishResults = null)
+    bool? AutoPublishResults = null,
+    /// <summary>
+    /// Wall-clock timestamp of the most recent successful publish to
+    /// the configured online destination (NA Chess Hub etc.). Persisted
+    /// as <c>"FreePair last published at"</c> (ISO-8601 UTC). Null when
+    /// the tournament has never been published.
+    /// </summary>
+    DateTimeOffset? LastPublishedAt = null)
 {
     /// <summary>
     /// Human-readable one-line location summary built from the

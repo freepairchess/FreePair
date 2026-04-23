@@ -56,7 +56,23 @@ public static class SwissSysMapper
             RoundsPlanned:        raw.Overview?.Rounds,
             HalfPointByesAllowed: raw.Overview?.HalfPointByes,
             AutoPublishPairings:  raw.Overview?.FreePairAutoPublishPairings,
-            AutoPublishResults:   raw.Overview?.FreePairAutoPublishResults);
+            AutoPublishResults:   raw.Overview?.FreePairAutoPublishResults,
+            LastPublishedAt:      ParseIsoTimestamp(raw.Overview?.FreePairLastPublishedAt));
+    }
+
+    /// <summary>
+    /// Parses an ISO-8601 timestamp safely. Returns <see langword="null"/>
+    /// on null / whitespace / invalid input so a corrupt or hand-edited
+    /// Overview block doesn't crash tournament load.
+    /// </summary>
+    private static System.DateTimeOffset? ParseIsoTimestamp(string? s)
+    {
+        if (string.IsNullOrWhiteSpace(s)) return null;
+        return System.DateTimeOffset.TryParse(
+            s,
+            System.Globalization.CultureInfo.InvariantCulture,
+            System.Globalization.DateTimeStyles.RoundtripKind,
+            out var t) ? t : null;
     }
 
     /// <summary>
