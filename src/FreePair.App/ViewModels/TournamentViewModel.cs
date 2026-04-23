@@ -37,6 +37,21 @@ public partial class TournamentViewModel : ViewModelBase
     [ObservableProperty]
     private IReadOnlyList<SectionViewModel> _sections = Array.Empty<SectionViewModel>();
 
+    /// <summary>
+    /// True when the right-pane should show the event-configuration
+    /// form instead of the selected section. Selecting a section from
+    /// the list clears this flag (see <see cref="OnSelectedSectionChanged"/>).
+    /// </summary>
+    [ObservableProperty]
+    private bool _isEventConfigSelected;
+
+    /// <summary>
+    /// Lazily-built view-model for the event-configuration tab. Null
+    /// when no tournament is loaded.
+    /// </summary>
+    [ObservableProperty]
+    private EventConfigViewModel? _eventConfig;
+
     [ObservableProperty]
     private string? _currentFilePath;
 
@@ -126,6 +141,46 @@ public partial class TournamentViewModel : ViewModelBase
     partial void OnTournamentChanged(Tournament? value)
     {
         RebuildSections();
+
+        // Rebuild the event-config VM to track the new tournament's
+        // identity (so its Reset pulls fresh values). Discarded when
+        // no tournament is loaded.
+        if (value is null)
+        {
+            EventConfig = null;
+            IsEventConfigSelected = false;
+        }
+        else if (EventConfig is null)
+        {
+            EventConfig = new EventConfigViewModel(
+                getTournament: () => Tournament!,
+                setTournament: t => Tournament = t);
+        }
+        else
+        {
+            EventConfig.Reset();
+        }
+    }
+
+    partial void OnSelectedSectionChanged(SectionViewModel? value)
+    {
+        // Picking a real section returns focus to the section pane.
+        if (value is not null)
+        {
+            IsEventConfigSelected = false;
+        }
+    }
+
+    /// <summary>
+    /// Switches the right pane to the event-configuration form.
+    /// No-op when no tournament is loaded.
+    /// </summary>
+    [CommunityToolkit.Mvvm.Input.RelayCommand]
+    private void ShowEventConfig()
+    {
+        if (Tournament is null) return;
+        EventConfig?.Reset();
+        IsEventConfigSelected = true;
     }
 
     /// <summary>
