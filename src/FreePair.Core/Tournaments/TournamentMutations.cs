@@ -41,7 +41,9 @@ public static class TournamentMutations
         Box<FreePair.Core.Tournaments.Enums.TimeControlType?>? timeControlType = null,
         Box<FreePair.Core.Tournaments.Enums.RatingType?>?      ratingType      = null,
         // extended
-        string? nachOrganizerId = null,
+        string? organizerId = null,
+        Box<FreePair.Core.Tournaments.Enums.UserIDType?>? organizerIdType = null,
+        string? organizerName = null,
         string? nachPasscode = null,
         System.DateTimeOffset? startDateTime = null,
         System.DateTimeOffset? endDateTime = null,
@@ -70,7 +72,9 @@ public static class TournamentMutations
             TimeControlType    = timeControlType is not null ? timeControlType.Value : tournament.TimeControlType,
             RatingType         = ratingType      is not null ? ratingType.Value      : tournament.RatingType,
 
-            NachOrganizerId    = nachOrganizerId ?? tournament.NachOrganizerId,
+            OrganizerId        = organizerId     ?? tournament.OrganizerId,
+            OrganizerIdType    = organizerIdType is not null ? organizerIdType.Value : tournament.OrganizerIdType,
+            OrganizerName      = organizerName   ?? tournament.OrganizerName,
             NachPasscode       = nachPasscode    ?? tournament.NachPasscode,
             StartDateTime      = startDateTime   ?? tournament.StartDateTime,
             EndDateTime        = endDateTime     ?? tournament.EndDateTime,

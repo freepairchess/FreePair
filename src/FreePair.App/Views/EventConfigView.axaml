@@ -95,14 +95,14 @@
             <!-- ============ Scheduling ============ -->
             <TextBlock Text="Scheduling" FontWeight="SemiBold" Margin="0,6,0,0"/>
             <Border Background="#F6F6F6" BorderBrush="LightGray" BorderThickness="1" CornerRadius="4" Padding="16">
-                <Grid ColumnDefinitions="160,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                <Grid ColumnDefinitions="160,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                     <Grid.Styles>
                         <Style Selector="TextBlock.label">
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="Margin" Value="0,6,12,6"/>
                             <Setter Property="FontWeight" Value="SemiBold"/>
                         </Style>
-                        <Style Selector="TextBox,NumericUpDown">
+                        <Style Selector="TextBox,NumericUpDown,ComboBox">
                             <Setter Property="Margin" Value="0,4"/>
                         </Style>
                     </Grid.Styles>
@@ -112,14 +112,27 @@
                     <NumericUpDown Grid.Row="1" Grid.Column="1" Value="{Binding HalfPointByesAllowed}" Minimum="0" Maximum="10" Increment="1" HorizontalAlignment="Left" MinWidth="140"/>
                     <TextBlock Grid.Row="2" Grid.Column="0" Classes="label" Text="Time zone"/>
                     <TextBox   Grid.Row="2" Grid.Column="1" Text="{Binding TimeZone}" Watermark="Windows id, e.g. Pacific Standard Time"/>
-                    <TextBlock Grid.Row="3" Grid.Column="0" Classes="label" Text="NACH organizer ID"/>
-                    <TextBox   Grid.Row="3" Grid.Column="1" Text="{Binding NachOrganizerId}"/>
+
+                    <!-- Organiser: three fields. ID + ID type are split so
+                         the TD can record whether this is a USCF affiliate,
+                         FIDE organiser, etc. (see UserIDType enum). -->
+                    <TextBlock Grid.Row="3" Grid.Column="0" Classes="label" Text="Organizer name"/>
+                    <TextBox   Grid.Row="3" Grid.Column="1" Text="{Binding OrganizerName}"/>
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Classes="label" Text="Organizer ID"/>
+                    <TextBox   Grid.Row="4" Grid.Column="1" Text="{Binding OrganizerId}" Watermark="e.g. A10034449"/>
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Classes="label" Text="Organizer ID type"/>
+                    <ComboBox  Grid.Row="5" Grid.Column="1"
+                               ItemsSource="{Binding AvailableOrganizerIdTypes}"
+                               SelectedItem="{Binding OrganizerIdType}"
+                               HorizontalAlignment="Stretch"/>
 
                     <!-- Passcode row: masked by default. The 'Show' toggle ToggleButton flips
                          PasswordChar to '\0' (rendered empty), unmasking the value in-place.
                          The value itself stays bound to NachPasscode regardless. -->
-                    <TextBlock Grid.Row="4" Grid.Column="0" Classes="label" Text="NACH passcode"/>
-                    <Grid      Grid.Row="4" Grid.Column="1" ColumnDefinitions="*,Auto">
+                    <TextBlock Grid.Row="6" Grid.Column="0" Classes="label" Text="NACH passcode"/>
+                    <Grid      Grid.Row="6" Grid.Column="1" ColumnDefinitions="*,Auto">
                         <TextBox Grid.Column="0"
                                  Text="{Binding NachPasscode}"
                                  PasswordChar="●"
@@ -134,8 +147,8 @@
                         </ToggleButton>
                     </Grid>
 
-                    <TextBlock Grid.Row="5" Grid.Column="0" Classes="label" Text="NACH event ID"/>
-                    <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding NachEventId}" VerticalAlignment="Center" Foreground="Gray" FontFamily="Consolas,monospace" FontSize="11"/>
+                    <TextBlock Grid.Row="7" Grid.Column="0" Classes="label" Text="NACH event ID"/>
+                    <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding NachEventId}" VerticalAlignment="Center" Foreground="Gray" FontFamily="Consolas,monospace" FontSize="11"/>
                 </Grid>
             </Border>
 

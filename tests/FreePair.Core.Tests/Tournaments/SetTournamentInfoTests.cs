@@ -174,7 +174,9 @@ public class SetTournamentInfoTests
         Assert.Equal(new DateOnly(2026, 4, 4),    t.StartDate);
         Assert.Equal(new DateOnly(2026, 4, 4),    t.EndDate);
 
-        Assert.Equal("A10034449",                 t.NachOrganizerId);
+        Assert.Equal("A10034449",                 t.OrganizerId);
+        Assert.Equal(FreePair.Core.Tournaments.Enums.UserIDType.USCFAffiliateID, t.OrganizerIdType);
+        Assert.Equal("Chess A2z",                 t.OrganizerName);
         Assert.Equal("0209be6f-6bea-4d55-819f-18b7c635ebe8", t.NachPasscode);
         Assert.Equal("Pacific Standard Time",     t.TimeZone);
 
@@ -233,7 +235,9 @@ public class SetTournamentInfoTests
                 pairingRule:          new Box<PairingRule?>(PairingRule.RR),
                 timeControlType:      new Box<TimeControlType?>(TimeControlType.Classical),
                 ratingType:           new Box<RatingType?>(RatingType.USCF_FIDE),
-                nachOrganizerId:      "B99999999",
+                organizerId:          "B99999999",
+                organizerIdType:      new Box<UserIDType?>(UserIDType.FIDEOrganizerID),
+                organizerName:        "Renamed Org",
                 nachPasscode:         "new-secret-passcode",
                 timeZone:             "Eastern Standard Time",
                 roundsPlanned:        7,
@@ -261,7 +265,9 @@ public class SetTournamentInfoTests
             Assert.Equal(TimeControlType.Classical,  t2.TimeControlType);
             Assert.Equal(RatingType.USCF_FIDE,       t2.RatingType);
 
-            Assert.Equal("B99999999",            t2.NachOrganizerId);
+            Assert.Equal("B99999999",            t2.OrganizerId);
+            Assert.Equal(UserIDType.FIDEOrganizerID, t2.OrganizerIdType);
+            Assert.Equal("Renamed Org",          t2.OrganizerName);
             Assert.Equal("Eastern Standard Time", t2.TimeZone);
             Assert.Equal(7, t2.RoundsPlanned);
             Assert.Equal(3, t2.HalfPointByesAllowed);

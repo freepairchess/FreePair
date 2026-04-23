@@ -38,8 +38,22 @@ public sealed class RawOverview
 
     // ==== Extended NAChessHub metadata (added 2026) =====================
 
-    [JsonPropertyName("NACH organizer ID")]
-    public string? NachOrganizerId { get; set; }
+    /// <summary>
+    /// NAChessHub organiser identifier. Renamed from
+    /// <c>"NACH organizer ID"</c> to <c>"Organizer ID"</c> in SwissSys
+    /// 11.34 — the value is still the same kind of opaque id string.
+    /// </summary>
+    [JsonPropertyName("Organizer ID")]
+    public string? OrganizerId { get; set; }
+
+    /// <summary>Kind of id stored in <see cref="OrganizerId"/>.</summary>
+    [JsonPropertyName("Organizer ID Type")]
+    [JsonConverter(typeof(JsonStringEnumConverter<UserIDType>))]
+    public UserIDType? OrganizerIdType { get; set; }
+
+    /// <summary>Display name for the organiser.</summary>
+    [JsonPropertyName("Organizer Name")]
+    public string? OrganizerName { get; set; }
 
     [JsonPropertyName("Starting date time")]
     public string? StartingDateTime { get; set; }

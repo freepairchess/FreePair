@@ -40,7 +40,9 @@ public sealed partial class EventConfigViewModel : ViewModelBase
     // ============ scheduling / counts ============
     [ObservableProperty] private int? _roundsPlanned;
     [ObservableProperty] private int? _halfPointByesAllowed;
-    [ObservableProperty] private string? _nachOrganizerId;
+    [ObservableProperty] private string? _organizerId;
+    [ObservableProperty] private FreePair.Core.Tournaments.Enums.UserIDType? _organizerIdType;
+    [ObservableProperty] private string? _organizerName;
     [ObservableProperty] private string? _nachPasscode;
 
     /// <summary>
@@ -86,6 +88,19 @@ public sealed partial class EventConfigViewModel : ViewModelBase
         FreePair.Core.Tournaments.Enums.TimeControlType.Bullet, FreePair.Core.Tournaments.Enums.TimeControlType.Blitz,
         FreePair.Core.Tournaments.Enums.TimeControlType.Rapid,  FreePair.Core.Tournaments.Enums.TimeControlType.RapidAndClassical,
         FreePair.Core.Tournaments.Enums.TimeControlType.Classical, FreePair.Core.Tournaments.Enums.TimeControlType.Other,
+    };
+
+    public UserIDType?[] AvailableOrganizerIdTypes { get; } = new UserIDType?[]
+    {
+        null,
+        FreePair.Core.Tournaments.Enums.UserIDType.USCFID,
+        FreePair.Core.Tournaments.Enums.UserIDType.FIDEID,
+        FreePair.Core.Tournaments.Enums.UserIDType.CFCID,
+        FreePair.Core.Tournaments.Enums.UserIDType.USCFAffiliateID,
+        FreePair.Core.Tournaments.Enums.UserIDType.FIDEOrganizerID,
+        FreePair.Core.Tournaments.Enums.UserIDType.CFCOrganizerID,
+        FreePair.Core.Tournaments.Enums.UserIDType.Local,
+        FreePair.Core.Tournaments.Enums.UserIDType.Other,
     };
 
     public RatingType?[] AvailableRatingTypes { get; } = new RatingType?[]
@@ -143,7 +158,9 @@ public sealed partial class EventConfigViewModel : ViewModelBase
 
         RoundsPlanned        = t.RoundsPlanned;
         HalfPointByesAllowed = t.HalfPointByesAllowed;
-        NachOrganizerId      = t.NachOrganizerId;
+        OrganizerId          = t.OrganizerId;
+        OrganizerIdType      = t.OrganizerIdType;
+        OrganizerName        = t.OrganizerName;
         NachPasscode         = t.NachPasscode;
         ShowNachPasscode     = false;  // always reset to masked on reload
         TimeZone             = t.TimeZone;
@@ -174,7 +191,10 @@ public sealed partial class EventConfigViewModel : ViewModelBase
             timeControlType: new Box<TimeControlType?>(TimeControlType),
             ratingType:      new Box<RatingType?>(RatingType),
 
-            nachOrganizerId:      NachOrganizerId,
+            organizerId:          OrganizerId,
+            organizerIdType:      new Box<FreePair.Core.Tournaments.Enums.UserIDType?>(OrganizerIdType),
+            organizerName:        OrganizerName,
+            nachPasscode:         NachPasscode,
             timeZone:             TimeZone,
             roundsPlanned:        RoundsPlanned,
             halfPointByesAllowed: HalfPointByesAllowed);

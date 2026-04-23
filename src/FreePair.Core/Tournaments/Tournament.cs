@@ -20,8 +20,16 @@ public sealed record Tournament(
 
     // ============= extended NAChessHub metadata =============
 
-    /// <summary>NAChessHub organiser GUID / id string.</summary>
-    string? NachOrganizerId = null,
+    /// <summary>
+    /// Organiser identifier as recorded in the SwissSys Overview
+    /// (renamed from the earlier <c>"NACH organizer ID"</c> to
+    /// <c>"Organizer ID"</c> in SwissSys 11.34).
+    /// </summary>
+    string? OrganizerId = null,
+    /// <summary>Kind of id stored in <see cref="OrganizerId"/>.</summary>
+    Enums.UserIDType? OrganizerIdType = null,
+    /// <summary>Organiser display name.</summary>
+    string? OrganizerName = null,
 
     /// <summary>NAChessHub passcode (secret). Handled as a password
     /// field in the UI — round-tripped as-is through SwissSys.</summary>

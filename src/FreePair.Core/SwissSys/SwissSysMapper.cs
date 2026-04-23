@@ -33,7 +33,9 @@ public static class SwissSysMapper
             NachEventId: raw.Overview?.NachEventId,
             Sections: sections,
 
-            NachOrganizerId: raw.Overview?.NachOrganizerId,
+            OrganizerId:     raw.Overview?.OrganizerId,
+            OrganizerIdType: raw.Overview?.OrganizerIdType,
+            OrganizerName:   raw.Overview?.OrganizerName,
             NachPasscode:    raw.Overview?.NachPasscode,
             StartDateTime:   ParseIsoDateTime(raw.Overview?.StartingDateTime),
             EndDateTime:     ParseIsoDateTime(raw.Overview?.EndingDateTime),

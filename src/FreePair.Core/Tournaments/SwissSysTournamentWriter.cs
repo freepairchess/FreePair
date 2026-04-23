@@ -113,7 +113,9 @@ public class SwissSysTournamentWriter : ITournamentWriter
         SetIfSet(overview, "Starting date time",       t.StartDateTime?.ToString("yyyy-MM-ddTHH:mm:ss"));
         SetIfSet(overview, "Ending date time",         t.EndDateTime?.ToString("yyyy-MM-ddTHH:mm:ss"));
         SetIfSet(overview, "Time zone",                t.TimeZone);
-        SetIfSet(overview, "NACH organizer ID",        t.NachOrganizerId);
+        SetIfSet(overview, "Organizer ID",             t.OrganizerId);
+        SetIfSet(overview, "Organizer ID Type",        t.OrganizerIdType?.ToString());
+        SetIfSet(overview, "Organizer Name",           t.OrganizerName);
         SetIfSet(overview, "NACH passcode",            t.NachPasscode);
 
         SetIfSet(overview, "Event address",            t.EventAddress);
