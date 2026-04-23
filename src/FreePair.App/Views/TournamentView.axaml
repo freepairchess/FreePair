@@ -163,6 +163,28 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="vm:SectionViewModel">
                                 <StackPanel Spacing="2" Margin="0,4">
+                                    <!-- Right-click the tab for the same
+                                         lifecycle actions that are available
+                                         on the section view itself. Each
+                                         MenuItem is visible only for the
+                                         state it applies to, so the menu
+                                         never shows both Soft-delete and
+                                         Undelete at once. -->
+                                    <StackPanel.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="🗑 Delete section…"
+                                                      Command="{Binding SoftDeleteSectionCommand}"
+                                                      IsVisible="{Binding IsLive}"/>
+                                            <MenuItem Header="Undelete"
+                                                      Command="{Binding UndeleteSectionCommand}"
+                                                      IsVisible="{Binding IsSoftDeleted}"/>
+                                            <MenuItem Header="Permanently delete…"
+                                                      Command="{Binding HardDeleteSectionCommand}"
+                                                      IsVisible="{Binding IsSoftDeleted}"
+                                                      Foreground="DarkRed"/>
+                                        </ContextMenu>
+                                    </StackPanel.ContextMenu>
+
                                     <!-- Soft-deleted sections are rendered
                                          strike-through + gray and gain a
                                          "[deleted]" suffix so the TD can

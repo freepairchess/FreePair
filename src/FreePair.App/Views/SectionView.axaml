@@ -99,6 +99,34 @@
                         <TextBlock Grid.Row="6" Grid.Column="0" Text="Requested byes" Foreground="Gray"/>
                         <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding RequestedByeCount}"/>
                     </Grid>
+
+                    <!-- Section-level danger zone. Only the soft-delete
+                         entry point lives here; Undelete / Permanently
+                         delete… surface in the yellow banner at the top
+                         of the section view once the section is
+                         soft-deleted. Hidden when the section is already
+                         soft-deleted so the two affordances don't
+                         duplicate each other. -->
+                    <Border Margin="0,16,0,0"
+                            Padding="12,8"
+                            CornerRadius="4"
+                            BorderBrush="#E0D0D0"
+                            BorderThickness="1"
+                            IsVisible="{Binding IsLive}">
+                        <DockPanel LastChildFill="True">
+                            <Button DockPanel.Dock="Right"
+                                    Content="🗑 Delete section…"
+                                    Command="{Binding SoftDeleteSectionCommand}"
+                                    Foreground="DarkRed"
+                                    VerticalAlignment="Center"
+                                    ToolTip.Tip="Soft-delete this section. Locks it against edits and excludes it from published results. Reversible via the Undelete button that appears afterwards."/>
+                            <StackPanel Spacing="2" VerticalAlignment="Center">
+                                <TextBlock Text="Danger zone" FontWeight="SemiBold" Foreground="DarkRed"/>
+                                <TextBlock Foreground="Gray" FontSize="11" TextWrapping="Wrap"
+                                           Text="Soft-delete locks the section against edits and hides it from published results. Data is preserved and can be restored. Permanent deletion is available afterwards from the yellow banner."/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
                 </StackPanel>
             </TabItem>
 
@@ -356,15 +384,6 @@
                                 Click="OnPrintPairingsPdf"
                                 IsEnabled="{Binding HasSelectedRound}"
                                 ToolTip.Tip="Export the selected round's pairings as a PDF."/>
-                        <!-- Soft-delete entry point. Hidden once the section
-                             is already soft-deleted (banner above takes over).
-                             Uses a confirm prompt in the parent VM; the
-                             action is reversible via the banner's Undelete. -->
-                        <Button Content="🗑 Delete section…"
-                                Command="{Binding SoftDeleteSectionCommand}"
-                                IsVisible="{Binding IsLive}"
-                                Foreground="DarkRed"
-                                ToolTip.Tip="Soft-delete this section. Locks it against edits and excludes it from published results; reversible via the Undelete button that appears afterwards."/>
                         <TextBlock Text="{Binding PairNextRoundBlockReason}"
                                    Foreground="DimGray"
                                    FontSize="11"
