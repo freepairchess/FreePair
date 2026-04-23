@@ -35,19 +35,27 @@
                     Foreground="White"/>
         </StackPanel>
 
-        <!-- Inline status message -->
+        <!-- Inline status message. Green on success, red on failure.
+             StatusIsError gets projected through the Classes collection
+             (set in code-behind on property change) so we can swap the
+             Border + TextBlock colours via a Classes selector. -->
         <Border DockPanel.Dock="Bottom"
+                x:Name="StatusBanner"
                 Margin="0,8,0,0"
                 Padding="10,6"
                 CornerRadius="4"
                 BorderThickness="1"
+                Background="#E8F5E9"
+                BorderBrush="#A5D6A7"
                 IsVisible="{Binding HasStatusMessage}">
             <Border.Styles>
-                <Style Selector="Border">
-                    <Setter Property="Background" Value="#E8F5E9"/>
-                    <Setter Property="BorderBrush" Value="#A5D6A7"/>
+                <Style Selector="Border.error">
+                    <Setter Property="Background"  Value="#FDECEA"/>
+                    <Setter Property="BorderBrush" Value="#F5A39A"/>
                 </Style>
-                <!-- When StatusIsError=true, the trigger below re-tints the border red. -->
+                <Style Selector="Border.error TextBlock">
+                    <Setter Property="Foreground" Value="#7A1B10"/>
+                </Style>
             </Border.Styles>
             <TextBlock Text="{Binding StatusMessage}" FontSize="12" TextWrapping="Wrap"/>
         </Border>

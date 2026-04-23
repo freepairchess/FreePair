@@ -51,14 +51,25 @@ public sealed class NaChessHubPublishingClient : IPublishingClient
         }
 
         var root = baseUrl.TrimEnd('/');
-        var url  = $"{root}/api/EventFilesAPI";
+        // The server signature is
+        //   PostEventFile(string eventId, string eventFileUploadPasscode,
+        //                 FileType fileType, [FromForm]IFormFile file)
+        // Only `file` is [FromForm]-decorated. ASP.NET Core's default
+        // model binder routes un-decorated simple-type parameters
+        // through route → query → body — so sending the three strings
+        // as query-string parameters and `file` as a single multipart
+        // part is the most compatible wire format. We observed a 400
+        // ("No event matching the Event ID  is found" — note the
+        // missing id) when everything was a multipart field because
+        // the string values never reached the controller parameters.
+        var q = $"?eventId={Uri.EscapeDataString(eventId)}"
+              + $"&eventFileUploadPasscode={Uri.EscapeDataString(passcode)}"
+              + $"&fileType={(int)fileType}";
+        var url = $"{root}/api/EventFilesAPI{q}";
 
         try
         {
             using var form = new MultipartFormDataContent();
-            form.Add(new StringContent(eventId),          "eventId");
-            form.Add(new StringContent(passcode),         "eventFileUploadPasscode");
-            form.Add(new StringContent(((int)fileType).ToString()), "fileType");
 
             await using var fileStream = File.OpenRead(filePath);
             var fileContent = new StreamContent(fileStream);

@@ -45,7 +45,7 @@ public class NaChessHubPublishingClientTests
     }
 
     [Fact]
-    public async Task PublishAsync_posts_to_api_EventFilesAPI_with_multipart_fields()
+    public async Task PublishAsync_sends_eventId_passcode_fileType_as_query_and_file_as_multipart()
     {
         var handler = new CapturingHandler();
         var client  = new NaChessHubPublishingClient(new HttpClient(handler));
@@ -64,27 +64,23 @@ public class NaChessHubPublishingClientTests
             Assert.Equal(200, result.HttpStatusCode);
             Assert.Equal("42", result.ServerFileId);
 
+            // ASP.NET Core without [FromForm] on the string parameters
+            // prefers query-string for simple types; sending them in
+            // the URL means the server's model binder always picks
+            // them up regardless of attribute policy.
             Assert.NotNull(handler.LastRequest);
             Assert.Equal(HttpMethod.Post, handler.LastRequest!.Method);
-            Assert.Equal("https://nachesshub.com/api/EventFilesAPI",
-                handler.LastRequest.RequestUri!.ToString());
+            var uri = handler.LastRequest.RequestUri!.ToString();
+            Assert.StartsWith("https://nachesshub.com/api/EventFilesAPI?", uri);
+            Assert.Contains("eventId=evt-123",                     uri);
+            Assert.Contains("eventFileUploadPasscode=secret-pass", uri);
+            Assert.Contains("fileType=10",                         uri);
 
-            // Multipart body must contain all four fields. We don't
-            // assert the exact Content-Disposition header formatting
-            // (name="foo" vs. name=foo) because that's an .NET impl
-            // detail — instead we check that every field name AND
-            // every field value is present in the body somewhere.
+            // File still travels as the single multipart part.
             Assert.NotNull(handler.LastRequestBody);
             var body = handler.LastRequestBody!;
-            Assert.Contains("eventId",                 body);
-            Assert.Contains("evt-123",                 body);
-            Assert.Contains("eventFileUploadPasscode", body);
-            Assert.Contains("secret-pass",             body);
-            Assert.Contains("fileType",                body);
-            // SwissSys11SJson = 10 — sent as an int.
-            Assert.Contains("10",                      body);
-            // The file part's filename is the temp filename we wrote.
-            Assert.Contains(Path.GetFileName(tmp),     body);
+            Assert.Contains("file",                     body);
+            Assert.Contains(Path.GetFileName(tmp),      body);
         }
         finally
         {
@@ -102,7 +98,7 @@ public class NaChessHubPublishingClientTests
         try
         {
             await client.PublishAsync("https://nachesshub.com/", "e", "p", FileType.Pairing, tmp);
-            Assert.Equal("https://nachesshub.com/api/EventFilesAPI",
+            Assert.StartsWith("https://nachesshub.com/api/EventFilesAPI?",
                 handler.LastRequest!.RequestUri!.ToString());
         }
         finally { File.Delete(tmp); }
