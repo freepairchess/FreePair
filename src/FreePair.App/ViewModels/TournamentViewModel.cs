@@ -334,6 +334,7 @@ public partial class TournamentViewModel : ViewModelBase
 
     private void AttachSectionEvents(SectionViewModel vm)
     {
+        vm.ParentTournamentVm = this;
         vm.ResultChanged += OnSectionResultChanged;
         vm.PairNextRoundRequested += OnSectionPairNextRoundAsync;
         vm.DeleteLastRoundRequested += OnSectionDeleteLastRoundAsync;
@@ -343,6 +344,7 @@ public partial class TournamentViewModel : ViewModelBase
     {
         foreach (var vm in Sections)
         {
+            vm.ParentTournamentVm = null;
             vm.ResultChanged -= OnSectionResultChanged;
             vm.PairNextRoundRequested -= OnSectionPairNextRoundAsync;
             vm.DeleteLastRoundRequested -= OnSectionDeleteLastRoundAsync;

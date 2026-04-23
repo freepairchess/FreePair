@@ -157,6 +157,7 @@ public partial class SectionViewModel : ViewModelBase
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentRoundPairings))]
     [NotifyPropertyChangedFor(nameof(CurrentRoundByes))]
+    [NotifyPropertyChangedFor(nameof(FilteredPairings))]
     [NotifyPropertyChangedFor(nameof(HasSelectedRound))]
     [NotifyPropertyChangedFor(nameof(CanPairNextRound))]
     [NotifyPropertyChangedFor(nameof(PairNextRoundBlockReason))]
@@ -241,8 +242,16 @@ public partial class SectionViewModel : ViewModelBase
     /// <summary>Underlying domain section.</summary>
     public Section Section { get; }
 
-    /// <summary>Active score formatter used to project display strings.</summary>
     public IScoreFormatter Formatter { get; }
+
+    /// <summary>
+    /// Reference back to the hosting <see cref="TournamentViewModel"/>
+    /// so code-behind for SectionView can reach the tournament snapshot
+    /// (e.g. PDF export of reports that span the whole event header).
+    /// Set by <see cref="TournamentViewModel.AttachSectionEvents"/>;
+    /// null in isolated tests / design-time.
+    /// </summary>
+    public TournamentViewModel? ParentTournamentVm { get; internal set; }
 
     public string Name => Section.Name;
 
@@ -327,6 +336,99 @@ public partial class SectionViewModel : ViewModelBase
     private static bool ContainsCI(string? haystack, string needle) =>
         !string.IsNullOrEmpty(haystack)
         && haystack.Contains(needle, StringComparison.OrdinalIgnoreCase);
+
+    // =================== Pairings / Standings / Wall-Chart / Byes filters ===================
+
+    /// <summary>
+    /// Case-insensitive filter for the Pairings tab DataGrid. Matches
+    /// against board number, white/black pair numbers and names. Empty
+    /// shows every board for the selected round.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(FilteredPairings))]
+    private string _pairingFilter = string.Empty;
+
+    /// <summary>Filtered projection of <see cref="CurrentRoundPairings"/>.</summary>
+    public IReadOnlyList<PairingRow> FilteredPairings
+    {
+        get
+        {
+            var needle = (PairingFilter ?? string.Empty).Trim();
+            var rows = CurrentRoundPairings;
+            if (needle.Length == 0) return rows;
+            return rows
+                .Where(p => p.Board.ToString().Contains(needle, StringComparison.Ordinal)
+                         || p.WhitePair.ToString().Contains(needle, StringComparison.Ordinal)
+                         || p.BlackPair.ToString().Contains(needle, StringComparison.Ordinal)
+                         || ContainsCI(p.WhiteName, needle)
+                         || ContainsCI(p.BlackName, needle))
+                .ToArray();
+        }
+    }
+
+    /// <summary>Filter text for the Standings tab.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(FilteredStandings))]
+    private string _standingsFilter = string.Empty;
+
+    /// <summary>Filtered projection of <see cref="StandingsDisplay"/>.</summary>
+    public IReadOnlyList<StandingsDisplayRow> FilteredStandings
+    {
+        get
+        {
+            var needle = (StandingsFilter ?? string.Empty).Trim();
+            if (needle.Length == 0) return StandingsDisplay;
+            return StandingsDisplay
+                .Where(r => ContainsCI(r.Row.Name, needle)
+                         || r.Row.PairNumber.ToString().Contains(needle, StringComparison.Ordinal)
+                         || ContainsCI(r.Row.Place, needle)
+                         || r.Row.Rating.ToString().Contains(needle, StringComparison.Ordinal))
+                .ToArray();
+        }
+    }
+
+    /// <summary>Filter text for the Wall Chart tab.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(FilteredWallChart))]
+    private string _wallChartFilter = string.Empty;
+
+    /// <summary>Filtered projection of <see cref="WallChartDisplay"/>.</summary>
+    public IReadOnlyList<WallChartDisplayRow> FilteredWallChart
+    {
+        get
+        {
+            var needle = (WallChartFilter ?? string.Empty).Trim();
+            if (needle.Length == 0) return WallChartDisplay;
+            return WallChartDisplay
+                .Where(r => ContainsCI(r.Row.Name, needle)
+                         || r.Row.PairNumber.ToString().Contains(needle, StringComparison.Ordinal)
+                         || ContainsCI(r.Row.Club, needle)
+                         || ContainsCI(r.Row.State, needle)
+                         || ContainsCI(r.Row.Team, needle))
+                .ToArray();
+        }
+    }
+
+    /// <summary>Filter text for the Byes &amp; Withdrawals tab.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(FilteredAllByes))]
+    private string _byesFilter = string.Empty;
+
+    /// <summary>Filtered projection of <see cref="AllByes"/>.</summary>
+    public IReadOnlyList<ByeRow> FilteredAllByes
+    {
+        get
+        {
+            var needle = (ByesFilter ?? string.Empty).Trim();
+            if (needle.Length == 0) return AllByes;
+            return AllByes
+                .Where(b => ContainsCI(b.Name, needle)
+                         || b.PairNumber.ToString().Contains(needle, StringComparison.Ordinal)
+                         || b.Round.ToString().Contains(needle, StringComparison.Ordinal)
+                         || b.Kind.ToString().Contains(needle, StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+        }
+    }
 
     public IReadOnlyList<ByeRow> AllByes { get; }
 
