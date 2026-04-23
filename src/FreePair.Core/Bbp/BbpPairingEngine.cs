@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FreePair.Core.Tournaments;
+using FreePair.Core.Tournaments.Constraints;
 using FreePair.Core.Trf;
 
 namespace FreePair.Core.Bbp;
@@ -33,11 +36,16 @@ public class BbpPairingEngine : IBbpPairingEngine
         string? executablePath,
         Tournament tournament,
         Section section,
-        InitialColor initialColor = InitialColor.White,
+        InitialColor? initialColor = null,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(tournament);
         ArgumentNullException.ThrowIfNull(section);
+
+        // Fall back to the section's own initial colour (loaded from
+        // SwissSys's per-section "Coin toss" field) when the caller
+        // doesn't supply an explicit override.
+        var effectiveInitialColor = initialColor ?? section.InitialColor;
 
         if (string.IsNullOrWhiteSpace(executablePath) || !File.Exists(executablePath))
         {
@@ -49,11 +57,24 @@ public class BbpPairingEngine : IBbpPairingEngine
         var pairingsPath = Path.Combine(Path.GetTempPath(),
             $"freepair-{Guid.NewGuid():N}.pairings.txt");
 
+        // The round BBP is about to pair — one past the completed ones.
+        // Used to pre-flag requested-bye players in the TRF so BBP honours
+        // them instead of pairing them.
+        var pairingRound = section.RoundsPlayed + 1;
+
+        // Pair numbers whose RequestedByeRounds contain the upcoming
+        // round. We pass this back in the result so AppendRound can
+        // stamp a HalfPointBye history entry for them.
+        var requestedHalfByes = section.Players
+            .Where(p => p.RequestedByeRounds.Contains(pairingRound))
+            .Select(p => p.PairNumber)
+            .ToArray();
+
         try
         {
             await using (var writer = new StreamWriter(trfPath, append: false, Encoding.ASCII))
             {
-                TrfWriter.Write(tournament, section, writer, initialColor);
+                TrfWriter.Write(tournament, section, writer, effectiveInitialColor, pairingRound);
             }
 
             var psi = new ProcessStartInfo
@@ -64,10 +85,10 @@ public class BbpPairingEngine : IBbpPairingEngine
                 UseShellExecute = false,
                 CreateNoWindow = true,
             };
-            psi.ArgumentList.Add("--dutch");
-            psi.ArgumentList.Add(trfPath);
-            psi.ArgumentList.Add("-p");
-            psi.ArgumentList.Add(pairingsPath);
+            foreach (var arg in BuildArguments(section, trfPath, pairingsPath))
+            {
+                psi.ArgumentList.Add(arg);
+            }
 
             using var process = new Process { StartInfo = psi };
             process.Start();
@@ -113,13 +134,62 @@ public class BbpPairingEngine : IBbpPairingEngine
 
             var text = await File.ReadAllTextAsync(pairingsPath, cancellationToken)
                 .ConfigureAwait(false);
-            return BbpPairingsParser.Parse(text);
+            var parsed = BbpPairingsParser.Parse(text);
+
+            // Prepend any forced pairings for this round in front of
+            // BBP's output. The affected players were withheld from
+            // the TRF (see TrfWriter.Write), so the two result lists
+            // are disjoint.
+            var forcedForRound = section.ForcedPairs
+                .Where(f => f.Round == pairingRound)
+                .Select(f => new BbpPairing(f.WhitePair, f.BlackPair))
+                .ToArray();
+            var combined = forcedForRound.Length == 0
+                ? parsed.Pairings
+                : forcedForRound.Concat(parsed.Pairings).ToArray();
+
+            // Post-process BBP's output through the TD-configured
+            // constraint set (same-team / same-club / do-not-pair).
+            // Swaps happen inside same-score groups and never change
+            // colours, so Swiss quality is preserved. Unresolvable
+            // conflicts are returned alongside the (possibly) swapped
+            // pairings so the TD can surface them in the UI.
+            var resolved = PairingSwapper.Apply(
+                combined,
+                section,
+                BuildConstraints(section));
+
+            // Merge the requested-bye pair numbers into the result so
+            // the caller (TournamentMutations.AppendRound) records the
+            // HalfPointBye history entry for those players.
+            return new BbpPairingResult(
+                resolved.Pairings,
+                parsed.ByePlayerPairs,
+                HalfPointByePlayerPairs: requestedHalfByes,
+                UnresolvedConflicts: resolved.UnresolvedConflicts);
         }
         finally
         {
             TryDelete(trfPath);
             TryDelete(pairingsPath);
         }
+    }
+
+    /// <summary>
+    /// Assembles the section-specific list of active pairing
+    /// constraints from <see cref="Section.AvoidSameTeam"/>,
+    /// <see cref="Section.AvoidSameClub"/>, and
+    /// <see cref="Section.DoNotPairs"/>. Exposed as <c>internal</c>
+    /// so tests can assert which constraints light up for a given
+    /// section configuration.
+    /// </summary>
+    internal static IReadOnlyList<IPairingConstraint> BuildConstraints(Section section)
+    {
+        var list = new List<IPairingConstraint>();
+        if (section.AvoidSameTeam) list.Add(new SameTeamConstraint());
+        if (section.AvoidSameClub) list.Add(new SameClubConstraint());
+        if (section.DoNotPairs.Count > 0) list.Add(new DoNotPairConstraint(section.DoNotPairs));
+        return list;
     }
 
     private static void TryDelete(string path)
@@ -135,5 +205,35 @@ public class BbpPairingEngine : IBbpPairingEngine
         {
             // Best effort — don't mask the real exception.
         }
+    }
+
+    /// <summary>
+    /// Builds the bbpPairings command-line arguments for
+    /// <paramref name="section"/>. Exposed as <c>internal</c> so tests
+    /// can assert flag decisions without spawning a subprocess.
+    /// </summary>
+    /// <remarks>
+    /// Emits <c>--dutch</c> by default. When
+    /// <see cref="Tournaments.Section.UseAcceleration"/> is true, also
+    /// emits <c>--baku</c> — bbpPairings' FIDE Baku-style
+    /// acceleration, the same technique SwissSys applies for its
+    /// "Acceleration" section setting. Accelerated pairings give the
+    /// top half a virtual score bump in early rounds so a large field
+    /// splits correctly in a short Swiss.
+    /// </remarks>
+    internal static IReadOnlyList<string> BuildArguments(
+        Tournaments.Section section,
+        string trfPath,
+        string pairingsPath)
+    {
+        var args = new List<string> { "--dutch" };
+        if (section.UseAcceleration)
+        {
+            args.Add("--baku");
+        }
+        args.Add(trfPath);
+        args.Add("-p");
+        args.Add(pairingsPath);
+        return args;
     }
 }

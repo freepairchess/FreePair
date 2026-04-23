@@ -133,8 +133,34 @@ public class TournamentMutationsTests
     }
 
     [Fact]
-    public async Task IsRoundComplete_reflects_result_state()
+    public async Task AppendRound_awards_half_point_bye_for_HalfPointByePlayerPairs()
     {
+        // Requested ½-pt bye: the player was pre-flagged (via a TRF 'H'
+        // cell) before BBP ran, so BBP didn't pair them. TournamentMutations
+        // must still stamp a HalfPointBye history entry so standings /
+        // wall chart reflect the ½ point.
+        var t = await LoadAsync();
+
+        var bbpResult = new BbpPairingResult(
+            System.Array.Empty<BbpPairing>(),
+            ByePlayerPairs: System.Array.Empty<int>(),
+            HalfPointByePlayerPairs: new[] { 7 });
+
+        var updated = TournamentMutations.AppendRound(t, "Open I", bbpResult);
+        var pair7 = updated.Sections.Single(s => s.Name == "Open I")
+            .Players.Single(p => p.PairNumber == 7);
+
+        Assert.Equal(RoundResultKind.HalfPointBye, pair7.History[3].Kind);
+        Assert.Equal(0.5m, pair7.History[3].Score);
+
+        // New round's bye assignments expose it too.
+        var newRound = updated.Sections.Single(s => s.Name == "Open I")
+            .Rounds.Last();
+        Assert.Contains(newRound.Byes, b => b.PlayerPair == 7 && b.Kind == ByeKind.Half);
+    }
+
+    [Fact]
+    public async Task IsRoundComplete_reflects_result_state()    {
         var t = await LoadAsync();
         var openI = t.Sections.Single(s => s.Name == "Open I");
 
@@ -142,6 +168,61 @@ public class TournamentMutationsTests
         Assert.True(TournamentMutations.IsRoundComplete(openI, 1));
         Assert.True(TournamentMutations.IsRoundComplete(openI, 2));
         Assert.True(TournamentMutations.IsRoundComplete(openI, 3));
+    }
+
+    [Fact]
+    public async Task SetPlayerWithdrawn_toggles_the_flag_and_is_idempotent()
+    {
+        var t = await LoadAsync();
+
+        var withdrawn = TournamentMutations.SetPlayerWithdrawn(t, "Open I", pairNumber: 3, withdrawn: true);
+        var p3 = withdrawn.Sections.Single(s => s.Name == "Open I")
+            .Players.Single(p => p.PairNumber == 3);
+        Assert.True(p3.Withdrawn);
+
+        // Calling again with the same value is a no-op (returns the same instance).
+        var again = TournamentMutations.SetPlayerWithdrawn(withdrawn, "Open I", 3, true);
+        Assert.Same(withdrawn, again);
+
+        var reactivated = TournamentMutations.SetPlayerWithdrawn(withdrawn, "Open I", 3, false);
+        var p3b = reactivated.Sections.Single(s => s.Name == "Open I")
+            .Players.Single(p => p.PairNumber == 3);
+        Assert.False(p3b.Withdrawn);
+    }
+
+    [Fact]
+    public async Task AppendRound_does_not_extend_history_of_withdrawn_players()
+    {
+        var t = await LoadAsync();
+        // Withdraw pair #5 after round 3; the section then pairs round 4.
+        t = TournamentMutations.SetPlayerWithdrawn(t, "Open I", pairNumber: 5, withdrawn: true);
+
+        // Simulate BBP returning a round-4 pairing that does NOT include
+        // pair #5 (BBP would have seen them absent from the TRF).
+        var bbpResult = new BbpPairingResult(
+            new[]
+            {
+                new BbpPairing(1, 2), new BbpPairing(3, 4),
+                new BbpPairing(7, 8), new BbpPairing(9, 10),
+                new BbpPairing(11, 12), new BbpPairing(13, 14),
+                new BbpPairing(15, 16),
+            },
+            System.Array.Empty<int>());
+
+        var before = t.Sections.Single(s => s.Name == "Open I")
+            .Players.Single(p => p.PairNumber == 5).History.Count;
+
+        var updated = TournamentMutations.AppendRound(t, "Open I", bbpResult);
+        var pair5After = updated.Sections.Single(s => s.Name == "Open I")
+            .Players.Single(p => p.PairNumber == 5);
+        var pair1After = updated.Sections.Single(s => s.Name == "Open I")
+            .Players.Single(p => p.PairNumber == 1);
+
+        // Withdrawn player: history unchanged.
+        Assert.Equal(before, pair5After.History.Count);
+
+        // Active player: one more entry.
+        Assert.Equal(before + 1, pair1After.History.Count);
     }
 
     [Fact]

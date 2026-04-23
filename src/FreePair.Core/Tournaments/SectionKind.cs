@@ -11,4 +11,10 @@ public enum SectionKind
 
     /// <summary>Swiss-system (default).</summary>
     Swiss = 0,
+
+    /// <summary>
+    /// Round-robin (all-play-all). Pairings are generated deterministically
+    /// by <see cref="RoundRobinScheduler"/> rather than BBP.
+    /// </summary>
+    RoundRobin = 1,
 }

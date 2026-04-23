@@ -37,19 +37,43 @@ public static class TrfWriter
     /// as the <c>XXC</c> TRF directive). Required by pairing engines to seed
     /// colour allocation; ignored by engines once history exists.
     /// </param>
+    /// <param name="pairingRound">
+    /// The round number <em>about to be paired</em>. When set, every
+    /// player with that round in their <see cref="Tournaments.Player.RequestedByeRounds"/>
+    /// gets an extra round cell at that position carrying <c>0000 - H</c>
+    /// — bbpPairings honours the pre-set half-point bye and excludes the
+    /// player from round-N pairing. Pass <c>null</c> to suppress
+    /// requested-bye handling (useful for TRF exports that aren't feeding
+    /// a round of pairings).
+    /// </param>
     public static void Write(
         Tournaments.Tournament tournament,
         Tournaments.Section section,
         TextWriter writer,
-        InitialColor initialColor = InitialColor.White)
+        InitialColor initialColor = InitialColor.White,
+        int? pairingRound = null)
     {
         ArgumentNullException.ThrowIfNull(tournament);
         ArgumentNullException.ThrowIfNull(section);
         ArgumentNullException.ThrowIfNull(writer);
 
-        WriteHeader(tournament, section, writer);
+        // Players excluded from BBP's pool for this round: withdrawals
+        // (session flag) PLUS any pair that's already locked onto a
+        // board via a forced pairing for the upcoming round (the
+        // engine should never try to re-pair them).
+        var forcedThisRound = pairingRound is int pr
+            ? new HashSet<int>(section.ForcedPairs
+                .Where(f => f.Round == pr)
+                .SelectMany(f => new[] { f.WhitePair, f.BlackPair }))
+            : new HashSet<int>();
+
+        var activePlayers = section.Players
+            .Where(p => !p.Withdrawn && !forcedThisRound.Contains(p.PairNumber))
+            .ToArray();
+
+        WriteHeader(tournament, section, writer, activePlayers.Length);
         WriteNumberOfRounds(section, writer, initialColor);
-        WritePlayers(section, writer);
+        WritePlayers(section, activePlayers, writer, pairingRound);
     }
 
     /// <summary>
@@ -58,18 +82,20 @@ public static class TrfWriter
     public static string Write(
         Tournaments.Tournament tournament,
         Tournaments.Section section,
-        InitialColor initialColor = InitialColor.White)
+        InitialColor initialColor = InitialColor.White,
+        int? pairingRound = null)
     {
         using var sw = new StringWriter(CultureInfo.InvariantCulture);
         sw.NewLine = "\n";
-        Write(tournament, section, sw, initialColor);
+        Write(tournament, section, sw, initialColor, pairingRound);
         return sw.ToString();
     }
 
     private static void WriteHeader(
         Tournaments.Tournament t,
         Tournaments.Section s,
-        TextWriter w)
+        TextWriter w,
+        int activePlayerCount)
     {
         // 012 Tournament name (combined with section title for disambiguation).
         var title = string.IsNullOrWhiteSpace(t.Title)
@@ -84,8 +110,9 @@ public static class TrfWriter
         WriteLine(w, "042", FormatDate(t.StartDate));
         WriteLine(w, "052", FormatDate(t.EndDate));
 
-        // 062 Number of players.
-        WriteLine(w, "062", s.Players.Count.ToString(CultureInfo.InvariantCulture));
+        // 062 Number of players — only the active (non-withdrawn) rows
+        // we're actually emitting, so BBP's pool count matches.
+        WriteLine(w, "062", activePlayerCount.ToString(CultureInfo.InvariantCulture));
 
         // 092 Type of tournament.
         WriteLine(w, "092", "Individual: Swiss-System");
@@ -116,11 +143,15 @@ public static class TrfWriter
         WriteLine(w, "XXC", colorDirective);
     }
 
-    private static void WritePlayers(Tournaments.Section s, TextWriter w)
+    private static void WritePlayers(
+        Tournaments.Section s,
+        IReadOnlyList<Tournaments.Player> activePlayers,
+        TextWriter w,
+        int? pairingRound)
     {
-        foreach (var p in s.Players.OrderBy(x => x.PairNumber))
+        foreach (var p in activePlayers.OrderBy(x => x.PairNumber))
         {
-            w.WriteLine(FormatPlayerLine(p, s.RoundsPlayed));
+            w.WriteLine(FormatPlayerLine(p, s.RoundsPlayed, pairingRound));
         }
     }
 
@@ -128,7 +159,17 @@ public static class TrfWriter
     /// Formats a single TRF <c>001</c> player line per FIDE TRF-16 column
     /// positions. Exposed as <c>internal</c> for direct unit testing.
     /// </summary>
-    internal static string FormatPlayerLine(Tournaments.Player player, int roundsPlayed)
+    /// <param name="pairingRound">
+    /// Optional round number about to be paired. When set and the
+    /// player has that round in <see cref="Tournaments.Player.RequestedByeRounds"/>,
+    /// an extra round cell is emitted at that position carrying
+    /// <c>0000 - H</c> so bbpPairings treats the player as already
+    /// scheduled for a half-point bye.
+    /// </param>
+    internal static string FormatPlayerLine(
+        Tournaments.Player player,
+        int roundsPlayed,
+        int? pairingRound = null)
     {
         // TRF-16 fixed columns (1-based):
         //   1- 3  "001"
@@ -173,6 +214,25 @@ public static class TrfWriter
         {
             var history = r < player.History.Count ? player.History[r] : RoundResult.Empty;
             AppendRoundCell(sb, history);
+        }
+
+        // Requested-bye pre-flag: emit an extra cell 0000 - H for the
+        // round BBP is about to pair, so the engine honours the TD's
+        // pre-approval and excludes the player from that round's
+        // matchmaking while awarding them the half point.
+        if (pairingRound is int nextRound
+            && nextRound == roundsPlayed + 1
+            && player.RequestedByeRounds.Contains(nextRound))
+        {
+            var halfBye = new RoundResult(
+                Kind: RoundResultKind.HalfPointBye,
+                Opponent: -1,
+                Color: PlayerColor.None,
+                Board: 0,
+                Logic1: 0,
+                Logic2: 0,
+                GamePoints: 0m);
+            AppendRoundCell(sb, halfBye);
         }
 
         // Do not trim: BBP's TRF parser expects every per-round cell to be

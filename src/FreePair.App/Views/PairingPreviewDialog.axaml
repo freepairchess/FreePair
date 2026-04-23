@@ -1,0 +1,173 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:FreePair.App.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="780" d:DesignHeight="560"
+        x:Class="FreePair.App.Views.PairingPreviewDialog"
+        x:DataType="vm:PairingPreviewViewModel"
+        Title="Preview pairings"
+        Width="780"
+        SizeToContent="Height"
+        CanResize="True"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+
+    <DockPanel Margin="16">
+
+        <!-- ===== header ===== -->
+        <StackPanel DockPanel.Dock="Top" Spacing="6" Margin="0,0,0,10">
+            <TextBlock x:Name="HeaderText"
+                       FontSize="14"
+                       FontWeight="SemiBold"/>
+            <TextBlock Text="Review the proposed pairings before committing this round. Use the buttons on each row to swap colours, give a player a late ½-pt bye, or swap two boards' opponents."
+                       Foreground="Gray"
+                       FontSize="11"
+                       TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <!-- ===== unresolved-conflict warnings ===== -->
+        <Border DockPanel.Dock="Top"
+                Background="#FFF8E1"
+                BorderBrush="#E0C460"
+                BorderThickness="1"
+                CornerRadius="4"
+                Padding="10"
+                Margin="0,0,0,10"
+                IsVisible="{Binding Conflicts.Count}">
+            <StackPanel Spacing="2">
+                <TextBlock Text="Unresolvable pairing-constraint warnings"
+                           FontWeight="SemiBold"
+                           Foreground="#7A5A00"/>
+                <ItemsControl ItemsSource="{Binding Conflicts}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"
+                                       Foreground="#7A5A00"
+                                       FontSize="11"
+                                       Margin="6,0,0,0"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+
+        <!-- ===== board-swap helper ===== -->
+        <Border DockPanel.Dock="Top"
+                Background="#F0F4FF"
+                BorderBrush="#C7D4F2"
+                BorderThickness="1"
+                CornerRadius="4"
+                Padding="10"
+                Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+                <TextBlock Text="Swap boards:"
+                           VerticalAlignment="Center"
+                           FontWeight="SemiBold"/>
+                <NumericUpDown x:Name="SwapBoardA"
+                               Minimum="1" Maximum="999"
+                               Value="1"
+                               Increment="1"
+                               FormatString="0"
+                               Width="80"/>
+                <TextBlock Text="↔" VerticalAlignment="Center"/>
+                <NumericUpDown x:Name="SwapBoardB"
+                               Minimum="1" Maximum="999"
+                               Value="2"
+                               Increment="1"
+                               FormatString="0"
+                               Width="80"/>
+                <Button Content="Swap" Click="OnSwapBoards" MinWidth="60"/>
+                <TextBlock x:Name="SwapErrorText"
+                           Foreground="DarkRed"
+                           FontSize="11"
+                           VerticalAlignment="Center"
+                           Margin="6,0,0,0"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+        </Border>
+
+        <!-- ===== accept/cancel ===== -->
+        <StackPanel DockPanel.Dock="Bottom"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="8"
+                    Margin="0,10,0,0">
+            <Button Content="Cancel pairing"
+                    Click="OnCancel"
+                    MinWidth="120"/>
+            <Button Content="Commit round"
+                    Click="OnCommit"
+                    IsDefault="True"
+                    MinWidth="120"
+                    Background="#0E5DAA"
+                    Foreground="White"/>
+        </StackPanel>
+
+        <!-- ===== board list ===== -->
+        <ScrollViewer>
+            <ItemsControl ItemsSource="{Binding Rows}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:PairingPreviewRow">
+                        <Border BorderBrush="#DDDDDD"
+                                BorderThickness="0,0,0,1"
+                                Padding="6,4">
+                            <Grid ColumnDefinitions="Auto,2*,Auto,2*,Auto,Auto,Auto">
+                                <TextBlock Grid.Column="0"
+                                           Text="{Binding Board, StringFormat='Bd {0}'}"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Center"
+                                           Width="56"/>
+                                <TextBlock Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           Margin="6,0">
+                                    <Run Text="W: #"/>
+                                    <Run Text="{Binding WhitePair}"/>
+                                    <Run Text=" "/>
+                                    <Run Text="{Binding WhiteName}"/>
+                                </TextBlock>
+                                <TextBlock Grid.Column="2"
+                                           Text="vs"
+                                           VerticalAlignment="Center"
+                                           Margin="6,0"
+                                           Foreground="Gray"/>
+                                <TextBlock Grid.Column="3"
+                                           VerticalAlignment="Center"
+                                           Margin="6,0">
+                                    <Run Text="B: #"/>
+                                    <Run Text="{Binding BlackPair}"/>
+                                    <Run Text=" "/>
+                                    <Run Text="{Binding BlackName}"/>
+                                </TextBlock>
+                                <Button Grid.Column="4"
+                                        Content="↔ Colors"
+                                        Click="OnRowSwapColors"
+                                        Tag="{Binding}"
+                                        Margin="4,0"
+                                        Padding="6,2"
+                                        FontSize="11"/>
+                                <Button Grid.Column="5"
+                                        Content="½ to W"
+                                        Click="OnRowHalfByeWhite"
+                                        Tag="{Binding}"
+                                        Margin="4,0"
+                                        Padding="6,2"
+                                        FontSize="11"
+                                        ToolTip.Tip="Give white player a half-point bye; black gets a full-point bye."/>
+                                <Button Grid.Column="6"
+                                        Content="½ to B"
+                                        Click="OnRowHalfByeBlack"
+                                        Tag="{Binding}"
+                                        Margin="4,0"
+                                        Padding="6,2"
+                                        FontSize="11"
+                                        ToolTip.Tip="Give black player a half-point bye; white gets a full-point bye."/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+    </DockPanel>
+</Window>

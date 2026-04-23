@@ -89,8 +89,12 @@ public static class TournamentMutations
             .Select((p, i) => new Pairing(i + 1, p.WhitePair, p.BlackPair, PairingResult.Unplayed))
             .ToArray();
 
-        var byeAssignments = pairings.ByePlayerPairs
-            .Select(pair => new ByeAssignment(pair, ByeKind.Full))
+        var fullByeAssignments = pairings.ByePlayerPairs
+            .Select(pair => new ByeAssignment(pair, ByeKind.Full));
+        var halfByeAssignments = pairings.HalfPointByes
+            .Select(pair => new ByeAssignment(pair, ByeKind.Half));
+        var byeAssignments = fullByeAssignments
+            .Concat(halfByeAssignments)
             .ToArray();
 
         var newRound = new Round(newRoundNumber, boardPairings, byeAssignments);
@@ -102,10 +106,13 @@ public static class TournamentMutations
             pairingByPlayer[bp.WhitePair] = (bp.BlackPair, PlayerColor.White, bp.Board);
             pairingByPlayer[bp.BlackPair] = (bp.WhitePair, PlayerColor.Black, bp.Board);
         }
-        var byeSet = new HashSet<int>(pairings.ByePlayerPairs);
+        var fullByeSet = new HashSet<int>(pairings.ByePlayerPairs);
+        var halfByeSet = new HashSet<int>(pairings.HalfPointByes);
 
         var updatedPlayers = section.Players
-            .Select(p => AppendHistoryEntry(p, pairingByPlayer, byeSet))
+            .Select(p => p.Withdrawn
+                ? p                                  // session-withdrawn → leave history at its current length
+                : AppendHistoryEntry(p, pairingByPlayer, fullByeSet, halfByeSet))
             .ToArray();
 
         var updatedSection = section with
@@ -131,6 +138,432 @@ public static class TournamentMutations
     }
 
     /// <summary>
+    /// Sets the <see cref="Player.Withdrawn"/> flag on a single player
+    public static Tournament SetPlayerWithdrawn(
+        Tournament tournament,
+        string sectionName,
+        int pairNumber,
+        bool withdrawn)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        var target = section.Players.FirstOrDefault(p => p.PairNumber == pairNumber)
+            ?? throw new InvalidOperationException(
+                $"Player with pair #{pairNumber} not found in section '{sectionName}'.");
+
+        if (target.Withdrawn == withdrawn)
+        {
+            return tournament; // no-op
+        }
+
+        var updatedPlayers = section.Players
+            .Select(p => p.PairNumber == pairNumber ? p with { Withdrawn = withdrawn } : p)
+            .ToArray();
+        var updatedSection = section with { Players = updatedPlayers };
+        return ReplaceSection(tournament, sectionName, updatedSection);
+    }
+
+    /// <summary>
+    /// Toggles the section-level <see cref="Section.AvoidSameTeam"/>
+    /// / <see cref="Section.AvoidSameClub"/> flags. When enabled,
+    /// <see cref="PairingSwapper"/> post-processes BBP's output and
+    /// attempts same-score-group swaps to avoid pairings between
+    /// players sharing the corresponding field.
+    /// </summary>
+    public static Tournament SetAvoidSameTeam(
+        Tournament tournament, string sectionName, bool avoid) =>
+        UpdateSection(tournament, sectionName, s =>
+            s.AvoidSameTeam == avoid ? s : s with { AvoidSameTeam = avoid });
+
+    /// <inheritdoc cref="SetAvoidSameTeam"/>
+    public static Tournament SetAvoidSameClub(
+        Tournament tournament, string sectionName, bool avoid) =>
+        UpdateSection(tournament, sectionName, s =>
+            s.AvoidSameClub == avoid ? s : s with { AvoidSameClub = avoid });
+
+    /// <summary>
+    /// Adds an unordered <c>(A, B)</c> pair to the section's
+    /// do-not-pair blacklist (used by
+    /// <see cref="Constraints.DoNotPairConstraint"/>). Duplicates are
+    /// collapsed; self-pairs are silently rejected.
+    /// </summary>
+    public static Tournament AddDoNotPair(
+        Tournament tournament, string sectionName, int a, int b)
+    {
+        if (a == b) return tournament;
+        var lo = System.Math.Min(a, b);
+        var hi = System.Math.Max(a, b);
+        return UpdateSection(tournament, sectionName, s =>
+        {
+            if (s.DoNotPairs.Any(p => p.A == lo && p.B == hi)) return s;
+            var updated = s.DoNotPairs.Append((lo, hi)).ToArray();
+            return s with { DoNotPairPairs = updated };
+        });
+    }
+
+    /// <summary>
+    /// Removes an unordered <c>(A, B)</c> pair from the section's
+    /// do-not-pair blacklist. No-op when the pair isn't present.
+    /// </summary>
+    public static Tournament RemoveDoNotPair(
+        Tournament tournament, string sectionName, int a, int b)
+    {
+        var lo = System.Math.Min(a, b);
+        var hi = System.Math.Max(a, b);
+        return UpdateSection(tournament, sectionName, s =>
+        {
+            var updated = s.DoNotPairs
+                .Where(p => !(p.A == lo && p.B == hi))
+                .ToArray();
+            if (updated.Length == s.DoNotPairs.Count) return s;
+            return s with { DoNotPairPairs = updated };
+        });
+    }
+
+    /// <summary>
+    /// Adds a <see cref="ForcedPairing"/> to the section. The two
+    /// players will be withheld from the pairing engine for that
+    /// round and placed on board 1 (or subsequent boards when
+    /// multiple forced pairings exist for the same round). A duplicate
+    /// (same round + same unordered pair) is collapsed; a pairing in
+    /// which one of the players is already forced on that round
+    /// throws because the conflict cannot be resolved silently.
+    /// </summary>
+    public static Tournament AddForcedPairing(
+        Tournament tournament,
+        string sectionName,
+        int round,
+        int whitePair,
+        int blackPair)
+    {
+        if (whitePair == blackPair)
+        {
+            throw new ArgumentException(
+                "A forced pairing needs two distinct pair numbers.",
+                nameof(blackPair));
+        }
+
+        return UpdateSection(tournament, sectionName, s =>
+        {
+            var existing = s.ForcedPairs;
+            foreach (var f in existing.Where(f => f.Round == round))
+            {
+                // Identical (unordered) pair already on this round → no-op.
+                if ((f.WhitePair == whitePair && f.BlackPair == blackPair) ||
+                    (f.WhitePair == blackPair && f.BlackPair == whitePair))
+                {
+                    return s;
+                }
+                // Either player is already forced against somebody else.
+                if (f.WhitePair == whitePair || f.BlackPair == whitePair
+                 || f.WhitePair == blackPair || f.BlackPair == blackPair)
+                {
+                    throw new InvalidOperationException(
+                        $"Pair #{whitePair} or #{blackPair} is already part of a forced pairing for round {round}.");
+                }
+            }
+
+            var updated = existing.Append(new ForcedPairing(round, whitePair, blackPair)).ToArray();
+            return s with { ForcedPairings = updated };
+        });
+    }
+
+    /// <summary>
+    /// Removes the forced pairing matching <paramref name="round"/>
+    /// and the unordered <c>(whitePair, blackPair)</c>. No-op when no
+    /// such pairing is configured.
+    /// </summary>
+    public static Tournament RemoveForcedPairing(
+        Tournament tournament,
+        string sectionName,
+        int round,
+        int whitePair,
+        int blackPair)
+    {
+        return UpdateSection(tournament, sectionName, s =>
+        {
+            var updated = s.ForcedPairs
+                .Where(f => !(f.Round == round &&
+                              ((f.WhitePair == whitePair && f.BlackPair == blackPair) ||
+                               (f.WhitePair == blackPair && f.BlackPair == whitePair))))
+                .ToArray();
+            if (updated.Length == s.ForcedPairs.Count) return s;
+            return s with { ForcedPairings = updated };
+        });
+    }
+
+    /// <summary>
+    /// Swaps colours on a single un-played pairing: the current white
+    /// player becomes black and vice-versa. Used by the TD when
+    /// overriding bbpPairings' colour allocation (e.g. to correct for
+    /// an in-person colour-history preference the engine couldn't see).
+    /// Both players' round-history entries are updated to reflect the
+    /// new colour. Throws when the pairing doesn't exist or has
+    /// already been scored.
+    /// </summary>
+    public static Tournament SwapPairingColors(
+        Tournament tournament,
+        string sectionName,
+        int round,
+        int whitePair,
+        int blackPair)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        var targetRound = section.Rounds.FirstOrDefault(r => r.Number == round)
+            ?? throw new InvalidOperationException(
+                $"Round {round} does not exist in section '{sectionName}'.");
+
+        var pairing = targetRound.Pairings.FirstOrDefault(
+            p => p.WhitePair == whitePair && p.BlackPair == blackPair)
+            ?? throw new InvalidOperationException(
+                $"Pairing {whitePair}w vs {blackPair}b not found in round {round}.");
+
+        if (pairing.Result != PairingResult.Unplayed)
+        {
+            throw new InvalidOperationException(
+                $"Pairing {whitePair} vs {blackPair} has already been scored; colours can't be swapped.");
+        }
+
+        var swapped = pairing with { WhitePair = blackPair, BlackPair = whitePair };
+        var updatedRound = targetRound with
+        {
+            Pairings = targetRound.Pairings
+                .Select(p => p == pairing ? swapped : p)
+                .ToArray(),
+        };
+
+        var roundIndex = round - 1;
+        var updatedPlayers = section.Players
+            .Select(p => p.PairNumber == whitePair || p.PairNumber == blackPair
+                ? FlipHistoryColor(p, roundIndex)
+                : p)
+            .ToArray();
+
+        var updatedSection = section with
+        {
+            Players = updatedPlayers,
+            Rounds = section.Rounds.Select(r => r.Number == round ? updatedRound : r).ToArray(),
+        };
+
+        return ReplaceSection(tournament, sectionName, updatedSection);
+    }
+
+    /// <summary>
+    /// Swaps the black players across two un-played pairings on the
+    /// same round: <c>(Aw, Ab)</c> and <c>(Bw, Bb)</c> become
+    /// <c>(Aw, Bb)</c> and <c>(Bw, Ab)</c>. Colours are preserved so
+    /// FIDE C.04 allocation is not disturbed. Throws when either
+    /// pairing is already scored, or when the swap would recreate a
+    /// previously-played game.
+    /// </summary>
+    public static Tournament SwapBoardOpponents(
+        Tournament tournament,
+        string sectionName,
+        int round,
+        int boardA,
+        int boardB)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        if (boardA == boardB)
+        {
+            throw new ArgumentException("boardA and boardB must differ.", nameof(boardB));
+        }
+
+        var section = FindSection(tournament, sectionName);
+        var targetRound = section.Rounds.FirstOrDefault(r => r.Number == round)
+            ?? throw new InvalidOperationException(
+                $"Round {round} does not exist in section '{sectionName}'.");
+
+        var a = targetRound.Pairings.FirstOrDefault(p => p.Board == boardA)
+            ?? throw new InvalidOperationException($"Board {boardA} not found in round {round}.");
+        var b = targetRound.Pairings.FirstOrDefault(p => p.Board == boardB)
+            ?? throw new InvalidOperationException($"Board {boardB} not found in round {round}.");
+
+        if (a.Result != PairingResult.Unplayed || b.Result != PairingResult.Unplayed)
+        {
+            throw new InvalidOperationException(
+                "Both boards must be un-played before swapping opponents.");
+        }
+
+        // Guard against rematches.
+        var roundIndex = round - 1;
+        var byPair = section.Players.ToDictionary(p => p.PairNumber);
+        if (HasPlayedBefore(byPair, a.WhitePair, b.BlackPair, roundIndex) ||
+            HasPlayedBefore(byPair, b.WhitePair, a.BlackPair, roundIndex))
+        {
+            throw new InvalidOperationException(
+                "Swap would recreate a previously-played pairing.");
+        }
+
+        var newA = a with { BlackPair = b.BlackPair };
+        var newB = b with { BlackPair = a.BlackPair };
+
+        var updatedPairings = targetRound.Pairings
+            .Select(p => p == a ? newA : p == b ? newB : p)
+            .ToArray();
+        var updatedRound = targetRound with { Pairings = updatedPairings };
+
+        // Update history for the four affected players.
+        var affected = new Dictionary<int, (int Opponent, PlayerColor Color, int Board)>
+        {
+            [a.WhitePair] = (b.BlackPair, PlayerColor.White, a.Board),
+            [b.BlackPair] = (a.WhitePair, PlayerColor.Black, a.Board),
+            [b.WhitePair] = (a.BlackPair, PlayerColor.White, b.Board),
+            [a.BlackPair] = (b.WhitePair, PlayerColor.Black, b.Board),
+        };
+
+        var updatedPlayers = section.Players
+            .Select(p => affected.TryGetValue(p.PairNumber, out var info)
+                ? OverwriteHistoryPairing(p, roundIndex, info.Opponent, info.Color, info.Board)
+                : p)
+            .ToArray();
+
+        var updatedSection = section with
+        {
+            Players = updatedPlayers,
+            Rounds = section.Rounds.Select(r => r.Number == round ? updatedRound : r).ToArray(),
+        };
+
+        return ReplaceSection(tournament, sectionName, updatedSection);
+    }
+
+    /// <summary>
+    /// Converts a scheduled but un-played pairing into a late
+    /// half-point bye for <paramref name="halfByePair"/>: that player
+    /// is awarded 0.5, their opponent receives a full-point bye
+    /// (1.0), the pairing is removed from the round, and two
+    /// <see cref="ByeAssignment"/>s are added. Typical use: a player
+    /// notifies the TD mid-round that they have to leave; the TD
+    /// gives them the ½-pt bye so their opponent isn't left stranded.
+    /// </summary>
+    public static Tournament ConvertPairingToHalfPointBye(
+        Tournament tournament,
+        string sectionName,
+        int round,
+        int halfByePair)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        var targetRound = section.Rounds.FirstOrDefault(r => r.Number == round)
+            ?? throw new InvalidOperationException(
+                $"Round {round} does not exist in section '{sectionName}'.");
+
+        var pairing = targetRound.Pairings.FirstOrDefault(
+            p => p.WhitePair == halfByePair || p.BlackPair == halfByePair)
+            ?? throw new InvalidOperationException(
+                $"Pair #{halfByePair} is not assigned to a pairing in round {round}.");
+
+        if (pairing.Result != PairingResult.Unplayed)
+        {
+            throw new InvalidOperationException(
+                "Can't convert a scored pairing to a half-point bye; correct the result instead.");
+        }
+
+        var opponentPair = pairing.WhitePair == halfByePair
+            ? pairing.BlackPair
+            : pairing.WhitePair;
+
+        // Drop the pairing and add two byes (½ for the target, 1 for opponent).
+        var updatedPairings = targetRound.Pairings
+            .Where(p => p != pairing)
+            .ToArray();
+        var updatedByes = targetRound.Byes
+            .Append(new ByeAssignment(halfByePair,  ByeKind.Half))
+            .Append(new ByeAssignment(opponentPair, ByeKind.Full))
+            .ToArray();
+        var updatedRound = targetRound with { Pairings = updatedPairings, Byes = updatedByes };
+
+        var roundIndex = round - 1;
+        var updatedPlayers = section.Players
+            .Select(p => p.PairNumber == halfByePair
+                    ? OverwriteHistoryAsBye(p, roundIndex, RoundResultKind.HalfPointBye, 0.5m)
+                : p.PairNumber == opponentPair
+                    ? OverwriteHistoryAsBye(p, roundIndex, RoundResultKind.FullPointBye, 1m)
+                : p)
+            .ToArray();
+
+        var updatedSection = section with
+        {
+            Players = updatedPlayers,
+            Rounds = section.Rounds.Select(r => r.Number == round ? updatedRound : r).ToArray(),
+        };
+
+        return ReplaceSection(tournament, sectionName, updatedSection);
+    }
+
+    private static Tournament UpdateSection(
+        Tournament tournament,
+        string sectionName,
+        System.Func<Section, Section> transform)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+        var section = FindSection(tournament, sectionName);
+        var updated = transform(section);
+        return ReferenceEquals(updated, section)
+            ? tournament
+            : ReplaceSection(tournament, sectionName, updated);
+    }
+
+    /// <summary>
+    /// Appends the next round to a round-robin section using
+    public static Tournament AppendRoundRobinRound(
+        Tournament tournament,
+        string sectionName)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        if (section.Kind != SectionKind.RoundRobin)
+        {
+            throw new InvalidOperationException(
+                $"Section '{sectionName}' is not a round-robin (kind={section.Kind}).");
+        }
+
+        // Build the full schedule in seed order. Withdrawn players are
+        // excluded from the pool; their past history stays intact.
+        var activeSeats = section.Players
+            .Where(p => !p.Withdrawn)
+            .OrderBy(p => p.PairNumber)
+            .Select(p => p.PairNumber)
+            .ToArray();
+
+        var schedule = RoundRobinScheduler.Build(activeSeats);
+        var nextRoundIndex = section.Rounds.Count;
+        if (nextRoundIndex >= schedule.Count)
+        {
+            throw new InvalidOperationException(
+                $"All {schedule.Count} scheduled rounds of '{sectionName}' have been paired.");
+        }
+
+        var scheduled = schedule[nextRoundIndex];
+        var projected = new BbpPairingResult(
+            Pairings: scheduled.Pairings
+                .Select(p => new Bbp.BbpPairing(p.WhitePair, p.BlackPair))
+                .ToArray(),
+            ByePlayerPairs: scheduled.Byes
+                .Where(b => b.Kind == ByeKind.Full)
+                .Select(b => b.PlayerPair)
+                .ToArray(),
+            HalfPointByePlayerPairs: scheduled.Byes
+                .Where(b => b.Kind == ByeKind.Half)
+                .Select(b => b.PlayerPair)
+                .ToArray());
+
+        return AppendRound(tournament, sectionName, projected);
+    }
+
+    /// <summary>
     /// Returns a new tournament with the last round of the given section
     /// removed (its pairings, its byes, and each player's most recent
     /// history entry). Intended for correcting a mispaired or mis-recorded
@@ -140,8 +573,7 @@ public static class TournamentMutations
     /// <exception cref="InvalidOperationException">
     /// The section has no rounds to delete.
     /// </exception>
-    public static Tournament DeleteLastRound(Tournament tournament, string sectionName)
-    {
+    public static Tournament DeleteLastRound(Tournament tournament, string sectionName)    {
         ArgumentNullException.ThrowIfNull(tournament);
         ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
 
@@ -246,7 +678,8 @@ public static class TournamentMutations
     private static Player AppendHistoryEntry(
         Player player,
         IReadOnlyDictionary<int, (int Opponent, PlayerColor Color, int Board)> pairingByPlayer,
-        IReadOnlySet<int> byeSet)
+        IReadOnlySet<int> fullByeSet,
+        IReadOnlySet<int> halfByeSet)
     {
         RoundResult entry;
         if (pairingByPlayer.TryGetValue(player.PairNumber, out var info))
@@ -264,7 +697,7 @@ public static class TournamentMutations
                 Logic2: 0,
                 GamePoints: 0m);
         }
-        else if (byeSet.Contains(player.PairNumber))
+        else if (fullByeSet.Contains(player.PairNumber))
         {
             entry = new RoundResult(
                 Kind: RoundResultKind.FullPointBye,
@@ -274,6 +707,19 @@ public static class TournamentMutations
                 Logic1: 0,
                 Logic2: 0,
                 GamePoints: 1m);
+        }
+        else if (halfByeSet.Contains(player.PairNumber))
+        {
+            // Requested / TD-granted half-point bye (pre-flagged via the
+            // TRF 'H' cell so BBP never attempted to pair them this round).
+            entry = new RoundResult(
+                Kind: RoundResultKind.HalfPointBye,
+                Opponent: -1,
+                Color: PlayerColor.None,
+                Board: 0,
+                Logic1: 0,
+                Logic2: 0,
+                GamePoints: 0.5m);
         }
         else
         {
@@ -290,5 +736,98 @@ public static class TournamentMutations
         }
 
         return player with { History = player.History.Append(entry).ToArray() };
+    }
+
+    // ---- helpers for SwapPairingColors / SwapBoardOpponents / ConvertPairingToHalfPointBye ----
+
+    /// <summary>
+    /// Returns <paramref name="player"/> with the history entry at
+    /// <paramref name="roundIndex"/> mirrored to the opposite colour.
+    /// Opponent / board / scoring fields stay as-is.
+    /// </summary>
+    private static Player FlipHistoryColor(Player player, int roundIndex)
+    {
+        if (roundIndex < 0 || roundIndex >= player.History.Count) return player;
+        var h = player.History[roundIndex];
+        var flipped = h.Color switch
+        {
+            PlayerColor.White => PlayerColor.Black,
+            PlayerColor.Black => PlayerColor.White,
+            _ => h.Color,
+        };
+        var updated = player.History.ToArray();
+        updated[roundIndex] = h with { Color = flipped };
+        return player with { History = updated };
+    }
+
+    /// <summary>
+    /// Overwrites <paramref name="player"/>'s history entry at
+    /// <paramref name="roundIndex"/> with a fresh un-played pairing
+    /// cell (Kind=None with the given opponent / colour / board).
+    /// Scoring fields reset to zero since the game hasn't been played.
+    /// </summary>
+    private static Player OverwriteHistoryPairing(
+        Player player,
+        int roundIndex,
+        int opponent,
+        PlayerColor color,
+        int board)
+    {
+        if (roundIndex < 0 || roundIndex >= player.History.Count) return player;
+        var updated = player.History.ToArray();
+        updated[roundIndex] = new RoundResult(
+            Kind: RoundResultKind.None,
+            Opponent: opponent,
+            Color: color,
+            Board: board,
+            Logic1: 0,
+            Logic2: 0,
+            GamePoints: 0m);
+        return player with { History = updated };
+    }
+
+    /// <summary>
+    /// Overwrites the history entry at <paramref name="roundIndex"/>
+    /// with a bye cell (Full or Half). Used when a pairing is
+    /// converted mid-round.
+    /// </summary>
+    private static Player OverwriteHistoryAsBye(
+        Player player,
+        int roundIndex,
+        RoundResultKind kind,
+        decimal score)
+    {
+        if (roundIndex < 0 || roundIndex >= player.History.Count) return player;
+        var updated = player.History.ToArray();
+        updated[roundIndex] = new RoundResult(
+            Kind: kind,
+            Opponent: -1,
+            Color: PlayerColor.None,
+            Board: 0,
+            Logic1: 0,
+            Logic2: 0,
+            GamePoints: score);
+        return player with { History = updated };
+    }
+
+    /// <summary>
+    /// Returns true when <paramref name="a"/> and <paramref name="b"/>
+    /// have already played each other in a round strictly before
+    /// <paramref name="excludedRoundIndex"/>. Bye entries and
+    /// unpaired slots are ignored.
+    /// </summary>
+    private static bool HasPlayedBefore(
+        IReadOnlyDictionary<int, Player> byPair,
+        int a,
+        int b,
+        int excludedRoundIndex)
+    {
+        if (!byPair.TryGetValue(a, out var pa)) return false;
+        for (var i = 0; i < pa.History.Count; i++)
+        {
+            if (i == excludedRoundIndex) continue;
+            if (pa.History[i].Opponent == b) return true;
+        }
+        return false;
     }
 }

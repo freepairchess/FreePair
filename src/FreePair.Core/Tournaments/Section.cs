@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using FreePair.Core.Bbp;
 using FreePair.Core.SwissSys;
 
 namespace FreePair.Core.Tournaments;
@@ -19,8 +20,25 @@ public sealed record Section(
     IReadOnlyList<Player> Players,
     IReadOnlyList<Team> Teams,
     IReadOnlyList<Round> Rounds,
-    Prizes Prizes)
+    Prizes Prizes,
+    bool UseAcceleration = false,
+    InitialColor InitialColor = InitialColor.White,
+    bool AvoidSameTeam = true,
+    bool AvoidSameClub = false,
+    IReadOnlyList<(int A, int B)>? DoNotPairPairs = null,
+    IReadOnlyList<ForcedPairing>? ForcedPairings = null)
 {
+    /// <summary>
+    /// Non-null view of <see cref="DoNotPairPairs"/>.
+    /// </summary>
+    public IReadOnlyList<(int A, int B)> DoNotPairs =>
+        DoNotPairPairs ?? System.Array.Empty<(int, int)>();
+
+    /// <summary>
+    /// Non-null view of <see cref="ForcedPairings"/>.
+    /// </summary>
+    public IReadOnlyList<ForcedPairing> ForcedPairs =>
+        ForcedPairings ?? System.Array.Empty<ForcedPairing>();
     /// <summary>True when this section tracks teams in addition to individuals.</summary>
     public bool HasTeams => Teams.Count > 0;
 
