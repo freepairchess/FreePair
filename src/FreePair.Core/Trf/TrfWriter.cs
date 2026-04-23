@@ -57,9 +57,14 @@ public static class TrfWriter
         ArgumentNullException.ThrowIfNull(section);
         ArgumentNullException.ThrowIfNull(writer);
 
-        WriteHeader(tournament, section, writer);
+        // Withdrawn players are session-flagged and must be excluded
+        // from BBP's pool. We project them out up-front so header
+        // counts and the 001 rows agree.
+        var activePlayers = section.Players.Where(p => !p.Withdrawn).ToArray();
+
+        WriteHeader(tournament, section, writer, activePlayers.Length);
         WriteNumberOfRounds(section, writer, initialColor);
-        WritePlayers(section, writer, pairingRound);
+        WritePlayers(section, activePlayers, writer, pairingRound);
     }
 
     /// <summary>
@@ -80,7 +85,8 @@ public static class TrfWriter
     private static void WriteHeader(
         Tournaments.Tournament t,
         Tournaments.Section s,
-        TextWriter w)
+        TextWriter w,
+        int activePlayerCount)
     {
         // 012 Tournament name (combined with section title for disambiguation).
         var title = string.IsNullOrWhiteSpace(t.Title)
@@ -95,8 +101,9 @@ public static class TrfWriter
         WriteLine(w, "042", FormatDate(t.StartDate));
         WriteLine(w, "052", FormatDate(t.EndDate));
 
-        // 062 Number of players.
-        WriteLine(w, "062", s.Players.Count.ToString(CultureInfo.InvariantCulture));
+        // 062 Number of players — only the active (non-withdrawn) rows
+        // we're actually emitting, so BBP's pool count matches.
+        WriteLine(w, "062", activePlayerCount.ToString(CultureInfo.InvariantCulture));
 
         // 092 Type of tournament.
         WriteLine(w, "092", "Individual: Swiss-System");
@@ -127,9 +134,13 @@ public static class TrfWriter
         WriteLine(w, "XXC", colorDirective);
     }
 
-    private static void WritePlayers(Tournaments.Section s, TextWriter w, int? pairingRound)
+    private static void WritePlayers(
+        Tournaments.Section s,
+        IReadOnlyList<Tournaments.Player> activePlayers,
+        TextWriter w,
+        int? pairingRound)
     {
-        foreach (var p in s.Players.OrderBy(x => x.PairNumber))
+        foreach (var p in activePlayers.OrderBy(x => x.PairNumber))
         {
             w.WriteLine(FormatPlayerLine(p, s.RoundsPlayed, pairingRound));
         }

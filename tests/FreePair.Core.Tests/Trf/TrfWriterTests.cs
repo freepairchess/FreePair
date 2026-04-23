@@ -303,4 +303,50 @@ public class TrfWriterTests
         var otherLine = trf.Split('\n').Single(l => l.StartsWith(otherPairSlug));
         Assert.DoesNotContain("0000 - H", otherLine);
     }
+
+    // ---------------------------------------------------------------
+    // Withdrawals (SwissSys parity feature #7).
+    //
+    // Withdrawn players must disappear from the TRF entirely so BBP
+    // never tries to pair them, and the 062 player-count line has to
+    // reflect only the surviving pool.
+    // ---------------------------------------------------------------
+
+    [Fact]
+    public async Task Write_excludes_withdrawn_players_from_001_lines_and_062_count()
+    {
+        var t = await LoadAsync();
+        var section = t.Sections.Single(s => s.Name == "Open I");
+
+        var victim = section.Players.First();
+        var withdrawn = t.Sections
+            .Single(s => s.Name == "Open I")
+            .Players
+            .Select(p => p.PairNumber == victim.PairNumber
+                ? p with { Withdrawn = true }
+                : p)
+            .ToArray();
+        var patchedSection = section with { Players = withdrawn };
+        var patchedTournament = t with
+        {
+            Sections = t.Sections
+                .Select(s => s.Name == section.Name ? patchedSection : s)
+                .ToArray(),
+        };
+
+        var trf = TrfWriter.Write(patchedTournament, patchedSection);
+        var lines = trf.Split('\n');
+
+        // 062 must report the active count (one less than total).
+        var header = lines.Single(l => l.StartsWith("062 "));
+        Assert.Contains((section.Players.Count - 1).ToString(), header);
+
+        // Withdrawn player's 001 line is absent.
+        var victimSlug = $"001 {victim.PairNumber,4}";
+        Assert.DoesNotContain(lines, l => l.StartsWith(victimSlug));
+
+        // Every other player's 001 line is still present.
+        var pair001Lines = lines.Count(l => l.StartsWith("001 "));
+        Assert.Equal(section.Players.Count - 1, pair001Lines);
+    }
 }

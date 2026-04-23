@@ -110,7 +110,9 @@ public static class TournamentMutations
         var halfByeSet = new HashSet<int>(pairings.HalfPointByes);
 
         var updatedPlayers = section.Players
-            .Select(p => AppendHistoryEntry(p, pairingByPlayer, fullByeSet, halfByeSet))
+            .Select(p => p.Withdrawn
+                ? p                                  // session-withdrawn → leave history at its current length
+                : AppendHistoryEntry(p, pairingByPlayer, fullByeSet, halfByeSet))
             .ToArray();
 
         var updatedSection = section with
@@ -136,6 +138,41 @@ public static class TournamentMutations
     }
 
     /// <summary>
+    /// Sets the <see cref="Player.Withdrawn"/> flag on a single player
+    /// in <paramref name="sectionName"/>. Withdrawn players are skipped
+    /// by <see cref="Trf.TrfWriter.Write"/> (they disappear from BBP's
+    /// pool) and by <see cref="AppendRound"/> (their history is not
+    /// extended), while their existing history remains intact so the
+    /// wall chart / standings / tiebreaks continue to reflect any games
+    /// they did play. Pass <c>false</c> to re-activate a player.
+    /// </summary>
+    public static Tournament SetPlayerWithdrawn(
+        Tournament tournament,
+        string sectionName,
+        int pairNumber,
+        bool withdrawn)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        var target = section.Players.FirstOrDefault(p => p.PairNumber == pairNumber)
+            ?? throw new InvalidOperationException(
+                $"Player with pair #{pairNumber} not found in section '{sectionName}'.");
+
+        if (target.Withdrawn == withdrawn)
+        {
+            return tournament; // no-op
+        }
+
+        var updatedPlayers = section.Players
+            .Select(p => p.PairNumber == pairNumber ? p with { Withdrawn = withdrawn } : p)
+            .ToArray();
+        var updatedSection = section with { Players = updatedPlayers };
+        return ReplaceSection(tournament, sectionName, updatedSection);
+    }
+
+    /// <summary>
     /// Returns a new tournament with the last round of the given section
     /// removed (its pairings, its byes, and each player's most recent
     /// history entry). Intended for correcting a mispaired or mis-recorded
@@ -145,8 +182,7 @@ public static class TournamentMutations
     /// <exception cref="InvalidOperationException">
     /// The section has no rounds to delete.
     /// </exception>
-    public static Tournament DeleteLastRound(Tournament tournament, string sectionName)
-    {
+    public static Tournament DeleteLastRound(Tournament tournament, string sectionName)    {
         ArgumentNullException.ThrowIfNull(tournament);
         ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
 

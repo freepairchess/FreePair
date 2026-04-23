@@ -7,6 +7,15 @@ namespace FreePair.Core.Tournaments;
 /// <summary>
 /// A single player (or pair-number slot) in a tournament section.
 /// </summary>
+/// <param name="Withdrawn">
+/// True when the TD has withdrawn this player from further pairing.
+/// Withdrawn players are omitted from the TRF (and therefore from BBP's
+/// pairing pool) and <see cref="TournamentMutations.AppendRound"/> does
+/// not extend their history. Existing past results remain intact, so
+/// standings / wall chart / tiebreaks continue to reflect games the
+/// player did play. Session-only for v1: the flag is not round-tripped
+/// through SwissSys <c>.sjson</c> save/load.
+/// </param>
 public sealed record Player(
     int PairNumber,
     string Name,
@@ -18,7 +27,8 @@ public sealed record Player(
     string? State,
     string? Team,
     IReadOnlyList<int> RequestedByeRounds,
-    IReadOnlyList<RoundResult> History)
+    IReadOnlyList<RoundResult> History,
+    bool Withdrawn = false)
 {
     /// <summary>
     /// Sum of scoring results across <see cref="History"/> (1 per win / full
