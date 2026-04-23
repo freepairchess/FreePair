@@ -19,7 +19,7 @@ namespace FreePair.App.ViewModels;
 /// <see cref="TournamentViewModel.Tournament"/> property setter triggers
 /// the normal rebuild + auto-save pipeline.
 /// </remarks>
-public sealed partial class EventConfigViewModel : ObservableObject
+public sealed partial class EventConfigViewModel : ViewModelBase
 {
     private readonly Func<Tournament> _getTournament;
     private readonly Action<Tournament> _setTournament;
