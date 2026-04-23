@@ -282,6 +282,43 @@ public class SetTournamentInfoTests
     }
 
     [Fact]
+    public async Task Writer_round_trips_FreePair_auto_publish_flags_via_Overview_keys()
+    {
+        // FreePair persists its per-tournament auto-publish flags as
+        // two boolean keys at the top of the Overview block:
+        //   "FreePair auto publish pairings": true
+        //   "FreePair auto publish results":  false
+        // SwissSys ignores unknown keys, so this is safe.
+        var src = TestPaths.SwissSysSample(ExtendedSampleFileName);
+        var tmp = Path.Combine(Path.GetTempPath(), $"fp-publish-flags-{Guid.NewGuid():N}.sjson");
+        File.Copy(src, tmp, overwrite: true);
+        try
+        {
+            var importer = new SwissSysImporter();
+            var t = SwissSysMapper.Map(await importer.ImportAsync(tmp));
+
+            t = TournamentMutations.SetTournamentInfo(t,
+                autoPublishPairings: new Box<bool?>(true),
+                autoPublishResults:  new Box<bool?>(false));
+
+            await new SwissSysTournamentWriter().SaveAsync(tmp, t);
+
+            var t2 = SwissSysMapper.Map(await importer.ImportAsync(tmp));
+            Assert.True(t2.AutoPublishPairings);
+            Assert.False(t2.AutoPublishResults);
+
+            // Clearing writes null, which the writer skips — the
+            // previously-written value therefore persists. Clearing
+            // requires explicit removal, which SetIfSet doesn't do.
+            // (Acceptable for v1; UI only sets true/false via Box.)
+        }
+        finally
+        {
+            if (File.Exists(tmp)) File.Delete(tmp);
+        }
+    }
+
+    [Fact]
     public async Task Writer_persists_extended_overview_metadata()
     {
         // Smaller smoke test using the legacy fixture — verifies the

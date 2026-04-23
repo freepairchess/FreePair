@@ -132,6 +132,8 @@ public class SwissSysTournamentWriter : ITournamentWriter
 
         if (t.RoundsPlanned is int r)           overview["Rounds"]          = r;
         if (t.HalfPointByesAllowed is int hb)   overview["Half point byes"] = hb;
+        if (t.AutoPublishPairings is bool app)  overview["FreePair auto publish pairings"] = app;
+        if (t.AutoPublishResults  is bool apr)  overview["FreePair auto publish results"]  = apr;
     }
 
     private static void SetIfSet(JsonObject o, string key, string? value)

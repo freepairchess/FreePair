@@ -49,7 +49,9 @@ public static class TournamentMutations
         System.DateTimeOffset? endDateTime = null,
         string? timeZone = null,
         int? roundsPlanned = null,
-        int? halfPointByesAllowed = null)
+        int? halfPointByesAllowed = null,
+        Box<bool?>? autoPublishPairings = null,
+        Box<bool?>? autoPublishResults  = null)
     {
         ArgumentNullException.ThrowIfNull(tournament);
 
@@ -81,6 +83,8 @@ public static class TournamentMutations
             TimeZone           = timeZone        ?? tournament.TimeZone,
             RoundsPlanned      = roundsPlanned   ?? tournament.RoundsPlanned,
             HalfPointByesAllowed = halfPointByesAllowed ?? tournament.HalfPointByesAllowed,
+            AutoPublishPairings = autoPublishPairings is not null ? autoPublishPairings.Value : tournament.AutoPublishPairings,
+            AutoPublishResults  = autoPublishResults  is not null ? autoPublishResults.Value  : tournament.AutoPublishResults,
         };
     }
 

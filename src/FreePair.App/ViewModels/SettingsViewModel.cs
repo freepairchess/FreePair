@@ -29,6 +29,12 @@ public partial class SettingsViewModel : ViewModelBase
     [ObservableProperty]
     private bool _useAsciiOnly = true;
 
+    // ============ Online publishing defaults ============
+
+    [ObservableProperty] private string _naChessHubBaseUrl = "https://nachesshub.com";
+    [ObservableProperty] private bool _autoPublishPairingsDefault;
+    [ObservableProperty] private bool _autoPublishResultsDefault;
+
     [ObservableProperty]
     private string? _statusMessage;
 
@@ -90,6 +96,9 @@ public partial class SettingsViewModel : ViewModelBase
         {
             PairingEngineBinaryPath = _settings.PairingEngineBinaryPath;
             UseAsciiOnly = _settings.UseAsciiOnly;
+            NaChessHubBaseUrl          = _settings.NaChessHubBaseUrl;
+            AutoPublishPairingsDefault = _settings.AutoPublishPairingsDefault;
+            AutoPublishResultsDefault  = _settings.AutoPublishResultsDefault;
         }
         finally
         {
@@ -141,6 +150,10 @@ public partial class SettingsViewModel : ViewModelBase
             ? null
             : PairingEngineBinaryPath;
         _settings.UseAsciiOnly = UseAsciiOnly;
+        _settings.NaChessHubBaseUrl          = string.IsNullOrWhiteSpace(NaChessHubBaseUrl)
+            ? "https://nachesshub.com" : NaChessHubBaseUrl.Trim();
+        _settings.AutoPublishPairingsDefault = AutoPublishPairingsDefault;
+        _settings.AutoPublishResultsDefault  = AutoPublishResultsDefault;
 
         try
         {

@@ -22,4 +22,28 @@ public class AppSettings
     /// Unicode glyphs are used (<c>½</c>, <c>½-½</c>).
     /// </summary>
     public bool UseAsciiOnly { get; set; } = true;
+
+    // ============ Online publishing defaults ============
+    // These are app-wide DEFAULTS. Each tournament's Publish dialog
+    // inherits these values on open but can override them per-event.
+
+    /// <summary>
+    /// Default NAChessHub base URL used by the Publish dialog when
+    /// no tournament-level override is set. Editable in the Settings
+    /// tab.
+    /// </summary>
+    public string NaChessHubBaseUrl { get; set; } = "https://nachesshub.com";
+
+    /// <summary>
+    /// When <c>true</c>, newly-opened tournaments start with
+    /// "auto-publish pairings" enabled. The TD can still toggle it
+    /// per-event from the Publish dialog.
+    /// </summary>
+    public bool AutoPublishPairingsDefault { get; set; }
+
+    /// <summary>
+    /// When <c>true</c>, newly-opened tournaments start with
+    /// "auto-publish results" enabled.
+    /// </summary>
+    public bool AutoPublishResultsDefault { get; set; }
 }

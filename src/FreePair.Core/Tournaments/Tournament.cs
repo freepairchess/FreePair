@@ -59,7 +59,21 @@ public sealed record Tournament(
     /// <summary>Total rounds planned at the event level (SwissSys <c>"Rounds"</c>).</summary>
     int? RoundsPlanned = null,
     /// <summary>Max half-point byes a player may request (SwissSys <c>"Half point byes"</c>).</summary>
-    int? HalfPointByesAllowed = null)
+    int? HalfPointByesAllowed = null,
+
+    // ============ FreePair-specific persisted settings ============
+    /// <summary>
+    /// When <c>true</c>, FreePair auto-uploads the <c>.sjson</c> to
+    /// the configured publishing destination after every pairing
+    /// update. Persisted as <c>"FreePair auto publish pairings"</c>
+    /// in the Overview block.
+    /// </summary>
+    bool? AutoPublishPairings = null,
+    /// <summary>
+    /// When <c>true</c>, FreePair auto-uploads after every individual
+    /// result entry. Persisted as <c>"FreePair auto publish results"</c>.
+    /// </summary>
+    bool? AutoPublishResults = null)
 {
     /// <summary>
     /// Human-readable one-line location summary built from the

@@ -23,6 +23,10 @@
                 <Button Content="Close"
                         Command="{Binding CloseCommand}"
                         IsVisible="{Binding HasTournament}"/>
+                <Button Content="📡 Publish online..."
+                        Command="{Binding PublishCommand}"
+                        IsVisible="{Binding HasTournament}"
+                        ToolTip.Tip="Upload the current .sjson to a publishing destination (NA Chess Hub, …), with optional auto-publish on every pairing update / result entry."/>
                 <Button Content="Export section to TRF..."
                         Command="{Binding ExportTrfCommand}"
                         IsVisible="{Binding HasSelectedSection}"

@@ -54,7 +54,9 @@ public static class SwissSysMapper
             RatingType:      raw.Overview?.RatingType,
 
             RoundsPlanned:        raw.Overview?.Rounds,
-            HalfPointByesAllowed: raw.Overview?.HalfPointByes);
+            HalfPointByesAllowed: raw.Overview?.HalfPointByes,
+            AutoPublishPairings:  raw.Overview?.FreePairAutoPublishPairings,
+            AutoPublishResults:   raw.Overview?.FreePairAutoPublishResults);
     }
 
     /// <summary>

@@ -39,6 +39,25 @@
                    FontSize="11"
                    TextWrapping="Wrap"/>
 
+        <Separator Margin="0,8"/>
+
+        <TextBlock Text="Online publishing" FontWeight="SemiBold"/>
+        <TextBlock Text="Defaults used by the 'Publish online' dialog. Each tournament inherits these values on open and can override them per-event."
+                   Foreground="Gray" FontSize="11" TextWrapping="Wrap"/>
+
+        <Grid ColumnDefinitions="160,*" RowDefinitions="Auto">
+            <TextBlock Grid.Column="0" Text="NA Chess Hub URL"
+                       VerticalAlignment="Center" FontWeight="SemiBold"
+                       Margin="0,0,12,0"/>
+            <TextBox   Grid.Column="1" Text="{Binding NaChessHubBaseUrl}"
+                       Watermark="https://nachesshub.com"/>
+        </Grid>
+
+        <CheckBox Content="Auto-publish pairings by default for newly opened tournaments"
+                  IsChecked="{Binding AutoPublishPairingsDefault}"/>
+        <CheckBox Content="Auto-publish results by default for newly opened tournaments"
+                  IsChecked="{Binding AutoPublishResultsDefault}"/>
+
         <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
             <Button Content="Save" Command="{Binding SaveCommand}"/>
         </StackPanel>
