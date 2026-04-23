@@ -2,6 +2,7 @@ using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FreePair.Core.Tournaments;
+using FreePair.Core.Tournaments.Enums;
 
 namespace FreePair.App.ViewModels;
 
@@ -11,49 +12,129 @@ namespace FreePair.App.ViewModels;
 /// the changes back into the parent <see cref="TournamentViewModel"/>
 /// via <see cref="TournamentMutations.SetTournamentInfo"/>.
 /// </summary>
-/// <remarks>
-/// The VM operates on a <em>snapshot</em> copy of the Tournament fields
-/// rather than binding directly. This lets the TD edit several fields
-/// and apply them as a single immutable step (and discard with Reset
-/// if they change their mind). On apply the parent VM's
-/// <see cref="TournamentViewModel.Tournament"/> property setter triggers
-/// the normal rebuild + auto-save pipeline.
-/// </remarks>
 public sealed partial class EventConfigViewModel : ViewModelBase
 {
     private readonly Func<Tournament> _getTournament;
     private readonly Action<Tournament> _setTournament;
 
-    // ============ edited snapshot ============
-
+    // ============ basics ============
     [ObservableProperty] private string? _title;
-    [ObservableProperty] private string? _location;
     [ObservableProperty] private DateTimeOffset? _startDate;
     [ObservableProperty] private DateTimeOffset? _endDate;
     [ObservableProperty] private string? _timeControl;
-    [ObservableProperty] private SectionKind _defaultPairingKind;
-    [ObservableProperty] private string? _defaultRatingType;
 
-    // ============ UI helpers ============
+    // ============ address ============
+    [ObservableProperty] private string? _eventAddress;
+    [ObservableProperty] private string? _eventCity;
+    [ObservableProperty] private string? _eventState;
+    [ObservableProperty] private string? _eventZipCode;
+    [ObservableProperty] private string? _eventCountry;
 
-    /// <summary>All values the default-pairing-kind dropdown offers.</summary>
-    public SectionKind[] AvailablePairingKinds { get; } = new[]
-    {
-        SectionKind.Swiss,
-        SectionKind.RoundRobin,
-    };
+    // ============ classifications (null = Unspecified) ============
+    [ObservableProperty] private EventFormat? _eventFormat;
+    [ObservableProperty] private EventType? _eventType;
+    [ObservableProperty] private PairingRule? _pairingRule;
+    [ObservableProperty] private TimeControlType? _timeControlType;
+    [ObservableProperty] private RatingType? _ratingType;
 
-    /// <summary>Rating-system suggestions the Combo shows (free-form editable).</summary>
-    public string[] KnownRatingTypes { get; } = new[]
-    {
-        "USCF", "FIDE", "CFC", "NWSRS",
-    };
+    // ============ scheduling / counts ============
+    [ObservableProperty] private int? _roundsPlanned;
+    [ObservableProperty] private int? _halfPointByesAllowed;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(UscfAffiliateUrl))]
+    private string? _organizerId;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(UscfAffiliateUrl))]
+    private FreePair.Core.Tournaments.Enums.UserIDType? _organizerIdType;
+    [ObservableProperty] private string? _organizerName;
+    [ObservableProperty] private string? _nachPasscode;
 
     /// <summary>
-    /// True when the NACH event ID has been assigned by NAChessHub and
-    /// should be shown as read-only info in the form.
+    /// When <c>false</c>, the NACH passcode textbox renders as dots
+    /// (UI toggle). Doesn't affect storage — the raw value stays in
+    /// <see cref="NachPasscode"/>.
     /// </summary>
+    [ObservableProperty] private bool _showNachPasscode;
+
+    [ObservableProperty] private string? _timeZone;
+
+    // ============ UI choice lists ============
+    // Note: each enum type is fully-qualified below because the
+    // generated observable property of the same name (PairingRule,
+    // EventFormat, …) otherwise shadows the enum type in these
+    // initializers.
+
+    public PairingRule?[] AvailablePairingRules { get; } = new PairingRule?[]
+    {
+        null,
+        FreePair.Core.Tournaments.Enums.PairingRule.Swiss, FreePair.Core.Tournaments.Enums.PairingRule.DSwiss,
+        FreePair.Core.Tournaments.Enums.PairingRule.RR,    FreePair.Core.Tournaments.Enums.PairingRule.DRR,
+        FreePair.Core.Tournaments.Enums.PairingRule.Quad,  FreePair.Core.Tournaments.Enums.PairingRule.Team, FreePair.Core.Tournaments.Enums.PairingRule.Arena,
+        FreePair.Core.Tournaments.Enums.PairingRule.Other,
+    };
+
+    public EventFormat?[] AvailableEventFormats { get; } = new EventFormat?[]
+    {
+        null, FreePair.Core.Tournaments.Enums.EventFormat.OTB, FreePair.Core.Tournaments.Enums.EventFormat.Online, FreePair.Core.Tournaments.Enums.EventFormat.Hybrid, FreePair.Core.Tournaments.Enums.EventFormat.Other,
+    };
+
+    public EventType?[] AvailableEventTypes { get; } = new EventType?[]
+    {
+        null,
+        FreePair.Core.Tournaments.Enums.EventType.Open, FreePair.Core.Tournaments.Enums.EventType.Closed, FreePair.Core.Tournaments.Enums.EventType.Scholastic, FreePair.Core.Tournaments.Enums.EventType.Invit,
+        FreePair.Core.Tournaments.Enums.EventType.Lecture, FreePair.Core.Tournaments.Enums.EventType.Simul, FreePair.Core.Tournaments.Enums.EventType.Camp,
+        FreePair.Core.Tournaments.Enums.EventType.GroupLesson, FreePair.Core.Tournaments.Enums.EventType.League, FreePair.Core.Tournaments.Enums.EventType.Other,
+    };
+
+    public TimeControlType?[] AvailableTimeControlTypes { get; } = new TimeControlType?[]
+    {
+        null,
+        FreePair.Core.Tournaments.Enums.TimeControlType.Bullet, FreePair.Core.Tournaments.Enums.TimeControlType.Blitz,
+        FreePair.Core.Tournaments.Enums.TimeControlType.Rapid,  FreePair.Core.Tournaments.Enums.TimeControlType.RapidAndClassical,
+        FreePair.Core.Tournaments.Enums.TimeControlType.Classical, FreePair.Core.Tournaments.Enums.TimeControlType.Other,
+    };
+
+    public UserIDType?[] AvailableOrganizerIdTypes { get; } = new UserIDType?[]
+    {
+        null,
+        FreePair.Core.Tournaments.Enums.UserIDType.USCFID,
+        FreePair.Core.Tournaments.Enums.UserIDType.FIDEID,
+        FreePair.Core.Tournaments.Enums.UserIDType.CFCID,
+        FreePair.Core.Tournaments.Enums.UserIDType.USCFAffiliateID,
+        FreePair.Core.Tournaments.Enums.UserIDType.FIDEOrganizerID,
+        FreePair.Core.Tournaments.Enums.UserIDType.CFCOrganizerID,
+        FreePair.Core.Tournaments.Enums.UserIDType.Local,
+        FreePair.Core.Tournaments.Enums.UserIDType.Other,
+    };
+
+    public RatingType?[] AvailableRatingTypes { get; } = new RatingType?[]
+    {
+        null,
+        FreePair.Core.Tournaments.Enums.RatingType.UnRated,
+        FreePair.Core.Tournaments.Enums.RatingType.USCF, FreePair.Core.Tournaments.Enums.RatingType.FIDE, FreePair.Core.Tournaments.Enums.RatingType.CFC,
+        FreePair.Core.Tournaments.Enums.RatingType.USCF_FIDE, FreePair.Core.Tournaments.Enums.RatingType.CFC_FIDE, FreePair.Core.Tournaments.Enums.RatingType.CFC_USCF,
+        FreePair.Core.Tournaments.Enums.RatingType.CFC_USCF_FIDE,
+        FreePair.Core.Tournaments.Enums.RatingType.USCF_NW, FreePair.Core.Tournaments.Enums.RatingType.USCF_FIDE_NW, FreePair.Core.Tournaments.Enums.RatingType.CFC_FIDE_NW,
+        FreePair.Core.Tournaments.Enums.RatingType.USCF_CFC_FIDE_NW,
+        FreePair.Core.Tournaments.Enums.RatingType.USCFONLINE, FreePair.Core.Tournaments.Enums.RatingType.CHESSCOM, FreePair.Core.Tournaments.Enums.RatingType.LICHESS, FreePair.Core.Tournaments.Enums.RatingType.CHESS24,
+        FreePair.Core.Tournaments.Enums.RatingType.Other,
+    };
+
     public string? NachEventId => _getTournament().NachEventId;
+
+    /// <summary>
+    /// US Chess affiliate URL derived from <see cref="OrganizerId"/>
+    /// when the id type is <see cref="FreePair.Core.Tournaments.Enums.UserIDType.USCFAffiliateID"/>,
+    /// otherwise null. Bound in the view as a clickable link next to
+    /// the Organizer ID textbox; auto-refreshes when either source
+    /// property changes via <c>NotifyPropertyChangedFor</c>.
+    /// </summary>
+    public string? UscfAffiliateUrl =>
+        OrganizerIdType == FreePair.Core.Tournaments.Enums.UserIDType.USCFAffiliateID
+        && !string.IsNullOrWhiteSpace(OrganizerId)
+            ? $"https://ratings.uschess.org/affiliate/{OrganizerId.Trim()}"
+            : null;
 
     public EventConfigViewModel(
         Func<Tournament> getTournament,
@@ -73,7 +154,6 @@ public sealed partial class EventConfigViewModel : ViewModelBase
     {
         var t = _getTournament();
         Title = t.Title;
-        Location = t.Location;
         StartDate = t.StartDate.HasValue
             ? new DateTimeOffset(t.StartDate.Value.ToDateTime(TimeOnly.MinValue))
             : null;
@@ -81,10 +161,28 @@ public sealed partial class EventConfigViewModel : ViewModelBase
             ? new DateTimeOffset(t.EndDate.Value.ToDateTime(TimeOnly.MinValue))
             : null;
         TimeControl = t.TimeControl;
-        DefaultPairingKind = t.DefaultPairingKind == SectionKind.Unknown
-            ? SectionKind.Swiss
-            : t.DefaultPairingKind;
-        DefaultRatingType = t.DefaultRatingType;
+
+        EventAddress = t.EventAddress;
+        EventCity    = t.EventCity;
+        EventState   = t.EventState;
+        EventZipCode = t.EventZipCode;
+        EventCountry = t.EventCountry;
+
+        EventFormat     = t.EventFormat;
+        EventType       = t.EventType;
+        PairingRule     = t.PairingRule;
+        TimeControlType = t.TimeControlType;
+        RatingType      = t.RatingType;
+
+        RoundsPlanned        = t.RoundsPlanned;
+        HalfPointByesAllowed = t.HalfPointByesAllowed;
+        OrganizerId          = t.OrganizerId;
+        OrganizerIdType      = t.OrganizerIdType;
+        OrganizerName        = t.OrganizerName;
+        NachPasscode         = t.NachPasscode;
+        ShowNachPasscode     = false;  // always reset to masked on reload
+        TimeZone             = t.TimeZone;
+
         OnPropertyChanged(nameof(NachEventId));
     }
 
@@ -95,18 +193,32 @@ public sealed partial class EventConfigViewModel : ViewModelBase
         var updated = TournamentMutations.SetTournamentInfo(
             current,
             title: Title,
-            location: Location,
-            startDate: StartDate.HasValue
-                ? DateOnly.FromDateTime(StartDate.Value.Date)
-                : null,
-            endDate: EndDate.HasValue
-                ? DateOnly.FromDateTime(EndDate.Value.Date)
-                : null,
+            startDate: StartDate.HasValue ? DateOnly.FromDateTime(StartDate.Value.Date) : null,
+            endDate:   EndDate.HasValue   ? DateOnly.FromDateTime(EndDate.Value.Date)   : null,
             timeControl: TimeControl,
-            defaultPairingKind: DefaultPairingKind,
-            defaultRatingType: DefaultRatingType);
+
+            eventAddress: EventAddress,
+            eventCity:    EventCity,
+            eventState:   EventState,
+            eventZipCode: EventZipCode,
+            eventCountry: EventCountry,
+
+            eventFormat:     new Box<EventFormat?>(EventFormat),
+            eventType:       new Box<EventType?>(EventType),
+            pairingRule:     new Box<PairingRule?>(PairingRule),
+            timeControlType: new Box<TimeControlType?>(TimeControlType),
+            ratingType:      new Box<RatingType?>(RatingType),
+
+            organizerId:          OrganizerId,
+            organizerIdType:      new Box<FreePair.Core.Tournaments.Enums.UserIDType?>(OrganizerIdType),
+            organizerName:        OrganizerName,
+            nachPasscode:         NachPasscode,
+            timeZone:             TimeZone,
+            roundsPlanned:        RoundsPlanned,
+            halfPointByesAllowed: HalfPointByesAllowed);
+
         _setTournament(updated);
-        Reset(); // pull fresh values so NachEventId updates, etc.
+        Reset();
     }
 
     [RelayCommand]

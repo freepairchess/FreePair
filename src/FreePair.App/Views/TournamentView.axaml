@@ -92,11 +92,11 @@
                                        FontSize="16"
                                        FontWeight="SemiBold"
                                        TextWrapping="Wrap"/>
-                            <TextBlock Text="{Binding Tournament.Location}"
+                            <TextBlock Text="{Binding Tournament.LocationSummary}"
                                        Foreground="Gray"
                                        FontSize="11"
                                        TextWrapping="Wrap"
-                                       IsVisible="{Binding Tournament.Location, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                                       IsVisible="{Binding Tournament.LocationSummary, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
                             <TextBlock Foreground="Gray" FontSize="11">
                                 <Run Text="Time control: "/>
                                 <Run Text="{Binding Tournament.TimeControl}"/>

@@ -44,6 +44,17 @@ public class SwissSysTournamentWriter : ITournamentWriter
         var root = JsonNode.Parse(json)
             ?? throw new InvalidDataException($"File '{filePath}' is not valid JSON.");
 
+        // ===== Overview / event-level metadata =====
+        // Only keys whose domain value is non-null are patched. Null
+        // values are treated as "leave alone" rather than "clear"
+        // because we don't currently distinguish unset-by-loader from
+        // actively-cleared-by-user. New keys that don't yet exist in
+        // the source file are added.
+        if (root["Overview"] is JsonObject overview)
+        {
+            PatchOverview(overview, tournament);
+        }
+
         var sectionsArray = root["Sections"]?.AsArray()
             ?? throw new InvalidDataException("SwissSys file has no 'Sections' array.");
 
@@ -85,6 +96,47 @@ public class SwissSysTournamentWriter : ITournamentWriter
         }
 
         await WriteAtomicAsync(filePath, root, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Writes each non-null event-level metadata value onto the raw
+    /// top-level JSON object using the SwissSys 11 key names. Enum
+    /// values use their C# member names (matching NAChessHub) so the
+    /// file can round-trip through both systems.
+    /// </summary>
+    private static void PatchOverview(JsonObject overview, Tournament t)
+    {
+        SetIfSet(overview, "Tournament title",         t.Title);
+        SetIfSet(overview, "Tournament time controls", t.TimeControl);
+        SetIfSet(overview, "Starting date",            t.StartDate?.ToString("yyyy-MM-dd"));
+        SetIfSet(overview, "Ending date",              t.EndDate?.ToString("yyyy-MM-dd"));
+        SetIfSet(overview, "Starting date time",       t.StartDateTime?.ToString("yyyy-MM-ddTHH:mm:ss"));
+        SetIfSet(overview, "Ending date time",         t.EndDateTime?.ToString("yyyy-MM-ddTHH:mm:ss"));
+        SetIfSet(overview, "Time zone",                t.TimeZone);
+        SetIfSet(overview, "Organizer ID",             t.OrganizerId);
+        SetIfSet(overview, "Organizer ID Type",        t.OrganizerIdType?.ToString());
+        SetIfSet(overview, "Organizer Name",           t.OrganizerName);
+        SetIfSet(overview, "NACH passcode",            t.NachPasscode);
+
+        SetIfSet(overview, "Event address",            t.EventAddress);
+        SetIfSet(overview, "Event city",               t.EventCity);
+        SetIfSet(overview, "Event state",              t.EventState);
+        SetIfSet(overview, "Event zip code",           t.EventZipCode);
+        SetIfSet(overview, "Event country",            t.EventCountry);
+
+        SetIfSet(overview, "Event format",             t.EventFormat?.ToString());
+        SetIfSet(overview, "Event type",               t.EventType?.ToString());
+        SetIfSet(overview, "Pairing rule",             t.PairingRule?.ToString());
+        SetIfSet(overview, "Time control type",        t.TimeControlType?.ToString());
+        SetIfSet(overview, "Rating type",              t.RatingType?.ToString());
+
+        if (t.RoundsPlanned is int r)           overview["Rounds"]          = r;
+        if (t.HalfPointByesAllowed is int hb)   overview["Half point byes"] = hb;
+    }
+
+    private static void SetIfSet(JsonObject o, string key, string? value)
+    {
+        if (!string.IsNullOrEmpty(value)) o[key] = value;
     }
 
     private static JsonObject? FindSectionByName(JsonArray sections, string name)
