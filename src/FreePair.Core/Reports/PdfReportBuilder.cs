@@ -168,8 +168,11 @@ public static class PdfReportBuilder
     //  Page chrome
     // =========================================================
 
-    private static void ApplyPageDefaults(QuestPDF.Fluent.PageDescriptor page, bool landscape = false)
+    private static void ApplyPageDefaults(QuestPDF.Fluent.PageDescriptor page, bool landscape = true)
     {
+        // Default is landscape — TD-facing reports (players list, pairings
+        // sheet, standings, wall chart) all benefit from the extra
+        // horizontal room. Callers can override by passing landscape:false.
         page.Size(landscape ? PageSizes.Letter.Landscape() : PageSizes.Letter);
         page.Margin(36);
         page.DefaultTextStyle(t => t.FontSize(10).FontFamily(Fonts.Calibri));
