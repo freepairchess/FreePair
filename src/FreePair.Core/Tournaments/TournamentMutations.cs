@@ -173,6 +173,64 @@ public static class TournamentMutations
     }
 
     /// <summary>
+    /// Appends the next round to a round-robin section using
+    /// <see cref="RoundRobinScheduler"/>. The full Berger schedule is
+    /// computed up-front; this method selects the row for
+    /// <c>section.Rounds.Count + 1</c> and applies it via the same
+    /// history-stamping path as <see cref="AppendRound"/>.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// The section is not a round-robin, or every scheduled round has
+    /// already been played.
+    /// </exception>
+    public static Tournament AppendRoundRobinRound(
+        Tournament tournament,
+        string sectionName)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        if (section.Kind != SectionKind.RoundRobin)
+        {
+            throw new InvalidOperationException(
+                $"Section '{sectionName}' is not a round-robin (kind={section.Kind}).");
+        }
+
+        // Build the full schedule in seed order. Withdrawn players are
+        // excluded from the pool; their past history stays intact.
+        var activeSeats = section.Players
+            .Where(p => !p.Withdrawn)
+            .OrderBy(p => p.PairNumber)
+            .Select(p => p.PairNumber)
+            .ToArray();
+
+        var schedule = RoundRobinScheduler.Build(activeSeats);
+        var nextRoundIndex = section.Rounds.Count;
+        if (nextRoundIndex >= schedule.Count)
+        {
+            throw new InvalidOperationException(
+                $"All {schedule.Count} scheduled rounds of '{sectionName}' have been paired.");
+        }
+
+        var scheduled = schedule[nextRoundIndex];
+        var projected = new BbpPairingResult(
+            Pairings: scheduled.Pairings
+                .Select(p => new Bbp.BbpPairing(p.WhitePair, p.BlackPair))
+                .ToArray(),
+            ByePlayerPairs: scheduled.Byes
+                .Where(b => b.Kind == ByeKind.Full)
+                .Select(b => b.PlayerPair)
+                .ToArray(),
+            HalfPointByePlayerPairs: scheduled.Byes
+                .Where(b => b.Kind == ByeKind.Half)
+                .Select(b => b.PlayerPair)
+                .ToArray());
+
+        return AppendRound(tournament, sectionName, projected);
+    }
+
+    /// <summary>
     /// Returns a new tournament with the last round of the given section
     /// removed (its pairings, its byes, and each player's most recent
     /// history entry). Intended for correcting a mispaired or mis-recorded
