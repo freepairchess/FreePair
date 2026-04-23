@@ -1,0 +1,289 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.6,
+    "Tournament title": "PNWCC GM/IM Norm RR - May 2025",
+    "Tournament time controls": "90+30",
+    "Starting date": "2025-05-22",
+    "Ending date": "2025-05-26",
+    "NACH event ID": "da35af2d-94e1-4131-9b3d-233671d748e4",
+    "NACH passcode": "082df29d-9fa2-4396-96ad-b33ecaf7d453",
+    "Trace": "3.7.3.7.3.7.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "IM_Norm_RR",
+      "Type": 3,
+      "Section title": "IM Norm RR",
+      "Section time control": "90+30",
+      "Number of players": 10,
+      "Number of teams": 0,
+      "Rounds paired": 9,
+      "Rounds played": 9,
+      "Rating to use": 0,
+      "Engine": 0,
+      "Last unrestricted round": 0,
+      "Need search options": false,
+      "Lower rating limit": 1700,
+      "Final round": 9,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Table set": true,
+      "Berger": true,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Pair table items": 5,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Wang, Ted",
+          "ID": "30990459",
+          "Rating": 2126,
+          "ID2": "17187840",
+          "Rating2": 2232,
+          "Club": "USA",
+          "Player title": "FM",
+          "Sex": "M",
+          "Birth date": "2013",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "=;10;W;1;0;0;0",
+            "+;2;W;5;0;0;0",
+            "-;3;B;2;0;0;0",
+            "=;4;W;4;0;0;0",
+            "=;5;B;3;0;0;0",
+            "=;6;W;3;0;0;0",
+            "+;7;B;4;0;0;0",
+            "+;8;W;2;0;0;0",
+            "+;9;B;5;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Matviishen, Viktor",
+          "ID": "14129850",
+          "Rating": 2534,
+          "ID2": "30176249",
+          "Rating2": 2636,
+          "Club": "UKR",
+          "Player title": "GM",
+          "Sex": "M",
+          "Birth date": "2002",
+          "Current result": "1",
+          "Results": [
+            "=;9;W;2;0;0;0",
+            "-;1;B;5;0;0;0",
+            "+;10;W;1;0;0;0",
+            "+;3;W;5;0;0;0",
+            "+;4;B;2;0;0;0",
+            "+;5;W;4;0;0;0",
+            "=;6;B;3;0;0;0",
+            "+;7;W;3;0;0;0",
+            "+;8;B;4;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Tessiore, Luca Giorgio",
+          "ID": "30974976",
+          "Rating": 2135,
+          "ID2": "17347744",
+          "Rating2": 2107,
+          "Club": "USA",
+          "Sex": "M",
+          "Birth date": "2010",
+          "Current result": "0",
+          "Results": [
+            "+;8;W;3;0;0;0",
+            "-;9;B;4;0;0;0",
+            "+;1;W;2;0;0;0",
+            "-;2;B;5;0;0;0",
+            "-;10;W;1;0;0;0",
+            "=;4;W;5;0;0;0",
+            "-;5;B;2;0;0;0",
+            "-;6;W;4;0;0;0",
+            "-;7;B;3;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Lee, Jayden H",
+          "ID": "30939011",
+          "Rating": 2193,
+          "ID2": "15757981",
+          "Rating2": 2287,
+          "Club": "USA",
+          "Sex": "M",
+          "Birth date": "2008",
+          "Current result": "½",
+          "Results": [
+            "+;7;W;4;0;0;0",
+            "+;8;B;3;0;0;0",
+            "+;9;W;3;0;0;0",
+            "=;1;B;4;0;0;0",
+            "-;2;W;2;0;0;0",
+            "=;3;B;5;0;0;0",
+            "=;10;W;1;0;0;0",
+            "=;5;W;5;0;0;0",
+            "=;6;B;2;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Vemparala, Nikash",
+          "ID": "30960967",
+          "Rating": 2204,
+          "ID2": "16438800",
+          "Rating2": 2268,
+          "Club": "USA",
+          "Player title": "CM",
+          "Sex": "M",
+          "Birth date": "2010",
+          "Current result": "0",
+          "Results": [
+            "-;6;W;5;0;0;0",
+            "-;7;B;2;0;0;0",
+            "+;8;W;4;0;0;0",
+            "=;9;B;3;0;0;0",
+            "=;1;W;3;0;0;0",
+            "-;2;B;4;0;0;0",
+            "+;3;W;2;0;0;0",
+            "=;4;B;5;0;0;0",
+            "-;10;W;1;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "Komarov, Dimitri",
+          "ID": "14101270",
+          "Rating": 2420,
+          "ID2": "17170698",
+          "Rating2": 2473,
+          "Club": "UKR",
+          "Player title": "GM",
+          "Sex": "M",
+          "Birth date": "1968",
+          "Current result": "½",
+          "Results": [
+            "+;5;B;5;0;0;0",
+            "=;10;B;1;0;0;0",
+            "=;7;W;5;0;0;0",
+            "-;8;B;2;0;0;0",
+            "=;9;W;4;0;0;0",
+            "=;1;B;3;0;0;0",
+            "=;2;W;3;0;0;0",
+            "+;3;B;4;0;0;0",
+            "=;4;W;2;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Song, Ethan",
+          "ID": "62900412",
+          "Rating": 2324,
+          "ID2": "16160581",
+          "Rating2": 2324,
+          "Club": "CAN",
+          "Player title": "FM",
+          "Sex": "M",
+          "Birth date": "2009",
+          "Current result": "1",
+          "Results": [
+            "-;4;B;4;0;0;0",
+            "+;5;W;2;0;0;0",
+            "=;6;B;5;0;0;0",
+            "-;10;B;1;0;0;0",
+            "+;8;W;5;0;0;0",
+            "-;9;B;2;0;0;0",
+            "-;1;W;4;0;0;0",
+            "-;2;B;3;0;0;0",
+            "+;3;W;3;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Vega, Isaac",
+          "ID": "30914035",
+          "Rating": 1837,
+          "ID2": "14490451",
+          "Rating2": 1863,
+          "Club": "USA",
+          "Sex": "M",
+          "Birth date": "1994",
+          "Current result": "0",
+          "Results": [
+            "-;3;B;3;0;0;0",
+            "-;4;W;3;0;0;0",
+            "-;5;B;4;0;0;0",
+            "+;6;W;2;0;0;0",
+            "-;7;B;5;0;0;0",
+            "-;10;B;1;0;0;0",
+            "-;9;W;5;0;0;0",
+            "-;1;B;2;0;0;0",
+            "-;2;W;4;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "Georgiev, Vladimir",
+          "ID": "2903024",
+          "Rating": 2355,
+          "ID2": "12735967",
+          "Rating2": 2407,
+          "Club": "MKD",
+          "Player title": "GM",
+          "Sex": "M",
+          "Birth date": "1975",
+          "Current result": "0",
+          "Results": [
+            "=;2;B;2;0;0;0",
+            "+;3;W;4;0;0;0",
+            "-;4;B;3;0;0;0",
+            "=;5;W;3;0;0;0",
+            "=;6;B;4;0;0;0",
+            "+;7;W;2;0;0;0",
+            "+;8;B;5;0;0;0",
+            "=;10;B;1;0;0;0",
+            "-;1;W;5;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Tang, Zoey",
+          "ID": "30952530",
+          "Rating": 2347,
+          "ID2": "16097502",
+          "Rating2": 2385,
+          "Club": "USA",
+          "Player title": "FM",
+          "Sex": "F",
+          "Birth date": "2008",
+          "Current result": "1",
+          "Results": [
+            "=;1;B;1;0;0;0",
+            "=;6;W;1;0;0;0",
+            "-;2;B;1;0;0;0",
+            "+;7;W;1;0;0;0",
+            "+;3;B;1;0;0;0",
+            "+;8;W;1;0;0;0",
+            "=;4;B;1;0;0;0",
+            "=;9;W;1;0;0;0",
+            "+;5;B;1;0;0;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    }
+  ]
+}

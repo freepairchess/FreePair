@@ -151,22 +151,57 @@ public sealed partial class PublishingDialogViewModel : ViewModelBase
             StatusMessage = "Publishing…";
             _lastResultWasError = false;
 
+            // 1) Upload the raw .sjson.
             var result = await client.PublishAsync(
                 BaseUrl!, EventId!, Passcode!,
-                FileType.SwissSys11SJson,
+                FreePair.Core.Publishing.FileType.SwissSys11SJson,
                 path!,
                 ct).ConfigureAwait(true);
 
-            if (result.Success)
-            {
-                _lastResultWasError = false;
-                StatusMessage = result.ServerFileId is null
-                    ? $"✅ Uploaded to {client.DisplayName}."
-                    : $"✅ Uploaded to {client.DisplayName} (file id {result.ServerFileId}).";
-            }
-            else
+            if (!result.Success)
             {
                 Fail($"❌ {result.ErrorMessage ?? "Unknown error."}");
+                return;
+            }
+
+            // 2) Generate + upload the derived NAChessHub results JSON
+            // that the hub uses to render public pages (pairings,
+            // standings, wall chart, etc.).
+            var t = _getTournament();
+            if (t is null)
+            {
+                StatusMessage = $"✅ Uploaded {client.DisplayName}.";
+                return;
+            }
+
+            var tmp = System.IO.Path.Combine(
+                System.IO.Path.GetTempPath(),
+                $"fp-results-{System.Guid.NewGuid():N}.json");
+            try
+            {
+                await System.IO.File.WriteAllTextAsync(
+                    tmp,
+                    FreePair.Core.Tournaments.SwissSysResultJsonBuilder.Build(t),
+                    ct).ConfigureAwait(true);
+
+                var result2 = await client.PublishAsync(
+                    BaseUrl!, EventId!, Passcode!,
+                    FreePair.Core.Publishing.FileType.SwissSysJSON,
+                    tmp, ct).ConfigureAwait(true);
+
+                if (result2.Success)
+                {
+                    _lastResultWasError = false;
+                    StatusMessage = $"✅ Uploaded to {client.DisplayName} (pairings + results).";
+                }
+                else
+                {
+                    Fail($"❌ Results JSON upload failed: {result2.ErrorMessage ?? "Unknown error."}");
+                }
+            }
+            finally
+            {
+                try { System.IO.File.Delete(tmp); } catch { /* best-effort */ }
             }
         }
         catch (OperationCanceledException)

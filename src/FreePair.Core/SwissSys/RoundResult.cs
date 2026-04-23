@@ -171,6 +171,16 @@ public readonly record struct RoundResult(
             case "H": kind = RoundResultKind.HalfPointBye; return true;
             case "B": kind = RoundResultKind.FullPointBye; return true;
             case "~": kind = RoundResultKind.None; return true;
+            // SwissSys also emits "U" for slots a player was unpaired
+            // in (late entry, withdrawal, odd-count bye-with-no-points).
+            // Treat it the same as "~" / empty for FreePair purposes.
+            case "U": kind = RoundResultKind.None; return true;
+            // Forfeit wins / losses. USCF rules: scoring is identical to
+            // a regular win / loss. We don't preserve the forfeit-vs-
+            // played distinction in the domain model (v1), so downstream
+            // display will show "W" / "L" instead of "X" / "F".
+            case "X": kind = RoundResultKind.Win;  return true;
+            case "F": kind = RoundResultKind.Loss; return true;
             default:
                 kind = RoundResultKind.None;
                 return false;
