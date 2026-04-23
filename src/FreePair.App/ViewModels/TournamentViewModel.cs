@@ -95,6 +95,19 @@ public partial class TournamentViewModel : ViewModelBase
     public Func<string, string, string, Task<bool>>? PromptConfirmAsync { get; set; }
 
     /// <summary>
+    /// Callback opened immediately after a new round has been appended,
+    /// letting the TD inspect the proposed pairings and apply
+    /// intervention mutations (colour swap, board swap, late ½-pt bye)
+    /// before the round is persisted. Returns the (possibly mutated)
+    /// tournament on commit, or <c>null</c> when the TD cancels — the
+    /// host then reverts via
+    /// <see cref="TournamentMutations.DeleteLastRound"/>.
+    /// Parameters: working tournament, section name, new round number,
+    /// unresolved-conflict warnings from the swapper.
+    /// </summary>
+    public Func<Tournament, string, int, IReadOnlyList<string>, Task<Tournament?>>? PromptPairingPreviewAsync { get; set; }
+
+    /// <summary>
     /// Transient status message shown while an auto-save is in progress.
     /// Cleared on success.
     /// </summary>
@@ -406,6 +419,29 @@ public partial class TournamentViewModel : ViewModelBase
                 Tournament,
                 section.Name,
                 result);
+
+            // Pre-commit preview: let the TD inspect the proposed
+            // pairings and intervene (colour swap / board swap / late
+            // ½-pt bye) before persisting. The dialog returns either
+            // the mutated tournament or null on cancel; on cancel we
+            // revert the just-appended round.
+            if (PromptPairingPreviewAsync is not null)
+            {
+                var newRoundNumber = section.Section.Rounds.Count + 1;
+                var previewed = await PromptPairingPreviewAsync(
+                    Tournament,
+                    section.Name,
+                    newRoundNumber,
+                    result.Conflicts).ConfigureAwait(true);
+
+                if (previewed is null)
+                {
+                    Tournament = TournamentMutations.DeleteLastRound(
+                        Tournament, section.Name);
+                    return;
+                }
+                Tournament = previewed;
+            }
 
             // Auto-select the new round in the rebuilt Section VM.
             var current = SelectedSection;

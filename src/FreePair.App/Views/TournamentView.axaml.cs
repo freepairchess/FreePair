@@ -23,6 +23,7 @@ public partial class TournamentView : UserControl
             vm.PickExportTrfPathAsync = PickExportTrfPathAsync;
             vm.PromptInitialColorAsync = PromptInitialColorAsync;
             vm.PromptConfirmAsync = PromptConfirmAsync;
+            vm.PromptPairingPreviewAsync = PromptPairingPreviewAsync;
         }
     }
 
@@ -107,5 +108,22 @@ public partial class TournamentView : UserControl
         dialog.Configure(title, message, confirmLabel);
         var result = await dialog.ShowDialog<bool?>(owner);
         return result == true;
+    }
+
+    private async Task<FreePair.Core.Tournaments.Tournament?> PromptPairingPreviewAsync(
+        FreePair.Core.Tournaments.Tournament tournament,
+        string sectionName,
+        int round,
+        System.Collections.Generic.IReadOnlyList<string> conflicts)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner)
+        {
+            // No owner window (design-time): commit without preview.
+            return tournament;
+        }
+
+        var dialog = new PairingPreviewDialog();
+        dialog.Configure(new PairingPreviewViewModel(tournament, sectionName, round, conflicts));
+        return await dialog.ShowDialog<FreePair.Core.Tournaments.Tournament?>(owner);
     }
 }
