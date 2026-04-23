@@ -279,6 +279,55 @@ public partial class SectionViewModel : ViewModelBase
 
     public IReadOnlyList<PlayerRow> Players { get; }
 
+    /// <summary>
+    /// Case-insensitive search filter applied to <see cref="Players"/>
+    /// to populate <see cref="FilteredPlayers"/>. Matches against
+    /// name, USCF id, club, state, team, email and phone. An empty
+    /// string shows every player.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(FilteredPlayers))]
+    [NotifyPropertyChangedFor(nameof(FilteredPlayerCountText))]
+    private string _playerFilter = string.Empty;
+
+    /// <summary>
+    /// <see cref="Players"/> projected through the current
+    /// <see cref="PlayerFilter"/>. DataGrids on the Players tab bind
+    /// to this collection. Computed on every access, which is fine
+    /// for typical section sizes (tens to a few hundred players).
+    /// </summary>
+    public IReadOnlyList<PlayerRow> FilteredPlayers
+    {
+        get
+        {
+            var needle = (PlayerFilter ?? string.Empty).Trim();
+            if (needle.Length == 0) return Players;
+
+            return Players
+                .Where(p => ContainsCI(p.Name, needle)
+                         || ContainsCI(p.UscfId, needle)
+                         || ContainsCI(p.Club, needle)
+                         || ContainsCI(p.State, needle)
+                         || ContainsCI(p.Team, needle)
+                         || ContainsCI(p.Email, needle)
+                         || ContainsCI(p.Phone, needle)
+                         || p.PairNumber.ToString().Contains(needle, StringComparison.Ordinal))
+                .ToArray();
+        }
+    }
+
+    /// <summary>
+    /// TD-readable "X of Y players" summary shown next to the filter
+    /// textbox. When no filter is active, just renders "Y players".
+    /// </summary>
+    public string FilteredPlayerCountText => string.IsNullOrWhiteSpace(PlayerFilter)
+        ? $"{Players.Count} players"
+        : $"{FilteredPlayers.Count} of {Players.Count} players";
+
+    private static bool ContainsCI(string? haystack, string needle) =>
+        !string.IsNullOrEmpty(haystack)
+        && haystack.Contains(needle, StringComparison.OrdinalIgnoreCase);
+
     public IReadOnlyList<ByeRow> AllByes { get; }
 
     public IReadOnlyList<RoundOption> AvailableRounds { get; }

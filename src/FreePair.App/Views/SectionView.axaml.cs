@@ -33,4 +33,15 @@ public partial class SectionView : UserControl
         }
         catch { /* best effort — clipboard access can fail on some hosts */ }
     }
+
+    /// <summary>
+    /// Clears the Players-tab filter text box via its bound VM property.
+    /// </summary>
+    private void OnClearPlayerFilter(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is ViewModels.SectionViewModel vm)
+        {
+            vm.PlayerFilter = string.Empty;
+        }
+    }
 }
