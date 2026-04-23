@@ -1,4 +1,6 @@
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 
 namespace FreePair.App.Views;
 
@@ -7,5 +9,28 @@ public partial class SectionView : UserControl
     public SectionView()
     {
         InitializeComponent();
+    }
+
+    /// <summary>
+    /// Handler for the small "⧉" copy buttons next to email / phone
+    /// fields on the Players tab. Reads the text to copy from the
+    /// sender's <see cref="Control.Tag"/> (bound to the field value
+    /// in XAML) and writes it to the application clipboard via the
+    /// hosting <see cref="TopLevel"/>. Uses Avalonia 12's
+    /// <see cref="DataObject"/> + <c>SetDataObjectAsync</c> API.
+    /// </summary>
+    private async void OnCopyFieldClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is not Button btn || btn.Tag is not string text || string.IsNullOrEmpty(text))
+            return;
+        var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
+        if (clipboard is null) return;
+        try
+        {
+            var transfer = new DataTransfer();
+            transfer.Add(DataTransferItem.CreateText(text));
+            await clipboard.SetDataAsync(transfer);
+        }
+        catch { /* best effort — clipboard access can fail on some hosts */ }
     }
 }

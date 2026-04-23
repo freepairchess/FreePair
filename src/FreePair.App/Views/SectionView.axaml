@@ -73,24 +73,26 @@
             <TabItem Header="Players">
                 <DockPanel LastChildFill="True" Margin="8">
                     <Grid DockPanel.Dock="Top"
-                          ColumnDefinitions="50,70,*,80,60,60,100,70,100"
+                          ColumnDefinitions="50,70,*,80,60,60,100,170,130,70,100"
                           Margin="0,0,0,4">
-                        <TextBlock Grid.Column="0" Classes="colHeader" Text="Pair"/>
-                        <TextBlock Grid.Column="1" Classes="colHeader" Text="USCF"/>
-                        <TextBlock Grid.Column="2" Classes="colHeader" Text="Name"/>
-                        <TextBlock Grid.Column="3" Classes="colHeader" Text="Rating"/>
-                        <TextBlock Grid.Column="4" Classes="colHeader" Text="Club"/>
-                        <TextBlock Grid.Column="5" Classes="colHeader" Text="State"/>
-                        <TextBlock Grid.Column="6" Classes="colHeader" Text="Team"/>
-                        <TextBlock Grid.Column="7" Classes="colHeader" Text="Score" HorizontalAlignment="Right"/>
-                        <TextBlock Grid.Column="8" Classes="colHeader" Text="Status"/>
+                        <TextBlock Grid.Column="0"  Classes="colHeader" Text="Pair"/>
+                        <TextBlock Grid.Column="1"  Classes="colHeader" Text="USCF"/>
+                        <TextBlock Grid.Column="2"  Classes="colHeader" Text="Name"/>
+                        <TextBlock Grid.Column="3"  Classes="colHeader" Text="Rating"/>
+                        <TextBlock Grid.Column="4"  Classes="colHeader" Text="Club"/>
+                        <TextBlock Grid.Column="5"  Classes="colHeader" Text="State"/>
+                        <TextBlock Grid.Column="6"  Classes="colHeader" Text="Team"/>
+                        <TextBlock Grid.Column="7"  Classes="colHeader" Text="Email"/>
+                        <TextBlock Grid.Column="8"  Classes="colHeader" Text="Phone"/>
+                        <TextBlock Grid.Column="9"  Classes="colHeader" Text="Score" HorizontalAlignment="Right"/>
+                        <TextBlock Grid.Column="10" Classes="colHeader" Text="Status"/>
                     </Grid>
                     <ScrollViewer>
                         <ItemsControl ItemsSource="{Binding Players}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="vm:PlayerRow">
                                     <Border Classes="row">
-                                        <Grid ColumnDefinitions="50,70,*,80,60,60,100,70,100">
+                                        <Grid ColumnDefinitions="50,70,*,80,60,60,100,170,130,70,100">
                                             <TextBlock Grid.Column="0" Classes="cell" Text="{Binding PairNumber}"/>
                                             <TextBlock Grid.Column="1" Classes="cell" Text="{Binding UscfId}" Foreground="Gray"/>
                                             <TextBlock Grid.Column="2" Classes="cell" Text="{Binding Name}"/>
@@ -98,8 +100,49 @@
                                             <TextBlock Grid.Column="4" Classes="cell" Text="{Binding Club}"/>
                                             <TextBlock Grid.Column="5" Classes="cell" Text="{Binding State}"/>
                                             <TextBlock Grid.Column="6" Classes="cell" Text="{Binding Team}"/>
-                                            <TextBlock Grid.Column="7" Classes="cell" Text="{Binding ScoreText}" HorizontalAlignment="Right"/>
-                                            <TextBlock Grid.Column="8" Classes="cell" Text="{Binding Status}" Foreground="DarkBlue"/>
+
+                                            <!-- Email cell with copy button -->
+                                            <Grid Grid.Column="7" ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+                                                <TextBlock Grid.Column="0"
+                                                           Classes="cell"
+                                                           Text="{Binding Email}"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           ToolTip.Tip="{Binding Email}"/>
+                                                <Button Grid.Column="1"
+                                                        Content="⧉"
+                                                        Tag="{Binding Email}"
+                                                        Click="OnCopyFieldClick"
+                                                        Padding="4,0"
+                                                        MinHeight="20"
+                                                        FontSize="11"
+                                                        Background="Transparent"
+                                                        BorderThickness="0"
+                                                        IsVisible="{Binding Email, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                                        ToolTip.Tip="Copy email to clipboard"/>
+                                            </Grid>
+
+                                            <!-- Phone cell with copy button -->
+                                            <Grid Grid.Column="8" ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+                                                <TextBlock Grid.Column="0"
+                                                           Classes="cell"
+                                                           Text="{Binding Phone}"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           ToolTip.Tip="{Binding Phone}"/>
+                                                <Button Grid.Column="1"
+                                                        Content="⧉"
+                                                        Tag="{Binding Phone}"
+                                                        Click="OnCopyFieldClick"
+                                                        Padding="4,0"
+                                                        MinHeight="20"
+                                                        FontSize="11"
+                                                        Background="Transparent"
+                                                        BorderThickness="0"
+                                                        IsVisible="{Binding Phone, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                                        ToolTip.Tip="Copy phone to clipboard"/>
+                                            </Grid>
+
+                                            <TextBlock Grid.Column="9"  Classes="cell" Text="{Binding ScoreText}" HorizontalAlignment="Right"/>
+                                            <TextBlock Grid.Column="10" Classes="cell" Text="{Binding Status}" Foreground="DarkBlue"/>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>

@@ -28,7 +28,9 @@ public sealed record Player(
     string? Team,
     IReadOnlyList<int> RequestedByeRounds,
     IReadOnlyList<RoundResult> History,
-    bool Withdrawn = false)
+    bool Withdrawn = false,
+    string? Email = null,
+    string? Phone = null)
 {
     /// <summary>
     /// Sum of scoring results across <see cref="History"/> (1 per win / full

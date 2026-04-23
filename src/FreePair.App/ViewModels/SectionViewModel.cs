@@ -26,7 +26,9 @@ public sealed record PlayerRow(
     decimal Score,
     string ScoreText,
     string Status,
-    string? RequestedByes);
+    string? RequestedByes,
+    string? Email,
+    string? Phone);
 
 /// <summary>
 /// Editable pairing row for the <b>Pairings</b> tab. Binds to a result
@@ -414,7 +416,9 @@ public partial class SectionViewModel : ViewModelBase
             Score: player.Score,
             ScoreText: formatter.Score(player.Score),
             Status: status,
-            RequestedByes: requestedByes);
+            RequestedByes: requestedByes,
+            Email: player.Email,
+            Phone: player.Phone);
     }
 
     private PlayerRow BuildPlayerRow(Player player, Section section) =>
