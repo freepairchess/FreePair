@@ -12,17 +12,26 @@ public partial class SectionView : UserControl
     }
 
     /// <summary>
-    /// Handler for the small "⧉" copy buttons next to email / phone
-    /// fields on the Players tab. Reads the text to copy from the
-    /// sender's <see cref="Control.Tag"/> (bound to the field value
-    /// in XAML) and writes it to the application clipboard via the
+    /// Handler for the small "⧉" copy buttons embedded in Players-tab
+    /// cells (USCF, Name, Rating, Team, Email, Phone). Reads the value
+    /// to copy from the sender's <see cref="Control.Tag"/>, coerces it
+    /// to a string (so both string bindings and the numeric Rating
+    /// work), and writes it to the application clipboard via the
     /// hosting <see cref="TopLevel"/>. Uses Avalonia 12's
-    /// <see cref="DataObject"/> + <c>SetDataObjectAsync</c> API.
+    /// <see cref="DataTransfer"/> + <see cref="IClipboard.SetDataAsync"/>
+    /// API.
     /// </summary>
     private async void OnCopyFieldClick(object? sender, RoutedEventArgs e)
     {
-        if (sender is not Button btn || btn.Tag is not string text || string.IsNullOrEmpty(text))
-            return;
+        if (sender is not Button btn) return;
+        var text = btn.Tag switch
+        {
+            string s => s,
+            null => null,
+            var other => other.ToString(),
+        };
+        if (string.IsNullOrEmpty(text)) return;
+
         var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
         if (clipboard is null) return;
         try
