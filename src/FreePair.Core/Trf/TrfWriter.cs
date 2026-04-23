@@ -57,10 +57,19 @@ public static class TrfWriter
         ArgumentNullException.ThrowIfNull(section);
         ArgumentNullException.ThrowIfNull(writer);
 
-        // Withdrawn players are session-flagged and must be excluded
-        // from BBP's pool. We project them out up-front so header
-        // counts and the 001 rows agree.
-        var activePlayers = section.Players.Where(p => !p.Withdrawn).ToArray();
+        // Players excluded from BBP's pool for this round: withdrawals
+        // (session flag) PLUS any pair that's already locked onto a
+        // board via a forced pairing for the upcoming round (the
+        // engine should never try to re-pair them).
+        var forcedThisRound = pairingRound is int pr
+            ? new HashSet<int>(section.ForcedPairs
+                .Where(f => f.Round == pr)
+                .SelectMany(f => new[] { f.WhitePair, f.BlackPair }))
+            : new HashSet<int>();
+
+        var activePlayers = section.Players
+            .Where(p => !p.Withdrawn && !forcedThisRound.Contains(p.PairNumber))
+            .ToArray();
 
         WriteHeader(tournament, section, writer, activePlayers.Length);
         WriteNumberOfRounds(section, writer, initialColor);

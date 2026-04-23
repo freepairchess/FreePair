@@ -222,6 +222,78 @@ public static class TournamentMutations
         });
     }
 
+    /// <summary>
+    /// Adds a <see cref="ForcedPairing"/> to the section. The two
+    /// players will be withheld from the pairing engine for that
+    /// round and placed on board 1 (or subsequent boards when
+    /// multiple forced pairings exist for the same round). A duplicate
+    /// (same round + same unordered pair) is collapsed; a pairing in
+    /// which one of the players is already forced on that round
+    /// throws because the conflict cannot be resolved silently.
+    /// </summary>
+    public static Tournament AddForcedPairing(
+        Tournament tournament,
+        string sectionName,
+        int round,
+        int whitePair,
+        int blackPair)
+    {
+        if (whitePair == blackPair)
+        {
+            throw new ArgumentException(
+                "A forced pairing needs two distinct pair numbers.",
+                nameof(blackPair));
+        }
+
+        return UpdateSection(tournament, sectionName, s =>
+        {
+            var existing = s.ForcedPairs;
+            foreach (var f in existing.Where(f => f.Round == round))
+            {
+                // Identical (unordered) pair already on this round → no-op.
+                if ((f.WhitePair == whitePair && f.BlackPair == blackPair) ||
+                    (f.WhitePair == blackPair && f.BlackPair == whitePair))
+                {
+                    return s;
+                }
+                // Either player is already forced against somebody else.
+                if (f.WhitePair == whitePair || f.BlackPair == whitePair
+                 || f.WhitePair == blackPair || f.BlackPair == blackPair)
+                {
+                    throw new InvalidOperationException(
+                        $"Pair #{whitePair} or #{blackPair} is already part of a forced pairing for round {round}.");
+                }
+            }
+
+            var updated = existing.Append(new ForcedPairing(round, whitePair, blackPair)).ToArray();
+            return s with { ForcedPairings = updated };
+        });
+    }
+
+    /// <summary>
+    /// Removes the forced pairing matching <paramref name="round"/>
+    /// and the unordered <c>(whitePair, blackPair)</c>. No-op when no
+    /// such pairing is configured.
+    /// </summary>
+    public static Tournament RemoveForcedPairing(
+        Tournament tournament,
+        string sectionName,
+        int round,
+        int whitePair,
+        int blackPair)
+    {
+        return UpdateSection(tournament, sectionName, s =>
+        {
+            var updated = s.ForcedPairs
+                .Where(f => !(f.Round == round &&
+                              ((f.WhitePair == whitePair && f.BlackPair == blackPair) ||
+                               (f.WhitePair == blackPair && f.BlackPair == whitePair))))
+                .ToArray();
+            if (updated.Length == s.ForcedPairs.Count) return s;
+            return s with { ForcedPairings = updated };
+        });
+    }
+
     private static Tournament UpdateSection(
         Tournament tournament,
         string sectionName,

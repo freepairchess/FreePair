@@ -136,6 +136,18 @@ public class BbpPairingEngine : IBbpPairingEngine
                 .ConfigureAwait(false);
             var parsed = BbpPairingsParser.Parse(text);
 
+            // Prepend any forced pairings for this round in front of
+            // BBP's output. The affected players were withheld from
+            // the TRF (see TrfWriter.Write), so the two result lists
+            // are disjoint.
+            var forcedForRound = section.ForcedPairs
+                .Where(f => f.Round == pairingRound)
+                .Select(f => new BbpPairing(f.WhitePair, f.BlackPair))
+                .ToArray();
+            var combined = forcedForRound.Length == 0
+                ? parsed.Pairings
+                : forcedForRound.Concat(parsed.Pairings).ToArray();
+
             // Post-process BBP's output through the TD-configured
             // constraint set (same-team / same-club / do-not-pair).
             // Swaps happen inside same-score groups and never change
@@ -143,7 +155,7 @@ public class BbpPairingEngine : IBbpPairingEngine
             // conflicts are returned alongside the (possibly) swapped
             // pairings so the TD can surface them in the UI.
             var resolved = PairingSwapper.Apply(
-                parsed.Pairings,
+                combined,
                 section,
                 BuildConstraints(section));
 
