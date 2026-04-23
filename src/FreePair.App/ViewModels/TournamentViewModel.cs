@@ -52,6 +52,15 @@ public partial class TournamentViewModel : ViewModelBase
     [ObservableProperty]
     private EventConfigViewModel? _eventConfig;
 
+    /// <summary>
+    /// When true, <see cref="OnSelectedSectionChanged"/> skips clearing
+    /// <see cref="IsEventConfigSelected"/>. Set while
+    /// <see cref="RebuildSections"/> re-assigns a freshly-built
+    /// <see cref="SectionViewModel"/> to preserve the user's right-pane
+    /// choice (e.g. Event config remains selected after an Apply).
+    /// </summary>
+    private bool _suppressEventConfigClearOnSelection;
+
     [ObservableProperty]
     private string? _currentFilePath;
 
@@ -164,8 +173,11 @@ public partial class TournamentViewModel : ViewModelBase
 
     partial void OnSelectedSectionChanged(SectionViewModel? value)
     {
-        // Picking a real section returns focus to the section pane.
-        if (value is not null)
+        // Picking a real section returns focus to the section pane —
+        // unless we're in the middle of a programmatic rebuild (e.g.
+        // after Apply from the event-config form), in which case the
+        // user's right-pane choice should be preserved.
+        if (value is not null && !_suppressEventConfigClearOnSelection)
         {
             IsEventConfigSelected = false;
         }
@@ -193,46 +205,57 @@ public partial class TournamentViewModel : ViewModelBase
         var previouslySelectedRound = SelectedSection?.SelectedRound?.Number;
         var previouslySelectedTab = SelectedSection?.SelectedTabIndex ?? 0;
 
-        DetachSectionEvents();
-
-        if (Tournament is null)
+        // Suppress the "selecting a section clears the event-config flag"
+        // side-effect while we re-point SelectedSection at a freshly-built
+        // VM — the user didn't change their pane choice.
+        _suppressEventConfigClearOnSelection = true;
+        try
         {
-            Sections = Array.Empty<SectionViewModel>();
-            SelectedSection = null;
-            return;
-        }
+            DetachSectionEvents();
 
-        var newSections = Tournament.Sections
-            .Select(s => new SectionViewModel(s, _formatter))
-            .ToArray();
-
-        foreach (var vm in newSections)
-        {
-            AttachSectionEvents(vm);
-        }
-
-        Sections = newSections;
-
-        var newSelected = previouslySelectedSection is null
-            ? newSections.FirstOrDefault()
-            : newSections.FirstOrDefault(s => s.Name == previouslySelectedSection)
-              ?? newSections.FirstOrDefault();
-
-        if (newSelected is not null)
-        {
-            if (previouslySelectedRound is int targetRound)
+            if (Tournament is null)
             {
-                var matching = newSelected.AvailableRounds.FirstOrDefault(r => r.Number == targetRound);
-                if (matching is not null)
-                {
-                    newSelected.SelectedRound = matching;
-                }
+                Sections = Array.Empty<SectionViewModel>();
+                SelectedSection = null;
+                return;
             }
 
-            newSelected.SelectedTabIndex = previouslySelectedTab;
-        }
+            var newSections = Tournament.Sections
+                .Select(s => new SectionViewModel(s, _formatter))
+                .ToArray();
 
-        SelectedSection = newSelected;
+            foreach (var vm in newSections)
+            {
+                AttachSectionEvents(vm);
+            }
+
+            Sections = newSections;
+
+            var newSelected = previouslySelectedSection is null
+                ? newSections.FirstOrDefault()
+                : newSections.FirstOrDefault(s => s.Name == previouslySelectedSection)
+                  ?? newSections.FirstOrDefault();
+
+            if (newSelected is not null)
+            {
+                if (previouslySelectedRound is int targetRound)
+                {
+                    var matching = newSelected.AvailableRounds.FirstOrDefault(r => r.Number == targetRound);
+                    if (matching is not null)
+                    {
+                        newSelected.SelectedRound = matching;
+                    }
+                }
+
+                newSelected.SelectedTabIndex = previouslySelectedTab;
+            }
+
+            SelectedSection = newSelected;
+        }
+        finally
+        {
+            _suppressEventConfigClearOnSelection = false;
+        }
     }
 
     /// <summary>
