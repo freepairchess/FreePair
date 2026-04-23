@@ -77,6 +77,12 @@ public static class SwissSysResultJsonBuilder
             w.WriteStartArray();
             foreach (var section in tournament.Sections)
             {
+                // Soft-deleted sections are intentionally omitted from
+                // the published results JSON. NA Chess Hub renders
+                // whatever sections the file carries, so skipping here
+                // makes the section disappear from the public pairings
+                // / standings pages without having to touch the hub.
+                if (section.SoftDeleted) continue;
                 WriteSection(w, section, now);
             }
             w.WriteEndArray();

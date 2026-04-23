@@ -114,7 +114,8 @@ public static class SwissSysMapper
             Rounds: rounds,
             Prizes: prizes,
             UseAcceleration: raw.Acceleration != 0,
-            InitialColor: MapCoinToss(raw.CoinToss));
+            InitialColor: MapCoinToss(raw.CoinToss),
+            SoftDeleted: raw.FreePairSoftDeleted ?? false);
     }
 
     /// <summary>
