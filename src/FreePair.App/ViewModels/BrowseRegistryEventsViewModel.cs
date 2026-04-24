@@ -19,7 +19,6 @@ public partial class BrowseRegistryEventsViewModel : ObservableObject
     public IReadOnlyList<IExternalRegistry> Registries { get; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanOpen))]
     private IExternalRegistry _selectedRegistry;
 
     [ObservableProperty]
@@ -29,11 +28,12 @@ public partial class BrowseRegistryEventsViewModel : ObservableObject
     [ObservableProperty] private string? _errorMessage;
     [ObservableProperty] private string _filter = string.Empty;
 
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanOpen))]
-    private RegistryEvent? _selectedEvent;
-
-    [ObservableProperty] private string _passcode = string.Empty;
+    /// <summary>
+    /// The event the TD picked by clicking its row-level Open
+    /// button. Set by the dialog code-behind right before it closes
+    /// so the caller can read it off the result VM.
+    /// </summary>
+    public RegistryEvent? ChosenEvent { get; set; }
 
     /// <summary>All events returned by the most recent list call.</summary>
     public ObservableCollection<RegistryEvent> Events { get; } = new();
@@ -47,8 +47,6 @@ public partial class BrowseRegistryEventsViewModel : ObservableObject
     public ObservableCollection<RegistryEvent> FilteredEvents { get; } = new();
 
     public bool HasEvents => Events.Count > 0 && !IsLoading;
-
-    public bool CanOpen => SelectedRegistry is not null && SelectedEvent is not null;
 
     public BrowseRegistryEventsViewModel(IReadOnlyList<IExternalRegistry> registries)
     {
@@ -101,20 +99,4 @@ public partial class BrowseRegistryEventsViewModel : ObservableObject
     private static bool Match(string? field, string q) =>
         !string.IsNullOrEmpty(field) &&
         field.Contains(q, System.StringComparison.OrdinalIgnoreCase);
-
-    public bool TryValidate()
-    {
-        if (SelectedEvent is null)
-        {
-            ErrorMessage = "Select an event first.";
-            return false;
-        }
-        if (string.IsNullOrWhiteSpace(Passcode))
-        {
-            ErrorMessage = "Enter the event passcode.";
-            return false;
-        }
-        ErrorMessage = null;
-        return true;
-    }
 }

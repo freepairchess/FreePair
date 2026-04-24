@@ -588,13 +588,30 @@ public partial class TournamentViewModel : ViewModelBase
 
         var dialogVm = new BrowseRegistryEventsViewModel(listable);
         var result = await ShowBrowseRegistryEventsDialogAsync(dialogVm).ConfigureAwait(true);
-        if (result?.SelectedEvent is null) return;
+        if (result?.ChosenEvent is null) return;
+
+        // Hand off to the by-id Open flow, pre-filling the chosen
+        // event's id and locking the registry to the one the TD just
+        // browsed. The by-id dialog collects the passcode (we don't
+        // ask for it on the browse list itself) and then runs the
+        // standard DownloadAndOpenAsync pipeline. Carrying the
+        // suggested name through means the per-event folder uses the
+        // browse-list name verbatim, not the title sniffed from the
+        // payload.
+        if (ShowOpenFromRegistryDialogAsync is null) return;
+
+        var byIdVm = new OpenFromRegistryViewModel(new[] { result.SelectedRegistry })
+        {
+            EventId = result.ChosenEvent.Id,
+        };
+        var confirmed = await ShowOpenFromRegistryDialogAsync(byIdVm).ConfigureAwait(true);
+        if (confirmed is null) return;
 
         await DownloadAndOpenAsync(
-            result.SelectedRegistry,
-            result.SelectedEvent.Id,
-            result.Passcode,
-            suggestedName: result.SelectedEvent.Name,
+            confirmed.SelectedRegistry,
+            confirmed.EventId,
+            confirmed.Passcode,
+            suggestedName: result.ChosenEvent.Name,
             settings).ConfigureAwait(true);
     }
 

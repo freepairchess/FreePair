@@ -59,15 +59,23 @@ public partial class BrowseRegistryEventsDialog : Window
     private async void OnRefresh(object? sender, RoutedEventArgs e) =>
         await LoadAsync();
 
-    private void OnConfirm(object? sender, RoutedEventArgs e)
+    /// <summary>
+    /// Per-row Open click. Records the chosen event on the VM and
+    /// closes the dialog so the caller can pop the by-id Open
+    /// dialog with the event ID pre-filled.
+    /// </summary>
+    private void OnRowOpenClick(object? sender, RoutedEventArgs e)
     {
         if (DataContext is not BrowseRegistryEventsViewModel vm)
         {
             Close((BrowseRegistryEventsViewModel?)null);
             return;
         }
-        if (!vm.TryValidate()) return;
-        Close(vm);
+        if (sender is Avalonia.Controls.Button b && b.Tag is FreePair.Core.Registries.RegistryEvent ev)
+        {
+            vm.ChosenEvent = ev;
+            Close(vm);
+        }
     }
 
     private void OnCancel(object? sender, RoutedEventArgs e) =>
