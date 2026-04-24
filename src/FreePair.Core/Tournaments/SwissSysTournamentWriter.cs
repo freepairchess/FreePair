@@ -99,6 +99,22 @@ public class SwissSysTournamentWriter : ITournamentWriter
                     continue;
                 }
 
+                // Editable identity/contact fields — written back on
+                // every save so in-session edits from the Player form
+                // dialog stick. Nullable string fields serialize as
+                // JSON null when the domain value is null (SwissSys
+                // tolerates both null and empty-string).
+                playerNode["Name"]    = JsonValue.Create(player.Name);
+                playerNode["ID"]      = player.UscfId is null ? null : JsonValue.Create(player.UscfId);
+                playerNode["Rating"]  = JsonValue.Create(player.Rating);
+                playerNode["Rating2"] = player.SecondaryRating is null ? null : JsonValue.Create(player.SecondaryRating.Value);
+                playerNode["Exp1"]    = player.MembershipExpiration is null ? null : JsonValue.Create(player.MembershipExpiration);
+                playerNode["Club"]    = player.Club  is null ? null : JsonValue.Create(player.Club);
+                playerNode["State"]   = player.State is null ? null : JsonValue.Create(player.State);
+                playerNode["Team"]    = player.Team  is null ? null : JsonValue.Create(player.Team);
+                playerNode["Email"]   = player.Email is null ? null : JsonValue.Create(player.Email);
+                playerNode["Phone"]   = player.Phone is null ? null : JsonValue.Create(player.Phone);
+
                 var resultsArray = new JsonArray();
                 foreach (var entry in player.History)
                 {

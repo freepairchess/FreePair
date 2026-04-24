@@ -124,6 +124,15 @@ public partial class SectionView : UserControl
         }
     }
 
+    private async void OnPlayerEditClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is int pn
+            && DataContext is ViewModels.SectionViewModel vm)
+        {
+            await vm.RequestPlayerEditAsync(pn);
+        }
+    }
+
     private void OnClearPairingFilter(object? sender, RoutedEventArgs e)
     {
         if (DataContext is ViewModels.SectionViewModel vm) vm.PairingFilter = string.Empty;

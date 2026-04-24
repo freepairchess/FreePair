@@ -143,6 +143,13 @@ public partial class TournamentViewModel : ViewModelBase
     /// </summary>
     public Func<ManageByesViewModel, Task<ManageByesViewModel?>>? ShowManageByesDialogAsync { get; set; }
 
+    /// <summary>
+    /// View-supplied callback that opens the player form dialog
+    /// (used for both edit and add flows). Returns the VM on Save,
+    /// null on Cancel.
+    /// </summary>
+    public Func<PlayerFormViewModel, Task<PlayerFormViewModel?>>? ShowPlayerFormDialogAsync { get; set; }
+
     // ============ Online publishing (session-only, per-tournament) ============
 
     /// <summary>Sticky URL used by the Publish dialog. Seeded from <see cref="AppSettings.NaChessHubBaseUrl"/>.</summary>
@@ -482,6 +489,7 @@ public partial class TournamentViewModel : ViewModelBase
             vm.PlayerWithdrawRequested   -= OnPlayerWithdrawAsync;
             vm.PlayerUnwithdrawRequested -= OnPlayerUnwithdrawAsync;
             vm.PlayerManageByesRequested -= OnPlayerManageByesAsync;
+            vm.PlayerEditRequested -= OnPlayerEditAsync;
         }
     }
 
@@ -813,6 +821,50 @@ public partial class TournamentViewModel : ViewModelBase
         catch (Exception ex)
         {
             ErrorMessage = $"Failed to apply bye changes: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnPlayerEditAsync(SectionViewModel section, int pairNumber)
+    {
+        if (Tournament is null || ShowPlayerFormDialogAsync is null) return;
+
+        var player = section.Section.Players.FirstOrDefault(p => p.PairNumber == pairNumber);
+        if (player is null) return;
+
+        var dialogVm = PlayerFormViewModel.ForEdit(section.Name, player);
+        var result = await ShowPlayerFormDialogAsync(dialogVm).ConfigureAwait(true);
+        if (result is null) return; // cancelled
+
+        if (!result.TryValidate(out var rating, out var secondaryRating))
+        {
+            ErrorMessage = result.ErrorMessage;
+            return;
+        }
+
+        try
+        {
+            Tournament = TournamentMutations.UpdatePlayerInfo(
+                Tournament,
+                section.Name,
+                pairNumber,
+                name: result.Name,
+                uscfId: result.UscfId,
+                rating: rating,
+                secondaryRating: secondaryRating,
+                membershipExpiration: result.MembershipExpiration,
+                club: result.Club,
+                state: result.State,
+                team: result.Team,
+                email: result.Email,
+                phone: result.Phone);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to update player: {ex.Message}";
             return;
         }
 

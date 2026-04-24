@@ -27,6 +27,7 @@ public partial class TournamentView : UserControl
             vm.PromptPairingPreviewAsync = PromptPairingPreviewAsync;
             vm.ShowPublishingDialogAsync = ShowPublishingDialogAsync;
             vm.ShowManageByesDialogAsync = ShowManageByesDialogAsync;
+            vm.ShowPlayerFormDialogAsync = ShowPlayerFormDialogAsync;
         }
     }
 
@@ -162,6 +163,21 @@ public partial class TournamentView : UserControl
 
         var dialog = new ManageByesDialog(vm);
         return await dialog.ShowDialog<ManageByesViewModel?>(owner);
+    }
+
+    /// <summary>
+    /// Shows the Player form dialog modally (edit or add). Returns
+    /// the VM on Save, null on Cancel.
+    /// </summary>
+    private async Task<PlayerFormViewModel?> ShowPlayerFormDialogAsync(PlayerFormViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner)
+        {
+            return null;
+        }
+
+        var dialog = new PlayerFormDialog(vm);
+        return await dialog.ShowDialog<PlayerFormViewModel?>(owner);
     }
 
     /// <summary>

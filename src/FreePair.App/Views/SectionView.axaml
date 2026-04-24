@@ -385,7 +385,7 @@
                                  the player's SoftDeleted/Withdrawn state
                                  and the section's RoundsPaired, so
                                  exactly one set of icons applies. -->
-                            <DataGridTemplateColumn Header="" Width="170">
+                            <DataGridTemplateColumn Header="" Width="200">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="vm:PlayerRow">
                                         <StackPanel Orientation="Horizontal"
@@ -440,6 +440,18 @@
                                                     Click="OnPlayerManageByesClick"
                                                     IsVisible="{Binding CanManageByes}"
                                                     ToolTip.Tip="Manage requested byes for this player's future unpaired rounds."/>
+                                            <!-- Edit player info. Opens the
+                                                 Player form dialog seeded
+                                                 with the current fields.
+                                                 Available for every non-soft-
+                                                 deleted player. -->
+                                            <Button Classes="icon-btn"
+                                                    Foreground="#2E7D32"
+                                                    Content="&#xE70F;"
+                                                    Tag="{Binding PairNumber}"
+                                                    Click="OnPlayerEditClick"
+                                                    IsVisible="{Binding CanEdit}"
+                                                    ToolTip.Tip="Edit this player's name, ID, rating, contact info, etc."/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

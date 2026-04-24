@@ -1035,6 +1035,56 @@ public static class TournamentMutations
         return ReplacePlayer(tournament, section, updated);
     }
 
+    /// <summary>
+    /// Replaces a player's editable contact/identity fields
+    /// (<see cref="Player.Name"/>, <see cref="Player.UscfId"/>,
+    /// <see cref="Player.Rating"/>, secondary rating, membership
+    /// expiration, club, state, team, email, phone) while preserving
+    /// session-only state (<see cref="Player.History"/>,
+    /// <see cref="Player.RequestedByeRounds"/>,
+    /// <see cref="Player.ZeroPointByeRounds"/>,
+    /// <see cref="Player.Withdrawn"/>,
+    /// <see cref="Player.SoftDeleted"/>). All fields are passed from
+    /// the Player form dialog; callers supply the full edited subset.
+    /// </summary>
+    public static Tournament UpdatePlayerInfo(
+        Tournament tournament,
+        string sectionName,
+        int pairNumber,
+        string name,
+        string? uscfId,
+        int rating,
+        int? secondaryRating,
+        string? membershipExpiration,
+        string? club,
+        string? state,
+        string? team,
+        string? email,
+        string? phone)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+
+        var section = FindSection(tournament, sectionName);
+        var player = FindPlayer(section, pairNumber);
+
+        var updated = player with
+        {
+            Name = name.Trim(),
+            UscfId = string.IsNullOrWhiteSpace(uscfId) ? null : uscfId.Trim(),
+            Rating = rating,
+            SecondaryRating = secondaryRating,
+            MembershipExpiration = string.IsNullOrWhiteSpace(membershipExpiration) ? null : membershipExpiration.Trim(),
+            Club = string.IsNullOrWhiteSpace(club) ? null : club.Trim(),
+            State = string.IsNullOrWhiteSpace(state) ? null : state.Trim(),
+            Team = string.IsNullOrWhiteSpace(team) ? null : team.Trim(),
+            Email = string.IsNullOrWhiteSpace(email) ? null : email.Trim(),
+            Phone = string.IsNullOrWhiteSpace(phone) ? null : phone.Trim(),
+        };
+        return ReplacePlayer(tournament, section, updated);
+    }
+
     // ================================================================
     // Helpers
     // ================================================================

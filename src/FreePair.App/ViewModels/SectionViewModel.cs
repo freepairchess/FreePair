@@ -52,7 +52,14 @@ public sealed record PlayerRow(
     /// not withdrawn) AND the section has at least one unpaired
     /// future round to assign a bye for.
     /// </summary>
-    bool CanManageByes);
+    bool CanManageByes,
+    /// <summary>
+    /// Edit-info icon visibility. True for any non-soft-deleted
+    /// player — we allow edits even mid-tournament so the TD can fix
+    /// name / contact typos without having to undelete a soft-deleted
+    /// entry first.
+    /// </summary>
+    bool CanEdit);
 
 /// <summary>
 /// Editable pairing row for the <b>Pairings</b> tab. Binds to a result
@@ -728,6 +735,17 @@ public partial class SectionViewModel : ViewModelBase
     public Task RequestPlayerManageByesAsync(int pairNumber) =>
         PlayerManageByesRequested?.Invoke(this, pairNumber) ?? Task.CompletedTask;
 
+    /// <summary>
+    /// Raised when the TD clicks the ✎ pencil icon on a player row
+    /// to open the edit form. Parent VM opens
+    /// <see cref="Views.PlayerFormDialog"/> and, on Save, dispatches
+    /// through <see cref="TournamentMutations.UpdatePlayerInfo"/>.
+    /// </summary>
+    public event Func<SectionViewModel, int /*pairNumber*/, Task>? PlayerEditRequested;
+
+    public Task RequestPlayerEditAsync(int pairNumber) =>
+        PlayerEditRequested?.Invoke(this, pairNumber) ?? Task.CompletedTask;
+
     private static PlayerRow BuildPlayerRowStatic(Player player, Section section, IScoreFormatter formatter)
     {
         string status;
@@ -814,7 +832,11 @@ public partial class SectionViewModel : ViewModelBase
             // as long as there's at least one unpaired future round
             // to assign a bye for. Pre-round-1 this is effectively
             // always available for active players.
-            CanManageByes: !player.SoftDeleted && !isWithdrawn && hasFutureRounds);
+            CanManageByes: !player.SoftDeleted && !isWithdrawn && hasFutureRounds,
+            // Edit player is available for any non-soft-deleted
+            // player — even withdrawn ones, since the TD may need to
+            // fix a typo in a name or contact detail mid-tournament.
+            CanEdit: !player.SoftDeleted);
     }
 
     private PlayerRow BuildPlayerRow(Player player, Section section) =>
