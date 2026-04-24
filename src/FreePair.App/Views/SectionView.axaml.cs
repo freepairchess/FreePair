@@ -189,10 +189,31 @@ public partial class SectionView : UserControl
         var safe = string.Concat(suggestedName.Split(Path.GetInvalidFileNameChars()));
         if (!safe.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase)) safe += ".pdf";
 
+        // Default the save dialog to the currently-open tournament's
+        // folder so PDFs land right next to the .sjson. Falls back to
+        // the OS default when no tournament is loaded or the folder
+        // can't be resolved (e.g. the path was removed externally).
+        Avalonia.Platform.Storage.IStorageFolder? startFolder = null;
+        var tournamentPath = (DataContext as ViewModels.SectionViewModel)
+            ?.ParentTournamentVm?.CurrentFilePath;
+        if (!string.IsNullOrWhiteSpace(tournamentPath))
+        {
+            var dir = Path.GetDirectoryName(tournamentPath);
+            if (!string.IsNullOrWhiteSpace(dir))
+            {
+                try
+                {
+                    startFolder = await topLevel.StorageProvider.TryGetFolderFromPathAsync(dir);
+                }
+                catch { /* fall back silently */ }
+            }
+        }
+
         var options = new FilePickerSaveOptions
         {
             Title = "Save PDF report",
             SuggestedFileName = safe,
+            SuggestedStartLocation = startFolder,
             DefaultExtension = "pdf",
             FileTypeChoices = new[]
             {

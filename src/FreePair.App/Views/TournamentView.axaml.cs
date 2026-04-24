@@ -32,6 +32,8 @@ public partial class TournamentView : UserControl
             vm.ShowNewEventDialogAsync = ShowNewEventDialogAsync;
             vm.PickNewEventSavePathAsync = PickNewEventSavePathAsync;
             vm.PickPlayerImportFileAsync = PickPlayerImportFileAsync;
+            vm.ShowOpenFromRegistryDialogAsync = ShowOpenFromRegistryDialogAsync;
+            vm.ShowBrowseRegistryEventsDialogAsync = ShowBrowseRegistryEventsDialogAsync;
         }
     }
 
@@ -248,10 +250,32 @@ public partial class TournamentView : UserControl
     }
 
     /// <summary>
+    /// Shows the "Open from online registry (by event ID)" dialog.
+    /// Returns the VM on OK, null on Cancel.
+    /// </summary>
+    private async Task<OpenFromRegistryViewModel?> ShowOpenFromRegistryDialogAsync(OpenFromRegistryViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner) return null;
+        var dialog = new OpenFromRegistryDialog(vm);
+        return await dialog.ShowDialog<OpenFromRegistryViewModel?>(owner);
+    }
+
+    /// <summary>
+    /// Shows the "Browse online events" dialog. Returns the VM on
+    /// OK (selected event + passcode), null on Cancel.
+    /// </summary>
+    private async Task<BrowseRegistryEventsViewModel?> ShowBrowseRegistryEventsDialogAsync(BrowseRegistryEventsViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner) return null;
+        var dialog = new BrowseRegistryEventsDialog(vm);
+        return await dialog.ShowDialog<BrowseRegistryEventsViewModel?>(owner);
+    }
+
+    /// <summary>
     /// Save-file picker scoped to <c>.sjson</c> for the New-event
     /// flow. Returns the local path or null on cancel.
     /// </summary>
-    private async Task<string?> PickNewEventSavePathAsync(string suggestedName)
+    private async Task<string?> PickNewEventSavePathAsync(string suggestedFolder, string suggestedName)
     {
         var topLevel = TopLevel.GetTopLevel(this);
         if (topLevel is null)
@@ -259,10 +283,25 @@ public partial class TournamentView : UserControl
             return null;
         }
 
+        IStorageFolder? startFolder = null;
+        if (!string.IsNullOrWhiteSpace(suggestedFolder))
+        {
+            try
+            {
+                startFolder = await topLevel.StorageProvider.TryGetFolderFromPathAsync(suggestedFolder);
+            }
+            catch
+            {
+                // Folder may not exist yet on some platforms; fall
+                // back to the OS default start location silently.
+            }
+        }
+
         var options = new FilePickerSaveOptions
         {
             Title = "Save new tournament as",
             SuggestedFileName = suggestedName,
+            SuggestedStartLocation = startFolder,
             DefaultExtension = "sjson",
             FileTypeChoices = new[]
             {

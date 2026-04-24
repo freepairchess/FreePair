@@ -1,0 +1,61 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:FreePair.App.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="520" d:DesignHeight="280"
+        x:Class="FreePair.App.Views.OpenFromRegistryDialog"
+        x:DataType="vm:OpenFromRegistryViewModel"
+        Title="Open from online registry"
+        Width="520"
+        SizeToContent="Height"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+
+    <DockPanel Margin="20" LastChildFill="True">
+
+        <StackPanel DockPanel.Dock="Top" Spacing="4" Margin="0,0,0,12">
+            <TextBlock Text="Open tournament from online registry"
+                       FontWeight="SemiBold" FontSize="14"/>
+            <TextBlock Foreground="Gray" FontSize="11" TextWrapping="Wrap"
+                       Text="Enter the event ID and passcode you received from the organizer. The .sjson file will be downloaded into your tournaments folder."/>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="8"
+                    Margin="0,16,0,0">
+            <TextBlock Foreground="DarkRed"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       MaxWidth="260"
+                       Text="{Binding ErrorMessage}"
+                       IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+            <Button Content="Cancel" Click="OnCancel" MinWidth="90" IsCancel="True"/>
+            <Button Content="Open"   Click="OnConfirm" MinWidth="90" IsDefault="True" Classes="accent"/>
+        </StackPanel>
+
+        <Grid ColumnDefinitions="130,*"
+              RowDefinitions="Auto,Auto,Auto"
+              RowSpacing="10">
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Registry *" VerticalAlignment="Center" Foreground="DimGray"/>
+            <ComboBox  Grid.Row="0" Grid.Column="1"
+                       ItemsSource="{Binding Registries}"
+                       SelectedItem="{Binding SelectedRegistry, Mode=TwoWay}"
+                       DisplayMemberBinding="{Binding DisplayName}"
+                       HorizontalAlignment="Stretch"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Event ID *" VerticalAlignment="Center" Foreground="DimGray"/>
+            <TextBox   Grid.Row="1" Grid.Column="1" Text="{Binding EventId}"
+                       Watermark="e.g. 0a9e8aa0-88e3-48fd-9fdf-2bff8850a7b9"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Passcode *" VerticalAlignment="Center" Foreground="DimGray"/>
+            <TextBox   Grid.Row="2" Grid.Column="1" Text="{Binding Passcode}"
+                       PasswordChar="•"
+                       Watermark="from the event organizer"/>
+        </Grid>
+    </DockPanel>
+</Window>

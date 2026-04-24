@@ -35,6 +35,29 @@ public partial class SettingsViewModel : ViewModelBase
     [ObservableProperty] private bool _autoPublishPairingsDefault;
     [ObservableProperty] private bool _autoPublishResultsDefault;
 
+    // ============ Tournament file layout ============
+
+    /// <summary>
+    /// Root folder under which FreePair creates per-event
+    /// subfolders. Blank ? fall back to
+    /// <see cref="FreePair.Core.Tournaments.TournamentFolder.DefaultRoot"/>
+    /// (Documents/FreePairEvents).
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(EffectiveTournamentsRootFolder))]
+    private string? _tournamentsRootFolder;
+
+    /// <summary>
+    /// The computed effective root folder the resolver will use on
+    /// disk — either <see cref="TournamentsRootFolder"/> verbatim or
+    /// the built-in default when that's blank. Surfaced in the UI so
+    /// the TD can always see where events will land.
+    /// </summary>
+    public string EffectiveTournamentsRootFolder =>
+        string.IsNullOrWhiteSpace(TournamentsRootFolder)
+            ? FreePair.Core.Tournaments.TournamentFolder.DefaultRoot
+            : TournamentsRootFolder!.Trim();
+
     [ObservableProperty]
     private string? _statusMessage;
 
@@ -59,6 +82,13 @@ public partial class SettingsViewModel : ViewModelBase
     /// <c>null</c> if the user cancelled.
     /// </summary>
     public Func<Task<string?>>? PickPairingEngineBinaryAsync { get; set; }
+
+    /// <summary>
+    /// Callback used by <see cref="BrowseTournamentsRootFolderCommand"/>
+    /// to let the view show a native folder picker. Returns the
+    /// selected absolute path, or <c>null</c> if the user cancelled.
+    /// </summary>
+    public Func<Task<string?>>? PickTournamentsRootFolderAsync { get; set; }
 
     /// <summary>
     /// Invoked whenever <see cref="UseAsciiOnly"/> changes (after the
@@ -99,6 +129,7 @@ public partial class SettingsViewModel : ViewModelBase
             NaChessHubBaseUrl          = _settings.NaChessHubBaseUrl;
             AutoPublishPairingsDefault = _settings.AutoPublishPairingsDefault;
             AutoPublishResultsDefault  = _settings.AutoPublishResultsDefault;
+            TournamentsRootFolder      = _settings.TournamentsRootFolder;
         }
         finally
         {
@@ -144,6 +175,21 @@ public partial class SettingsViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    private async Task BrowseTournamentsRootFolderAsync()
+    {
+        if (PickTournamentsRootFolderAsync is null)
+        {
+            return;
+        }
+
+        var picked = await PickTournamentsRootFolderAsync().ConfigureAwait(true);
+        if (!string.IsNullOrWhiteSpace(picked))
+        {
+            TournamentsRootFolder = picked;
+        }
+    }
+
+    [RelayCommand]
     private async Task SaveAsync()
     {
         _settings.PairingEngineBinaryPath = string.IsNullOrWhiteSpace(PairingEngineBinaryPath)
@@ -154,6 +200,8 @@ public partial class SettingsViewModel : ViewModelBase
             ? "https://nachesshub.com" : NaChessHubBaseUrl.Trim();
         _settings.AutoPublishPairingsDefault = AutoPublishPairingsDefault;
         _settings.AutoPublishResultsDefault  = AutoPublishResultsDefault;
+        _settings.TournamentsRootFolder      = string.IsNullOrWhiteSpace(TournamentsRootFolder)
+            ? null : TournamentsRootFolder!.Trim();
 
         try
         {
