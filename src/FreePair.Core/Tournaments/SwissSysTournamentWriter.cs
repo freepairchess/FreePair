@@ -96,7 +96,13 @@ public class SwissSysTournamentWriter : ITournamentWriter
                 var playerNode = FindPlayerByPairNumber(playersArray, player.PairNumber);
                 if (playerNode is null)
                 {
-                    continue;
+                    // Player added in-session via AddPlayer — create a
+                    // fresh raw node so the field-patch code below has
+                    // something to write into. Minimal seed (just the
+                    // pair number); every other key is set by the
+                    // identity / contact / results patches below.
+                    playerNode = new JsonObject { ["Pair number"] = player.PairNumber };
+                    playersArray.Add(playerNode);
                 }
 
                 // Editable identity/contact fields — written back on

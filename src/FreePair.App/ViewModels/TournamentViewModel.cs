@@ -490,6 +490,7 @@ public partial class TournamentViewModel : ViewModelBase
             vm.PlayerUnwithdrawRequested -= OnPlayerUnwithdrawAsync;
             vm.PlayerManageByesRequested -= OnPlayerManageByesAsync;
             vm.PlayerEditRequested -= OnPlayerEditAsync;
+            vm.PlayerAddRequested -= OnPlayerAddAsync;
         }
     }
 
@@ -865,6 +866,54 @@ public partial class TournamentViewModel : ViewModelBase
         catch (Exception ex)
         {
             ErrorMessage = $"Failed to update player: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnPlayerAddAsync(SectionViewModel section)
+    {
+        if (Tournament is null || ShowPlayerFormDialogAsync is null) return;
+
+        var nextPair = section.Section.Players.Count == 0
+            ? 1
+            : section.Section.Players.Max(p => p.PairNumber) + 1;
+        var dialogVm = PlayerFormViewModel.ForAdd(
+            sectionName: section.Name,
+            nextPairNumber: nextPair,
+            roundsPaired: section.Section.RoundsPaired);
+
+        var result = await ShowPlayerFormDialogAsync(dialogVm).ConfigureAwait(true);
+        if (result is null) return; // cancelled
+
+        if (!result.TryValidate(out var rating, out var secondaryRating))
+        {
+            ErrorMessage = result.ErrorMessage;
+            return;
+        }
+
+        try
+        {
+            Tournament = TournamentMutations.AddPlayer(
+                Tournament,
+                section.Name,
+                name: result.Name,
+                uscfId: result.UscfId,
+                rating: rating,
+                secondaryRating: secondaryRating,
+                membershipExpiration: result.MembershipExpiration,
+                club: result.Club,
+                state: result.State,
+                team: result.Team,
+                email: result.Email,
+                phone: result.Phone,
+                byesForPastRounds: result.CollectByesForPastRounds());
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to add player: {ex.Message}";
             return;
         }
 

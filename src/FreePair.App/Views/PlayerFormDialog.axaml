@@ -46,39 +46,76 @@
                     Classes="accent"/>
         </StackPanel>
 
-        <Grid ColumnDefinitions="120,*"
-              RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
-              RowSpacing="8">
+        <ScrollViewer>
+            <StackPanel Spacing="12">
+                <Grid ColumnDefinitions="120,*"
+                      RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                      RowSpacing="8">
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Name *" VerticalAlignment="Center" Foreground="DimGray"/>
-            <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding Name}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Name *" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding Name}"/>
 
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="USCF ID" VerticalAlignment="Center" Foreground="DimGray"/>
-            <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding UscfId}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="USCF ID" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding UscfId}"/>
 
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Rating *" VerticalAlignment="Center" Foreground="DimGray"/>
-            <TextBox  Grid.Row="2" Grid.Column="1" Text="{Binding RatingText}" Watermark="e.g. 1500"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Rating *" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="2" Grid.Column="1" Text="{Binding RatingText}" Watermark="e.g. 1500"/>
 
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="Rating 2" VerticalAlignment="Center" Foreground="DimGray"/>
-            <TextBox  Grid.Row="3" Grid.Column="1" Text="{Binding SecondaryRatingText}" Watermark="optional"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Rating 2" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="3" Grid.Column="1" Text="{Binding SecondaryRatingText}" Watermark="optional"/>
 
-            <TextBlock Grid.Row="4" Grid.Column="0" Text="Membership exp." VerticalAlignment="Center" Foreground="DimGray"/>
-            <TextBox  Grid.Row="4" Grid.Column="1" Text="{Binding MembershipExpiration}"/>
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Membership exp." VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="4" Grid.Column="1" Text="{Binding MembershipExpiration}"/>
 
-            <TextBlock Grid.Row="5" Grid.Column="0" Text="Club" VerticalAlignment="Center" Foreground="DimGray"/>
-            <TextBox  Grid.Row="5" Grid.Column="1" Text="{Binding Club}"/>
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Club" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="5" Grid.Column="1" Text="{Binding Club}"/>
 
-            <TextBlock Grid.Row="6" Grid.Column="0" Text="State" VerticalAlignment="Center" Foreground="DimGray"/>
-            <TextBox  Grid.Row="6" Grid.Column="1" Text="{Binding State}"/>
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="State" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="6" Grid.Column="1" Text="{Binding State}"/>
 
-            <TextBlock Grid.Row="7" Grid.Column="0" Text="Team" VerticalAlignment="Center" Foreground="DimGray"/>
-            <TextBox  Grid.Row="7" Grid.Column="1" Text="{Binding Team}"/>
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="Team" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="7" Grid.Column="1" Text="{Binding Team}"/>
 
-            <TextBlock Grid.Row="8" Grid.Column="0" Text="Email" VerticalAlignment="Center" Foreground="DimGray"/>
-            <TextBox  Grid.Row="8" Grid.Column="1" Text="{Binding Email}"/>
+                    <TextBlock Grid.Row="8" Grid.Column="0" Text="Email" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="8" Grid.Column="1" Text="{Binding Email}"/>
 
-            <TextBlock Grid.Row="9" Grid.Column="0" Text="Phone" VerticalAlignment="Center" Foreground="DimGray"/>
-            <TextBox  Grid.Row="9" Grid.Column="1" Text="{Binding Phone}"/>
-        </Grid>
+                    <TextBlock Grid.Row="9" Grid.Column="0" Text="Phone" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="9" Grid.Column="1" Text="{Binding Phone}"/>
+                </Grid>
+
+                <!-- Byes for already-paired rounds. Only surfaces on
+                     the Add flow when the section has at least one
+                     paired round; defaults every past round to a
+                     zero-point bye. TD can switch any round to half-
+                     or full-point. -->
+                <StackPanel Spacing="6" IsVisible="{Binding HasPastRoundByes}">
+                    <TextBlock Text="Byes for past rounds" FontWeight="SemiBold"/>
+                    <TextBlock Foreground="Gray" FontSize="11" TextWrapping="Wrap"
+                               Text="The player didn't play these rounds. Pick a bye kind for each; zero-point is the safe default for late entries."/>
+                    <Border BorderBrush="LightGray"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="8">
+                        <ItemsControl ItemsSource="{Binding PastRoundByes}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="vm:PastRoundByeRow">
+                                    <Grid ColumnDefinitions="80,*" Margin="0,4">
+                                        <TextBlock Grid.Column="0"
+                                                   Text="{Binding RoundLabel}"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Center"/>
+                                        <ComboBox Grid.Column="1"
+                                                  ItemsSource="{Binding Options}"
+                                                  SelectedItem="{Binding Choice, Mode=TwoWay}"
+                                                  MinWidth="260"
+                                                  HorizontalAlignment="Stretch"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </DockPanel>
 </Window>

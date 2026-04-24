@@ -1085,6 +1085,102 @@ public static class TournamentMutations
         return ReplacePlayer(tournament, section, updated);
     }
 
+    /// <summary>
+    /// Adds a new player to the section. The pair number is assigned
+    /// as <c>max(existing) + 1</c> (gaps from hard-deleted players
+    /// are not filled). If the section already has paired rounds,
+    /// the new player's <see cref="Player.History"/> is back-filled
+    /// one entry per past round according to
+    /// <paramref name="byesForPastRounds"/>: any paired round not in
+    /// the dictionary defaults to <see cref="ByeKind.Unpaired"/>
+    /// (zero-point bye). Each past round's
+    /// <see cref="Round.Byes"/> gains a matching
+    /// <see cref="ByeAssignment"/> so standings, wall chart, and the
+    /// Byes tab all reflect the new player's presence retroactively.
+    /// </summary>
+    public static Tournament AddPlayer(
+        Tournament tournament,
+        string sectionName,
+        string name,
+        string? uscfId,
+        int rating,
+        int? secondaryRating,
+        string? membershipExpiration,
+        string? club,
+        string? state,
+        string? team,
+        string? email,
+        string? phone,
+        IReadOnlyDictionary<int, ByeKind>? byesForPastRounds = null)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+
+        var section = FindSection(tournament, sectionName);
+        var nextPair = section.Players.Count == 0
+            ? 1
+            : section.Players.Max(p => p.PairNumber) + 1;
+
+        var byes = byesForPastRounds ?? new Dictionary<int, ByeKind>();
+        var history = new List<RoundResult>(section.RoundsPaired);
+        for (var r = 1; r <= section.RoundsPaired; r++)
+        {
+            // Default to zero-point bye for any un-specified past
+            // round: late entry gets no points for rounds they missed,
+            // which is the safest default. TD can still edit each
+            // round's choice via the dialog.
+            var kind = byes.TryGetValue(r, out var k) ? k : ByeKind.Unpaired;
+            history.Add(kind switch
+            {
+                ByeKind.Full => new RoundResult(RoundResultKind.FullPointBye, -1, PlayerColor.None, 0, 0, 0, 1m),
+                ByeKind.Half => new RoundResult(RoundResultKind.HalfPointBye, -1, PlayerColor.None, 0, 0, 0, 0.5m),
+                _            => new RoundResult(RoundResultKind.ZeroPointBye,  0, PlayerColor.None, 0, 0, 0, 0m),
+            });
+        }
+
+        var newPlayer = new Player(
+            PairNumber: nextPair,
+            Name: name.Trim(),
+            UscfId: string.IsNullOrWhiteSpace(uscfId) ? null : uscfId.Trim(),
+            Rating: rating,
+            SecondaryRating: secondaryRating,
+            MembershipExpiration: string.IsNullOrWhiteSpace(membershipExpiration) ? null : membershipExpiration.Trim(),
+            Club: string.IsNullOrWhiteSpace(club) ? null : club.Trim(),
+            State: string.IsNullOrWhiteSpace(state) ? null : state.Trim(),
+            Team: string.IsNullOrWhiteSpace(team) ? null : team.Trim(),
+            RequestedByeRounds: System.Array.Empty<int>(),
+            History: history,
+            Withdrawn: false,
+            Email: string.IsNullOrWhiteSpace(email) ? null : email.Trim(),
+            Phone: string.IsNullOrWhiteSpace(phone) ? null : phone.Trim(),
+            SoftDeleted: false,
+            ZeroPointByeRounds: null);
+
+        // Insert player at the end of the section's roster.
+        var newPlayers = section.Players.Append(newPlayer).ToArray();
+
+        // Back-fill each paired round's Byes list with a matching
+        // assignment so the bye surfaces on the Byes tab and is
+        // persisted correctly (Round.Byes is the source of truth for
+        // "what happened this round" independent of player history).
+        var newRounds = section.Rounds
+            .Select(round =>
+            {
+                var kind = byes.TryGetValue(round.Number, out var k) ? k : ByeKind.Unpaired;
+                var assignment = new ByeAssignment(nextPair, kind);
+                return round with { Byes = round.Byes.Append(assignment).ToArray() };
+            })
+            .ToArray();
+
+        var updatedSection = section with
+        {
+            Players = newPlayers,
+            Rounds = newRounds,
+        };
+        return ReplaceSection(tournament, sectionName, updatedSection);
+    }
+
     // ================================================================
     // Helpers
     // ================================================================

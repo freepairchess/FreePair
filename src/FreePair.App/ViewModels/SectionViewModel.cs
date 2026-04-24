@@ -746,6 +746,17 @@ public partial class SectionViewModel : ViewModelBase
     public Task RequestPlayerEditAsync(int pairNumber) =>
         PlayerEditRequested?.Invoke(this, pairNumber) ?? Task.CompletedTask;
 
+    /// <summary>
+    /// Raised when the TD clicks the "+ Add player" button. Parent
+    /// VM opens the player form in add mode (with past-round bye
+    /// picker) and, on Save, dispatches through
+    /// <see cref="TournamentMutations.AddPlayer"/>.
+    /// </summary>
+    public event Func<SectionViewModel, Task>? PlayerAddRequested;
+
+    public Task RequestPlayerAddAsync() =>
+        PlayerAddRequested?.Invoke(this) ?? Task.CompletedTask;
+
     private static PlayerRow BuildPlayerRowStatic(Player player, Section section, IScoreFormatter formatter)
     {
         string status;

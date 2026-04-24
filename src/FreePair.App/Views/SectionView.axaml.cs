@@ -133,6 +133,14 @@ public partial class SectionView : UserControl
         }
     }
 
+    private async void OnAddPlayerClick(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is ViewModels.SectionViewModel vm)
+        {
+            await vm.RequestPlayerAddAsync();
+        }
+    }
+
     private void OnClearPairingFilter(object? sender, RoutedEventArgs e)
     {
         if (DataContext is ViewModels.SectionViewModel vm) vm.PairingFilter = string.Empty;
