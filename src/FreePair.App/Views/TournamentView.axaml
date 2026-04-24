@@ -175,53 +175,69 @@
                              SelectedItem="{Binding SelectedSection}">
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="vm:SectionViewModel">
-                                <StackPanel Spacing="2" Margin="0,4">
-                                    <!-- Right-click the tab for the same
-                                         lifecycle actions that are available
-                                         on the section view itself. Each
-                                         MenuItem is visible only for the
-                                         state it applies to, so the menu
-                                         never shows both Soft-delete and
-                                         Undelete at once. -->
-                                    <StackPanel.ContextMenu>
-                                        <ContextMenu>
-                                            <MenuItem Header="🗑 Delete section…"
-                                                      Command="{Binding SoftDeleteSectionCommand}"
-                                                      IsVisible="{Binding IsLive}"/>
-                                            <MenuItem Header="Undelete"
-                                                      Command="{Binding UndeleteSectionCommand}"
-                                                      IsVisible="{Binding IsSoftDeleted}"/>
-                                            <MenuItem Header="Permanently delete…"
-                                                      Command="{Binding HardDeleteSectionCommand}"
-                                                      IsVisible="{Binding IsSoftDeleted}"
-                                                      Foreground="DarkRed"/>
-                                        </ContextMenu>
-                                    </StackPanel.ContextMenu>
-
-                                    <!-- Soft-deleted sections are rendered
-                                         strike-through + gray and gain a
-                                         "[deleted]" suffix so the TD can
-                                         tell at a glance. -->
-                                    <TextBlock FontWeight="SemiBold"
-                                               Classes.deleted="{Binding IsSoftDeleted}">
-                                        <TextBlock.Styles>
-                                            <Style Selector="TextBlock.deleted">
-                                                <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                                <Setter Property="Foreground" Value="Gray"/>
-                                                <Setter Property="FontStyle" Value="Italic"/>
-                                            </Style>
-                                        </TextBlock.Styles>
-                                        <Run Text="{Binding Name}"/><Run Text="{Binding TabLabelSuffix}"/>
-                                    </TextBlock>
-                                    <TextBlock FontSize="11" Foreground="Gray">
-                                        <Run Text="{Binding PlayerCount}"/>
-                                        <Run Text=" players · "/>
-                                        <Run Text="{Binding RoundsPlayed}"/>
-                                        <Run Text="/"/>
-                                        <Run Text="{Binding RoundsPaired}"/>
-                                        <Run Text=" rounds"/>
-                                    </TextBlock>
-                                </StackPanel>
+                                <!-- Two-row layout: name + stats on the
+                                     left, a small lifecycle icon button
+                                     docked to the top-right corner.
+                                     Button is transparent with no
+                                     border so it reads as an icon, not
+                                     a chrome button; still fully
+                                     clickable. Exactly one of the two
+                                     buttons is visible at a time based
+                                     on IsLive / IsSoftDeleted. -->
+                                <DockPanel LastChildFill="True" Margin="0,4">
+                                    <Button DockPanel.Dock="Right"
+                                            VerticalAlignment="Top"
+                                            Margin="4,0,0,0"
+                                            Padding="4,2"
+                                            MinWidth="26"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Foreground="DarkRed"
+                                            FontSize="14"
+                                            Content="🗑"
+                                            Command="{Binding SoftDeleteSectionCommand}"
+                                            IsVisible="{Binding IsLive}"
+                                            ToolTip.Tip="Soft-delete this section. Locks it against edits and excludes it from published results; reversible."/>
+                                    <Button DockPanel.Dock="Right"
+                                            VerticalAlignment="Top"
+                                            Margin="4,0,0,0"
+                                            Padding="4,2"
+                                            MinWidth="26"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Foreground="#0E5DAA"
+                                            FontSize="14"
+                                            Content="↩"
+                                            Command="{Binding UndeleteSectionCommand}"
+                                            IsVisible="{Binding IsSoftDeleted}"
+                                            ToolTip.Tip="Restore this soft-deleted section. Permanent delete is available from the yellow banner on the section view."/>
+                                    <StackPanel Spacing="2">
+                                        <!-- Soft-deleted sections get a
+                                             strike-through + gray italic
+                                             style and a " [deleted]"
+                                             suffix so the TD can spot
+                                             them at a glance. -->
+                                        <TextBlock FontWeight="SemiBold"
+                                                   Classes.deleted="{Binding IsSoftDeleted}">
+                                            <TextBlock.Styles>
+                                                <Style Selector="TextBlock.deleted">
+                                                    <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                    <Setter Property="Foreground" Value="Gray"/>
+                                                    <Setter Property="FontStyle" Value="Italic"/>
+                                                </Style>
+                                            </TextBlock.Styles>
+                                            <Run Text="{Binding Name}"/><Run Text="{Binding TabLabelSuffix}"/>
+                                        </TextBlock>
+                                        <TextBlock FontSize="11" Foreground="Gray">
+                                            <Run Text="{Binding PlayerCount}"/>
+                                            <Run Text=" players · "/>
+                                            <Run Text="{Binding RoundsPlayed}"/>
+                                            <Run Text="/"/>
+                                            <Run Text="{Binding RoundsPaired}"/>
+                                            <Run Text=" rounds"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DockPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
