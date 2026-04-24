@@ -638,6 +638,13 @@ public partial class SectionViewModel : ViewModelBase
     /// </summary>
     public event Func<SectionViewModel, Task>? HardDeleteRequested;
 
+    /// <summary>
+    /// Raised when the TD clicks the up / down arrow icon next to a
+    /// section in the left nav. <c>delta</c> is −1 (move up) or +1
+    /// (move down); parent VM invokes <c>MoveSection</c> and persists.
+    /// </summary>
+    public event Func<SectionViewModel, int /*delta*/, Task>? MoveRequested;
+
     [RelayCommand]
     private async Task SoftDeleteSectionAsync()
     {
@@ -660,6 +667,22 @@ public partial class SectionViewModel : ViewModelBase
         var handler = HardDeleteRequested;
         if (handler is null) return;
         await handler(this).ConfigureAwait(true);
+    }
+
+    [RelayCommand]
+    private async Task MoveUpAsync()
+    {
+        var handler = MoveRequested;
+        if (handler is null) return;
+        await handler(this, -1).ConfigureAwait(true);
+    }
+
+    [RelayCommand]
+    private async Task MoveDownAsync()
+    {
+        var handler = MoveRequested;
+        if (handler is null) return;
+        await handler(this, +1).ConfigureAwait(true);
     }
 
     // ================================================================

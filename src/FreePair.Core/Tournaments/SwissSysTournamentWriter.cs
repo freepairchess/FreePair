@@ -273,6 +273,52 @@ public class SwissSysTournamentWriter : ITournamentWriter
             }
         }
 
+        // Reorder raw sections to match the domain order. Runs after
+        // synthesis / prune so in-session MoveSection mutations
+        // survive on disk — including reorders that involve newly-
+        // added sections (which land in the raw array via the
+        // synthesize path above and would otherwise stay stuck at the
+        // end). Nodes are deep-cloned into a fresh array because
+        // JsonNode has a single parent so we can't move between
+        // arrays without detach; the original array is replaced
+        // wholesale via root["Sections"] = reordered.
+        if (tournament.Sections.Count > 0)
+        {
+            var snapshot = new List<(string name, JsonObject node)>();
+            foreach (var n in sectionsArray)
+            {
+                if (n is JsonObject obj)
+                {
+                    var nm = obj["Section name"]?.GetValue<string>() ?? string.Empty;
+                    snapshot.Add((nm, (JsonObject)obj.DeepClone()));
+                }
+            }
+
+            var reordered = new JsonArray();
+            var used = new HashSet<int>();
+            foreach (var section in tournament.Sections)
+            {
+                var idx = snapshot.FindIndex(n =>
+                    string.Equals(n.name, section.Name, StringComparison.Ordinal));
+                if (idx >= 0 && used.Add(idx))
+                {
+                    reordered.Add(snapshot[idx].node);
+                }
+            }
+            // Safety net: any snapshot entry the domain didn't
+            // reference gets appended. Shouldn't happen after the
+            // prune loop above, but preserves data if it ever does.
+            for (var i = 0; i < snapshot.Count; i++)
+            {
+                if (!used.Contains(i))
+                {
+                    reordered.Add(snapshot[i].node);
+                }
+            }
+
+            root["Sections"] = reordered;
+        }
+
         await WriteAtomicAsync(filePath, root, cancellationToken).ConfigureAwait(false);
     }
 

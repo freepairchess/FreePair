@@ -604,6 +604,7 @@ public partial class TournamentViewModel : ViewModelBase
         vm.PlayerManageByesRequested += OnPlayerManageByesAsync;
         vm.PlayerEditRequested       += OnPlayerEditAsync;
         vm.PlayerAddRequested        += OnPlayerAddAsync;
+        vm.MoveRequested             += OnSectionMoveAsync;
     }
 
     private void DetachSectionEvents()
@@ -625,6 +626,7 @@ public partial class TournamentViewModel : ViewModelBase
             vm.PlayerManageByesRequested -= OnPlayerManageByesAsync;
             vm.PlayerEditRequested -= OnPlayerEditAsync;
             vm.PlayerAddRequested -= OnPlayerAddAsync;
+            vm.MoveRequested -= OnSectionMoveAsync;
         }
     }
 
@@ -780,6 +782,30 @@ public partial class TournamentViewModel : ViewModelBase
             ErrorMessage = $"Failed to delete section: {ex.Message}";
             return;
         }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnSectionMoveAsync(SectionViewModel section, int delta)
+    {
+        if (Tournament is null) return;
+        var name = section.Name;
+
+        try
+        {
+            Tournament = TournamentMutations.MoveSection(Tournament, name, delta);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to move section: {ex.Message}";
+            return;
+        }
+
+        // Re-select the moved section so the TD keeps working in the
+        // same context after the nav list rebuilds from the new domain
+        // order.
+        SelectedSection = Sections.FirstOrDefault(s => s.Name == name);
 
         await PersistCurrentTournamentAsync().ConfigureAwait(true);
     }

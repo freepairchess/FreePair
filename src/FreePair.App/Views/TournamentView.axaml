@@ -202,6 +202,28 @@
                                      shows two (undelete + permanently
                                      delete). -->
                                 <DockPanel LastChildFill="True" Margin="0,4">
+                                    <!-- Up / Down reorder arrows,
+                                         docked to the right alongside
+                                         the lifecycle icons. Hidden
+                                         for soft-deleted sections to
+                                         match how other write
+                                         operations are gated. Chevron
+                                         glyphs (U+E70E up, U+E70D
+                                         down). -->
+                                    <Button DockPanel.Dock="Right"
+                                            Classes="icon-btn"
+                                            Foreground="#5A5A5A"
+                                            Content="&#xE70D;"
+                                            Command="{Binding MoveDownCommand}"
+                                            IsVisible="{Binding IsLive}"
+                                            ToolTip.Tip="Move this section down."/>
+                                    <Button DockPanel.Dock="Right"
+                                            Classes="icon-btn"
+                                            Foreground="#5A5A5A"
+                                            Content="&#xE70E;"
+                                            Command="{Binding MoveUpCommand}"
+                                            IsVisible="{Binding IsLive}"
+                                            ToolTip.Tip="Move this section up."/>
                                     <Button DockPanel.Dock="Right"
                                             Classes="icon-btn"
                                             Foreground="SeaGreen"
