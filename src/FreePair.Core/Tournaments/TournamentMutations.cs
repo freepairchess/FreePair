@@ -1086,6 +1086,61 @@ public static class TournamentMutations
     }
 
     /// <summary>
+    /// Adds a new empty section to <paramref name="tournament"/>. The
+    /// section starts with zero players, zero paired/played rounds,
+    /// and no prizes — the TD populates it afterward via the usual
+    /// Add-player / Set-prize mutations. <paramref name="name"/>
+    /// must be unique within the tournament.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// A section with the given name already exists.
+    /// </exception>
+    public static Tournament AddSection(
+        Tournament tournament,
+        string name,
+        SectionKind kind,
+        int finalRound,
+        string? timeControl = null,
+        string? title = null)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        if (finalRound < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(finalRound), "Final round must be >= 1.");
+        }
+        if (kind == SectionKind.Unknown)
+        {
+            throw new ArgumentException("Section kind must be Swiss or RoundRobin.", nameof(kind));
+        }
+
+        var trimmed = name.Trim();
+        if (tournament.Sections.Any(s => string.Equals(s.Name, trimmed, StringComparison.OrdinalIgnoreCase)))
+        {
+            throw new InvalidOperationException($"A section named '{trimmed}' already exists.");
+        }
+
+        var newSection = new Section(
+            Name: trimmed,
+            Title: string.IsNullOrWhiteSpace(title) ? null : title.Trim(),
+            Kind: kind,
+            TimeControl: string.IsNullOrWhiteSpace(timeControl) ? null : timeControl.Trim(),
+            RoundsPaired: 0,
+            RoundsPlayed: 0,
+            FinalRound: finalRound,
+            FirstBoard: null,
+            Players: System.Array.Empty<Player>(),
+            Teams: System.Array.Empty<Team>(),
+            Rounds: System.Array.Empty<Round>(),
+            Prizes: new Prizes(System.Array.Empty<Prize>(), System.Array.Empty<Prize>()));
+
+        return tournament with
+        {
+            Sections = tournament.Sections.Append(newSection).ToArray(),
+        };
+    }
+
+    /// <summary>
     /// Adds a new player to the section. The pair number is assigned
     /// as <c>max(existing) + 1</c> (gaps from hard-deleted players
     /// are not filled). If the section already has paired rounds,

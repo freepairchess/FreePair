@@ -64,10 +64,61 @@ public class SwissSysTournamentWriter : ITournamentWriter
             var sectionNode = FindSectionByName(sectionsArray, section.Name);
             if (sectionNode is null)
             {
-                // New section not present in the original file — skip; we
-                // don't currently synthesize sections from thin air.
-                continue;
+                // Section added in-session via AddSection — synthesize
+                // a raw JsonObject with the SwissSys keys SwissSys v11
+                // expects on load, then append to the Sections array.
+                // Every editable key (name / type / final round / time
+                // control / player list) is written here; the per-
+                // section patch block below fills in the rest
+                // (rounds paired / played, soft-deleted flag, etc.).
+                sectionNode = new JsonObject
+                {
+                    ["Section name"]          = section.Name,
+                    ["Section title"]         = section.Title,
+                    ["Type"]                  = section.Kind switch
+                    {
+                        SectionKind.Swiss      => 0,
+                        SectionKind.RoundRobin => 1,
+                        _                      => 0,
+                    },
+                    ["Section time control"]  = section.TimeControl,
+                    ["Number of players"]     = section.Players.Count,
+                    ["Number of teams"]       = section.Teams.Count,
+                    ["Rounds paired"]         = 0,
+                    ["Rounds played"]         = 0,
+                    ["Rating to use"]         = 0,
+                    ["Engine"]                = 0,
+                    ["Last unrestricted round"] = 0,
+                    ["Need search options"]   = false,
+                    ["First board"]           = section.FirstBoard,
+                    ["Final round"]           = section.FinalRound,
+                    ["Coin toss"]             = 0,
+                    ["Team cut"]              = 0,
+                    ["Acceleration"]          = 0,
+                    ["Blitz"]                 = false,
+                    ["Got logic"]             = false,
+                    ["Pair table items"]      = 0,
+                    ["Team pair table items"] = 0,
+                    ["Players"]               = new JsonArray(),
+                    ["Teams"]                 = new JsonArray(),
+                };
+                sectionsArray.Add(sectionNode);
             }
+
+            // Editable section metadata — written on every save so
+            // in-session edits (name, time control, final round) stick.
+            sectionNode["Section name"]         = section.Name;
+            sectionNode["Section title"]        = section.Title;
+            sectionNode["Section time control"] = section.TimeControl;
+            sectionNode["Final round"]          = section.FinalRound;
+            sectionNode["Type"] = section.Kind switch
+            {
+                SectionKind.Swiss      => 0,
+                SectionKind.RoundRobin => 1,
+                _                      => sectionNode["Type"] is JsonValue existing
+                                              ? existing.GetValue<int>()
+                                              : 0,
+            };
 
             sectionNode["Rounds paired"] = section.RoundsPaired;
             sectionNode["Rounds played"] = section.RoundsPlayed;

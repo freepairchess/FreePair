@@ -171,6 +171,19 @@
                                Foreground="Gray"
                                Margin="0,0,0,4"/>
 
+                    <!-- Add-section affordance below the SECTIONS
+                         header so the TD has a visible entry point
+                         to grow the event after loading or creating
+                         it. Opens the SectionFormDialog. -->
+                    <Button DockPanel.Dock="Top"
+                            Content="➕ Add section"
+                            Command="{Binding AddSectionCommand}"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Left"
+                            Padding="8,4"
+                            Margin="0,0,0,6"
+                            ToolTip.Tip="Create a new Swiss or round-robin section in this tournament."/>
+
                     <ListBox ItemsSource="{Binding Sections}"
                              SelectedItem="{Binding SelectedSection}">
                         <ListBox.ItemTemplate>

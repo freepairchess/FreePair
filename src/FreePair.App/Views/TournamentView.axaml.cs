@@ -28,6 +28,7 @@ public partial class TournamentView : UserControl
             vm.ShowPublishingDialogAsync = ShowPublishingDialogAsync;
             vm.ShowManageByesDialogAsync = ShowManageByesDialogAsync;
             vm.ShowPlayerFormDialogAsync = ShowPlayerFormDialogAsync;
+            vm.ShowSectionFormDialogAsync = ShowSectionFormDialogAsync;
         }
     }
 
@@ -178,6 +179,21 @@ public partial class TournamentView : UserControl
 
         var dialog = new PlayerFormDialog(vm);
         return await dialog.ShowDialog<PlayerFormViewModel?>(owner);
+    }
+
+    /// <summary>
+    /// Shows the Section form dialog modally (add flow). Returns the
+    /// VM on Save, null on Cancel.
+    /// </summary>
+    private async Task<SectionFormViewModel?> ShowSectionFormDialogAsync(SectionFormViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner)
+        {
+            return null;
+        }
+
+        var dialog = new SectionFormDialog(vm);
+        return await dialog.ShowDialog<SectionFormViewModel?>(owner);
     }
 
     /// <summary>

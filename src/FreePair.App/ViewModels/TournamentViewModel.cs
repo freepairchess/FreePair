@@ -150,6 +150,13 @@ public partial class TournamentViewModel : ViewModelBase
     /// </summary>
     public Func<PlayerFormViewModel, Task<PlayerFormViewModel?>>? ShowPlayerFormDialogAsync { get; set; }
 
+    /// <summary>
+    /// View-supplied callback that opens the section form dialog
+    /// (used for the add-section flow). Returns the VM on Save,
+    /// null on Cancel.
+    /// </summary>
+    public Func<SectionFormViewModel, Task<SectionFormViewModel?>>? ShowSectionFormDialogAsync { get; set; }
+
     // ============ Online publishing (session-only, per-tournament) ============
 
     /// <summary>Sticky URL used by the Publish dialog. Seeded from <see cref="AppSettings.NaChessHubBaseUrl"/>.</summary>
@@ -426,6 +433,51 @@ public partial class TournamentViewModel : ViewModelBase
         LastSavedAt = null;
         LastPublishedAt = null;
         LastPublishedUrl = null;
+    }
+
+    /// <summary>
+    /// Opens the section form dialog in Add mode, then dispatches
+    /// through <see cref="TournamentMutations.AddSection"/> and
+    /// persists. Bound to the "➕ Add section" button on
+    /// <c>TournamentView</c>.
+    /// </summary>
+    [RelayCommand]
+    private async Task AddSectionAsync()
+    {
+        if (Tournament is null || ShowSectionFormDialogAsync is null) return;
+
+        var dialogVm = SectionFormViewModel.ForAdd(Tournament.Title ?? "(untitled)");
+        var result = await ShowSectionFormDialogAsync(dialogVm).ConfigureAwait(true);
+        if (result is null) return; // cancelled
+
+        if (!result.TryValidate(out var finalRound))
+        {
+            ErrorMessage = result.ErrorMessage;
+            return;
+        }
+
+        try
+        {
+            Tournament = TournamentMutations.AddSection(
+                Tournament,
+                name: result.Name,
+                kind: result.Kind.Kind,
+                finalRound: finalRound,
+                timeControl: result.TimeControl,
+                title: result.SectionTitle);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to add section: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+
+        // Jump to the newly-created section so the TD can start
+        // populating it immediately.
+        SelectedSection = Sections.FirstOrDefault(s => s.Name == result.Name.Trim());
     }
 
     [RelayCommand]
