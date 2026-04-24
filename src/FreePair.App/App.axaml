@@ -13,5 +13,30 @@
         <FluentTheme />
         <!-- Brings in the default styles for Avalonia.Controls.DataGrid (used on the Players tab). -->
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+
+        <!-- Shared icon-button style for small transparent Fluent-icon
+             affordances used in the section nav, the Players grid
+             actions column, etc. Respects Foreground for color coding
+             and has subtle pointerover / pressed tints with rounded
+             corners. Was previously scoped to TournamentView.axaml;
+             promoted here so SectionView can use it too. -->
+        <Style Selector="Button.icon-btn">
+            <Setter Property="Background"       Value="Transparent"/>
+            <Setter Property="BorderThickness"  Value="0"/>
+            <Setter Property="FontFamily"       Value="Segoe Fluent Icons, Segoe MDL2 Assets"/>
+            <Setter Property="FontSize"         Value="14"/>
+            <Setter Property="Padding"          Value="4,2"/>
+            <Setter Property="MinWidth"         Value="28"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Cursor"           Value="Hand"/>
+        </Style>
+        <Style Selector="Button.icon-btn:pointerover /template/ ContentPresenter">
+            <Setter Property="Background"   Value="#14000000"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="Button.icon-btn:pressed /template/ ContentPresenter">
+            <Setter Property="Background"   Value="#26000000"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
     </Application.Styles>
 </Application>

@@ -28,7 +28,15 @@ public sealed record PlayerRow(
     string Status,
     string? RequestedByes,
     string? Email,
-    string? Phone);
+    string? Phone,
+    /// <summary>True when the player is soft-deleted (pre-round-1 only).</summary>
+    bool IsSoftDeleted,
+    /// <summary>Soft-delete icon visibility: live AND section not yet paired.</summary>
+    bool CanSoftDelete,
+    /// <summary>Undelete icon visibility: player is currently soft-deleted.</summary>
+    bool CanUndelete,
+    /// <summary>Hard-delete icon visibility: soft-deleted AND section not yet paired.</summary>
+    bool CanHardDelete);
 
 /// <summary>
 /// Editable pairing row for the <b>Pairings</b> tab. Binds to a result
@@ -465,6 +473,22 @@ public partial class SectionViewModel : ViewModelBase
                 return "Pairing in progress...";
             }
 
+            // Pre-round-1 block: if the TD has any soft-deleted players,
+            // require them to restore or permanently delete before
+            // pairing round 1. The domain mutation enforces the same
+            // rule; surfacing here also disables the Pair button and
+            // shows an inline explanation.
+            if (Section.RoundsPaired == 0)
+            {
+                var softDeleted = Section.Players.Where(p => p.SoftDeleted).ToArray();
+                if (softDeleted.Length > 0)
+                {
+                    return softDeleted.Length == 1
+                        ? $"Player #{softDeleted[0].PairNumber} {softDeleted[0].Name} is soft-deleted. Restore or permanently delete before pairing round 1."
+                        : $"{softDeleted.Length} players are soft-deleted. Restore or permanently delete them before pairing round 1.";
+                }
+            }
+
             if (TargetRounds <= 0)
             {
                 return "This section has no scheduled rounds.";
@@ -612,10 +636,52 @@ public partial class SectionViewModel : ViewModelBase
         await handler(this).ConfigureAwait(true);
     }
 
+    // ================================================================
+    // Player lifecycle dispatch
+    // ================================================================
+
+    /// <summary>
+    /// Raised when the TD clicks the green 🗑 icon on a player row.
+    /// Parent VM runs the confirm and invokes
+    /// <see cref="TournamentMutations.SoftDeletePlayer"/>.
+    /// </summary>
+    public event Func<SectionViewModel, int /*pairNumber*/, Task>? PlayerSoftDeleteRequested;
+
+    /// <summary>
+    /// Raised when the TD clicks the blue ↩ icon on a soft-deleted
+    /// player row. No confirm — reversible.
+    /// </summary>
+    public event Func<SectionViewModel, int /*pairNumber*/, Task>? PlayerUndeleteRequested;
+
+    /// <summary>
+    /// Raised when the TD clicks the red 🗑 icon on a soft-deleted
+    /// player row. Parent VM runs a scary confirm before invoking
+    /// <see cref="TournamentMutations.HardDeletePlayer"/>.
+    /// </summary>
+    public event Func<SectionViewModel, int /*pairNumber*/, Task>? PlayerHardDeleteRequested;
+
+    /// <summary>
+    /// Invoked by the SectionView code-behind when the green 🗑 icon
+    /// is clicked. Routes through the event to the parent VM so the
+    /// confirm / mutate / persist flow runs there.
+    /// </summary>
+    public Task RequestPlayerSoftDeleteAsync(int pairNumber) =>
+        PlayerSoftDeleteRequested?.Invoke(this, pairNumber) ?? Task.CompletedTask;
+
+    public Task RequestPlayerUndeleteAsync(int pairNumber) =>
+        PlayerUndeleteRequested?.Invoke(this, pairNumber) ?? Task.CompletedTask;
+
+    public Task RequestPlayerHardDeleteAsync(int pairNumber) =>
+        PlayerHardDeleteRequested?.Invoke(this, pairNumber) ?? Task.CompletedTask;
+
     private static PlayerRow BuildPlayerRowStatic(Player player, Section section, IScoreFormatter formatter)
     {
         string status;
-        if (section.IsWithdrawn(player))
+        if (player.SoftDeleted)
+        {
+            status = "Soft-deleted";
+        }
+        else if (section.IsWithdrawn(player))
         {
             status = "Withdrawn";
         }
@@ -632,6 +698,13 @@ public partial class SectionViewModel : ViewModelBase
             ? null
             : string.Join(", ", player.RequestedByeRounds);
 
+        // Delete / undelete icon visibility. Soft / hard are gated on
+        // section.RoundsPaired == 0 (post-round-1 the TD must withdraw
+        // instead); the mutations layer enforces the same guard so the
+        // domain can't drift. Undelete is always available if the
+        // player is soft-deleted.
+        var preRoundOne = section.RoundsPaired == 0;
+
         return new PlayerRow(
             PairNumber: player.PairNumber,
             Name: player.Name,
@@ -645,7 +718,11 @@ public partial class SectionViewModel : ViewModelBase
             Status: status,
             RequestedByes: requestedByes,
             Email: player.Email,
-            Phone: player.Phone);
+            Phone: player.Phone,
+            IsSoftDeleted: player.SoftDeleted,
+            CanSoftDelete: !player.SoftDeleted && preRoundOne,
+            CanUndelete:   player.SoftDeleted,
+            CanHardDelete: player.SoftDeleted && preRoundOne);
     }
 
     private PlayerRow BuildPlayerRow(Player player, Section section) =>

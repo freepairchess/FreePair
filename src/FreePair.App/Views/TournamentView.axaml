@@ -12,34 +12,6 @@
         <vm:TournamentViewModel/>
     </Design.DataContext>
 
-    <UserControl.Styles>
-        <!-- Small transparent icon buttons used in the section nav
-             rows (🗑 / ↩ / ✕ affordances). Segoe Fluent Icons is
-             Microsoft's monochrome icon font shipped with Windows 11;
-             Segoe MDL2 Assets is the Windows 10 fallback. Both
-             respect the Foreground brush so the color-coding (green
-             soft vs red hard) actually takes effect — unlike the
-             color-emoji 🗑 codepoint. -->
-        <Style Selector="Button.icon-btn">
-            <Setter Property="Background"   Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontFamily"   Value="Segoe Fluent Icons, Segoe MDL2 Assets"/>
-            <Setter Property="FontSize"     Value="14"/>
-            <Setter Property="Padding"      Value="4,2"/>
-            <Setter Property="MinWidth"     Value="28"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Cursor"       Value="Hand"/>
-        </Style>
-        <Style Selector="Button.icon-btn:pointerover /template/ ContentPresenter">
-            <Setter Property="Background"   Value="#14000000"/>
-            <Setter Property="CornerRadius" Value="4"/>
-        </Style>
-        <Style Selector="Button.icon-btn:pressed /template/ ContentPresenter">
-            <Setter Property="Background"   Value="#26000000"/>
-            <Setter Property="CornerRadius" Value="4"/>
-        </Style>
-    </UserControl.Styles>
-
     <DockPanel Margin="12" LastChildFill="True">
 
         <!-- Toolbar -->

@@ -447,6 +447,9 @@ public partial class TournamentViewModel : ViewModelBase
         vm.SoftDeleteRequested += OnSectionSoftDeleteAsync;
         vm.UndeleteRequested   += OnSectionUndeleteAsync;
         vm.HardDeleteRequested += OnSectionHardDeleteAsync;
+        vm.PlayerSoftDeleteRequested += OnPlayerSoftDeleteAsync;
+        vm.PlayerUndeleteRequested   += OnPlayerUndeleteAsync;
+        vm.PlayerHardDeleteRequested += OnPlayerHardDeleteAsync;
     }
 
     private void DetachSectionEvents()
@@ -460,6 +463,9 @@ public partial class TournamentViewModel : ViewModelBase
             vm.SoftDeleteRequested -= OnSectionSoftDeleteAsync;
             vm.UndeleteRequested   -= OnSectionUndeleteAsync;
             vm.HardDeleteRequested -= OnSectionHardDeleteAsync;
+            vm.PlayerSoftDeleteRequested -= OnPlayerSoftDeleteAsync;
+            vm.PlayerUndeleteRequested   -= OnPlayerUndeleteAsync;
+            vm.PlayerHardDeleteRequested -= OnPlayerHardDeleteAsync;
         }
     }
 
@@ -613,6 +619,94 @@ public partial class TournamentViewModel : ViewModelBase
         catch (Exception ex)
         {
             ErrorMessage = $"Failed to delete section: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    // ================================================================
+    // Player lifecycle handlers
+    // ================================================================
+
+    private async Task OnPlayerSoftDeleteAsync(SectionViewModel section, int pairNumber)
+    {
+        if (Tournament is null) return;
+
+        var player = section.Section.Players.FirstOrDefault(p => p.PairNumber == pairNumber);
+        var label  = player is null ? $"#{pairNumber}" : $"#{pairNumber} {player.Name}";
+
+        if (PromptConfirmAsync is not null)
+        {
+            var confirmed = await PromptConfirmAsync(
+                "Soft-delete player",
+                $"Mark player {label} in '{section.Name}' as soft-deleted?\n\n" +
+                $"The player will be excluded from pairings, standings, and published results. " +
+                $"All data is preserved — click the ↩ icon to restore them later. " +
+                $"This is only allowed before round 1 is paired.",
+                "Soft-delete").ConfigureAwait(true);
+            if (!confirmed) return;
+        }
+
+        try
+        {
+            Tournament = TournamentMutations.SoftDeletePlayer(Tournament, section.Name, pairNumber);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to soft-delete player: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnPlayerUndeleteAsync(SectionViewModel section, int pairNumber)
+    {
+        if (Tournament is null) return;
+
+        try
+        {
+            Tournament = TournamentMutations.UndeletePlayer(Tournament, section.Name, pairNumber);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to undelete player: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnPlayerHardDeleteAsync(SectionViewModel section, int pairNumber)
+    {
+        if (Tournament is null) return;
+
+        var player = section.Section.Players.FirstOrDefault(p => p.PairNumber == pairNumber);
+        var label  = player is null ? $"#{pairNumber}" : $"#{pairNumber} {player.Name}";
+
+        if (PromptConfirmAsync is not null)
+        {
+            var confirmed = await PromptConfirmAsync(
+                "Permanently delete player",
+                $"PERMANENTLY DELETE player {label} from '{section.Name}'?\n\n" +
+                $"The player will be removed entirely from this section. This is only " +
+                $"allowed before round 1 is paired and cannot be undone short of " +
+                $"restoring a backup.",
+                "Permanently delete").ConfigureAwait(true);
+            if (!confirmed) return;
+        }
+
+        try
+        {
+            Tournament = TournamentMutations.HardDeletePlayer(Tournament, section.Name, pairNumber);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to delete player: {ex.Message}";
             return;
         }
 

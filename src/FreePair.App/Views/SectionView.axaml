@@ -358,6 +358,49 @@
                                                 Binding="{Binding Status}"
                                                 SortMemberPath="Status"
                                                 Width="100"/>
+
+                            <!-- Player lifecycle actions. Three icons:
+                                 green 🗑 soft-delete, blue ↩ undelete,
+                                 red 🗑 hard-delete. Visibility bound
+                                 to PlayerRow flags derived from the
+                                 player's SoftDeleted + the section's
+                                 RoundsPaired, so post-round-1 sections
+                                 show nothing at all (the TD must use
+                                 Withdraw instead; different UX). -->
+                            <DataGridTemplateColumn Header="" Width="92">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="vm:PlayerRow">
+                                        <StackPanel Orientation="Horizontal"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Left">
+                                            <Button Classes="icon-btn"
+                                                    Foreground="SeaGreen"
+                                                    Content="&#xE74D;"
+                                                    FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                                    Tag="{Binding PairNumber}"
+                                                    Click="OnPlayerSoftDeleteClick"
+                                                    IsVisible="{Binding CanSoftDelete}"
+                                                    ToolTip.Tip="Soft-delete player (reversible). Only allowed before round 1 is paired."/>
+                                            <Button Classes="icon-btn"
+                                                    Foreground="#0E5DAA"
+                                                    Content="&#xE7A7;"
+                                                    FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                                    Tag="{Binding PairNumber}"
+                                                    Click="OnPlayerUndeleteClick"
+                                                    IsVisible="{Binding CanUndelete}"
+                                                    ToolTip.Tip="Restore this soft-deleted player."/>
+                                            <Button Classes="icon-btn"
+                                                    Foreground="#C62828"
+                                                    Content="&#xE74D;"
+                                                    FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                                    Tag="{Binding PairNumber}"
+                                                    Click="OnPlayerHardDeleteClick"
+                                                    IsVisible="{Binding CanHardDelete}"
+                                                    ToolTip.Tip="Permanently delete this player."/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>

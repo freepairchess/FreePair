@@ -62,6 +62,41 @@ public partial class SectionView : UserControl
         }
     }
 
+    // ================================================================
+    // Player lifecycle icon buttons on the Players grid
+    // ================================================================
+    // DataGrid cell Buttons have PlayerRow as their DataContext, so we
+    // pass the pair number through Tag and let the section VM do the
+    // rest (dispatches to TournamentViewModel's handlers which run the
+    // confirm prompt + mutation + auto-save).
+
+    private async void OnPlayerSoftDeleteClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is int pn
+            && DataContext is ViewModels.SectionViewModel vm)
+        {
+            await vm.RequestPlayerSoftDeleteAsync(pn);
+        }
+    }
+
+    private async void OnPlayerUndeleteClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is int pn
+            && DataContext is ViewModels.SectionViewModel vm)
+        {
+            await vm.RequestPlayerUndeleteAsync(pn);
+        }
+    }
+
+    private async void OnPlayerHardDeleteClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is int pn
+            && DataContext is ViewModels.SectionViewModel vm)
+        {
+            await vm.RequestPlayerHardDeleteAsync(pn);
+        }
+    }
+
     private void OnClearPairingFilter(object? sender, RoutedEventArgs e)
     {
         if (DataContext is ViewModels.SectionViewModel vm) vm.PairingFilter = string.Empty;
