@@ -32,6 +32,8 @@ public partial class TournamentView : UserControl
             vm.ShowNewEventDialogAsync = ShowNewEventDialogAsync;
             vm.PickNewEventSavePathAsync = PickNewEventSavePathAsync;
             vm.PickPlayerImportFileAsync = PickPlayerImportFileAsync;
+            vm.ShowOpenFromRegistryDialogAsync = ShowOpenFromRegistryDialogAsync;
+            vm.ShowBrowseRegistryEventsDialogAsync = ShowBrowseRegistryEventsDialogAsync;
         }
     }
 
@@ -245,6 +247,28 @@ public partial class TournamentView : UserControl
 
         var files = await topLevel.StorageProvider.OpenFilePickerAsync(options);
         return files.Count == 0 ? null : files[0].TryGetLocalPath();
+    }
+
+    /// <summary>
+    /// Shows the "Open from online registry (by event ID)" dialog.
+    /// Returns the VM on OK, null on Cancel.
+    /// </summary>
+    private async Task<OpenFromRegistryViewModel?> ShowOpenFromRegistryDialogAsync(OpenFromRegistryViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner) return null;
+        var dialog = new OpenFromRegistryDialog(vm);
+        return await dialog.ShowDialog<OpenFromRegistryViewModel?>(owner);
+    }
+
+    /// <summary>
+    /// Shows the "Browse online events" dialog. Returns the VM on
+    /// OK (selected event + passcode), null on Cancel.
+    /// </summary>
+    private async Task<BrowseRegistryEventsViewModel?> ShowBrowseRegistryEventsDialogAsync(BrowseRegistryEventsViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner) return null;
+        var dialog = new BrowseRegistryEventsDialog(vm);
+        return await dialog.ShowDialog<BrowseRegistryEventsViewModel?>(owner);
     }
 
     /// <summary>

@@ -177,6 +177,20 @@ public partial class TournamentViewModel : ViewModelBase
     /// </summary>
     public Func<Task<string?>>? PickPlayerImportFileAsync { get; set; }
 
+    /// <summary>
+    /// View-supplied callback that opens the "Open from online
+    /// registry (by event ID)" dialog. Returns the VM on OK, null
+    /// on Cancel.
+    /// </summary>
+    public Func<OpenFromRegistryViewModel, Task<OpenFromRegistryViewModel?>>? ShowOpenFromRegistryDialogAsync { get; set; }
+
+    /// <summary>
+    /// View-supplied callback that opens the "Browse online events"
+    /// dialog. Returns the VM on OK (selected event + passcode),
+    /// null on Cancel.
+    /// </summary>
+    public Func<BrowseRegistryEventsViewModel, Task<BrowseRegistryEventsViewModel?>>? ShowBrowseRegistryEventsDialogAsync { get; set; }
+
     // ============ Online publishing (session-only, per-tournament) ============
 
     /// <summary>Sticky URL used by the Publish dialog. Seeded from <see cref="AppSettings.NaChessHubBaseUrl"/>.</summary>
@@ -515,6 +529,145 @@ public partial class TournamentViewModel : ViewModelBase
         LastPublishedUrl = null;
         ErrorMessage = null;
         await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    /// <summary>
+    /// Shared HTTP client used by registry calls. A single instance
+    /// per app gets connection pooling + HTTP/2 reuse. Disposal is
+    /// left to the GC — the lifetime is effectively process-wide.
+    /// </summary>
+    private static readonly System.Net.Http.HttpClient s_registryHttp =
+        new() { Timeout = System.TimeSpan.FromSeconds(30) };
+
+    /// <summary>
+    /// "Open from online registry (by event ID + passcode)" flow.
+    /// Opens the dialog, calls the chosen registry, saves the
+    /// returned bytes to the standard per-event folder under
+    /// TournamentsRootFolder, then loads it.
+    /// </summary>
+    [RelayCommand]
+    private async Task OpenFromRegistryAsync()
+    {
+        if (ShowOpenFromRegistryDialogAsync is null) return;
+
+        var settings = await _settingsService.LoadAsync().ConfigureAwait(true);
+        var registries = FreePair.Core.Registries.RegistryCatalog.Build(s_registryHttp, settings);
+        if (registries.Count == 0)
+        {
+            ErrorMessage = "No online registries are configured.";
+            return;
+        }
+
+        var dialogVm = new OpenFromRegistryViewModel(registries);
+        var result = await ShowOpenFromRegistryDialogAsync(dialogVm).ConfigureAwait(true);
+        if (result is null) return;
+
+        await DownloadAndOpenAsync(result.SelectedRegistry, result.EventId, result.Passcode, suggestedName: null, settings)
+            .ConfigureAwait(true);
+    }
+
+    /// <summary>
+    /// "Browse online events" flow. Opens the list dialog, and on
+    /// confirm runs the same download path as
+    /// <see cref="OpenFromRegistryAsync"/> using the picked event's
+    /// name for the folder / filename.
+    /// </summary>
+    [RelayCommand]
+    private async Task BrowseRegistryEventsAsync()
+    {
+        if (ShowBrowseRegistryEventsDialogAsync is null) return;
+
+        var settings = await _settingsService.LoadAsync().ConfigureAwait(true);
+        var registries = FreePair.Core.Registries.RegistryCatalog.Build(s_registryHttp, settings);
+        var listable = registries.Where(r => r.SupportsListEvents).ToArray();
+        if (listable.Length == 0)
+        {
+            ErrorMessage = "No online registries currently support browsing events.";
+            return;
+        }
+
+        var dialogVm = new BrowseRegistryEventsViewModel(listable);
+        var result = await ShowBrowseRegistryEventsDialogAsync(dialogVm).ConfigureAwait(true);
+        if (result?.SelectedEvent is null) return;
+
+        await DownloadAndOpenAsync(
+            result.SelectedRegistry,
+            result.SelectedEvent.Id,
+            result.Passcode,
+            suggestedName: result.SelectedEvent.Name,
+            settings).ConfigureAwait(true);
+    }
+
+    /// <summary>
+    /// Shared download + save + load pipeline used by both registry
+    /// entry points. <paramref name="suggestedName"/> is the event
+    /// name from the browse list when known; for the by-id flow it
+    /// comes from the downloaded .sjson's Overview.Title after the
+    /// first parse.
+    /// </summary>
+    private async Task DownloadAndOpenAsync(
+        FreePair.Core.Registries.IExternalRegistry registry,
+        string eventId,
+        string passcode,
+        string? suggestedName,
+        FreePair.Core.Settings.AppSettings settings)
+    {
+        ErrorMessage = null;
+        SaveStatus = $"Downloading from {registry.DisplayName}…";
+        byte[] bytes;
+        try
+        {
+            bytes = await registry.DownloadSjsonAsync(eventId, passcode).ConfigureAwait(true);
+        }
+        catch (System.Exception ex)
+        {
+            SaveStatus = null;
+            ErrorMessage = ex.Message;
+            return;
+        }
+        SaveStatus = null;
+
+        // If no name was pre-supplied (by-id flow), sniff the title
+        // from the downloaded payload's Overview.Title — falls back
+        // to the event ID when the JSON doesn't include one.
+        var name = suggestedName;
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            try
+            {
+                using var doc = System.Text.Json.JsonDocument.Parse(bytes);
+                if (doc.RootElement.TryGetProperty("Overview", out var ov) &&
+                    ov.TryGetProperty("Tournament title", out var t) &&
+                    t.ValueKind == System.Text.Json.JsonValueKind.String)
+                {
+                    name = t.GetString();
+                }
+            }
+            catch
+            {
+                // Malformed JSON is handled by the load step below.
+            }
+        }
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            name = $"Event {eventId}";
+        }
+
+        var root = FreePair.Core.Tournaments.TournamentFolder.ResolveRoot(settings);
+        var folder = FreePair.Core.Tournaments.TournamentFolder.EnsureEventFolder(root, name);
+        var path = FreePair.Core.Tournaments.TournamentFolder.ResolveUniqueFilePath(folder, name, ".sjson");
+
+        try
+        {
+            await System.IO.File.WriteAllBytesAsync(path, bytes).ConfigureAwait(true);
+        }
+        catch (System.Exception ex)
+        {
+            ErrorMessage = $"Failed to save downloaded tournament: {ex.Message}";
+            return;
+        }
+
+        await LoadAsync(path).ConfigureAwait(true);
     }
 
     [RelayCommand]

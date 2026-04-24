@@ -24,6 +24,14 @@
                 <Button Content="Open tournament..."
                         Command="{Binding OpenCommand}"
                         IsEnabled="{Binding !IsLoading}"/>
+                <Button Content="🌐 Open from online…"
+                        Command="{Binding OpenFromRegistryCommand}"
+                        IsEnabled="{Binding !IsLoading}"
+                        ToolTip.Tip="Open a tournament from an online registration system (NA Chess Hub etc.) by event ID + passcode."/>
+                <Button Content="🔎 Browse online events…"
+                        Command="{Binding BrowseRegistryEventsCommand}"
+                        IsEnabled="{Binding !IsLoading}"
+                        ToolTip.Tip="List events from an online registration system and pick one to open."/>
                 <Button Content="Close"
                         Command="{Binding CloseCommand}"
                         IsVisible="{Binding HasTournament}"/>

@@ -1,0 +1,83 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:FreePair.App.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="720" d:DesignHeight="520"
+        x:Class="FreePair.App.Views.BrowseRegistryEventsDialog"
+        x:DataType="vm:BrowseRegistryEventsViewModel"
+        Title="Browse online events"
+        Width="720"
+        Height="520"
+        MinWidth="560"
+        MinHeight="420"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+
+    <DockPanel Margin="16" LastChildFill="True">
+
+        <StackPanel DockPanel.Dock="Top" Spacing="8" Margin="0,0,0,10">
+            <TextBlock Text="Browse online events"
+                       FontWeight="SemiBold" FontSize="14"/>
+            <Grid ColumnDefinitions="110,*,Auto,*" RowSpacing="4">
+                <TextBlock Grid.Column="0" Text="Registry:" VerticalAlignment="Center" Foreground="DimGray"/>
+                <ComboBox  Grid.Column="1"
+                           ItemsSource="{Binding Registries}"
+                           SelectedItem="{Binding SelectedRegistry, Mode=TwoWay}"
+                           DisplayMemberBinding="{Binding DisplayName}"
+                           HorizontalAlignment="Stretch"/>
+                <Button    Grid.Column="2"
+                           Content="Refresh"
+                           Click="OnRefresh"
+                           Margin="12,0,12,0"/>
+                <TextBox   Grid.Column="3"
+                           Text="{Binding Filter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           Watermark="Filter by name, id, location…"/>
+            </Grid>
+            <TextBlock Foreground="DarkRed"
+                       TextWrapping="Wrap"
+                       Text="{Binding ErrorMessage}"
+                       IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+            <TextBlock Text="Loading events…" Foreground="Gray"
+                       IsVisible="{Binding IsLoading}"/>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Stretch"
+                    Spacing="8"
+                    Margin="0,12,0,0">
+            <TextBlock Text="Passcode:" VerticalAlignment="Center" Foreground="DimGray"/>
+            <TextBox   Text="{Binding Passcode}"
+                       PasswordChar="•"
+                       Width="200"
+                       Watermark="event passcode"/>
+            <Panel HorizontalAlignment="Stretch"/>
+            <Button Content="Cancel" Click="OnCancel" MinWidth="90" IsCancel="True"/>
+            <Button Content="Open"   Click="OnConfirm" MinWidth="90"
+                    IsDefault="True" Classes="accent"
+                    IsEnabled="{Binding CanOpen}"/>
+        </StackPanel>
+
+        <DataGrid ItemsSource="{Binding FilteredEvents}"
+                  SelectedItem="{Binding SelectedEvent, Mode=TwoWay}"
+                  CanUserSortColumns="True"
+                  CanUserResizeColumns="True"
+                  CanUserReorderColumns="True"
+                  IsReadOnly="True"
+                  GridLinesVisibility="Horizontal"
+                  HeadersVisibility="Column"
+                  SelectionMode="Single"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name"      Binding="{Binding Name}"      SortMemberPath="Name"      Width="*" MinWidth="200"/>
+                <DataGridTextColumn Header="Start"     Binding="{Binding StartDate}" SortMemberPath="StartDate" Width="110"/>
+                <DataGridTextColumn Header="End"       Binding="{Binding EndDate}"   SortMemberPath="EndDate"   Width="110"/>
+                <DataGridTextColumn Header="Location"  Binding="{Binding Location}"  SortMemberPath="Location"  Width="140"/>
+                <DataGridTextColumn Header="Organizer" Binding="{Binding Organizer}" SortMemberPath="Organizer" Width="140"/>
+                <DataGridTextColumn Header="ID"        Binding="{Binding Id}"        SortMemberPath="Id"        Width="220"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </DockPanel>
+</Window>
