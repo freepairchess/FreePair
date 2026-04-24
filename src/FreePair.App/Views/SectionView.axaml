@@ -531,29 +531,25 @@
                                     <DataGridTextColumn Header="Black #"  Binding="{Binding BlackPair}"   SortMemberPath="BlackPair"   Width="70"  IsReadOnly="True"/>
                                     <DataGridTextColumn Header="Black"    Binding="{Binding BlackName}"   SortMemberPath="BlackName"   Width="*"   MinWidth="140" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="Rtg"      Binding="{Binding BlackRating}" SortMemberPath="BlackRating" Width="70"  IsReadOnly="True"/>
-                                    <!-- Result column: a plain TextBlock for the display state
-                                         and a ComboBox only in the editing state. Keeping the
-                                         ComboBox out of the default cell template avoids a
-                                         known Avalonia 12 Win32 popup-attach NullReferenceException
-                                         that reproduces when the cell's popup is re-attached
-                                         after the DataGrid recycles its rows (e.g. on filter
-                                         change or after a result-entry mutation rebuilds the
-                                         section VM). -->
-                                    <DataGridTemplateColumn Header="Result" SortMemberPath="ResultText" Width="140">
+                                    <!-- Result column: a ComboBox in the
+                                         default cell template so one click
+                                         drops it open. We previously kept
+                                         the ComboBox in CellEditingTemplate
+                                         to dodge an Avalonia 12 popup-attach
+                                         NRE, but that forced the TD to
+                                         double-click / F2 which turned out
+                                         to be too discoverable-poor. If the
+                                         NRE re-surfaces we'll handle it at
+                                         the VM rebuild path instead. -->
+                                    <DataGridTemplateColumn Header="Result" SortMemberPath="ResultText" Width="140" IsReadOnly="True">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate DataType="vm:PairingRow">
-                                                <TextBlock Text="{Binding ResultText}"
-                                                           VerticalAlignment="Center"
-                                                           Padding="8,0,0,0"/>
+                                                <ComboBox ItemsSource="{Binding AvailableResults}"
+                                                          SelectedItem="{Binding SelectedResult, Mode=TwoWay}"
+                                                          Margin="4,2" MinWidth="120"
+                                                          VerticalAlignment="Center"/>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
-                                        <DataGridTemplateColumn.CellEditingTemplate>
-                                            <DataTemplate DataType="vm:PairingRow">
-                                                <ComboBox ItemsSource="{Binding AvailableResults}"
-                                                          SelectedItem="{Binding SelectedResult}"
-                                                          Margin="4,2" MinWidth="120"/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellEditingTemplate>
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
