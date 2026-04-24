@@ -680,7 +680,104 @@ public static class TournamentMutations
         return ReplaceSection(tournament, sectionName, updatedSection);
     }
 
-    private static Section FindSection(Tournament t, string name) =>
+    /// <summary>
+    /// Soft-deletes <paramref name="sectionName"/> by setting the
+    /// <see cref="Section.SoftDeleted"/> flag. No data is discarded —
+    /// the section's players, rounds, pairings, and results remain
+    /// intact for later restoration via <see cref="UndeleteSection"/>.
+    /// Once soft-deleted, every other section-targeted mutation
+    /// (pair next round, set result, swap colours, ...) throws
+    /// <see cref="InvalidOperationException"/> until the section is
+    /// undeleted. The publishing pipeline
+    /// (<c>SwissSysResultJsonBuilder</c>) also excludes soft-deleted
+    /// sections from the uploaded results JSON.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// The section does not exist, or is already soft-deleted.
+    /// </exception>
+    public static Tournament SoftDeleteSection(Tournament tournament, string sectionName)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSectionAllowSoftDeleted(tournament, sectionName);
+        if (section.SoftDeleted)
+        {
+            throw new InvalidOperationException(
+                $"Section '{sectionName}' is already soft-deleted.");
+        }
+        return ReplaceSection(tournament, sectionName, section with { SoftDeleted = true });
+    }
+
+    /// <summary>
+    /// Clears the soft-deleted flag on <paramref name="sectionName"/>,
+    /// restoring normal mutation + publishing behavior. No-op fails
+    /// loudly so the UI can surface a sensible message.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// The section does not exist, or is not currently soft-deleted.
+    /// </exception>
+    public static Tournament UndeleteSection(Tournament tournament, string sectionName)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSectionAllowSoftDeleted(tournament, sectionName);
+        if (!section.SoftDeleted)
+        {
+            throw new InvalidOperationException(
+                $"Section '{sectionName}' is not soft-deleted.");
+        }
+        return ReplaceSection(tournament, sectionName, section with { SoftDeleted = false });
+    }
+
+    /// <summary>
+    /// Permanently removes <paramref name="sectionName"/> from the
+    /// tournament. All players, rounds, pairings, results, prizes,
+    /// etc. belonging to the section are discarded. The next save
+    /// propagates the removal to the underlying <c>.sjson</c>
+    /// (<see cref="SwissSysTournamentWriter"/> prunes any section
+    /// nodes present in the raw file but absent from the domain
+    /// model). Unlike soft-delete this cannot be undone short of
+    /// restoring a backup.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// The section does not exist.
+    /// </exception>
+    public static Tournament HardDeleteSection(Tournament tournament, string sectionName)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        // Throws if missing, but ignores soft-deleted state — hard
+        // delete applies to both live and soft-deleted sections.
+        _ = FindSectionAllowSoftDeleted(tournament, sectionName);
+
+        var remaining = tournament.Sections
+            .Where(s => s.Name != sectionName)
+            .ToArray();
+        return tournament with { Sections = remaining };
+    }
+
+    private static Section FindSection(Tournament t, string name)
+    {
+        var section = FindSectionAllowSoftDeleted(t, name);
+        if (section.SoftDeleted)
+        {
+            throw new InvalidOperationException(
+                $"Section '{name}' is soft-deleted. Undelete it before making changes.");
+        }
+        return section;
+    }
+
+    /// <summary>
+    /// Variant of <see cref="FindSection"/> that returns soft-deleted
+    /// sections too. Only the soft-delete / undelete / hard-delete
+    /// mutations should use this; every other section-targeted
+    /// mutation must go through <see cref="FindSection"/> so the
+    /// soft-deleted guard fires.
+    /// </summary>
+    private static Section FindSectionAllowSoftDeleted(Tournament t, string name) =>
         t.Sections.FirstOrDefault(s => s.Name == name)
         ?? throw new InvalidOperationException($"Section '{name}' not found.");
 

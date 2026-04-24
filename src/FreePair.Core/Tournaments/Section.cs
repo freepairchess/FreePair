@@ -26,7 +26,16 @@ public sealed record Section(
     bool AvoidSameTeam = true,
     bool AvoidSameClub = false,
     IReadOnlyList<(int A, int B)>? DoNotPairPairs = null,
-    IReadOnlyList<ForcedPairing>? ForcedPairings = null)
+    IReadOnlyList<ForcedPairing>? ForcedPairings = null,
+    /// <summary>
+    /// When <c>true</c>, the section is soft-deleted. FreePair blocks
+    /// mutations against it and the publishing pipeline excludes it
+    /// from the results JSON. Toggled via
+    /// <see cref="TournamentMutations.SoftDeleteSection"/> /
+    /// <see cref="TournamentMutations.UndeleteSection"/>; persisted
+    /// as <c>"FreePair soft deleted"</c> in the section's Overview.
+    /// </summary>
+    bool SoftDeleted = false)
 {
     /// <summary>
     /// Non-null view of <see cref="DoNotPairPairs"/>.

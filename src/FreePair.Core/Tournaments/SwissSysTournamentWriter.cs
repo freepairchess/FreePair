@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -71,6 +72,19 @@ public class SwissSysTournamentWriter : ITournamentWriter
             sectionNode["Rounds paired"] = section.RoundsPaired;
             sectionNode["Rounds played"] = section.RoundsPlayed;
 
+            // FreePair-specific section flag. Soft-deleted sections
+            // persist in the raw file with this marker; cleared via
+            // UndeleteSection removes the key entirely so legacy
+            // readers don't see a stale false value.
+            if (section.SoftDeleted)
+            {
+                sectionNode["FreePair soft deleted"] = true;
+            }
+            else
+            {
+                sectionNode.Remove("FreePair soft deleted");
+            }
+
             var playersArray = sectionNode["Players"]?.AsArray();
             if (playersArray is null)
             {
@@ -92,6 +106,23 @@ public class SwissSysTournamentWriter : ITournamentWriter
                 }
 
                 playerNode["Results"] = resultsArray;
+            }
+        }
+
+        // Hard-delete propagation: any section present in the raw
+        // file but NOT in tournament.Sections has been removed by
+        // HardDeleteSection. Prune it from the raw JSON so the saved
+        // file stays in sync with the domain model.
+        var liveNames = new HashSet<string>(
+            tournament.Sections.Select(s => s.Name),
+            StringComparer.Ordinal);
+        for (var i = sectionsArray.Count - 1; i >= 0; i--)
+        {
+            if (sectionsArray[i] is JsonObject obj &&
+                obj["Section name"]?.GetValue<string>() is string name &&
+                !liveNames.Contains(name))
+            {
+                sectionsArray.RemoveAt(i);
             }
         }
 

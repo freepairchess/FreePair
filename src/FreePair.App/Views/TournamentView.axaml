@@ -12,6 +12,34 @@
         <vm:TournamentViewModel/>
     </Design.DataContext>
 
+    <UserControl.Styles>
+        <!-- Small transparent icon buttons used in the section nav
+             rows (🗑 / ↩ / ✕ affordances). Segoe Fluent Icons is
+             Microsoft's monochrome icon font shipped with Windows 11;
+             Segoe MDL2 Assets is the Windows 10 fallback. Both
+             respect the Foreground brush so the color-coding (green
+             soft vs red hard) actually takes effect — unlike the
+             color-emoji 🗑 codepoint. -->
+        <Style Selector="Button.icon-btn">
+            <Setter Property="Background"   Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontFamily"   Value="Segoe Fluent Icons, Segoe MDL2 Assets"/>
+            <Setter Property="FontSize"     Value="14"/>
+            <Setter Property="Padding"      Value="4,2"/>
+            <Setter Property="MinWidth"     Value="28"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Cursor"       Value="Hand"/>
+        </Style>
+        <Style Selector="Button.icon-btn:pointerover /template/ ContentPresenter">
+            <Setter Property="Background"   Value="#14000000"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="Button.icon-btn:pressed /template/ ContentPresenter">
+            <Setter Property="Background"   Value="#26000000"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+    </UserControl.Styles>
+
     <DockPanel Margin="12" LastChildFill="True">
 
         <!-- Toolbar -->
@@ -46,34 +74,47 @@
                            IsVisible="{Binding IsSaving}"/>
             </StackPanel>
 
-            <!-- Persistent "last published" row, sitting below the main
-                 toolbar so a long file path never shoves it off-screen.
-                 Visible only after a successful publish (both URL and
-                 timestamp set atomically; both cleared on every new
-                 attempt). The 'NA Chess Hub' span is a button styled as
-                 an inline hyperlink that opens the hub's EventFiles
-                 page for this tournament. -->
+            <!-- Persistent "last saved" + "last published" row, sitting
+                 below the main toolbar so a long file path never shoves
+                 it off-screen. The "last saved" span is seeded from the
+                 file's on-disk mtime on open, then updated after every
+                 in-session save. The "last published" span is
+                 independent: visible only after a successful publish
+                 attempt (HasLastPublishedUrl flips true); its 'NA Chess
+                 Hub' word is a hyperlink into the hub's EventFiles
+                 page. Both timestamps use yyyy-MM-dd HH:mm:ss local so
+                 the date is always visible alongside the time. -->
             <StackPanel Orientation="Horizontal"
                         VerticalAlignment="Center"
-                        Spacing="0"
-                        Margin="0,2,0,0"
-                        IsVisible="{Binding HasLastPublishedUrl}">
-                <TextBlock Text="last published to " Foreground="Gray" FontSize="11" VerticalAlignment="Center"/>
-                <Button Content="NA Chess Hub"
-                        Tag="{Binding LastPublishedUrl}"
-                        Click="OnOpenPublishedUrl"
-                        Foreground="#0E5DAA"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Padding="0"
-                        FontSize="11"
-                        VerticalAlignment="Center"
-                        ToolTip.Tip="{Binding LastPublishedUrl}"/>
-                <TextBlock Text=" at " Foreground="Gray" FontSize="11" VerticalAlignment="Center"/>
-                <TextBlock Text="{Binding LastPublishedAtDisplay}"
-                           Foreground="Gray"
-                           FontSize="11"
-                           VerticalAlignment="Center"/>
+                        Spacing="12"
+                        Margin="0,2,0,0">
+                <StackPanel Orientation="Horizontal" Spacing="0"
+                            IsVisible="{Binding HasLastSavedAt}">
+                    <TextBlock Text="last saved at " Foreground="Gray" FontSize="11" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding LastSavedAtDisplay}"
+                               Foreground="Gray" FontSize="11" VerticalAlignment="Center"/>
+                </StackPanel>
+                <TextBlock Text="·" Foreground="Gray" FontSize="11" VerticalAlignment="Center"
+                           IsVisible="{Binding HasLastPublishedUrl}"/>
+                <StackPanel Orientation="Horizontal" Spacing="0"
+                            IsVisible="{Binding HasLastPublishedUrl}">
+                    <TextBlock Text="last published to " Foreground="Gray" FontSize="11" VerticalAlignment="Center"/>
+                    <Button Content="NA Chess Hub"
+                            Tag="{Binding LastPublishedUrl}"
+                            Click="OnOpenPublishedUrl"
+                            Foreground="#0E5DAA"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Padding="0"
+                            FontSize="11"
+                            VerticalAlignment="Center"
+                            ToolTip.Tip="{Binding LastPublishedUrl}"/>
+                    <TextBlock Text=" at " Foreground="Gray" FontSize="11" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding LastPublishedAtDisplay}"
+                               Foreground="Gray"
+                               FontSize="11"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
             </StackPanel>
 
             <TextBlock Text="Loading..."
@@ -137,12 +178,12 @@
                                        IsVisible="{Binding Tournament.LocationSummary, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
                             <TextBlock Foreground="Gray" FontSize="11">
                                 <Run Text="Time control: "/>
-                                <Run Text="{Binding Tournament.TimeControl}"/>
+                                <Run Text="{Binding Tournament.TimeControl, TargetNullValue='', FallbackValue=''}"/>
                             </TextBlock>
                             <TextBlock Foreground="Gray" FontSize="11">
-                                <Run Text="{Binding Tournament.StartDate}"/>
+                                <Run Text="{Binding Tournament.StartDate, TargetNullValue='', FallbackValue=''}"/>
                                 <Run Text=" — "/>
-                                <Run Text="{Binding Tournament.EndDate}"/>
+                                <Run Text="{Binding Tournament.EndDate, TargetNullValue='', FallbackValue=''}"/>
                             </TextBlock>
                             <TextBlock Text="⚙ Click to edit"
                                        Foreground="#0E5DAA"
@@ -162,17 +203,64 @@
                              SelectedItem="{Binding SelectedSection}">
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="vm:SectionViewModel">
-                                <StackPanel Spacing="2" Margin="0,4">
-                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
-                                    <TextBlock FontSize="11" Foreground="Gray">
-                                        <Run Text="{Binding PlayerCount}"/>
-                                        <Run Text=" players · "/>
-                                        <Run Text="{Binding RoundsPlayed}"/>
-                                        <Run Text="/"/>
-                                        <Run Text="{Binding RoundsPaired}"/>
-                                        <Run Text=" rounds"/>
-                                    </TextBlock>
-                                </StackPanel>
+                                <!-- Two-row layout: name + stats on the
+                                     left, a small lifecycle icon button
+                                     docked to the top-right corner.
+                                     Buttons are transparent with no
+                                     border so they read as icons, not
+                                     chrome. Live row shows one button
+                                     (soft-delete); soft-deleted row
+                                     shows two (undelete + permanently
+                                     delete). -->
+                                <DockPanel LastChildFill="True" Margin="0,4">
+                                    <Button DockPanel.Dock="Right"
+                                            Classes="icon-btn"
+                                            Foreground="SeaGreen"
+                                            Content="&#xE74D;"
+                                            Command="{Binding SoftDeleteSectionCommand}"
+                                            IsVisible="{Binding IsLive}"
+                                            ToolTip.Tip="Soft-delete this section (reversible). Locks it against edits and excludes it from published results."/>
+                                    <Button DockPanel.Dock="Right"
+                                            Classes="icon-btn"
+                                            Foreground="#C62828"
+                                            Content="&#xE74D;"
+                                            Command="{Binding HardDeleteSectionCommand}"
+                                            IsVisible="{Binding IsSoftDeleted}"
+                                            ToolTip.Tip="Permanently delete this section. Every player, round, pairing, result, and prize will be discarded and cannot be recovered."/>
+                                    <Button DockPanel.Dock="Right"
+                                            Classes="icon-btn"
+                                            Foreground="#0E5DAA"
+                                            Content="&#xE7A7;"
+                                            Command="{Binding UndeleteSectionCommand}"
+                                            IsVisible="{Binding IsSoftDeleted}"
+                                            ToolTip.Tip="Restore this soft-deleted section."/>
+                                    <StackPanel Spacing="2">
+                                        <!-- Soft-deleted sections get a
+                                             strike-through + gray italic
+                                             style and a " [deleted]"
+                                             suffix so the TD can spot
+                                             them at a glance. -->
+                                        <TextBlock FontWeight="SemiBold"
+                                                   Classes.deleted="{Binding IsSoftDeleted}">
+                                            <TextBlock.Styles>
+                                                <Style Selector="TextBlock.deleted">
+                                                    <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                    <Setter Property="Foreground" Value="Gray"/>
+                                                    <Setter Property="FontStyle" Value="Italic"/>
+                                                </Style>
+                                            </TextBlock.Styles>
+                                            <Run Text="{Binding Name}"/><Run Text="{Binding TabLabelSuffix}"/>
+                                        </TextBlock>
+                                        <TextBlock FontSize="11" Foreground="Gray">
+                                            <Run Text="{Binding PlayerCount}"/>
+                                            <Run Text=" players · "/>
+                                            <Run Text="{Binding RoundsPlayed}"/>
+                                            <Run Text="/"/>
+                                            <Run Text="{Binding RoundsPaired}"/>
+                                            <Run Text=" rounds"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DockPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>

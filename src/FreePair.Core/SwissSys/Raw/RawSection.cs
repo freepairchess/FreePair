@@ -80,4 +80,21 @@ public sealed class RawSection
 
     [JsonPropertyName("Prizes")]
     public RawPrizes? Prizes { get; set; }
+
+    // ==== FreePair-specific extensions ====================================
+    // SwissSys ignores unknown section keys, so this is harmless to
+    // non-FreePair consumers while giving us per-section persistent
+    // state.
+
+    /// <summary>
+    /// When <c>true</c>, the section is "soft-deleted" — FreePair
+    /// blocks mutations against it (results, pairings, intervention
+    /// swaps, etc.) and <c>SwissSysResultJsonBuilder</c> excludes it
+    /// from the published results JSON. Clearing the flag via
+    /// <see cref="FreePair.Core.Tournaments.TournamentMutations.UndeleteSection"/>
+    /// restores normal behavior. Persisted as
+    /// <c>"FreePair soft deleted"</c>.
+    /// </summary>
+    [JsonPropertyName("FreePair soft deleted")]
+    public bool? FreePairSoftDeleted { get; set; }
 }
