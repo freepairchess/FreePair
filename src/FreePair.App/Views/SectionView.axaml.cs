@@ -97,6 +97,24 @@ public partial class SectionView : UserControl
         }
     }
 
+    private async void OnPlayerWithdrawClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is int pn
+            && DataContext is ViewModels.SectionViewModel vm)
+        {
+            await vm.RequestPlayerWithdrawAsync(pn);
+        }
+    }
+
+    private async void OnPlayerUnwithdrawClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is int pn
+            && DataContext is ViewModels.SectionViewModel vm)
+        {
+            await vm.RequestPlayerUnwithdrawAsync(pn);
+        }
+    }
+
     private void OnClearPairingFilter(object? sender, RoutedEventArgs e)
     {
         if (DataContext is ViewModels.SectionViewModel vm) vm.PairingFilter = string.Empty;

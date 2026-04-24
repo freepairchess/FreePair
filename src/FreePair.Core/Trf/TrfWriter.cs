@@ -273,6 +273,7 @@ public static class TrfWriter
             RoundResultKind.Draw         => '=',
             RoundResultKind.FullPointBye => 'U',   // FIDE: full-point bye
             RoundResultKind.HalfPointBye => 'H',   // FIDE: half-point bye
+            RoundResultKind.ZeroPointBye => 'Z',   // FIDE: zero-point bye
             RoundResultKind.None         => '-',
             _                            => '-',
         };

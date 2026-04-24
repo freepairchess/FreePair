@@ -36,7 +36,13 @@ public sealed record PlayerRow(
     /// <summary>Undelete icon visibility: player is currently soft-deleted.</summary>
     bool CanUndelete,
     /// <summary>Hard-delete icon visibility: soft-deleted AND section not yet paired.</summary>
-    bool CanHardDelete);
+    bool CanHardDelete,
+    /// <summary>True when the player is withdrawn (mid-tournament state).</summary>
+    bool IsWithdrawn,
+    /// <summary>Withdraw icon visibility: live (non-soft-deleted, non-withdrawn) AND section has paired at least one round.</summary>
+    bool CanWithdraw,
+    /// <summary>Return-from-withdrawal icon visibility: currently withdrawn.</summary>
+    bool CanUnwithdraw);
 
 /// <summary>
 /// Editable pairing row for the <b>Pairings</b> tab. Binds to a result
@@ -674,6 +680,28 @@ public partial class SectionViewModel : ViewModelBase
     public Task RequestPlayerHardDeleteAsync(int pairNumber) =>
         PlayerHardDeleteRequested?.Invoke(this, pairNumber) ?? Task.CompletedTask;
 
+    /// <summary>
+    /// Raised when the TD clicks the Withdraw icon on a post-round-1
+    /// player row. Parent VM runs a confirm and invokes
+    /// <see cref="TournamentMutations.SetPlayerWithdrawn"/> with
+    /// <c>withdrawn=true</c>. Unlike soft-delete, this keeps the
+    /// player's past results in place — they just aren't paired in
+    /// future rounds and appear with a "Withdrawn" marker.
+    /// </summary>
+    public event Func<SectionViewModel, int /*pairNumber*/, Task>? PlayerWithdrawRequested;
+
+    /// <summary>
+    /// Raised when the TD clicks the "return from withdrawal" icon on
+    /// a withdrawn player row. No confirm — reversible.
+    /// </summary>
+    public event Func<SectionViewModel, int /*pairNumber*/, Task>? PlayerUnwithdrawRequested;
+
+    public Task RequestPlayerWithdrawAsync(int pairNumber) =>
+        PlayerWithdrawRequested?.Invoke(this, pairNumber) ?? Task.CompletedTask;
+
+    public Task RequestPlayerUnwithdrawAsync(int pairNumber) =>
+        PlayerUnwithdrawRequested?.Invoke(this, pairNumber) ?? Task.CompletedTask;
+
     private static PlayerRow BuildPlayerRowStatic(Player player, Section section, IScoreFormatter formatter)
     {
         string status;
@@ -704,6 +732,7 @@ public partial class SectionViewModel : ViewModelBase
         // domain can't drift. Undelete is always available if the
         // player is soft-deleted.
         var preRoundOne = section.RoundsPaired == 0;
+        var isWithdrawn = section.IsWithdrawn(player);
 
         return new PlayerRow(
             PairNumber: player.PairNumber,
@@ -722,7 +751,15 @@ public partial class SectionViewModel : ViewModelBase
             IsSoftDeleted: player.SoftDeleted,
             CanSoftDelete: !player.SoftDeleted && preRoundOne,
             CanUndelete:   player.SoftDeleted,
-            CanHardDelete: player.SoftDeleted && preRoundOne);
+            CanHardDelete: player.SoftDeleted && preRoundOne,
+            IsWithdrawn:   isWithdrawn,
+            // Withdraw is the post-round-1 analogue of soft-delete:
+            // it removes the player from future pairing but keeps
+            // their past game results in place. Only offered when the
+            // section has at least one paired round (pre-round-1 the
+            // TD should just soft/hard-delete instead).
+            CanWithdraw:   !player.SoftDeleted && !isWithdrawn && !preRoundOne,
+            CanUnwithdraw: isWithdrawn);
     }
 
     private PlayerRow BuildPlayerRow(Player player, Section section) =>

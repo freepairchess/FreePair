@@ -450,6 +450,8 @@ public partial class TournamentViewModel : ViewModelBase
         vm.PlayerSoftDeleteRequested += OnPlayerSoftDeleteAsync;
         vm.PlayerUndeleteRequested   += OnPlayerUndeleteAsync;
         vm.PlayerHardDeleteRequested += OnPlayerHardDeleteAsync;
+        vm.PlayerWithdrawRequested   += OnPlayerWithdrawAsync;
+        vm.PlayerUnwithdrawRequested += OnPlayerUnwithdrawAsync;
     }
 
     private void DetachSectionEvents()
@@ -707,6 +709,58 @@ public partial class TournamentViewModel : ViewModelBase
         catch (Exception ex)
         {
             ErrorMessage = $"Failed to delete player: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnPlayerWithdrawAsync(SectionViewModel section, int pairNumber)
+    {
+        if (Tournament is null) return;
+
+        var player = section.Section.Players.FirstOrDefault(p => p.PairNumber == pairNumber);
+        var label  = player is null ? $"#{pairNumber}" : $"#{pairNumber} {player.Name}";
+
+        if (PromptConfirmAsync is not null)
+        {
+            var confirmed = await PromptConfirmAsync(
+                "Withdraw player",
+                $"Withdraw {label} from '{section.Name}'?\n\n" +
+                $"The player's existing game results stay in place and still count " +
+                $"toward their opponents' tiebreaks. They won't be paired in any " +
+                $"future round. You can reverse this at any time via the undo icon " +
+                $"on the Players tab.",
+                "Withdraw").ConfigureAwait(true);
+            if (!confirmed) return;
+        }
+
+        try
+        {
+            Tournament = TournamentMutations.SetPlayerWithdrawn(Tournament, section.Name, pairNumber, withdrawn: true);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to withdraw player: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnPlayerUnwithdrawAsync(SectionViewModel section, int pairNumber)
+    {
+        if (Tournament is null) return;
+
+        try
+        {
+            Tournament = TournamentMutations.SetPlayerWithdrawn(Tournament, section.Name, pairNumber, withdrawn: false);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to return player from withdrawal: {ex.Message}";
             return;
         }
 

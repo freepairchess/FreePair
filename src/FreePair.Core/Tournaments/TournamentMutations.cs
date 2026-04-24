@@ -578,6 +578,73 @@ public static class TournamentMutations
         return ReplaceSection(tournament, sectionName, updatedSection);
     }
 
+    /// <summary>
+    /// Converts a scheduled but un-played pairing into a late
+    /// zero-point bye for <paramref name="zeroByePair"/>: that player
+    /// is awarded 0 (SwissSys "U" kind), their opponent receives a
+    /// full-point bye (1.0), and the pairing is removed from the
+    /// round. Typical use: a player no-shows mid-round without
+    /// advance notice and the TD wants to record the absence without
+    /// giving them any tiebreak benefit. Differs from
+    /// <see cref="ConvertPairingToHalfPointBye"/> only in the points
+    /// and the RoundResultKind stamped on the target player's history.
+    /// </summary>
+    public static Tournament ConvertPairingToZeroPointBye(
+        Tournament tournament,
+        string sectionName,
+        int round,
+        int zeroByePair)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        var targetRound = section.Rounds.FirstOrDefault(r => r.Number == round)
+            ?? throw new InvalidOperationException(
+                $"Round {round} does not exist in section '{sectionName}'.");
+
+        var pairing = targetRound.Pairings.FirstOrDefault(
+            p => p.WhitePair == zeroByePair || p.BlackPair == zeroByePair)
+            ?? throw new InvalidOperationException(
+                $"Pair #{zeroByePair} is not assigned to a pairing in round {round}.");
+
+        if (pairing.Result != PairingResult.Unplayed)
+        {
+            throw new InvalidOperationException(
+                "Can't convert a scored pairing to a zero-point bye; correct the result instead.");
+        }
+
+        var opponentPair = pairing.WhitePair == zeroByePair
+            ? pairing.BlackPair
+            : pairing.WhitePair;
+
+        var updatedPairings = targetRound.Pairings
+            .Where(p => p != pairing)
+            .ToArray();
+        var updatedByes = targetRound.Byes
+            .Append(new ByeAssignment(zeroByePair,   ByeKind.Unpaired))
+            .Append(new ByeAssignment(opponentPair,  ByeKind.Full))
+            .ToArray();
+        var updatedRound = targetRound with { Pairings = updatedPairings, Byes = updatedByes };
+
+        var roundIndex = round - 1;
+        var updatedPlayers = section.Players
+            .Select(p => p.PairNumber == zeroByePair
+                    ? OverwriteHistoryAsBye(p, roundIndex, RoundResultKind.ZeroPointBye, 0m)
+                : p.PairNumber == opponentPair
+                    ? OverwriteHistoryAsBye(p, roundIndex, RoundResultKind.FullPointBye, 1m)
+                : p)
+            .ToArray();
+
+        var updatedSection = section with
+        {
+            Players = updatedPlayers,
+            Rounds = section.Rounds.Select(r => r.Number == round ? updatedRound : r).ToArray(),
+        };
+
+        return ReplaceSection(tournament, sectionName, updatedSection);
+    }
+
     private static Tournament UpdateSection(
         Tournament tournament,
         string sectionName,

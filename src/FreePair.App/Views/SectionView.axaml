@@ -359,15 +359,16 @@
                                                 SortMemberPath="Status"
                                                 Width="100"/>
 
-                            <!-- Player lifecycle actions. Three icons:
+                            <!-- Player lifecycle actions. Five icons:
                                  green 🗑 soft-delete, blue ↩ undelete,
-                                 red 🗑 hard-delete. Visibility bound
-                                 to PlayerRow flags derived from the
-                                 player's SoftDeleted + the section's
-                                 RoundsPaired, so post-round-1 sections
-                                 show nothing at all (the TD must use
-                                 Withdraw instead; different UX). -->
-                            <DataGridTemplateColumn Header="" Width="92">
+                                 red 🗑 hard-delete (all pre-round-1),
+                                 orange ⊘ withdraw, blue ↩ return from
+                                 withdrawal (both post-round-1). Visibility
+                                 bound to PlayerRow flags derived from
+                                 the player's SoftDeleted/Withdrawn state
+                                 and the section's RoundsPaired, so
+                                 exactly one set of icons applies. -->
+                            <DataGridTemplateColumn Header="" Width="140">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="vm:PlayerRow">
                                         <StackPanel Orientation="Horizontal"
@@ -376,7 +377,6 @@
                                             <Button Classes="icon-btn"
                                                     Foreground="SeaGreen"
                                                     Content="&#xE74D;"
-                                                    FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
                                                     Tag="{Binding PairNumber}"
                                                     Click="OnPlayerSoftDeleteClick"
                                                     IsVisible="{Binding CanSoftDelete}"
@@ -384,7 +384,6 @@
                                             <Button Classes="icon-btn"
                                                     Foreground="#0E5DAA"
                                                     Content="&#xE7A7;"
-                                                    FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
                                                     Tag="{Binding PairNumber}"
                                                     Click="OnPlayerUndeleteClick"
                                                     IsVisible="{Binding CanUndelete}"
@@ -392,11 +391,24 @@
                                             <Button Classes="icon-btn"
                                                     Foreground="#C62828"
                                                     Content="&#xE74D;"
-                                                    FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
                                                     Tag="{Binding PairNumber}"
                                                     Click="OnPlayerHardDeleteClick"
                                                     IsVisible="{Binding CanHardDelete}"
                                                     ToolTip.Tip="Permanently delete this player."/>
+                                            <Button Classes="icon-btn"
+                                                    Foreground="#D68100"
+                                                    Content="&#xE711;"
+                                                    Tag="{Binding PairNumber}"
+                                                    Click="OnPlayerWithdrawClick"
+                                                    IsVisible="{Binding CanWithdraw}"
+                                                    ToolTip.Tip="Withdraw player from future pairing. Past results stay in place; you can return them later."/>
+                                            <Button Classes="icon-btn"
+                                                    Foreground="#0E5DAA"
+                                                    Content="&#xE7A7;"
+                                                    Tag="{Binding PairNumber}"
+                                                    Click="OnPlayerUnwithdrawClick"
+                                                    IsVisible="{Binding CanUnwithdraw}"
+                                                    ToolTip.Tip="Return this withdrawn player to the active roster."/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

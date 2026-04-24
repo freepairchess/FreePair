@@ -57,6 +57,11 @@ public static class WallChartBuilder
                 return "B---";
             case RoundResultKind.HalfPointBye:
                 return "H---";
+            case RoundResultKind.ZeroPointBye:
+                // SwissSys displays zero-point byes as "U---" on wall
+                // charts — same convention as an unpaired round since
+                // both score 0 and mean "no game played".
+                return "U---";
             case RoundResultKind.None:
                 return "U---";
             default:

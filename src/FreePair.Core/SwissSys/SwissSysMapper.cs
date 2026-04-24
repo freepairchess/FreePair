@@ -266,13 +266,15 @@ public static class SwissSysMapper
                         break;
 
                     case RoundResultKind.None:
-                        // Three sub-cases share the "None" kind:
+                    case RoundResultKind.ZeroPointBye:
+                        // Three sub-cases share the "None" / "U" kinds:
                         //   1. Paired but not yet played — set by FreePair
                         //      after BBP output. Opponent > 0 and a real
                         //      colour is present; we re-emit as an
                         //      Unplayed pairing.
-                        //   2. True unpaired (withdrawal, odd-count sit-out)
-                        //      — opponent 0 / missing colour.
+                        //   2. True unpaired (withdrawal, odd-count sit-out,
+                        //      or SwissSys "U" zero-point bye) — opponent 0
+                        //      / missing colour.
                         //   3. Uninitialized future slot — we already skip
                         //      these via the roundsPlayed bound.
                         if (res.Opponent > 0 && res.Color != PlayerColor.None)
