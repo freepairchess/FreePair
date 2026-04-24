@@ -12,6 +12,34 @@
         <vm:TournamentViewModel/>
     </Design.DataContext>
 
+    <UserControl.Styles>
+        <!-- Small transparent icon buttons used in the section nav
+             rows (🗑 / ↩ / ✕ affordances). Segoe Fluent Icons is
+             Microsoft's monochrome icon font shipped with Windows 11;
+             Segoe MDL2 Assets is the Windows 10 fallback. Both
+             respect the Foreground brush so the color-coding (green
+             soft vs red hard) actually takes effect — unlike the
+             color-emoji 🗑 codepoint. -->
+        <Style Selector="Button.icon-btn">
+            <Setter Property="Background"   Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontFamily"   Value="Segoe Fluent Icons, Segoe MDL2 Assets"/>
+            <Setter Property="FontSize"     Value="14"/>
+            <Setter Property="Padding"      Value="4,2"/>
+            <Setter Property="MinWidth"     Value="28"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Cursor"       Value="Hand"/>
+        </Style>
+        <Style Selector="Button.icon-btn:pointerover /template/ ContentPresenter">
+            <Setter Property="Background"   Value="#14000000"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="Button.icon-btn:pressed /template/ ContentPresenter">
+            <Setter Property="Background"   Value="#26000000"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+    </UserControl.Styles>
+
     <DockPanel Margin="12" LastChildFill="True">
 
         <!-- Toolbar -->
@@ -186,43 +214,23 @@
                                      delete). -->
                                 <DockPanel LastChildFill="True" Margin="0,4">
                                     <Button DockPanel.Dock="Right"
-                                            VerticalAlignment="Top"
-                                            Margin="4,0,0,0"
-                                            Padding="4,2"
-                                            MinWidth="26"
-                                            Background="Transparent"
-                                            BorderThickness="0"
+                                            Classes="icon-btn"
                                             Foreground="SeaGreen"
-                                            FontSize="14"
-                                            FontFamily="Segoe UI Symbol"
-                                            Content="🗑&#xFE0E;"
+                                            Content="&#xE74D;"
                                             Command="{Binding SoftDeleteSectionCommand}"
                                             IsVisible="{Binding IsLive}"
                                             ToolTip.Tip="Soft-delete this section (reversible). Locks it against edits and excludes it from published results."/>
                                     <Button DockPanel.Dock="Right"
-                                            VerticalAlignment="Top"
-                                            Margin="4,0,0,0"
-                                            Padding="4,2"
-                                            MinWidth="26"
-                                            Background="Transparent"
-                                            BorderThickness="0"
-                                            Foreground="DarkRed"
-                                            FontSize="14"
-                                            FontFamily="Segoe UI Symbol"
-                                            Content="🗑&#xFE0E;"
+                                            Classes="icon-btn"
+                                            Foreground="#C62828"
+                                            Content="&#xE74D;"
                                             Command="{Binding HardDeleteSectionCommand}"
                                             IsVisible="{Binding IsSoftDeleted}"
                                             ToolTip.Tip="Permanently delete this section. Every player, round, pairing, result, and prize will be discarded and cannot be recovered."/>
                                     <Button DockPanel.Dock="Right"
-                                            VerticalAlignment="Top"
-                                            Margin="4,0,0,0"
-                                            Padding="4,2"
-                                            MinWidth="26"
-                                            Background="Transparent"
-                                            BorderThickness="0"
+                                            Classes="icon-btn"
                                             Foreground="#0E5DAA"
-                                            FontSize="14"
-                                            Content="↩"
+                                            Content="&#xE7A7;"
                                             Command="{Binding UndeleteSectionCommand}"
                                             IsVisible="{Binding IsSoftDeleted}"
                                             ToolTip.Tip="Restore this soft-deleted section."/>
