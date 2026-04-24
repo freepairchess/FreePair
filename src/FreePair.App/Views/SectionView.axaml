@@ -438,14 +438,18 @@
                                                  future round exists. Opens a
                                                  modal dialog with a row per
                                                  round and None / ½-pt / 0-pt
-                                                 choices. -->
+                                                 choices. Calendar icon because
+                                                 this is about picking which
+                                                 future rounds the player will
+                                                 sit out; distinct from the
+                                                 pencil Edit-info icon below. -->
                                             <Button Classes="icon-btn"
                                                     Foreground="#5A5A5A"
-                                                    Content="&#xE70F;"
+                                                    Content="&#xE787;"
                                                     Tag="{Binding PairNumber}"
                                                     Click="OnPlayerManageByesClick"
                                                     IsVisible="{Binding CanManageByes}"
-                                                    ToolTip.Tip="Manage requested byes for this player's future unpaired rounds."/>
+                                                    ToolTip.Tip="Manage requested byes (📅) for this player's future unpaired rounds."/>
                                             <!-- Edit player info. Opens the
                                                  Player form dialog seeded
                                                  with the current fields.
@@ -457,7 +461,7 @@
                                                     Tag="{Binding PairNumber}"
                                                     Click="OnPlayerEditClick"
                                                     IsVisible="{Binding CanEdit}"
-                                                    ToolTip.Tip="Edit this player's name, ID, rating, contact info, etc."/>
+                                                    ToolTip.Tip="Edit (✎) this player's name, ID, rating, contact info, etc."/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

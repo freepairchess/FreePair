@@ -470,6 +470,8 @@ public partial class TournamentViewModel : ViewModelBase
         vm.PlayerWithdrawRequested   += OnPlayerWithdrawAsync;
         vm.PlayerUnwithdrawRequested += OnPlayerUnwithdrawAsync;
         vm.PlayerManageByesRequested += OnPlayerManageByesAsync;
+        vm.PlayerEditRequested       += OnPlayerEditAsync;
+        vm.PlayerAddRequested        += OnPlayerAddAsync;
     }
 
     private void DetachSectionEvents()
