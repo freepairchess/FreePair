@@ -73,8 +73,9 @@
                 <DataGridTextColumn Header="Name"      Binding="{Binding Name}"      SortMemberPath="Name"      Width="*" MinWidth="200"/>
                 <DataGridTextColumn Header="Start"     Binding="{Binding StartDate}" SortMemberPath="StartDate" Width="110"/>
                 <DataGridTextColumn Header="End"       Binding="{Binding EndDate}"   SortMemberPath="EndDate"   Width="110"/>
-                <DataGridTextColumn Header="Location"  Binding="{Binding Location}"  SortMemberPath="Location"  Width="140"/>
-                <DataGridTextColumn Header="Organizer" Binding="{Binding Organizer}" SortMemberPath="Organizer" Width="140"/>
+                <DataGridTextColumn Header="Location"  Binding="{Binding Location}"  SortMemberPath="Location"  Width="160"/>
+                <DataGridTextColumn Header="Organizer" Binding="{Binding Organizer}" SortMemberPath="Organizer" Width="160"/>
+                <DataGridTextColumn Header="Status"    Binding="{Binding Status}"    SortMemberPath="Status"    Width="100"/>
                 <DataGridTextColumn Header="ID"        Binding="{Binding Id}"        SortMemberPath="Id"        Width="220"/>
             </DataGrid.Columns>
         </DataGrid>
