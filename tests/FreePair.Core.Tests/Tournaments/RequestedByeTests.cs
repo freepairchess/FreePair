@@ -95,6 +95,51 @@ public class RequestedByeTests
     }
 
     [Fact]
+    public async Task Writer_round_trips_half_point_bye_rounds()
+    {
+        // Regression test: AddRequestedBye with ByeKind.Half previously
+        // updated the in-memory model but the writer did not serialize
+        // Player.RequestedByeRounds back to the raw SwissSys "Reserved
+        // byes" string field — the value disappeared on close / reopen.
+        // Now the writer emits a space-separated list every save.
+        var src = TestPaths.SwissSysSample(ExtendedSample);
+        var tmp = System.IO.Path.Combine(
+            System.IO.Path.GetTempPath(),
+            $"fp-hpb-{System.Guid.NewGuid():N}.sjson");
+        System.IO.File.Copy(src, tmp, overwrite: true);
+        try
+        {
+            var raw = await new SwissSysImporter().ImportAsync(tmp);
+            var t = SwissSysMapper.Map(raw);
+            var name = t.Sections[0].Name;
+            var pn = First(t, name).PairNumber;
+            t = TournamentMutations.AddRequestedBye(t, name, pn, round: 2, ByeKind.Half);
+            t = TournamentMutations.AddRequestedBye(t, name, pn, round: 5, ByeKind.Half);
+
+            await new SwissSysTournamentWriter().SaveAsync(tmp, t);
+
+            var raw2 = await new SwissSysImporter().ImportAsync(tmp);
+            var t2 = SwissSysMapper.Map(raw2);
+            var p2 = t2.Sections.First(s => s.Name == name).Players.First(x => x.PairNumber == pn);
+            Assert.Contains(2, p2.RequestedByeRounds);
+            Assert.Contains(5, p2.RequestedByeRounds);
+
+            t2 = TournamentMutations.RemoveRequestedBye(t2, name, pn, round: 2);
+            t2 = TournamentMutations.RemoveRequestedBye(t2, name, pn, round: 5);
+            await new SwissSysTournamentWriter().SaveAsync(tmp, t2);
+
+            var raw3 = await new SwissSysImporter().ImportAsync(tmp);
+            var t3 = SwissSysMapper.Map(raw3);
+            var p3 = t3.Sections.First(s => s.Name == name).Players.First(x => x.PairNumber == pn);
+            Assert.Empty(p3.RequestedByeRounds);
+        }
+        finally
+        {
+            if (System.IO.File.Exists(tmp)) System.IO.File.Delete(tmp);
+        }
+    }
+
+    [Fact]
     public async Task Writer_round_trips_zero_point_bye_rounds()
     {
         var src = TestPaths.SwissSysSample(ExtendedSample);

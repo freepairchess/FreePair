@@ -136,6 +136,20 @@ public class SwissSysTournamentWriter : ITournamentWriter
                 {
                     playerNode.Remove("FreePair zero-point bye rounds");
                 }
+
+                // Half-point requested byes round-trip via the native
+                // SwissSys "Reserved byes" string field (a single
+                // space-separated list of round numbers). Written on
+                // every save so in-session AddRequestedBye edits stick
+                // across file close / reopen. Keep the key even when
+                // empty: SwissSys tolerates an empty string and the
+                // field pre-exists in source files, so removing it
+                // could confuse the importer (which would then report a
+                // missing key rather than "no byes requested").
+                var halfRounds = player.RequestedByeRounds;
+                playerNode["Reserved byes"] = halfRounds.Count == 0
+                    ? string.Empty
+                    : string.Join(" ", halfRounds.OrderBy(r => r));
             }
 
             // Hard-delete propagation (per-player): any player node in
