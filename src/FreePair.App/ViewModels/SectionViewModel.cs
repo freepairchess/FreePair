@@ -54,6 +54,7 @@ public partial class PairingRow : ObservableObject
 {
     private readonly IScoreFormatter _formatter;
     private readonly Action<PairingRow, PairingResult>? _onResultChanged;
+    private readonly Action<PairingRow, int /*pair*/, ByeKind>? _onConvertToBye;
     private bool _suppressCallback;
 
     [ObservableProperty]
@@ -72,12 +73,14 @@ public partial class PairingRow : ObservableObject
         int blackRating,
         PairingResult initialResult,
         IScoreFormatter formatter,
-        Action<PairingRow, PairingResult>? onResultChanged)
+        Action<PairingRow, PairingResult>? onResultChanged,
+        Action<PairingRow, int, ByeKind>? onConvertToBye = null)
     {
         ArgumentNullException.ThrowIfNull(formatter);
 
         _formatter = formatter;
         _onResultChanged = onResultChanged;
+        _onConvertToBye = onConvertToBye;
 
         Board = board;
         WhitePair = whitePair;
@@ -111,9 +114,29 @@ public partial class PairingRow : ObservableObject
 
     public PairingResult Result => SelectedResult.Value;
 
+    /// <summary>
+    /// True while no result has been recorded. The convert-to-bye
+    /// icons are bound to this so completed games can't accidentally
+    /// have their pairing rewritten.
+    /// </summary>
+    public bool IsUnplayed => Result == PairingResult.Unplayed;
+
+    /// <summary>
+    /// Invoked by the view when the TD clicks one of the four
+    /// convert-to-bye buttons. <c>which</c> is the pair number that
+    /// receives the bye (the opponent always gets a full-point bye);
+    /// <c>kind</c> is <see cref="ByeKind.Half"/> or
+    /// <see cref="ByeKind.Unpaired"/>.
+    /// </summary>
+    public void RequestConvertToBye(int which, ByeKind kind)
+    {
+        _onConvertToBye?.Invoke(this, which, kind);
+    }
+
     partial void OnSelectedResultChanged(PairingResultOption value)
     {
         ResultText = value.Text;
+        OnPropertyChanged(nameof(IsUnplayed));
         if (!_suppressCallback)
         {
             _onResultChanged?.Invoke(this, value.Value);
@@ -702,6 +725,13 @@ public partial class SectionViewModel : ViewModelBase
     public Task RequestPlayerUnwithdrawAsync(int pairNumber) =>
         PlayerUnwithdrawRequested?.Invoke(this, pairNumber) ?? Task.CompletedTask;
 
+    /// <summary>
+    /// Raised when the TD clicks a convert-to-bye icon on a pairing
+    /// row. Parent VM runs a confirm prompt and invokes the matching
+    /// <c>TournamentMutations.ConvertPairingTo{Half,Zero}PointBye</c>.
+    /// </summary>
+    public event Action<SectionViewModel, int /*round*/, int /*pairToBye*/, ByeKind>? PairingConvertToByeRequested;
+
     private static PlayerRow BuildPlayerRowStatic(Player player, Section section, IScoreFormatter formatter)
     {
         string status;
@@ -782,7 +812,9 @@ public partial class SectionViewModel : ViewModelBase
             initialResult: p.Result,
             formatter: Formatter,
             onResultChanged: (row, newResult) =>
-                ResultChanged?.Invoke(this, roundNumber, row, newResult));
+                ResultChanged?.Invoke(this, roundNumber, row, newResult),
+            onConvertToBye: (row, which, kind) =>
+                PairingConvertToByeRequested?.Invoke(this, roundNumber, which, kind));
     }
 
     private ByeRow BuildByeRow(int round, ByeAssignment bye)

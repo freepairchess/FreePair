@@ -115,6 +115,26 @@ public partial class SectionView : UserControl
         }
     }
 
+    // ================================================================
+    // Convert-to-bye buttons on the Pairings grid
+    // ================================================================
+
+    private void OnConvertToHalfByeClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button { Tag: int pair, DataContext: ViewModels.PairingRow row })
+        {
+            row.RequestConvertToBye(pair, FreePair.Core.Tournaments.ByeKind.Half);
+        }
+    }
+
+    private void OnConvertToZeroByeClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button { Tag: int pair, DataContext: ViewModels.PairingRow row })
+        {
+            row.RequestConvertToBye(pair, FreePair.Core.Tournaments.ByeKind.Unpaired);
+        }
+    }
+
     private void OnClearPairingFilter(object? sender, RoutedEventArgs e)
     {
         if (DataContext is ViewModels.SectionViewModel vm) vm.PairingFilter = string.Empty;

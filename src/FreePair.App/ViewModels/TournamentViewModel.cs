@@ -452,6 +452,7 @@ public partial class TournamentViewModel : ViewModelBase
         vm.PlayerHardDeleteRequested += OnPlayerHardDeleteAsync;
         vm.PlayerWithdrawRequested   += OnPlayerWithdrawAsync;
         vm.PlayerUnwithdrawRequested += OnPlayerUnwithdrawAsync;
+        vm.PairingConvertToByeRequested += OnPairingConvertToBye;
     }
 
     private void DetachSectionEvents()
@@ -468,6 +469,9 @@ public partial class TournamentViewModel : ViewModelBase
             vm.PlayerSoftDeleteRequested -= OnPlayerSoftDeleteAsync;
             vm.PlayerUndeleteRequested   -= OnPlayerUndeleteAsync;
             vm.PlayerHardDeleteRequested -= OnPlayerHardDeleteAsync;
+            vm.PlayerWithdrawRequested   -= OnPlayerWithdrawAsync;
+            vm.PlayerUnwithdrawRequested -= OnPlayerUnwithdrawAsync;
+            vm.PairingConvertToByeRequested -= OnPairingConvertToBye;
         }
     }
 
@@ -761,6 +765,45 @@ public partial class TournamentViewModel : ViewModelBase
         catch (Exception ex)
         {
             ErrorMessage = $"Failed to return player from withdrawal: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async void OnPairingConvertToBye(
+        SectionViewModel section, int round, int pairToBye, ByeKind kind)
+    {
+        if (Tournament is null) return;
+
+        var player = section.Section.Players.FirstOrDefault(p => p.PairNumber == pairToBye);
+        var label  = player is null ? $"#{pairToBye}" : $"#{pairToBye} {player.Name}";
+        var kindLabel = kind == ByeKind.Half ? "half-point bye" : "zero-point bye";
+
+        if (PromptConfirmAsync is not null)
+        {
+            var confirmed = await PromptConfirmAsync(
+                $"Convert to {kindLabel}",
+                $"Convert pairing in round {round} of '{section.Name}' so {label} " +
+                $"receives a {kindLabel}?\n\n" +
+                $"The existing pairing will be removed and both players will get " +
+                $"bye entries in this round: {label} gets " +
+                $"{(kind == ByeKind.Half ? "0.5 points" : "0 points")}, their opponent " +
+                $"gets a full-point bye.",
+                $"Convert").ConfigureAwait(true);
+            if (!confirmed) return;
+        }
+
+        try
+        {
+            Tournament = kind == ByeKind.Half
+                ? TournamentMutations.ConvertPairingToHalfPointBye(Tournament, section.Name, round, pairToBye)
+                : TournamentMutations.ConvertPairingToZeroPointBye(Tournament, section.Name, round, pairToBye);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to convert pairing: {ex.Message}";
             return;
         }
 

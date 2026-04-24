@@ -524,6 +524,58 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellEditingTemplate>
                                     </DataGridTemplateColumn>
+
+                                    <!-- Convert-to-bye affordance. Four tiny
+                                         text buttons per pairing row, visible
+                                         only while the pairing has no result
+                                         yet (IsUnplayed). "½W" / "½B" grant
+                                         a half-point bye to White / Black;
+                                         "0W" / "0B" grant a zero-point bye.
+                                         In every case the bye target's
+                                         opponent gets a full-point bye. -->
+                                    <DataGridTemplateColumn Header="" Width="150" IsReadOnly="True">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate DataType="vm:PairingRow">
+                                                <StackPanel Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            Spacing="2"
+                                                            IsVisible="{Binding IsUnplayed}">
+                                                    <Button Classes="icon-btn"
+                                                            FontFamily="{x:Null}"
+                                                            FontSize="11"
+                                                            Foreground="#D68100"
+                                                            Content="½W"
+                                                            Tag="{Binding WhitePair}"
+                                                            Click="OnConvertToHalfByeClick"
+                                                            ToolTip.Tip="White gets a half-point bye; Black gets a full-point bye."/>
+                                                    <Button Classes="icon-btn"
+                                                            FontFamily="{x:Null}"
+                                                            FontSize="11"
+                                                            Foreground="#D68100"
+                                                            Content="½B"
+                                                            Tag="{Binding BlackPair}"
+                                                            Click="OnConvertToHalfByeClick"
+                                                            ToolTip.Tip="Black gets a half-point bye; White gets a full-point bye."/>
+                                                    <Button Classes="icon-btn"
+                                                            FontFamily="{x:Null}"
+                                                            FontSize="11"
+                                                            Foreground="#C62828"
+                                                            Content="0W"
+                                                            Tag="{Binding WhitePair}"
+                                                            Click="OnConvertToZeroByeClick"
+                                                            ToolTip.Tip="White gets a zero-point bye; Black gets a full-point bye."/>
+                                                    <Button Classes="icon-btn"
+                                                            FontFamily="{x:Null}"
+                                                            FontSize="11"
+                                                            Foreground="#C62828"
+                                                            Content="0B"
+                                                            Tag="{Binding BlackPair}"
+                                                            Click="OnConvertToZeroByeClick"
+                                                            ToolTip.Tip="Black gets a zero-point bye; White gets a full-point bye."/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
 
