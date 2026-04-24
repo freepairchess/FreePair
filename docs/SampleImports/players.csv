@@ -1,0 +1,7 @@
+Name,Rating,USCF ID,Club,State,Team,Email,Phone,Exp
+Alice Adams,1820,12345678,Seattle CC,WA,Knights,alice@example.com,206-555-0100,2030-06-30
+Bob Brown,1655,23456789,Portland Chess,OR,,bob@example.com,503-555-0101,2029-11-30
+Carol Chen,1900,34567890,Seattle CC,WA,Knights,carol@example.com,,2031-04-30
+"Dave ""Doc"" Daniels",1420,45678901,,CA,Rooks,dave@example.com,415-555-0102,2028-12-31
+Eve Edwards,1545,,Tacoma Chess,WA,,eve@example.com,,
+Frank Foster,unrated,67890123,,OR,Rooks,,,

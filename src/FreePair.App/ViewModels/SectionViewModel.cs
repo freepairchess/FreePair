@@ -780,6 +780,17 @@ public partial class SectionViewModel : ViewModelBase
     public Task RequestPlayerAddAsync() =>
         PlayerAddRequested?.Invoke(this) ?? Task.CompletedTask;
 
+    /// <summary>
+    /// Raised when the TD clicks "📥 Import…" on the Players tab.
+    /// Parent VM opens a file picker, parses the chosen
+    /// CSV/TSV/XLSX via <see cref="Importers.PlayerImport"/>, then
+    /// calls <see cref="TournamentMutations.AddPlayer"/> per row.
+    /// </summary>
+    public event Func<SectionViewModel, Task>? PlayerImportRequested;
+
+    public Task RequestPlayerImportAsync() =>
+        PlayerImportRequested?.Invoke(this) ?? Task.CompletedTask;
+
     private static PlayerRow BuildPlayerRowStatic(Player player, Section section, IScoreFormatter formatter)
     {
         string status;
