@@ -1087,7 +1087,6 @@ public static class TournamentMutations
 
     /// <summary>
     /// Adds a new empty section to <paramref name="tournament"/>. The
-    /// section starts with zero players, zero paired/played rounds,
     /// and no prizes — the TD populates it afterward via the usual
     /// Add-player / Set-prize mutations. <paramref name="name"/>
     /// must be unique within the tournament.
@@ -1138,6 +1137,43 @@ public static class TournamentMutations
         {
             Sections = tournament.Sections.Append(newSection).ToArray(),
         };
+    }
+
+    /// <summary>
+    /// Moves a section by <paramref name="delta"/> positions in the
+    /// tournament's section list. <paramref name="delta"/> is
+    /// clamped so the section stays within bounds: a no-op when the
+    /// target would land at the same index (already at top / bottom).
+    /// </summary>
+    /// <param name="delta">
+    /// Negative values move toward the top of the list
+    /// (<c>-1</c> = "move up one"); positive values move toward the
+    /// bottom. Typical UI bindings pass <c>-1</c> / <c>+1</c> from
+    /// up / down arrow icon clicks.
+    /// </param>
+    public static Tournament MoveSection(
+        Tournament tournament, string sectionName, int delta)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var sections = tournament.Sections.ToList();
+        var idx = sections.FindIndex(s =>
+            string.Equals(s.Name, sectionName, StringComparison.Ordinal));
+        if (idx < 0)
+        {
+            throw new InvalidOperationException(
+                $"Section '{sectionName}' not found in tournament.");
+        }
+
+        var newIdx = Math.Clamp(idx + delta, 0, sections.Count - 1);
+        if (newIdx == idx) return tournament;
+
+        var moved = sections[idx];
+        sections.RemoveAt(idx);
+        sections.Insert(newIdx, moved);
+
+        return tournament with { Sections = sections };
     }
 
     /// <summary>

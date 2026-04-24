@@ -31,6 +31,7 @@ public partial class TournamentView : UserControl
             vm.ShowSectionFormDialogAsync = ShowSectionFormDialogAsync;
             vm.ShowNewEventDialogAsync = ShowNewEventDialogAsync;
             vm.PickNewEventSavePathAsync = PickNewEventSavePathAsync;
+            vm.PickPlayerImportFileAsync = PickPlayerImportFileAsync;
         }
     }
 
@@ -211,6 +212,39 @@ public partial class TournamentView : UserControl
 
         var dialog = new NewEventDialog(vm);
         return await dialog.ShowDialog<NewEventViewModel?>(owner);
+    }
+
+    /// <summary>
+    /// Open-file picker scoped to roster formats we can import.
+    /// Returns the local path or null on cancel.
+    /// </summary>
+    private async Task<string?> PickPlayerImportFileAsync()
+    {
+        var topLevel = TopLevel.GetTopLevel(this);
+        if (topLevel is null)
+        {
+            return null;
+        }
+
+        var options = new FilePickerOpenOptions
+        {
+            Title = "Import players from...",
+            AllowMultiple = false,
+            FileTypeFilter = new[]
+            {
+                new FilePickerFileType("Roster files (CSV / TSV / Excel)")
+                {
+                    Patterns = new[] { "*.csv", "*.tsv", "*.txt", "*.xlsx" }
+                },
+                new FilePickerFileType("CSV (comma-separated)")  { Patterns = new[] { "*.csv" } },
+                new FilePickerFileType("TSV (tab-separated)")    { Patterns = new[] { "*.tsv", "*.txt" } },
+                new FilePickerFileType("Excel workbook")         { Patterns = new[] { "*.xlsx" } },
+                FilePickerFileTypes.All
+            }
+        };
+
+        var files = await topLevel.StorageProvider.OpenFilePickerAsync(options);
+        return files.Count == 0 ? null : files[0].TryGetLocalPath();
     }
 
     /// <summary>

@@ -142,7 +142,7 @@
                             CornerRadius="4"
                             Padding="8"
                             Margin="0,0,0,8">
-                        <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto">
+                        <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto,Auto">
                             <TextBlock Grid.Column="0"
                                        Text="Filter:"
                                        VerticalAlignment="Center"
@@ -170,6 +170,12 @@
                                     IsEnabled="{Binding IsLive}"
                                     ToolTip.Tip="Add a new player to this section. Late entries added after pairings have started can be granted a bye for each past round."/>
                             <Button Grid.Column="5"
+                                    Content="📥 Import..."
+                                    Click="OnImportPlayersClick"
+                                    Margin="6,0,0,0"
+                                    IsEnabled="{Binding IsLive}"
+                                    ToolTip.Tip="Import a player roster from a CSV / TSV / Excel file. Expected columns: Name, Rating, USCF ID, Club, State, Team, Email, Phone, Exp."/>
+                            <Button Grid.Column="6"
                                     Content="📄 Print as PDF"
                                     Click="OnPrintPlayersPdf"
                                     Margin="12,0,0,0"

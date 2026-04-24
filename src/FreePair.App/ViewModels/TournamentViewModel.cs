@@ -170,6 +170,13 @@ public partial class TournamentViewModel : ViewModelBase
     /// </summary>
     public Func<string /*suggestedName*/, Task<string?>>? PickNewEventSavePathAsync { get; set; }
 
+    /// <summary>
+    /// View-supplied callback that opens an open-file picker for
+    /// CSV / TSV / XLSX roster files. Returns the chosen local path
+    /// or null on cancel.
+    /// </summary>
+    public Func<Task<string?>>? PickPlayerImportFileAsync { get; set; }
+
     // ============ Online publishing (session-only, per-tournament) ============
 
     /// <summary>Sticky URL used by the Publish dialog. Seeded from <see cref="AppSettings.NaChessHubBaseUrl"/>.</summary>
@@ -604,6 +611,8 @@ public partial class TournamentViewModel : ViewModelBase
         vm.PlayerManageByesRequested += OnPlayerManageByesAsync;
         vm.PlayerEditRequested       += OnPlayerEditAsync;
         vm.PlayerAddRequested        += OnPlayerAddAsync;
+        vm.PlayerImportRequested     += OnPlayerImportAsync;
+        vm.MoveRequested             += OnSectionMoveAsync;
     }
 
     private void DetachSectionEvents()
@@ -625,6 +634,8 @@ public partial class TournamentViewModel : ViewModelBase
             vm.PlayerManageByesRequested -= OnPlayerManageByesAsync;
             vm.PlayerEditRequested -= OnPlayerEditAsync;
             vm.PlayerAddRequested -= OnPlayerAddAsync;
+            vm.PlayerImportRequested -= OnPlayerImportAsync;
+            vm.MoveRequested -= OnSectionMoveAsync;
         }
     }
 
@@ -780,6 +791,30 @@ public partial class TournamentViewModel : ViewModelBase
             ErrorMessage = $"Failed to delete section: {ex.Message}";
             return;
         }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnSectionMoveAsync(SectionViewModel section, int delta)
+    {
+        if (Tournament is null) return;
+        var name = section.Name;
+
+        try
+        {
+            Tournament = TournamentMutations.MoveSection(Tournament, name, delta);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to move section: {ex.Message}";
+            return;
+        }
+
+        // Re-select the moved section so the TD keeps working in the
+        // same context after the nav list rebuilds from the new domain
+        // order.
+        SelectedSection = Sections.FirstOrDefault(s => s.Name == name);
 
         await PersistCurrentTournamentAsync().ConfigureAwait(true);
     }
@@ -1050,6 +1085,78 @@ public partial class TournamentViewModel : ViewModelBase
             ErrorMessage = $"Failed to add player: {ex.Message}";
             return;
         }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnPlayerImportAsync(SectionViewModel section)
+    {
+        if (Tournament is null || PickPlayerImportFileAsync is null) return;
+
+        var path = await PickPlayerImportFileAsync().ConfigureAwait(true);
+        if (string.IsNullOrWhiteSpace(path)) return;
+
+        FreePair.Core.Importers.PlayerImportResult result;
+        try
+        {
+            result = FreePair.Core.Importers.PlayerImport.FromFile(path);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to read '{System.IO.Path.GetFileName(path)}': {ex.Message}";
+            return;
+        }
+
+        if (result.Players.Count == 0)
+        {
+            ErrorMessage = result.Warnings.Count > 0
+                ? $"No players imported. {string.Join(" ", result.Warnings)}"
+                : "No players imported.";
+            return;
+        }
+
+        var added = 0;
+        var failed = new System.Collections.Generic.List<string>();
+        foreach (var draft in result.Players)
+        {
+            try
+            {
+                Tournament = TournamentMutations.AddPlayer(
+                    Tournament!, section.Name,
+                    name: draft.Name,
+                    uscfId: draft.UscfId,
+                    rating: draft.Rating,
+                    secondaryRating: draft.SecondaryRating,
+                    membershipExpiration: draft.MembershipExpiration,
+                    club: draft.Club,
+                    state: draft.State,
+                    team: draft.Team,
+                    email: draft.Email,
+                    phone: draft.Phone);
+                added++;
+            }
+            catch (Exception ex)
+            {
+                failed.Add($"{draft.Name}: {ex.Message}");
+            }
+        }
+
+        // Summarize — short, actionable. Success + warning counts
+        // concatenated into the existing ErrorMessage banner.
+        var bits = new System.Collections.Generic.List<string>
+        {
+            $"Imported {added} player{(added == 1 ? "" : "s")} into '{section.Name}'.",
+        };
+        if (failed.Count > 0)
+        {
+            bits.Add($"{failed.Count} row(s) failed: {string.Join("; ", failed.Take(3))}" +
+                     (failed.Count > 3 ? "; …" : string.Empty));
+        }
+        if (result.Warnings.Count > 0)
+        {
+            bits.Add(string.Join(" ", result.Warnings));
+        }
+        ErrorMessage = string.Join(" ", bits);
 
         await PersistCurrentTournamentAsync().ConfigureAwait(true);
     }
