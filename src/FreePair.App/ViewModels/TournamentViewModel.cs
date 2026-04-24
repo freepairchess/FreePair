@@ -168,7 +168,7 @@ public partial class TournamentViewModel : ViewModelBase
     /// <c>.sjson</c> file type and returns the chosen path (or null
     /// on cancel). Used by the New-event flow.
     /// </summary>
-    public Func<string /*suggestedName*/, Task<string?>>? PickNewEventSavePathAsync { get; set; }
+    public Func<string /*suggestedFolder*/, string /*suggestedName*/, Task<string?>>? PickNewEventSavePathAsync { get; set; }
 
     /// <summary>
     /// View-supplied callback that opens an open-file picker for
@@ -468,12 +468,18 @@ public partial class TournamentViewModel : ViewModelBase
             return;
         }
 
-        // Suggest a filename derived from the title (sanitized).
-        var safeTitle = string.Concat(result.EventTitle
-            .Trim()
-            .Where(c => !System.IO.Path.GetInvalidFileNameChars().Contains(c)));
-        var suggested = string.IsNullOrWhiteSpace(safeTitle) ? "New tournament.sjson" : $"{safeTitle}.sjson";
-        var path = await PickNewEventSavePathAsync(suggested).ConfigureAwait(true);
+        // Suggest a filename + target folder based on the title and
+        // the TD's configured TournamentsRootFolder. Default layout:
+        // {root}/{sanitized title}/{sanitized title}.sjson — one
+        // folder per event with the .sjson + any exported PDFs all
+        // living together. The per-event folder is mkdir'd so the
+        // native save dialog opens right inside it.
+        var settings = await _settingsService.LoadAsync().ConfigureAwait(true);
+        var root = FreePair.Core.Tournaments.TournamentFolder.ResolveRoot(settings);
+        var safeTitle = FreePair.Core.Tournaments.TournamentFolder.SanitizeForFileName(result.EventTitle);
+        var eventFolder = FreePair.Core.Tournaments.TournamentFolder.EnsureEventFolder(root, result.EventTitle);
+        var suggested = $"{safeTitle}.sjson";
+        var path = await PickNewEventSavePathAsync(eventFolder, suggested).ConfigureAwait(true);
         if (string.IsNullOrWhiteSpace(path)) return;
 
         // Build the tournament. Only the title is seeded; every

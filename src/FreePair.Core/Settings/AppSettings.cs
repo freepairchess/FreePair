@@ -46,4 +46,19 @@ public class AppSettings
     /// "auto-publish results" enabled.
     /// </summary>
     public bool AutoPublishResultsDefault { get; set; }
+
+    // ============ File-system layout ============
+
+    /// <summary>
+    /// Root folder under which FreePair creates per-event subfolders
+    /// (one per tournament). The <c>.sjson</c> + exported PDFs for a
+    /// given event all live in the same folder so the TD can share or
+    /// back up the whole event as a single directory.
+    /// </summary>
+    /// <remarks>
+    /// When <c>null</c> or blank, the resolver falls back to the
+    /// built-in default <c>Documents/FreePairEvents</c> — see
+    /// <see cref="Tournaments.TournamentFolder"/>.
+    /// </remarks>
+    public string? TournamentsRootFolder { get; set; }
 }

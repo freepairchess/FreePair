@@ -251,7 +251,7 @@ public partial class TournamentView : UserControl
     /// Save-file picker scoped to <c>.sjson</c> for the New-event
     /// flow. Returns the local path or null on cancel.
     /// </summary>
-    private async Task<string?> PickNewEventSavePathAsync(string suggestedName)
+    private async Task<string?> PickNewEventSavePathAsync(string suggestedFolder, string suggestedName)
     {
         var topLevel = TopLevel.GetTopLevel(this);
         if (topLevel is null)
@@ -259,10 +259,25 @@ public partial class TournamentView : UserControl
             return null;
         }
 
+        IStorageFolder? startFolder = null;
+        if (!string.IsNullOrWhiteSpace(suggestedFolder))
+        {
+            try
+            {
+                startFolder = await topLevel.StorageProvider.TryGetFolderFromPathAsync(suggestedFolder);
+            }
+            catch
+            {
+                // Folder may not exist yet on some platforms; fall
+                // back to the OS default start location silently.
+            }
+        }
+
         var options = new FilePickerSaveOptions
         {
             Title = "Save new tournament as",
             SuggestedFileName = suggestedName,
+            SuggestedStartLocation = startFolder,
             DefaultExtension = "sjson",
             FileTypeChoices = new[]
             {
