@@ -250,16 +250,18 @@ public static class PdfReportBuilder
         {
             tbl.ColumnsDefinition(c =>
             {
-                c.ConstantColumn(35);  // Pair
-                c.ConstantColumn(70);  // USCF
+                c.ConstantColumn(35);   // Pair
+                c.ConstantColumn(70);   // USCF
                 c.RelativeColumn(2.5f); // Name
-                c.ConstantColumn(45);  // Rating
+                c.ConstantColumn(45);   // Rating
                 c.RelativeColumn(1f);   // Club
-                c.ConstantColumn(35);  // State
+                c.ConstantColumn(35);   // State
                 c.RelativeColumn(1f);   // Team
                 c.RelativeColumn(2f);   // Email
                 c.RelativeColumn(1.2f); // Phone
-                c.ConstantColumn(40);  // Score
+                c.ConstantColumn(40);   // Score
+                c.ConstantColumn(55);   // ½-pt byes
+                c.ConstantColumn(55);   // 0-pt byes
             });
 
             tbl.Header(h =>
@@ -274,6 +276,8 @@ public static class PdfReportBuilder
                 HeaderCell(h, "Email");
                 HeaderCell(h, "Phone");
                 HeaderCell(h, "Score");
+                HeaderCell(h, "½-pt byes");
+                HeaderCell(h, "0-pt byes");
             });
 
             foreach (var p in s.Players.OrderBy(x => x.PairNumber))
@@ -288,6 +292,12 @@ public static class PdfReportBuilder
                 BodyCell(tbl, p.Email);
                 BodyCell(tbl, p.Phone);
                 BodyCell(tbl, p.Score.ToString("0.##"));
+                BodyCell(tbl, p.RequestedByeRounds.Count == 0
+                    ? null
+                    : string.Join(", ", p.RequestedByeRounds.OrderBy(r => r)));
+                BodyCell(tbl, p.ZeroPointByeRoundsOrEmpty.Count == 0
+                    ? null
+                    : string.Join(", ", p.ZeroPointByeRoundsOrEmpty.OrderBy(r => r)));
             }
         });
     }
@@ -360,7 +370,13 @@ public static class PdfReportBuilder
                         byPair.TryGetValue(b.PlayerPair, out var pl);
                         BodyCell(tbl, b.PlayerPair.ToString());
                         BodyCell(tbl, pl?.Name ?? string.Empty);
-                        BodyCell(tbl, b.Kind == ByeKind.Full ? "Full (1)" : "Half (½)");
+                        BodyCell(tbl, b.Kind switch
+                        {
+                            ByeKind.Full     => "Full (1)",
+                            ByeKind.Half     => "Half (½)",
+                            ByeKind.Unpaired => "Zero (0)",
+                            _                => b.Kind.ToString(),
+                        });
                     }
                 });
             }

@@ -354,6 +354,23 @@
                                                 Binding="{Binding ScoreText}"
                                                 SortMemberPath="Score"
                                                 Width="70"/>
+                            <!-- Player-requested byes, split into two
+                                 columns so the TD can spot each kind
+                                 at a glance. These are TD-granted
+                                 per-round requests (SwissSys "Reserved
+                                 byes" + FreePair "zero-point bye rounds")
+                                 — not the full-point byes BBP hands out
+                                 when a section has an odd count. Values
+                                 are comma-separated round numbers; empty
+                                 cell means no request of that kind. -->
+                            <DataGridTextColumn Header="½-pt byes"
+                                                Binding="{Binding HalfByeRounds}"
+                                                SortMemberPath="HalfByeRounds"
+                                                Width="90"/>
+                            <DataGridTextColumn Header="0-pt byes"
+                                                Binding="{Binding ZeroByeRounds}"
+                                                SortMemberPath="ZeroByeRounds"
+                                                Width="90"/>
                             <DataGridTextColumn Header="Status"
                                                 Binding="{Binding Status}"
                                                 SortMemberPath="Status"
@@ -809,15 +826,30 @@
 
                             <StackPanel Spacing="4">
                                 <TextBlock Text="Players with requested (future) byes" FontWeight="SemiBold"/>
+                                <!-- Split row: ½-pt rounds shown in
+                                     dark blue, 0-pt rounds in dark red
+                                     so the two kinds can be spotted
+                                     at a glance. Row hides if the
+                                     player has neither. -->
                                 <ItemsControl ItemsSource="{Binding Players}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate DataType="vm:PlayerRow">
                                             <Border Classes="row"
                                                     IsVisible="{Binding RequestedByes, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                                                <Grid ColumnDefinitions="60,*,120">
+                                                <Grid ColumnDefinitions="60,*,Auto,Auto">
                                                     <TextBlock Grid.Column="0" Classes="cell" Text="{Binding PairNumber}"/>
                                                     <TextBlock Grid.Column="1" Classes="cell" Text="{Binding Name}"/>
-                                                    <TextBlock Grid.Column="2" Classes="cell" Text="{Binding RequestedByes}" Foreground="DarkBlue"/>
+                                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4"
+                                                                Margin="0,0,16,0"
+                                                                IsVisible="{Binding HalfByeRounds, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                                        <TextBlock Classes="cell" Text="½-pt:" Foreground="Gray" FontSize="11"/>
+                                                        <TextBlock Classes="cell" Text="{Binding HalfByeRounds}" Foreground="DarkBlue"/>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="4"
+                                                                IsVisible="{Binding ZeroByeRounds, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                                        <TextBlock Classes="cell" Text="0-pt:" Foreground="Gray" FontSize="11"/>
+                                                        <TextBlock Classes="cell" Text="{Binding ZeroByeRounds}" Foreground="DarkRed"/>
+                                                    </StackPanel>
                                                 </Grid>
                                             </Border>
                                         </DataTemplate>

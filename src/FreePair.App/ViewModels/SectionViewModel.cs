@@ -27,6 +27,10 @@ public sealed record PlayerRow(
     string ScoreText,
     string Status,
     string? RequestedByes,
+    /// <summary>Half-point bye rounds only, e.g. <c>"2, 5"</c>. Null if none.</summary>
+    string? HalfByeRounds,
+    /// <summary>Zero-point bye rounds only, e.g. <c>"3, 4"</c>. Null if none.</summary>
+    string? ZeroByeRounds,
     string? Email,
     string? Phone,
     /// <summary>True when the player is soft-deleted (pre-round-1 only).</summary>
@@ -753,6 +757,17 @@ public partial class SectionViewModel : ViewModelBase
         byeParts.Sort(); // simple lexical sort; round numbers are single-digit for typical events
         var requestedByes = byeParts.Count == 0 ? null : string.Join(", ", byeParts);
 
+        // Separate display strings, one per kind, for the new
+        // dedicated columns on the Players tab. Each is a simple
+        // comma-separated list of round numbers; null when empty so
+        // DataGrid sorting groups empty cells consistently.
+        var halfByeRounds = player.RequestedByeRounds.Count == 0
+            ? null
+            : string.Join(", ", player.RequestedByeRounds.OrderBy(r => r));
+        var zeroByeRounds = player.ZeroPointByeRoundsOrEmpty.Count == 0
+            ? null
+            : string.Join(", ", player.ZeroPointByeRoundsOrEmpty.OrderBy(r => r));
+
         // Delete / undelete icon visibility. Soft / hard are gated on
         // section.RoundsPaired == 0 (post-round-1 the TD must withdraw
         // instead); the mutations layer enforces the same guard so the
@@ -779,6 +794,8 @@ public partial class SectionViewModel : ViewModelBase
             ScoreText: formatter.Score(player.Score),
             Status: status,
             RequestedByes: requestedByes,
+            HalfByeRounds: halfByeRounds,
+            ZeroByeRounds: zeroByeRounds,
             Email: player.Email,
             Phone: player.Phone,
             IsSoftDeleted: player.SoftDeleted,
@@ -836,7 +853,7 @@ public partial class SectionViewModel : ViewModelBase
     {
         ByeKind.Full => "Full-point bye",
         ByeKind.Half => "Half-point bye",
-        ByeKind.Unpaired => "Unpaired",
+        ByeKind.Unpaired => "Zero-point bye",
         _ => kind.ToString(),
     };
 }
