@@ -46,34 +46,47 @@
                            IsVisible="{Binding IsSaving}"/>
             </StackPanel>
 
-            <!-- Persistent "last published" row, sitting below the main
-                 toolbar so a long file path never shoves it off-screen.
-                 Visible only after a successful publish (both URL and
-                 timestamp set atomically; both cleared on every new
-                 attempt). The 'NA Chess Hub' span is a button styled as
-                 an inline hyperlink that opens the hub's EventFiles
-                 page for this tournament. -->
+            <!-- Persistent "last saved" + "last published" row, sitting
+                 below the main toolbar so a long file path never shoves
+                 it off-screen. The "last saved" span is seeded from the
+                 file's on-disk mtime on open, then updated after every
+                 in-session save. The "last published" span is
+                 independent: visible only after a successful publish
+                 attempt (HasLastPublishedUrl flips true); its 'NA Chess
+                 Hub' word is a hyperlink into the hub's EventFiles
+                 page. Both timestamps use yyyy-MM-dd HH:mm:ss local so
+                 the date is always visible alongside the time. -->
             <StackPanel Orientation="Horizontal"
                         VerticalAlignment="Center"
-                        Spacing="0"
-                        Margin="0,2,0,0"
-                        IsVisible="{Binding HasLastPublishedUrl}">
-                <TextBlock Text="last published to " Foreground="Gray" FontSize="11" VerticalAlignment="Center"/>
-                <Button Content="NA Chess Hub"
-                        Tag="{Binding LastPublishedUrl}"
-                        Click="OnOpenPublishedUrl"
-                        Foreground="#0E5DAA"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Padding="0"
-                        FontSize="11"
-                        VerticalAlignment="Center"
-                        ToolTip.Tip="{Binding LastPublishedUrl}"/>
-                <TextBlock Text=" at " Foreground="Gray" FontSize="11" VerticalAlignment="Center"/>
-                <TextBlock Text="{Binding LastPublishedAtDisplay}"
-                           Foreground="Gray"
-                           FontSize="11"
-                           VerticalAlignment="Center"/>
+                        Spacing="12"
+                        Margin="0,2,0,0">
+                <StackPanel Orientation="Horizontal" Spacing="0"
+                            IsVisible="{Binding HasLastSavedAt}">
+                    <TextBlock Text="last saved at " Foreground="Gray" FontSize="11" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding LastSavedAtDisplay}"
+                               Foreground="Gray" FontSize="11" VerticalAlignment="Center"/>
+                </StackPanel>
+                <TextBlock Text="·" Foreground="Gray" FontSize="11" VerticalAlignment="Center"
+                           IsVisible="{Binding HasLastPublishedUrl}"/>
+                <StackPanel Orientation="Horizontal" Spacing="0"
+                            IsVisible="{Binding HasLastPublishedUrl}">
+                    <TextBlock Text="last published to " Foreground="Gray" FontSize="11" VerticalAlignment="Center"/>
+                    <Button Content="NA Chess Hub"
+                            Tag="{Binding LastPublishedUrl}"
+                            Click="OnOpenPublishedUrl"
+                            Foreground="#0E5DAA"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Padding="0"
+                            FontSize="11"
+                            VerticalAlignment="Center"
+                            ToolTip.Tip="{Binding LastPublishedUrl}"/>
+                    <TextBlock Text=" at " Foreground="Gray" FontSize="11" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding LastPublishedAtDisplay}"
+                               Foreground="Gray"
+                               FontSize="11"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
             </StackPanel>
 
             <TextBlock Text="Loading..."
@@ -137,12 +150,12 @@
                                        IsVisible="{Binding Tournament.LocationSummary, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
                             <TextBlock Foreground="Gray" FontSize="11">
                                 <Run Text="Time control: "/>
-                                <Run Text="{Binding Tournament.TimeControl}"/>
+                                <Run Text="{Binding Tournament.TimeControl, TargetNullValue='', FallbackValue=''}"/>
                             </TextBlock>
                             <TextBlock Foreground="Gray" FontSize="11">
-                                <Run Text="{Binding Tournament.StartDate}"/>
+                                <Run Text="{Binding Tournament.StartDate, TargetNullValue='', FallbackValue=''}"/>
                                 <Run Text=" — "/>
-                                <Run Text="{Binding Tournament.EndDate}"/>
+                                <Run Text="{Binding Tournament.EndDate, TargetNullValue='', FallbackValue=''}"/>
                             </TextBlock>
                             <TextBlock Text="⚙ Click to edit"
                                        Foreground="#0E5DAA"

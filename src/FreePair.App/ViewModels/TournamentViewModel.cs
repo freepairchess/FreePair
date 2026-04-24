@@ -169,12 +169,31 @@ public partial class TournamentViewModel : ViewModelBase
     private DateTimeOffset? _lastPublishedAt;
 
     /// <summary>
-    /// Short local-time rendering of <see cref="LastPublishedAt"/> for
-    /// the toolbar label (e.g. <c>"15:42:03"</c>). Empty when the
-    /// timestamp is null so the binding renders nothing.
+    /// Short local-time rendering of <see cref="LastPublishedAt"/>
+    /// for the toolbar label (e.g. <c>"2026-04-23 15:42:03"</c>).
+    /// Empty when the timestamp is null so the binding renders
+    /// nothing.
     /// </summary>
     public string LastPublishedAtDisplay =>
-        LastPublishedAt is { } ts ? ts.ToLocalTime().ToString("HH:mm:ss") : "";
+        LastPublishedAt is { } ts ? ts.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss") : "";
+
+    /// <summary>
+    /// Wall-clock timestamp of the most recent successful save of
+    /// the current tournament (auto-save after a mutation, or the
+    /// writer-backed save that stamps the publish timestamp). Seeded
+    /// from the file's on-disk last-write time when a tournament is
+    /// opened, so the toolbar "last saved at …" label appears
+    /// immediately without requiring a fresh save.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(LastSavedAtDisplay))]
+    [NotifyPropertyChangedFor(nameof(HasLastSavedAt))]
+    private DateTimeOffset? _lastSavedAt;
+
+    public bool HasLastSavedAt => LastSavedAt is not null;
+
+    public string LastSavedAtDisplay =>
+        LastSavedAt is { } ts ? ts.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss") : "";
 
     /// <summary>
     /// Flag set by <see cref="OnSectionResultChanged"/> /
@@ -387,6 +406,9 @@ public partial class TournamentViewModel : ViewModelBase
         Tournament = null;
         CurrentFilePath = null;
         ErrorMessage = null;
+        LastSavedAt = null;
+        LastPublishedAt = null;
+        LastPublishedUrl = null;
     }
 
     [RelayCommand]
@@ -747,6 +769,7 @@ public partial class TournamentViewModel : ViewModelBase
         {
             SaveStatus = "Saving...";
             await _writer.SaveAsync(CurrentFilePath, Tournament).ConfigureAwait(true);
+            LastSavedAt = DateTimeOffset.Now;
             SaveStatus = null;
         }
         catch (Exception ex)
@@ -885,6 +908,7 @@ public partial class TournamentViewModel : ViewModelBase
             try
             {
                 await _writer.SaveAsync(CurrentFilePath!, Tournament).ConfigureAwait(true);
+                LastSavedAt = DateTimeOffset.Now;
             }
             finally
             {
@@ -998,6 +1022,20 @@ public partial class TournamentViewModel : ViewModelBase
             {
                 LastPublishedAt  = null;
                 LastPublishedUrl = null;
+            }
+
+            // Seed the "last saved at…" label from the file's on-disk
+            // last-write time so the TD sees a sensible value right
+            // away — before they've triggered any auto-save. Any
+            // subsequent in-session save overwrites this with the
+            // wall-clock time of that save.
+            try
+            {
+                LastSavedAt = new DateTimeOffset(File.GetLastWriteTime(filePath));
+            }
+            catch
+            {
+                LastSavedAt = null;
             }
 
             await PersistLastPathAsync(filePath).ConfigureAwait(true);

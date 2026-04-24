@@ -430,7 +430,7 @@
                                       CanUserSortColumns="True"
                                       CanUserResizeColumns="True"
                                       CanUserReorderColumns="True"
-                                      IsReadOnly="True"
+                                      IsReadOnly="False"
                                       IsEnabled="{Binding IsLive}"
                                       GridLinesVisibility="Horizontal"
                                       HeadersVisibility="Column"
@@ -438,21 +438,36 @@
                                       AutoGenerateColumns="False"
                                       HorizontalScrollBarVisibility="Auto">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Bd"       Binding="{Binding Board}"       SortMemberPath="Board"       Width="50"/>
-                                    <DataGridTextColumn Header="White #"  Binding="{Binding WhitePair}"   SortMemberPath="WhitePair"   Width="70"/>
-                                    <DataGridTextColumn Header="White"    Binding="{Binding WhiteName}"   SortMemberPath="WhiteName"   Width="*" MinWidth="140"/>
-                                    <DataGridTextColumn Header="Rtg"      Binding="{Binding WhiteRating}" SortMemberPath="WhiteRating" Width="70"/>
-                                    <DataGridTextColumn Header="Black #"  Binding="{Binding BlackPair}"   SortMemberPath="BlackPair"   Width="70"/>
-                                    <DataGridTextColumn Header="Black"    Binding="{Binding BlackName}"   SortMemberPath="BlackName"   Width="*" MinWidth="140"/>
-                                    <DataGridTextColumn Header="Rtg"      Binding="{Binding BlackRating}" SortMemberPath="BlackRating" Width="70"/>
+                                    <DataGridTextColumn Header="Bd"       Binding="{Binding Board}"       SortMemberPath="Board"       Width="50"  IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="White #"  Binding="{Binding WhitePair}"   SortMemberPath="WhitePair"   Width="70"  IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="White"    Binding="{Binding WhiteName}"   SortMemberPath="WhiteName"   Width="*"   MinWidth="140" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Rtg"      Binding="{Binding WhiteRating}" SortMemberPath="WhiteRating" Width="70"  IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Black #"  Binding="{Binding BlackPair}"   SortMemberPath="BlackPair"   Width="70"  IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Black"    Binding="{Binding BlackName}"   SortMemberPath="BlackName"   Width="*"   MinWidth="140" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Rtg"      Binding="{Binding BlackRating}" SortMemberPath="BlackRating" Width="70"  IsReadOnly="True"/>
+                                    <!-- Result column: a plain TextBlock for the display state
+                                         and a ComboBox only in the editing state. Keeping the
+                                         ComboBox out of the default cell template avoids a
+                                         known Avalonia 12 Win32 popup-attach NullReferenceException
+                                         that reproduces when the cell's popup is re-attached
+                                         after the DataGrid recycles its rows (e.g. on filter
+                                         change or after a result-entry mutation rebuilds the
+                                         section VM). -->
                                     <DataGridTemplateColumn Header="Result" SortMemberPath="ResultText" Width="140">
                                         <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate DataType="vm:PairingRow">
+                                                <TextBlock Text="{Binding ResultText}"
+                                                           VerticalAlignment="Center"
+                                                           Padding="8,0,0,0"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate DataType="vm:PairingRow">
                                                 <ComboBox ItemsSource="{Binding AvailableResults}"
                                                           SelectedItem="{Binding SelectedResult}"
                                                           Margin="4,2" MinWidth="120"/>
                                             </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
