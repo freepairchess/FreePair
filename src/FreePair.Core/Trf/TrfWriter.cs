@@ -67,8 +67,23 @@ public static class TrfWriter
                 .SelectMany(f => new[] { f.WhitePair, f.BlackPair }))
             : new HashSet<int>();
 
+        // Players pre-flagged for a zero-point bye in the upcoming
+        // round are also kept out of BBP's pool. Unlike half-point
+        // byes (which stay in the TRF with an H cell so BBP sees the
+        // resolution and skips pairing them), zero-point byes don't
+        // need a special cell — we just exclude them and stamp
+        // ZeroPointBye into their history in AppendRound.
+        var zeroByeThisRound = pairingRound is int zr
+            ? new HashSet<int>(section.Players
+                .Where(p => p.ZeroPointByeRoundsOrEmpty.Contains(zr))
+                .Select(p => p.PairNumber))
+            : new HashSet<int>();
+
         var activePlayers = section.Players
-            .Where(p => !p.Withdrawn && !p.SoftDeleted && !forcedThisRound.Contains(p.PairNumber))
+            .Where(p => !p.Withdrawn
+                     && !p.SoftDeleted
+                     && !forcedThisRound.Contains(p.PairNumber)
+                     && !zeroByeThisRound.Contains(p.PairNumber))
             .ToArray();
 
         WriteHeader(tournament, section, writer, activePlayers.Length);

@@ -66,4 +66,13 @@ public sealed class RawPlayer
     /// </summary>
     [JsonPropertyName("FreePair soft deleted")]
     public bool? FreePairSoftDeleted { get; set; }
+
+    /// <summary>
+    /// Round numbers where the TD has granted a zero-point bye to
+    /// this player. SwissSys's native "Reserved byes" field is
+    /// half-point only; this sibling key carries the new zero-point
+    /// kind. Absent / null means no zero-point bye requests.
+    /// </summary>
+    [JsonPropertyName("FreePair zero-point bye rounds")]
+    public List<int>? FreePairZeroPointByeRounds { get; set; }
 }

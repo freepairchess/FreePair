@@ -171,8 +171,11 @@ public static class TournamentMutations
             .Select(pair => new ByeAssignment(pair, ByeKind.Full));
         var halfByeAssignments = pairings.HalfPointByes
             .Select(pair => new ByeAssignment(pair, ByeKind.Half));
+        var zeroByeAssignments = pairings.ZeroPointByes
+            .Select(pair => new ByeAssignment(pair, ByeKind.Unpaired));
         var byeAssignments = fullByeAssignments
             .Concat(halfByeAssignments)
+            .Concat(zeroByeAssignments)
             .ToArray();
 
         var newRound = new Round(newRoundNumber, boardPairings, byeAssignments);
@@ -186,11 +189,12 @@ public static class TournamentMutations
         }
         var fullByeSet = new HashSet<int>(pairings.ByePlayerPairs);
         var halfByeSet = new HashSet<int>(pairings.HalfPointByes);
+        var zeroByeSet = new HashSet<int>(pairings.ZeroPointByes);
 
         var updatedPlayers = section.Players
             .Select(p => p.Withdrawn
                 ? p                                  // session-withdrawn → leave history at its current length
-                : AppendHistoryEntry(p, pairingByPlayer, fullByeSet, halfByeSet))
+                : AppendHistoryEntry(p, pairingByPlayer, fullByeSet, halfByeSet, zeroByeSet))
             .ToArray();
 
         var updatedSection = section with
@@ -926,6 +930,111 @@ public static class TournamentMutations
         return ReplaceSection(tournament, sectionName, updatedSection);
     }
 
+    /// <summary>
+    /// Adds a requested bye for <paramref name="pairNumber"/> at
+    /// <paramref name="round"/>. Routes to
+    /// <see cref="Player.RequestedByeRounds"/> when <paramref name="kind"/>
+    /// is <see cref="ByeKind.Half"/> (SwissSys's native half-point
+    /// request) or <see cref="Player.ZeroPointByeRounds"/> when
+    /// <see cref="ByeKind.Unpaired"/>. When BBP pairs a round that
+    /// matches the request, the player is excluded from active
+    /// pairing and receives a half- or zero-point bye in their
+    /// history. No-op if the round is already on the matching list;
+    /// flips lists if the opposite kind was previously requested for
+    /// the same round.
+    /// </summary>
+    /// <exception cref="ArgumentException">
+    /// <paramref name="kind"/> is neither <see cref="ByeKind.Half"/>
+    /// nor <see cref="ByeKind.Unpaired"/>.
+    /// </exception>
+    /// <exception cref="InvalidOperationException">
+    /// The section or player does not exist, or the round number
+    /// refers to a round that has already been played.
+    /// </exception>
+    public static Tournament AddRequestedBye(
+        Tournament tournament,
+        string sectionName,
+        int pairNumber,
+        int round,
+        ByeKind kind)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+        if (round < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(round), "Round is 1-based.");
+        }
+        if (kind is not (ByeKind.Half or ByeKind.Unpaired))
+        {
+            throw new ArgumentException(
+                $"AddRequestedBye supports ByeKind.Half and ByeKind.Unpaired only (got {kind}).",
+                nameof(kind));
+        }
+
+        var section = FindSection(tournament, sectionName);
+        if (round <= section.RoundsPlayed)
+        {
+            throw new InvalidOperationException(
+                $"Round {round} has already been played; " +
+                $"convert the pairing directly via ConvertPairingTo{kind}PointBye instead.");
+        }
+
+        var player = FindPlayer(section, pairNumber);
+        var half = player.RequestedByeRounds.ToList();
+        var zero = player.ZeroPointByeRoundsOrEmpty.ToList();
+        // Keep the two lists mutually exclusive per round — flipping
+        // kinds should move the entry, not duplicate it.
+        half.Remove(round);
+        zero.Remove(round);
+        if (kind == ByeKind.Half)
+        {
+            half.Add(round);
+            half.Sort();
+        }
+        else
+        {
+            zero.Add(round);
+            zero.Sort();
+        }
+
+        var updated = player with
+        {
+            RequestedByeRounds = half.ToArray(),
+            ZeroPointByeRounds = zero.ToArray(),
+        };
+        return ReplacePlayer(tournament, section, updated);
+    }
+
+    /// <summary>
+    /// Removes any requested bye (half- or zero-point) for
+    /// <paramref name="pairNumber"/> at <paramref name="round"/>.
+    /// No-op if neither list contains the round.
+    /// </summary>
+    public static Tournament RemoveRequestedBye(
+        Tournament tournament,
+        string sectionName,
+        int pairNumber,
+        int round)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        var player = FindPlayer(section, pairNumber);
+
+        var half = player.RequestedByeRounds.ToList();
+        var zero = player.ZeroPointByeRoundsOrEmpty.ToList();
+        var changed = half.Remove(round) | zero.Remove(round);
+        if (!changed) return tournament;
+
+        var updated = player with
+        {
+            RequestedByeRounds = half.ToArray(),
+            ZeroPointByeRounds = zero.ToArray(),
+        };
+        return ReplacePlayer(tournament, section, updated);
+    }
+
     // ================================================================
     // Helpers
     // ================================================================
@@ -1067,7 +1176,8 @@ public static class TournamentMutations
         Player player,
         IReadOnlyDictionary<int, (int Opponent, PlayerColor Color, int Board)> pairingByPlayer,
         IReadOnlySet<int> fullByeSet,
-        IReadOnlySet<int> halfByeSet)
+        IReadOnlySet<int> halfByeSet,
+        IReadOnlySet<int> zeroByeSet)
     {
         RoundResult entry;
         if (pairingByPlayer.TryGetValue(player.PairNumber, out var info))
@@ -1108,6 +1218,20 @@ public static class TournamentMutations
                 Logic1: 0,
                 Logic2: 0,
                 GamePoints: 0.5m);
+        }
+        else if (zeroByeSet.Contains(player.PairNumber))
+        {
+            // Requested / TD-granted zero-point bye (SwissSys 'U'):
+            // player was filtered out of BBP input entirely for this
+            // round and received no points.
+            entry = new RoundResult(
+                Kind: RoundResultKind.ZeroPointBye,
+                Opponent: 0,
+                Color: PlayerColor.None,
+                Board: 0,
+                Logic1: 0,
+                Logic2: 0,
+                GamePoints: 0m);
         }
         else
         {

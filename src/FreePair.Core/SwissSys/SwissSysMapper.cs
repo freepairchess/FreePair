@@ -152,7 +152,8 @@ public static class SwissSysMapper
             History: history,
             Email: raw.Email,
             Phone: raw.Phone,
-            SoftDeleted: raw.FreePairSoftDeleted ?? false);
+            SoftDeleted: raw.FreePairSoftDeleted ?? false,
+            ZeroPointByeRounds: raw.FreePairZeroPointByeRounds?.ToArray());
     }
 
     internal static Team MapTeam(RawTeam raw)

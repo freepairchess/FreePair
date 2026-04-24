@@ -117,6 +117,25 @@ public class SwissSysTournamentWriter : ITournamentWriter
                 {
                     playerNode.Remove("FreePair soft deleted");
                 }
+
+                // FreePair-specific zero-point bye request list. SwissSys
+                // only carries half-point byes in its native "Reserved
+                // byes" field; this key adds the zero-point sibling. Set
+                // / remove symmetrically so empty lists don't persist.
+                var zeroRounds = player.ZeroPointByeRoundsOrEmpty;
+                if (zeroRounds.Count > 0)
+                {
+                    var arr = new JsonArray();
+                    foreach (var n in zeroRounds)
+                    {
+                        arr.Add(JsonValue.Create(n));
+                    }
+                    playerNode["FreePair zero-point bye rounds"] = arr;
+                }
+                else
+                {
+                    playerNode.Remove("FreePair zero-point bye rounds");
+                }
             }
 
             // Hard-delete propagation (per-player): any player node in
