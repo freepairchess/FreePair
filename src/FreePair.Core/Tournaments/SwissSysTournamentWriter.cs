@@ -40,10 +40,26 @@ public class SwissSysTournamentWriter : ITournamentWriter
         ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
         ArgumentNullException.ThrowIfNull(tournament);
 
-        var json = await File.ReadAllTextAsync(filePath, cancellationToken).ConfigureAwait(false);
-
-        var root = JsonNode.Parse(json)
-            ?? throw new InvalidDataException($"File '{filePath}' is not valid JSON.");
+        // Load the existing file if present; otherwise seed a minimal
+        // SwissSys v11 scaffold in-memory. The new-file path supports
+        // the "create new event from scratch" TD flow — the TD picks
+        // a target path that doesn't yet exist, and SaveAsync writes a
+        // valid .sjson without needing a template file on disk.
+        JsonNode root;
+        if (File.Exists(filePath))
+        {
+            var json = await File.ReadAllTextAsync(filePath, cancellationToken).ConfigureAwait(false);
+            root = JsonNode.Parse(json)
+                ?? throw new InvalidDataException($"File '{filePath}' is not valid JSON.");
+        }
+        else
+        {
+            root = new JsonObject
+            {
+                ["Overview"] = new JsonObject(),
+                ["Sections"] = new JsonArray(),
+            };
+        }
 
         // ===== Overview / event-level metadata =====
         // Only keys whose domain value is non-null are patched. Null

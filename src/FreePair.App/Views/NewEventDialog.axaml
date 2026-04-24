@@ -1,0 +1,64 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:FreePair.App.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="340"
+        x:Class="FreePair.App.Views.NewEventDialog"
+        x:DataType="vm:NewEventViewModel"
+        Title="Create new event"
+        Width="480"
+        SizeToContent="Height"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+
+    <DockPanel Margin="20" LastChildFill="True">
+
+        <StackPanel DockPanel.Dock="Top" Spacing="4" Margin="0,0,0,12">
+            <TextBlock Text="Create new event" FontWeight="SemiBold" FontSize="14"/>
+            <TextBlock Foreground="Gray" FontSize="11" TextWrapping="Wrap"
+                       Text="Enter the event title and, optionally, a first section. You'll pick where to save the .sjson file after you click Create."/>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="8"
+                    Margin="0,16,0,0">
+            <TextBlock Foreground="DarkRed"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       MaxWidth="260"
+                       Text="{Binding ErrorMessage}"
+                       IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+            <Button Content="Cancel" Click="OnCancel" MinWidth="90" IsCancel="True"/>
+            <Button Content="Create" Click="OnConfirm" MinWidth="90" IsDefault="True" Classes="accent"/>
+        </StackPanel>
+
+        <Grid ColumnDefinitions="140,*"
+              RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
+              RowSpacing="10">
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Event title *" VerticalAlignment="Center" Foreground="DimGray"/>
+            <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding EventTitle}" Watermark="e.g. Spring Open 2026"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="First section" FontWeight="SemiBold" Margin="0,8,0,0"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Section name" VerticalAlignment="Center" Foreground="DimGray"/>
+            <TextBox  Grid.Row="2" Grid.Column="1" Text="{Binding FirstSectionName}" Watermark="blank = create no starter section"/>
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Kind" VerticalAlignment="Center" Foreground="DimGray"/>
+            <ComboBox Grid.Row="3" Grid.Column="1"
+                      ItemsSource="{Binding KindOptions}"
+                      SelectedItem="{Binding FirstSectionKind, Mode=TwoWay}"
+                      HorizontalAlignment="Stretch"/>
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Rounds" VerticalAlignment="Center" Foreground="DimGray"/>
+            <TextBox  Grid.Row="4" Grid.Column="1" Text="{Binding FirstSectionRoundsText}" Watermark="e.g. 5"/>
+
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Time control" VerticalAlignment="Center" Foreground="DimGray"/>
+            <TextBox  Grid.Row="5" Grid.Column="1" Text="{Binding FirstSectionTimeControl}" Watermark="e.g. G/60;d5"/>
+        </Grid>
+    </DockPanel>
+</Window>

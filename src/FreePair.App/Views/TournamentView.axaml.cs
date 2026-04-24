@@ -197,6 +197,52 @@ public partial class TournamentView : UserControl
     }
 
     /// <summary>
+    /// Shows the New-event dialog modally. Returns the VM on Create,
+    /// null on Cancel.
+    /// </summary>
+    private async Task<NewEventViewModel?> ShowNewEventDialogAsync(NewEventViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner)
+        {
+            return null;
+        }
+
+        var dialog = new NewEventDialog(vm);
+        return await dialog.ShowDialog<NewEventViewModel?>(owner);
+    }
+
+    /// <summary>
+    /// Save-file picker scoped to <c>.sjson</c> for the New-event
+    /// flow. Returns the local path or null on cancel.
+    /// </summary>
+    private async Task<string?> PickNewEventSavePathAsync(string suggestedName)
+    {
+        var topLevel = TopLevel.GetTopLevel(this);
+        if (topLevel is null)
+        {
+            return null;
+        }
+
+        var options = new FilePickerSaveOptions
+        {
+            Title = "Save new tournament as",
+            SuggestedFileName = suggestedName,
+            DefaultExtension = "sjson",
+            FileTypeChoices = new[]
+            {
+                new FilePickerFileType("SwissSys tournament")
+                {
+                    Patterns = new[] { "*.sjson" }
+                },
+                FilePickerFileTypes.All
+            }
+        };
+
+        var file = await topLevel.StorageProvider.SaveFilePickerAsync(options);
+        return file?.TryGetLocalPath();
+    }
+
+    /// <summary>
     /// Opens the hub's EventFiles page for the last successful
     /// publish in the default browser. URL is bound to the clicked
     /// button's <c>Tag</c> via <c>TournamentViewModel.LastPublishedUrl</c>.

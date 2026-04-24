@@ -17,6 +17,10 @@
         <!-- Toolbar -->
         <StackPanel DockPanel.Dock="Top" Spacing="6" Margin="0,0,0,8">
             <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button Content="➕ New event..."
+                        Command="{Binding NewCommand}"
+                        IsEnabled="{Binding !IsLoading}"
+                        ToolTip.Tip="Create a brand-new tournament and save it as a new .sjson file."/>
                 <Button Content="Open tournament..."
                         Command="{Binding OpenCommand}"
                         IsEnabled="{Binding !IsLoading}"/>

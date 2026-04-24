@@ -157,6 +157,19 @@ public partial class TournamentViewModel : ViewModelBase
     /// </summary>
     public Func<SectionFormViewModel, Task<SectionFormViewModel?>>? ShowSectionFormDialogAsync { get; set; }
 
+    /// <summary>
+    /// View-supplied callback that opens the New-event dialog.
+    /// Returns the VM on Create, null on Cancel.
+    /// </summary>
+    public Func<NewEventViewModel, Task<NewEventViewModel?>>? ShowNewEventDialogAsync { get; set; }
+
+    /// <summary>
+    /// View-supplied callback that opens a save-file picker with
+    /// <c>.sjson</c> file type and returns the chosen path (or null
+    /// on cancel). Used by the New-event flow.
+    /// </summary>
+    public Func<string /*suggestedName*/, Task<string?>>? PickNewEventSavePathAsync { get; set; }
+
     // ============ Online publishing (session-only, per-tournament) ============
 
     /// <summary>Sticky URL used by the Publish dialog. Seeded from <see cref="AppSettings.NaChessHubBaseUrl"/>.</summary>
@@ -422,6 +435,73 @@ public partial class TournamentViewModel : ViewModelBase
         {
             await LoadAsync(picked).ConfigureAwait(true);
         }
+    }
+
+    /// <summary>
+    /// Creates a brand-new tournament from scratch. Prompts the TD
+    /// for a title (and optionally a first section), then opens a
+    /// save-file picker and writes an initial <c>.sjson</c>. After
+    /// return, the new tournament is loaded as
+    /// <see cref="Tournament"/> with <see cref="CurrentFilePath"/>
+    /// set to the picked path, so subsequent edits auto-save to
+    /// that file via <see cref="PersistCurrentTournamentAsync"/>.
+    /// </summary>
+    [RelayCommand]
+    private async Task NewAsync()
+    {
+        if (ShowNewEventDialogAsync is null || PickNewEventSavePathAsync is null) return;
+
+        var dialogVm = new NewEventViewModel();
+        var result = await ShowNewEventDialogAsync(dialogVm).ConfigureAwait(true);
+        if (result is null) return; // cancelled
+
+        if (!result.TryValidate(out var firstRounds))
+        {
+            ErrorMessage = result.ErrorMessage;
+            return;
+        }
+
+        // Suggest a filename derived from the title (sanitized).
+        var safeTitle = string.Concat(result.EventTitle
+            .Trim()
+            .Where(c => !System.IO.Path.GetInvalidFileNameChars().Contains(c)));
+        var suggested = string.IsNullOrWhiteSpace(safeTitle) ? "New tournament.sjson" : $"{safeTitle}.sjson";
+        var path = await PickNewEventSavePathAsync(suggested).ConfigureAwait(true);
+        if (string.IsNullOrWhiteSpace(path)) return;
+
+        // Build the tournament. Only the title is seeded; every
+        // other Overview field stays null and the TD fills in dates
+        // / location / etc. via the event-config dialog afterward.
+        // Five fields are positional without defaults; the rest
+        // default to null on the Tournament record.
+        var tournament = new Tournament(
+            Title: result.EventTitle.Trim(),
+            StartDate: null,
+            EndDate: null,
+            TimeControl: null,
+            NachEventId: null,
+            Sections: System.Array.Empty<Section>());
+
+        if (!string.IsNullOrWhiteSpace(result.FirstSectionName))
+        {
+            tournament = TournamentMutations.AddSection(
+                tournament,
+                name: result.FirstSectionName.Trim(),
+                kind: result.FirstSectionKind.Kind,
+                finalRound: firstRounds,
+                timeControl: result.FirstSectionTimeControl);
+        }
+
+        // Seed state + persist via the standard save path so the new
+        // file is created on disk through the writer's missing-file
+        // scaffold branch.
+        Tournament = tournament;
+        CurrentFilePath = path;
+        LastSavedAt = null;
+        LastPublishedAt = null;
+        LastPublishedUrl = null;
+        ErrorMessage = null;
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
     }
 
     [RelayCommand]
