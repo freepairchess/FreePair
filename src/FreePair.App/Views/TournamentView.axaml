@@ -192,12 +192,13 @@
                                             MinWidth="26"
                                             Background="Transparent"
                                             BorderThickness="0"
-                                            Foreground="DarkRed"
+                                            Foreground="SeaGreen"
                                             FontSize="14"
-                                            Content="🗑"
+                                            FontFamily="Segoe UI Symbol"
+                                            Content="🗑&#xFE0E;"
                                             Command="{Binding SoftDeleteSectionCommand}"
                                             IsVisible="{Binding IsLive}"
-                                            ToolTip.Tip="Soft-delete this section. Locks it against edits and excludes it from published results; reversible."/>
+                                            ToolTip.Tip="Soft-delete this section (reversible). Locks it against edits and excludes it from published results."/>
                                     <Button DockPanel.Dock="Right"
                                             VerticalAlignment="Top"
                                             Margin="4,0,0,0"
@@ -207,7 +208,8 @@
                                             BorderThickness="0"
                                             Foreground="DarkRed"
                                             FontSize="14"
-                                            Content="❌"
+                                            FontFamily="Segoe UI Symbol"
+                                            Content="🗑&#xFE0E;"
                                             Command="{Binding HardDeleteSectionCommand}"
                                             IsVisible="{Binding IsSoftDeleted}"
                                             ToolTip.Tip="Permanently delete this section. Every player, round, pairing, result, and prize will be discarded and cannot be recovered."/>
