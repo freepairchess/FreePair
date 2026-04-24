@@ -186,4 +186,61 @@ public class NaChessHubRegistryTests
             "https://staging.example.com/api/v2/tournaments",
             stub.Requests[0].RequestUri!.ToString());
     }
+
+    [Fact]
+    public async Task ListEvents_parses_live_api_shape_with_datetime_and_split_address()
+    {
+        // Verbatim payload sample copied from the production
+        // /api/events response: full datetime fields, split city /
+        // state / zipCode, plus organizer + status. Earlier
+        // implementations only knew about startDate / location
+        // (single string), so the columns showed up empty for
+        // every event.
+        var json = """
+        [
+            {
+                "id":"8435ae92-0c59-474e-bae9-3a79fffaeb40",
+                "name":"8th Massachusetts Senior Open",
+                "organizer":"Massachusetts Chess Assoc",
+                "startDateTime":"2025-04-26T00:00:00",
+                "endDateTime":"2025-04-27T00:00:00",
+                "city":"Marlborough",
+                "state":"MA",
+                "zipCode":"01752",
+                "status":"Completed"
+            },
+            {
+                "id":"fa977038-1534-4035-9f6f-62f2cd477d75",
+                "name":"MCC - 2025-04",
+                "organizer":"Metrowest Chess Club",
+                "startDateTime":"2025-04-02T19:30:00",
+                "endDateTime":"2025-04-30T23:30:00",
+                "city":"Framingham",
+                "state":"MA",
+                "zipCode":"01702",
+                "status":"Completed"
+            }
+        ]
+        """;
+        var stub = new StubHandler
+        {
+            Respond = _ => new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(json, Encoding.UTF8, "application/json"),
+            }
+        };
+        using var http = new HttpClient(stub);
+        var reg = new NaChessHubRegistry(http);
+
+        var events = await reg.ListEventsAsync();
+
+        Assert.Equal(2, events.Count);
+        var senior = events.Single(e => e.Id.StartsWith("8435"));
+        Assert.Equal("8th Massachusetts Senior Open", senior.Name);
+        Assert.Equal("Massachusetts Chess Assoc", senior.Organizer);
+        Assert.Equal(new DateOnly(2025, 4, 26), senior.StartDate);
+        Assert.Equal(new DateOnly(2025, 4, 27), senior.EndDate);
+        Assert.Equal("Marlborough, MA 01752", senior.Location);
+        Assert.Equal("Completed", senior.Status);
+    }
 }

@@ -73,4 +73,5 @@ public sealed record RegistryEvent(
     DateOnly? StartDate = null,
     DateOnly? EndDate = null,
     string? Location = null,
-    string? Organizer = null);
+    string? Organizer = null,
+    string? Status = null);

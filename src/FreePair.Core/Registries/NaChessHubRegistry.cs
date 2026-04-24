@@ -107,15 +107,48 @@ public sealed class NaChessHubRegistry : IExternalRegistry
         foreach (var e in raw)
         {
             if (string.IsNullOrWhiteSpace(e.Id) || string.IsNullOrWhiteSpace(e.Name)) continue;
+
+            // Date fields: prefer the full datetime fields the live
+            // API uses (startDateTime / endDateTime in YYYY-MM-DDTHH:MM:SS
+            // form); fall back to the date-only / generic-"date"
+            // aliases that earlier API revisions produced.
+            var start = TryParseDate(e.StartDateTime ?? e.StartDate ?? e.Start ?? e.Date);
+            var end   = TryParseDate(e.EndDateTime   ?? e.EndDate   ?? e.End);
+
+            // Location: the live API splits address into city / state
+            // / zipCode. Compose them into a single display string;
+            // fall back to a flat 'location' field if a future revision
+            // collapses them again.
+            var location = ComposeLocation(e.City, e.State, e.ZipCode)
+                           ?? (string.IsNullOrWhiteSpace(e.Location) ? null : e.Location);
+
             list.Add(new RegistryEvent(
                 Id: e.Id!,
                 Name: e.Name!,
-                StartDate: TryParseDate(e.StartDate ?? e.Start ?? e.Date),
-                EndDate:   TryParseDate(e.EndDate ?? e.End),
-                Location:  string.IsNullOrWhiteSpace(e.Location) ? null : e.Location,
-                Organizer: string.IsNullOrWhiteSpace(e.Organizer) ? null : e.Organizer));
+                StartDate: start,
+                EndDate:   end,
+                Location:  location,
+                Organizer: string.IsNullOrWhiteSpace(e.Organizer) ? null : e.Organizer,
+                Status:    string.IsNullOrWhiteSpace(e.Status) ? null : e.Status));
         }
         return list;
+    }
+
+    /// <summary>
+    /// Builds a "City, ST" / "City, ST 01752" display string from
+    /// the per-field components. Returns <c>null</c> when no
+    /// component was supplied so the fallback to a flat
+    /// <c>location</c> field kicks in.
+    /// </summary>
+    private static string? ComposeLocation(string? city, string? state, string? zipCode)
+    {
+        var parts = new List<string>(2);
+        var cityState = new List<string>(2);
+        if (!string.IsNullOrWhiteSpace(city))  cityState.Add(city.Trim());
+        if (!string.IsNullOrWhiteSpace(state)) cityState.Add(state.Trim());
+        if (cityState.Count > 0) parts.Add(string.Join(", ", cityState));
+        if (!string.IsNullOrWhiteSpace(zipCode)) parts.Add(zipCode.Trim());
+        return parts.Count == 0 ? null : string.Join(" ", parts);
     }
 
     private static Exception MapHttpError(HttpResponseMessage response, string op, string? eventId)
@@ -134,20 +167,42 @@ public sealed class NaChessHubRegistry : IExternalRegistry
     private static DateOnly? TryParseDate(string? s)
     {
         if (string.IsNullOrWhiteSpace(s)) return null;
+        // Live API format is "2025-04-26T00:00:00" — DateTime parses
+        // both that and bare "2025-04-26"; we strip down to DateOnly
+        // because the dialog grid only shows the calendar date.
+        if (DateTime.TryParse(s, System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.AssumeLocal, out var dt))
+        {
+            return DateOnly.FromDateTime(dt);
+        }
         return DateOnly.TryParse(s, out var d) ? d : null;
     }
 
     private sealed class RawEvent
     {
-        [JsonPropertyName("id")]        public string? Id { get; set; }
-        [JsonPropertyName("name")]      public string? Name { get; set; }
-        [JsonPropertyName("startDate")] public string? StartDate { get; set; }
-        [JsonPropertyName("endDate")]   public string? EndDate { get; set; }
-        [JsonPropertyName("start")]     public string? Start { get; set; }
-        [JsonPropertyName("end")]       public string? End { get; set; }
-        [JsonPropertyName("date")]      public string? Date { get; set; }
-        [JsonPropertyName("location")]  public string? Location { get; set; }
-        [JsonPropertyName("organizer")] public string? Organizer { get; set; }
+        [JsonPropertyName("id")]            public string? Id { get; set; }
+        [JsonPropertyName("name")]          public string? Name { get; set; }
+        [JsonPropertyName("organizer")]     public string? Organizer { get; set; }
+        [JsonPropertyName("status")]        public string? Status { get; set; }
+
+        // Live API uses these full-datetime forms.
+        [JsonPropertyName("startDateTime")] public string? StartDateTime { get; set; }
+        [JsonPropertyName("endDateTime")]   public string? EndDateTime { get; set; }
+
+        // Earlier-revision aliases kept for forward-compat / staging
+        // environments that may still emit the date-only form.
+        [JsonPropertyName("startDate")]     public string? StartDate { get; set; }
+        [JsonPropertyName("endDate")]       public string? EndDate { get; set; }
+        [JsonPropertyName("start")]         public string? Start { get; set; }
+        [JsonPropertyName("end")]           public string? End { get; set; }
+        [JsonPropertyName("date")]          public string? Date { get; set; }
+
+        // Live API splits address; the legacy flat 'location' is the
+        // last-resort fallback.
+        [JsonPropertyName("city")]          public string? City { get; set; }
+        [JsonPropertyName("state")]         public string? State { get; set; }
+        [JsonPropertyName("zipCode")]       public string? ZipCode { get; set; }
+        [JsonPropertyName("location")]      public string? Location { get; set; }
     }
 }
 
