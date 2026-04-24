@@ -44,23 +44,15 @@
 
         <StackPanel DockPanel.Dock="Bottom"
                     Orientation="Horizontal"
-                    HorizontalAlignment="Stretch"
+                    HorizontalAlignment="Right"
                     Spacing="8"
                     Margin="0,12,0,0">
-            <TextBlock Text="Passcode:" VerticalAlignment="Center" Foreground="DimGray"/>
-            <TextBox   Text="{Binding Passcode}"
-                       PasswordChar="•"
-                       Width="200"
-                       Watermark="event passcode"/>
-            <Panel HorizontalAlignment="Stretch"/>
-            <Button Content="Cancel" Click="OnCancel" MinWidth="90" IsCancel="True"/>
-            <Button Content="Open"   Click="OnConfirm" MinWidth="90"
-                    IsDefault="True" Classes="accent"
-                    IsEnabled="{Binding CanOpen}"/>
+            <TextBlock Foreground="Gray" FontSize="11" VerticalAlignment="Center"
+                       Text="Click ▶ on an event to open it (you'll be prompted for the passcode)."/>
+            <Button Content="Close" Click="OnCancel" MinWidth="90" IsCancel="True"/>
         </StackPanel>
 
         <DataGrid ItemsSource="{Binding FilteredEvents}"
-                  SelectedItem="{Binding SelectedEvent, Mode=TwoWay}"
                   CanUserSortColumns="True"
                   CanUserResizeColumns="True"
                   CanUserReorderColumns="True"
@@ -70,6 +62,24 @@
                   SelectionMode="Single"
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
+                <!-- Per-row open button. Clicking closes the browse
+                     dialog with the chosen event so the caller can
+                     pop the by-id Open dialog with the event id
+                     pre-filled. Distinct from a SelectedItem flow
+                     because the row click itself is the action; no
+                     separate Open button at the bottom. -->
+                <DataGridTemplateColumn Header="" Width="60" CanUserSort="False" CanUserReorder="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="▶ Open"
+                                    Tag="{Binding}"
+                                    Click="OnRowOpenClick"
+                                    Padding="8,2"
+                                    Margin="2"
+                                    ToolTip.Tip="Open this event (you will be prompted for the passcode)."/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Name"      Binding="{Binding Name}"      SortMemberPath="Name"      Width="*" MinWidth="200"/>
                 <DataGridTextColumn Header="Start"     Binding="{Binding StartDate}" SortMemberPath="StartDate" Width="110"/>
                 <DataGridTextColumn Header="End"       Binding="{Binding EndDate}"   SortMemberPath="EndDate"   Width="110"/>
