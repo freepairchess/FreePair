@@ -29,6 +29,8 @@ public partial class TournamentView : UserControl
             vm.ShowManageByesDialogAsync = ShowManageByesDialogAsync;
             vm.ShowPlayerFormDialogAsync = ShowPlayerFormDialogAsync;
             vm.ShowSectionFormDialogAsync = ShowSectionFormDialogAsync;
+            vm.ShowNewEventDialogAsync = ShowNewEventDialogAsync;
+            vm.PickNewEventSavePathAsync = PickNewEventSavePathAsync;
         }
     }
 
