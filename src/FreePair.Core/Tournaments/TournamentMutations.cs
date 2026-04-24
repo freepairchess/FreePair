@@ -160,6 +160,7 @@ public static class TournamentMutations
         ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
 
         var section = FindSection(tournament, sectionName);
+        GuardNoSoftDeletedPlayers(section);
         var newRoundNumber = section.Rounds.Count + 1;
 
         var boardPairings = pairings.Pairings
@@ -606,6 +607,7 @@ public static class TournamentMutations
             throw new InvalidOperationException(
                 $"Section '{sectionName}' is not a round-robin (kind={section.Kind}).");
         }
+        GuardNoSoftDeletedPlayers(section);
 
         // Build the full schedule in seed order. Withdrawn players are
         // excluded from the pool; their past history stays intact.
@@ -757,6 +759,151 @@ public static class TournamentMutations
             .Where(s => s.Name != sectionName)
             .ToArray();
         return tournament with { Sections = remaining };
+    }
+
+    // ================================================================
+    // Player lifecycle: soft-delete / undelete / hard-delete
+    // ================================================================
+
+    /// <summary>
+    /// Soft-deletes a player. Only permitted before any round of the
+    /// section is paired; the mutations layer rejects the toggle once
+    /// <see cref="Section.RoundsPaired"/> is positive (use
+    /// <see cref="SetPlayerWithdrawn"/> instead). Soft-deleted players
+    /// are excluded from standings, wall chart, TRF export, publishing,
+    /// and BBP pairing input; no data is discarded so
+    /// <see cref="UndeletePlayer"/> restores them cleanly.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// The section or player does not exist, the section already has
+    /// at least one round paired, or the player is already soft-deleted.
+    /// </exception>
+    public static Tournament SoftDeletePlayer(
+        Tournament tournament, string sectionName, int pairNumber)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        GuardPreRoundOneForPlayerDelete(section, nameof(SoftDeletePlayer));
+
+        var player = FindPlayer(section, pairNumber);
+        if (player.SoftDeleted)
+        {
+            throw new InvalidOperationException(
+                $"Player #{pairNumber} in section '{sectionName}' is already soft-deleted.");
+        }
+
+        var updated = player with { SoftDeleted = true };
+        return ReplacePlayer(tournament, section, updated);
+    }
+
+    /// <summary>
+    /// Clears the soft-deleted flag on a player. Allowed regardless of
+    /// <see cref="Section.RoundsPaired"/> so the TD can recover a
+    /// section where someone soft-deleted a player and then accidentally
+    /// paired a round (which should be blocked by the
+    /// <c>GuardNoSoftDeletedPlayers</c> check, but belt-and-braces).
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// The section or player does not exist, or the player is not
+    /// currently soft-deleted.
+    /// </exception>
+    public static Tournament UndeletePlayer(
+        Tournament tournament, string sectionName, int pairNumber)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        var player = FindPlayer(section, pairNumber);
+        if (!player.SoftDeleted)
+        {
+            throw new InvalidOperationException(
+                $"Player #{pairNumber} in section '{sectionName}' is not soft-deleted.");
+        }
+
+        var updated = player with { SoftDeleted = false };
+        return ReplacePlayer(tournament, section, updated);
+    }
+
+    /// <summary>
+    /// Permanently removes a player from a section. Only permitted
+    /// before any round of the section is paired — once pairings exist
+    /// the player's history is entangled with their opponents' and
+    /// removing them would corrupt tiebreaks. After round 1 pairing,
+    /// use <see cref="SetPlayerWithdrawn"/> instead. The next save
+    /// propagates the removal to the raw <c>.sjson</c>
+    /// (<see cref="SwissSysTournamentWriter"/> prunes player nodes
+    /// missing from the domain model). Works on both live and
+    /// soft-deleted players.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// The section or player does not exist, or the section already
+    /// has at least one round paired.
+    /// </exception>
+    public static Tournament HardDeletePlayer(
+        Tournament tournament, string sectionName, int pairNumber)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        GuardPreRoundOneForPlayerDelete(section, nameof(HardDeletePlayer));
+        _ = FindPlayer(section, pairNumber);
+
+        var remaining = section.Players
+            .Where(p => p.PairNumber != pairNumber)
+            .ToArray();
+        var updatedSection = section with { Players = remaining };
+        return ReplaceSection(tournament, sectionName, updatedSection);
+    }
+
+    // ================================================================
+    // Helpers
+    // ================================================================
+
+    private static Player FindPlayer(Section section, int pairNumber) =>
+        section.Players.FirstOrDefault(p => p.PairNumber == pairNumber)
+        ?? throw new InvalidOperationException(
+            $"Player #{pairNumber} not found in section '{section.Name}'.");
+
+    private static Tournament ReplacePlayer(Tournament t, Section section, Player replacement)
+    {
+        var players = section.Players
+            .Select(p => p.PairNumber == replacement.PairNumber ? replacement : p)
+            .ToArray();
+        var updated = section with { Players = players };
+        return ReplaceSection(t, section.Name, updated);
+    }
+
+    private static void GuardPreRoundOneForPlayerDelete(Section section, string op)
+    {
+        if (section.RoundsPaired > 0)
+        {
+            throw new InvalidOperationException(
+                $"{op} is only allowed before round 1 is paired. " +
+                $"Section '{section.Name}' already has {section.RoundsPaired} round(s) paired; " +
+                $"use SetPlayerWithdrawn instead.");
+        }
+    }
+
+    /// <summary>
+    /// Pair-round-N defense-in-depth check. The UI also prompts the TD
+    /// to resolve soft-deleted players before pairing a round, but the
+    /// mutation refuses too so scripted / batch callers can't sidestep
+    /// the guard.
+    /// </summary>
+    private static void GuardNoSoftDeletedPlayers(Section section)
+    {
+        if (section.Players.Any(p => p.SoftDeleted))
+        {
+            var names = string.Join(", ",
+                section.Players.Where(p => p.SoftDeleted).Select(p => $"#{p.PairNumber} {p.Name}"));
+            throw new InvalidOperationException(
+                $"Section '{section.Name}' has soft-deleted players ({names}). " +
+                $"Restore or permanently delete them before pairing a round.");
+        }
     }
 
     private static Section FindSection(Tournament t, string name)

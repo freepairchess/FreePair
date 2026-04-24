@@ -106,6 +106,31 @@ public class SwissSysTournamentWriter : ITournamentWriter
                 }
 
                 playerNode["Results"] = resultsArray;
+
+                // FreePair-specific per-player flag. Same set/clear
+                // pattern as the section-level soft-deleted key.
+                if (player.SoftDeleted)
+                {
+                    playerNode["FreePair soft deleted"] = true;
+                }
+                else
+                {
+                    playerNode.Remove("FreePair soft deleted");
+                }
+            }
+
+            // Hard-delete propagation (per-player): any player node in
+            // the raw section whose pair number is missing from
+            // section.Players was removed by HardDeletePlayer. Prune.
+            var livePairs = new HashSet<int>(section.Players.Select(p => p.PairNumber));
+            for (var i = playersArray.Count - 1; i >= 0; i--)
+            {
+                if (playersArray[i] is JsonObject pobj &&
+                    pobj["Pair number"]?.GetValue<int>() is int pn &&
+                    !livePairs.Contains(pn))
+                {
+                    playersArray.RemoveAt(i);
+                }
             }
         }
 

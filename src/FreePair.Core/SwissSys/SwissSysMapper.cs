@@ -151,7 +151,8 @@ public static class SwissSysMapper
             RequestedByeRounds: ParseReservedByes(raw.ReservedByes),
             History: history,
             Email: raw.Email,
-            Phone: raw.Phone);
+            Phone: raw.Phone,
+            SoftDeleted: raw.FreePairSoftDeleted ?? false);
     }
 
     internal static Team MapTeam(RawTeam raw)

@@ -68,7 +68,7 @@ public static class TrfWriter
             : new HashSet<int>();
 
         var activePlayers = section.Players
-            .Where(p => !p.Withdrawn && !forcedThisRound.Contains(p.PairNumber))
+            .Where(p => !p.Withdrawn && !p.SoftDeleted && !forcedThisRound.Contains(p.PairNumber))
             .ToArray();
 
         WriteHeader(tournament, section, writer, activePlayers.Length);

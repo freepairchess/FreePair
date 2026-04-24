@@ -53,4 +53,17 @@ public sealed class RawPlayer
 
     [JsonPropertyName("Results")]
     public List<string> Results { get; set; } = new();
+
+    // ==== FreePair-specific extensions ====================================
+    // SwissSys ignores unknown player keys; we tuck per-player
+    // persistent state here rather than inventing a new file.
+
+    /// <summary>
+    /// When <c>true</c>, the player is soft-deleted. Only meaningful
+    /// pre-round-1 — the mutations layer blocks the flag from being
+    /// set once any round is paired. Serialized as
+    /// <c>"FreePair soft deleted"</c>; absent key means live.
+    /// </summary>
+    [JsonPropertyName("FreePair soft deleted")]
+    public bool? FreePairSoftDeleted { get; set; }
 }
