@@ -39,7 +39,12 @@ public static class StandingsBuilder
 
         var tiebreaks = TiebreakCalculator.Compute(section);
 
+        // Soft-deleted players (pre-round-1 only) are omitted from the
+        // standings entirely — they don't appear in FreePair's own
+        // standings / wall-chart views, the TRF export, or the
+        // NA Chess Hub publish payload.
         var sorted = section.Players
+            .Where(p => !p.SoftDeleted)
             .Select(p => new SortItem(p, tiebreaks[p.PairNumber]))
             .OrderByDescending(x => x.Player.Score)
             .ThenByDescending(x => x.Tb.ModifiedMedian)

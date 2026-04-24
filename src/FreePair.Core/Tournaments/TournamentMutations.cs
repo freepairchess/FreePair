@@ -160,6 +160,7 @@ public static class TournamentMutations
         ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
 
         var section = FindSection(tournament, sectionName);
+        GuardNoSoftDeletedPlayers(section);
         var newRoundNumber = section.Rounds.Count + 1;
 
         var boardPairings = pairings.Pairings
@@ -170,8 +171,11 @@ public static class TournamentMutations
             .Select(pair => new ByeAssignment(pair, ByeKind.Full));
         var halfByeAssignments = pairings.HalfPointByes
             .Select(pair => new ByeAssignment(pair, ByeKind.Half));
+        var zeroByeAssignments = pairings.ZeroPointByes
+            .Select(pair => new ByeAssignment(pair, ByeKind.Unpaired));
         var byeAssignments = fullByeAssignments
             .Concat(halfByeAssignments)
+            .Concat(zeroByeAssignments)
             .ToArray();
 
         var newRound = new Round(newRoundNumber, boardPairings, byeAssignments);
@@ -185,11 +189,12 @@ public static class TournamentMutations
         }
         var fullByeSet = new HashSet<int>(pairings.ByePlayerPairs);
         var halfByeSet = new HashSet<int>(pairings.HalfPointByes);
+        var zeroByeSet = new HashSet<int>(pairings.ZeroPointByes);
 
         var updatedPlayers = section.Players
             .Select(p => p.Withdrawn
                 ? p                                  // session-withdrawn → leave history at its current length
-                : AppendHistoryEntry(p, pairingByPlayer, fullByeSet, halfByeSet))
+                : AppendHistoryEntry(p, pairingByPlayer, fullByeSet, halfByeSet, zeroByeSet))
             .ToArray();
 
         var updatedSection = section with
@@ -577,6 +582,73 @@ public static class TournamentMutations
         return ReplaceSection(tournament, sectionName, updatedSection);
     }
 
+    /// <summary>
+    /// Converts a scheduled but un-played pairing into a late
+    /// zero-point bye for <paramref name="zeroByePair"/>: that player
+    /// is awarded 0 (SwissSys "U" kind), their opponent receives a
+    /// full-point bye (1.0), and the pairing is removed from the
+    /// round. Typical use: a player no-shows mid-round without
+    /// advance notice and the TD wants to record the absence without
+    /// giving them any tiebreak benefit. Differs from
+    /// <see cref="ConvertPairingToHalfPointBye"/> only in the points
+    /// and the RoundResultKind stamped on the target player's history.
+    /// </summary>
+    public static Tournament ConvertPairingToZeroPointBye(
+        Tournament tournament,
+        string sectionName,
+        int round,
+        int zeroByePair)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        var targetRound = section.Rounds.FirstOrDefault(r => r.Number == round)
+            ?? throw new InvalidOperationException(
+                $"Round {round} does not exist in section '{sectionName}'.");
+
+        var pairing = targetRound.Pairings.FirstOrDefault(
+            p => p.WhitePair == zeroByePair || p.BlackPair == zeroByePair)
+            ?? throw new InvalidOperationException(
+                $"Pair #{zeroByePair} is not assigned to a pairing in round {round}.");
+
+        if (pairing.Result != PairingResult.Unplayed)
+        {
+            throw new InvalidOperationException(
+                "Can't convert a scored pairing to a zero-point bye; correct the result instead.");
+        }
+
+        var opponentPair = pairing.WhitePair == zeroByePair
+            ? pairing.BlackPair
+            : pairing.WhitePair;
+
+        var updatedPairings = targetRound.Pairings
+            .Where(p => p != pairing)
+            .ToArray();
+        var updatedByes = targetRound.Byes
+            .Append(new ByeAssignment(zeroByePair,   ByeKind.Unpaired))
+            .Append(new ByeAssignment(opponentPair,  ByeKind.Full))
+            .ToArray();
+        var updatedRound = targetRound with { Pairings = updatedPairings, Byes = updatedByes };
+
+        var roundIndex = round - 1;
+        var updatedPlayers = section.Players
+            .Select(p => p.PairNumber == zeroByePair
+                    ? OverwriteHistoryAsBye(p, roundIndex, RoundResultKind.ZeroPointBye, 0m)
+                : p.PairNumber == opponentPair
+                    ? OverwriteHistoryAsBye(p, roundIndex, RoundResultKind.FullPointBye, 1m)
+                : p)
+            .ToArray();
+
+        var updatedSection = section with
+        {
+            Players = updatedPlayers,
+            Rounds = section.Rounds.Select(r => r.Number == round ? updatedRound : r).ToArray(),
+        };
+
+        return ReplaceSection(tournament, sectionName, updatedSection);
+    }
+
     private static Tournament UpdateSection(
         Tournament tournament,
         string sectionName,
@@ -606,6 +678,7 @@ public static class TournamentMutations
             throw new InvalidOperationException(
                 $"Section '{sectionName}' is not a round-robin (kind={section.Kind}).");
         }
+        GuardNoSoftDeletedPlayers(section);
 
         // Build the full schedule in seed order. Withdrawn players are
         // excluded from the pool; their past history stays intact.
@@ -759,6 +832,457 @@ public static class TournamentMutations
         return tournament with { Sections = remaining };
     }
 
+    // ================================================================
+    // Player lifecycle: soft-delete / undelete / hard-delete
+    // ================================================================
+
+    /// <summary>
+    /// Soft-deletes a player. Only permitted before any round of the
+    /// section is paired; the mutations layer rejects the toggle once
+    /// <see cref="Section.RoundsPaired"/> is positive (use
+    /// <see cref="SetPlayerWithdrawn"/> instead). Soft-deleted players
+    /// are excluded from standings, wall chart, TRF export, publishing,
+    /// and BBP pairing input; no data is discarded so
+    /// <see cref="UndeletePlayer"/> restores them cleanly.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// The section or player does not exist, the section already has
+    /// at least one round paired, or the player is already soft-deleted.
+    /// </exception>
+    public static Tournament SoftDeletePlayer(
+        Tournament tournament, string sectionName, int pairNumber)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        GuardPreRoundOneForPlayerDelete(section, nameof(SoftDeletePlayer));
+
+        var player = FindPlayer(section, pairNumber);
+        if (player.SoftDeleted)
+        {
+            throw new InvalidOperationException(
+                $"Player #{pairNumber} in section '{sectionName}' is already soft-deleted.");
+        }
+
+        var updated = player with { SoftDeleted = true };
+        return ReplacePlayer(tournament, section, updated);
+    }
+
+    /// <summary>
+    /// Clears the soft-deleted flag on a player. Allowed regardless of
+    /// <see cref="Section.RoundsPaired"/> so the TD can recover a
+    /// section where someone soft-deleted a player and then accidentally
+    /// paired a round (which should be blocked by the
+    /// <c>GuardNoSoftDeletedPlayers</c> check, but belt-and-braces).
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// The section or player does not exist, or the player is not
+    /// currently soft-deleted.
+    /// </exception>
+    public static Tournament UndeletePlayer(
+        Tournament tournament, string sectionName, int pairNumber)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        var player = FindPlayer(section, pairNumber);
+        if (!player.SoftDeleted)
+        {
+            throw new InvalidOperationException(
+                $"Player #{pairNumber} in section '{sectionName}' is not soft-deleted.");
+        }
+
+        var updated = player with { SoftDeleted = false };
+        return ReplacePlayer(tournament, section, updated);
+    }
+
+    /// <summary>
+    /// Permanently removes a player from a section. Only permitted
+    /// before any round of the section is paired — once pairings exist
+    /// the player's history is entangled with their opponents' and
+    /// removing them would corrupt tiebreaks. After round 1 pairing,
+    /// use <see cref="SetPlayerWithdrawn"/> instead. The next save
+    /// propagates the removal to the raw <c>.sjson</c>
+    /// (<see cref="SwissSysTournamentWriter"/> prunes player nodes
+    /// missing from the domain model). Works on both live and
+    /// soft-deleted players.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// The section or player does not exist, or the section already
+    /// has at least one round paired.
+    /// </exception>
+    public static Tournament HardDeletePlayer(
+        Tournament tournament, string sectionName, int pairNumber)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        GuardPreRoundOneForPlayerDelete(section, nameof(HardDeletePlayer));
+        _ = FindPlayer(section, pairNumber);
+
+        var remaining = section.Players
+            .Where(p => p.PairNumber != pairNumber)
+            .ToArray();
+        var updatedSection = section with { Players = remaining };
+        return ReplaceSection(tournament, sectionName, updatedSection);
+    }
+
+    /// <summary>
+    /// Adds a requested bye for <paramref name="pairNumber"/> at
+    /// <paramref name="round"/>. Routes to
+    /// <see cref="Player.RequestedByeRounds"/> when <paramref name="kind"/>
+    /// is <see cref="ByeKind.Half"/> (SwissSys's native half-point
+    /// request) or <see cref="Player.ZeroPointByeRounds"/> when
+    /// <see cref="ByeKind.Unpaired"/>. When BBP pairs a round that
+    /// matches the request, the player is excluded from active
+    /// pairing and receives a half- or zero-point bye in their
+    /// history. No-op if the round is already on the matching list;
+    /// flips lists if the opposite kind was previously requested for
+    /// the same round.
+    /// </summary>
+    /// <exception cref="ArgumentException">
+    /// <paramref name="kind"/> is neither <see cref="ByeKind.Half"/>
+    /// nor <see cref="ByeKind.Unpaired"/>.
+    /// </exception>
+    /// <exception cref="InvalidOperationException">
+    /// The section or player does not exist, or the round number
+    /// refers to a round that has already been played.
+    /// </exception>
+    public static Tournament AddRequestedBye(
+        Tournament tournament,
+        string sectionName,
+        int pairNumber,
+        int round,
+        ByeKind kind)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+        if (round < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(round), "Round is 1-based.");
+        }
+        if (kind is not (ByeKind.Half or ByeKind.Unpaired))
+        {
+            throw new ArgumentException(
+                $"AddRequestedBye supports ByeKind.Half and ByeKind.Unpaired only (got {kind}).",
+                nameof(kind));
+        }
+
+        var section = FindSection(tournament, sectionName);
+        if (round <= section.RoundsPlayed)
+        {
+            throw new InvalidOperationException(
+                $"Round {round} has already been played; " +
+                $"convert the pairing directly via ConvertPairingTo{kind}PointBye instead.");
+        }
+
+        var player = FindPlayer(section, pairNumber);
+        var half = player.RequestedByeRounds.ToList();
+        var zero = player.ZeroPointByeRoundsOrEmpty.ToList();
+        // Keep the two lists mutually exclusive per round — flipping
+        // kinds should move the entry, not duplicate it.
+        half.Remove(round);
+        zero.Remove(round);
+        if (kind == ByeKind.Half)
+        {
+            half.Add(round);
+            half.Sort();
+        }
+        else
+        {
+            zero.Add(round);
+            zero.Sort();
+        }
+
+        var updated = player with
+        {
+            RequestedByeRounds = half.ToArray(),
+            ZeroPointByeRounds = zero.ToArray(),
+        };
+        return ReplacePlayer(tournament, section, updated);
+    }
+
+    /// <summary>
+    /// Removes any requested bye (half- or zero-point) for
+    /// <paramref name="pairNumber"/> at <paramref name="round"/>.
+    /// No-op if neither list contains the round.
+    /// </summary>
+    public static Tournament RemoveRequestedBye(
+        Tournament tournament,
+        string sectionName,
+        int pairNumber,
+        int round)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        var player = FindPlayer(section, pairNumber);
+
+        var half = player.RequestedByeRounds.ToList();
+        var zero = player.ZeroPointByeRoundsOrEmpty.ToList();
+        var changed = half.Remove(round) | zero.Remove(round);
+        if (!changed) return tournament;
+
+        var updated = player with
+        {
+            RequestedByeRounds = half.ToArray(),
+            ZeroPointByeRounds = zero.ToArray(),
+        };
+        return ReplacePlayer(tournament, section, updated);
+    }
+
+    /// <summary>
+    /// Replaces a player's editable contact/identity fields
+    /// (<see cref="Player.Name"/>, <see cref="Player.UscfId"/>,
+    /// <see cref="Player.Rating"/>, secondary rating, membership
+    /// expiration, club, state, team, email, phone) while preserving
+    /// session-only state (<see cref="Player.History"/>,
+    /// <see cref="Player.RequestedByeRounds"/>,
+    /// <see cref="Player.ZeroPointByeRounds"/>,
+    /// <see cref="Player.Withdrawn"/>,
+    /// <see cref="Player.SoftDeleted"/>). All fields are passed from
+    /// the Player form dialog; callers supply the full edited subset.
+    /// </summary>
+    public static Tournament UpdatePlayerInfo(
+        Tournament tournament,
+        string sectionName,
+        int pairNumber,
+        string name,
+        string? uscfId,
+        int rating,
+        int? secondaryRating,
+        string? membershipExpiration,
+        string? club,
+        string? state,
+        string? team,
+        string? email,
+        string? phone)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+
+        var section = FindSection(tournament, sectionName);
+        var player = FindPlayer(section, pairNumber);
+
+        var updated = player with
+        {
+            Name = name.Trim(),
+            UscfId = string.IsNullOrWhiteSpace(uscfId) ? null : uscfId.Trim(),
+            Rating = rating,
+            SecondaryRating = secondaryRating,
+            MembershipExpiration = string.IsNullOrWhiteSpace(membershipExpiration) ? null : membershipExpiration.Trim(),
+            Club = string.IsNullOrWhiteSpace(club) ? null : club.Trim(),
+            State = string.IsNullOrWhiteSpace(state) ? null : state.Trim(),
+            Team = string.IsNullOrWhiteSpace(team) ? null : team.Trim(),
+            Email = string.IsNullOrWhiteSpace(email) ? null : email.Trim(),
+            Phone = string.IsNullOrWhiteSpace(phone) ? null : phone.Trim(),
+        };
+        return ReplacePlayer(tournament, section, updated);
+    }
+
+    /// <summary>
+    /// Adds a new empty section to <paramref name="tournament"/>. The
+    /// section starts with zero players, zero paired/played rounds,
+    /// and no prizes — the TD populates it afterward via the usual
+    /// Add-player / Set-prize mutations. <paramref name="name"/>
+    /// must be unique within the tournament.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// A section with the given name already exists.
+    /// </exception>
+    public static Tournament AddSection(
+        Tournament tournament,
+        string name,
+        SectionKind kind,
+        int finalRound,
+        string? timeControl = null,
+        string? title = null)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        if (finalRound < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(finalRound), "Final round must be >= 1.");
+        }
+        if (kind == SectionKind.Unknown)
+        {
+            throw new ArgumentException("Section kind must be Swiss or RoundRobin.", nameof(kind));
+        }
+
+        var trimmed = name.Trim();
+        if (tournament.Sections.Any(s => string.Equals(s.Name, trimmed, StringComparison.OrdinalIgnoreCase)))
+        {
+            throw new InvalidOperationException($"A section named '{trimmed}' already exists.");
+        }
+
+        var newSection = new Section(
+            Name: trimmed,
+            Title: string.IsNullOrWhiteSpace(title) ? null : title.Trim(),
+            Kind: kind,
+            TimeControl: string.IsNullOrWhiteSpace(timeControl) ? null : timeControl.Trim(),
+            RoundsPaired: 0,
+            RoundsPlayed: 0,
+            FinalRound: finalRound,
+            FirstBoard: null,
+            Players: System.Array.Empty<Player>(),
+            Teams: System.Array.Empty<Team>(),
+            Rounds: System.Array.Empty<Round>(),
+            Prizes: new Prizes(System.Array.Empty<Prize>(), System.Array.Empty<Prize>()));
+
+        return tournament with
+        {
+            Sections = tournament.Sections.Append(newSection).ToArray(),
+        };
+    }
+
+    /// <summary>
+    /// Adds a new player to the section. The pair number is assigned
+    /// as <c>max(existing) + 1</c> (gaps from hard-deleted players
+    /// are not filled). If the section already has paired rounds,
+    /// the new player's <see cref="Player.History"/> is back-filled
+    /// one entry per past round according to
+    /// <paramref name="byesForPastRounds"/>: any paired round not in
+    /// the dictionary defaults to <see cref="ByeKind.Unpaired"/>
+    /// (zero-point bye). Each past round's
+    /// <see cref="Round.Byes"/> gains a matching
+    /// <see cref="ByeAssignment"/> so standings, wall chart, and the
+    /// Byes tab all reflect the new player's presence retroactively.
+    /// </summary>
+    public static Tournament AddPlayer(
+        Tournament tournament,
+        string sectionName,
+        string name,
+        string? uscfId,
+        int rating,
+        int? secondaryRating,
+        string? membershipExpiration,
+        string? club,
+        string? state,
+        string? team,
+        string? email,
+        string? phone,
+        IReadOnlyDictionary<int, ByeKind>? byesForPastRounds = null)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+
+        var section = FindSection(tournament, sectionName);
+        var nextPair = section.Players.Count == 0
+            ? 1
+            : section.Players.Max(p => p.PairNumber) + 1;
+
+        var byes = byesForPastRounds ?? new Dictionary<int, ByeKind>();
+        var history = new List<RoundResult>(section.RoundsPaired);
+        for (var r = 1; r <= section.RoundsPaired; r++)
+        {
+            // Default to zero-point bye for any un-specified past
+            // round: late entry gets no points for rounds they missed,
+            // which is the safest default. TD can still edit each
+            // round's choice via the dialog.
+            var kind = byes.TryGetValue(r, out var k) ? k : ByeKind.Unpaired;
+            history.Add(kind switch
+            {
+                ByeKind.Full => new RoundResult(RoundResultKind.FullPointBye, -1, PlayerColor.None, 0, 0, 0, 1m),
+                ByeKind.Half => new RoundResult(RoundResultKind.HalfPointBye, -1, PlayerColor.None, 0, 0, 0, 0.5m),
+                _            => new RoundResult(RoundResultKind.ZeroPointBye,  0, PlayerColor.None, 0, 0, 0, 0m),
+            });
+        }
+
+        var newPlayer = new Player(
+            PairNumber: nextPair,
+            Name: name.Trim(),
+            UscfId: string.IsNullOrWhiteSpace(uscfId) ? null : uscfId.Trim(),
+            Rating: rating,
+            SecondaryRating: secondaryRating,
+            MembershipExpiration: string.IsNullOrWhiteSpace(membershipExpiration) ? null : membershipExpiration.Trim(),
+            Club: string.IsNullOrWhiteSpace(club) ? null : club.Trim(),
+            State: string.IsNullOrWhiteSpace(state) ? null : state.Trim(),
+            Team: string.IsNullOrWhiteSpace(team) ? null : team.Trim(),
+            RequestedByeRounds: System.Array.Empty<int>(),
+            History: history,
+            Withdrawn: false,
+            Email: string.IsNullOrWhiteSpace(email) ? null : email.Trim(),
+            Phone: string.IsNullOrWhiteSpace(phone) ? null : phone.Trim(),
+            SoftDeleted: false,
+            ZeroPointByeRounds: null);
+
+        // Insert player at the end of the section's roster.
+        var newPlayers = section.Players.Append(newPlayer).ToArray();
+
+        // Back-fill each paired round's Byes list with a matching
+        // assignment so the bye surfaces on the Byes tab and is
+        // persisted correctly (Round.Byes is the source of truth for
+        // "what happened this round" independent of player history).
+        var newRounds = section.Rounds
+            .Select(round =>
+            {
+                var kind = byes.TryGetValue(round.Number, out var k) ? k : ByeKind.Unpaired;
+                var assignment = new ByeAssignment(nextPair, kind);
+                return round with { Byes = round.Byes.Append(assignment).ToArray() };
+            })
+            .ToArray();
+
+        var updatedSection = section with
+        {
+            Players = newPlayers,
+            Rounds = newRounds,
+        };
+        return ReplaceSection(tournament, sectionName, updatedSection);
+    }
+
+    // ================================================================
+    // Helpers
+    // ================================================================
+
+    private static Player FindPlayer(Section section, int pairNumber) =>
+        section.Players.FirstOrDefault(p => p.PairNumber == pairNumber)
+        ?? throw new InvalidOperationException(
+            $"Player #{pairNumber} not found in section '{section.Name}'.");
+
+    private static Tournament ReplacePlayer(Tournament t, Section section, Player replacement)
+    {
+        var players = section.Players
+            .Select(p => p.PairNumber == replacement.PairNumber ? replacement : p)
+            .ToArray();
+        var updated = section with { Players = players };
+        return ReplaceSection(t, section.Name, updated);
+    }
+
+    private static void GuardPreRoundOneForPlayerDelete(Section section, string op)
+    {
+        if (section.RoundsPaired > 0)
+        {
+            throw new InvalidOperationException(
+                $"{op} is only allowed before round 1 is paired. " +
+                $"Section '{section.Name}' already has {section.RoundsPaired} round(s) paired; " +
+                $"use SetPlayerWithdrawn instead.");
+        }
+    }
+
+    /// <summary>
+    /// Pair-round-N defense-in-depth check. The UI also prompts the TD
+    /// to resolve soft-deleted players before pairing a round, but the
+    /// mutation refuses too so scripted / batch callers can't sidestep
+    /// the guard.
+    /// </summary>
+    private static void GuardNoSoftDeletedPlayers(Section section)
+    {
+        if (section.Players.Any(p => p.SoftDeleted))
+        {
+            var names = string.Join(", ",
+                section.Players.Where(p => p.SoftDeleted).Select(p => $"#{p.PairNumber} {p.Name}"));
+            throw new InvalidOperationException(
+                $"Section '{section.Name}' has soft-deleted players ({names}). " +
+                $"Restore or permanently delete them before pairing a round.");
+        }
+    }
+
     private static Section FindSection(Tournament t, string name)
     {
         var section = FindSectionAllowSoftDeleted(t, name);
@@ -853,7 +1377,8 @@ public static class TournamentMutations
         Player player,
         IReadOnlyDictionary<int, (int Opponent, PlayerColor Color, int Board)> pairingByPlayer,
         IReadOnlySet<int> fullByeSet,
-        IReadOnlySet<int> halfByeSet)
+        IReadOnlySet<int> halfByeSet,
+        IReadOnlySet<int> zeroByeSet)
     {
         RoundResult entry;
         if (pairingByPlayer.TryGetValue(player.PairNumber, out var info))
@@ -894,6 +1419,20 @@ public static class TournamentMutations
                 Logic1: 0,
                 Logic2: 0,
                 GamePoints: 0.5m);
+        }
+        else if (zeroByeSet.Contains(player.PairNumber))
+        {
+            // Requested / TD-granted zero-point bye (SwissSys 'U'):
+            // player was filtered out of BBP input entirely for this
+            // round and received no points.
+            entry = new RoundResult(
+                Kind: RoundResultKind.ZeroPointBye,
+                Opponent: 0,
+                Color: PlayerColor.None,
+                Board: 0,
+                Logic1: 0,
+                Logic2: 0,
+                GamePoints: 0m);
         }
         else
         {

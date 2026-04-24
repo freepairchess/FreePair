@@ -133,6 +133,43 @@ public partial class TournamentViewModel : ViewModelBase
     /// </summary>
     public Func<PublishingDialogViewModel, Task<PublishingDialogViewModel?>>? ShowPublishingDialogAsync { get; set; }
 
+    /// <summary>
+    /// View-supplied callback that opens the Manage-requested-byes
+    /// dialog. Receives a preconfigured
+    /// <see cref="ManageByesViewModel"/>; the view shows it as modal
+    /// and returns the same VM on Save (so the caller reads
+    /// <see cref="ManageByesViewModel.BuildDiffs"/>) or <c>null</c>
+    /// on Cancel.
+    /// </summary>
+    public Func<ManageByesViewModel, Task<ManageByesViewModel?>>? ShowManageByesDialogAsync { get; set; }
+
+    /// <summary>
+    /// View-supplied callback that opens the player form dialog
+    /// (used for both edit and add flows). Returns the VM on Save,
+    /// null on Cancel.
+    /// </summary>
+    public Func<PlayerFormViewModel, Task<PlayerFormViewModel?>>? ShowPlayerFormDialogAsync { get; set; }
+
+    /// <summary>
+    /// View-supplied callback that opens the section form dialog
+    /// (used for the add-section flow). Returns the VM on Save,
+    /// null on Cancel.
+    /// </summary>
+    public Func<SectionFormViewModel, Task<SectionFormViewModel?>>? ShowSectionFormDialogAsync { get; set; }
+
+    /// <summary>
+    /// View-supplied callback that opens the New-event dialog.
+    /// Returns the VM on Create, null on Cancel.
+    /// </summary>
+    public Func<NewEventViewModel, Task<NewEventViewModel?>>? ShowNewEventDialogAsync { get; set; }
+
+    /// <summary>
+    /// View-supplied callback that opens a save-file picker with
+    /// <c>.sjson</c> file type and returns the chosen path (or null
+    /// on cancel). Used by the New-event flow.
+    /// </summary>
+    public Func<string /*suggestedName*/, Task<string?>>? PickNewEventSavePathAsync { get; set; }
+
     // ============ Online publishing (session-only, per-tournament) ============
 
     /// <summary>Sticky URL used by the Publish dialog. Seeded from <see cref="AppSettings.NaChessHubBaseUrl"/>.</summary>
@@ -400,6 +437,73 @@ public partial class TournamentViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Creates a brand-new tournament from scratch. Prompts the TD
+    /// for a title (and optionally a first section), then opens a
+    /// save-file picker and writes an initial <c>.sjson</c>. After
+    /// return, the new tournament is loaded as
+    /// <see cref="Tournament"/> with <see cref="CurrentFilePath"/>
+    /// set to the picked path, so subsequent edits auto-save to
+    /// that file via <see cref="PersistCurrentTournamentAsync"/>.
+    /// </summary>
+    [RelayCommand]
+    private async Task NewAsync()
+    {
+        if (ShowNewEventDialogAsync is null || PickNewEventSavePathAsync is null) return;
+
+        var dialogVm = new NewEventViewModel();
+        var result = await ShowNewEventDialogAsync(dialogVm).ConfigureAwait(true);
+        if (result is null) return; // cancelled
+
+        if (!result.TryValidate(out var firstRounds))
+        {
+            ErrorMessage = result.ErrorMessage;
+            return;
+        }
+
+        // Suggest a filename derived from the title (sanitized).
+        var safeTitle = string.Concat(result.EventTitle
+            .Trim()
+            .Where(c => !System.IO.Path.GetInvalidFileNameChars().Contains(c)));
+        var suggested = string.IsNullOrWhiteSpace(safeTitle) ? "New tournament.sjson" : $"{safeTitle}.sjson";
+        var path = await PickNewEventSavePathAsync(suggested).ConfigureAwait(true);
+        if (string.IsNullOrWhiteSpace(path)) return;
+
+        // Build the tournament. Only the title is seeded; every
+        // other Overview field stays null and the TD fills in dates
+        // / location / etc. via the event-config dialog afterward.
+        // Five fields are positional without defaults; the rest
+        // default to null on the Tournament record.
+        var tournament = new Tournament(
+            Title: result.EventTitle.Trim(),
+            StartDate: null,
+            EndDate: null,
+            TimeControl: null,
+            NachEventId: null,
+            Sections: System.Array.Empty<Section>());
+
+        if (!string.IsNullOrWhiteSpace(result.FirstSectionName))
+        {
+            tournament = TournamentMutations.AddSection(
+                tournament,
+                name: result.FirstSectionName.Trim(),
+                kind: result.FirstSectionKind.Kind,
+                finalRound: firstRounds,
+                timeControl: result.FirstSectionTimeControl);
+        }
+
+        // Seed state + persist via the standard save path so the new
+        // file is created on disk through the writer's missing-file
+        // scaffold branch.
+        Tournament = tournament;
+        CurrentFilePath = path;
+        LastSavedAt = null;
+        LastPublishedAt = null;
+        LastPublishedUrl = null;
+        ErrorMessage = null;
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
     [RelayCommand]
     private void Close()
     {
@@ -409,6 +513,51 @@ public partial class TournamentViewModel : ViewModelBase
         LastSavedAt = null;
         LastPublishedAt = null;
         LastPublishedUrl = null;
+    }
+
+    /// <summary>
+    /// Opens the section form dialog in Add mode, then dispatches
+    /// through <see cref="TournamentMutations.AddSection"/> and
+    /// persists. Bound to the "➕ Add section" button on
+    /// <c>TournamentView</c>.
+    /// </summary>
+    [RelayCommand]
+    private async Task AddSectionAsync()
+    {
+        if (Tournament is null || ShowSectionFormDialogAsync is null) return;
+
+        var dialogVm = SectionFormViewModel.ForAdd(Tournament.Title ?? "(untitled)");
+        var result = await ShowSectionFormDialogAsync(dialogVm).ConfigureAwait(true);
+        if (result is null) return; // cancelled
+
+        if (!result.TryValidate(out var finalRound))
+        {
+            ErrorMessage = result.ErrorMessage;
+            return;
+        }
+
+        try
+        {
+            Tournament = TournamentMutations.AddSection(
+                Tournament,
+                name: result.Name,
+                kind: result.Kind.Kind,
+                finalRound: finalRound,
+                timeControl: result.TimeControl,
+                title: result.SectionTitle);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to add section: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+
+        // Jump to the newly-created section so the TD can start
+        // populating it immediately.
+        SelectedSection = Sections.FirstOrDefault(s => s.Name == result.Name.Trim());
     }
 
     [RelayCommand]
@@ -447,6 +596,14 @@ public partial class TournamentViewModel : ViewModelBase
         vm.SoftDeleteRequested += OnSectionSoftDeleteAsync;
         vm.UndeleteRequested   += OnSectionUndeleteAsync;
         vm.HardDeleteRequested += OnSectionHardDeleteAsync;
+        vm.PlayerSoftDeleteRequested += OnPlayerSoftDeleteAsync;
+        vm.PlayerUndeleteRequested   += OnPlayerUndeleteAsync;
+        vm.PlayerHardDeleteRequested += OnPlayerHardDeleteAsync;
+        vm.PlayerWithdrawRequested   += OnPlayerWithdrawAsync;
+        vm.PlayerUnwithdrawRequested += OnPlayerUnwithdrawAsync;
+        vm.PlayerManageByesRequested += OnPlayerManageByesAsync;
+        vm.PlayerEditRequested       += OnPlayerEditAsync;
+        vm.PlayerAddRequested        += OnPlayerAddAsync;
     }
 
     private void DetachSectionEvents()
@@ -460,6 +617,14 @@ public partial class TournamentViewModel : ViewModelBase
             vm.SoftDeleteRequested -= OnSectionSoftDeleteAsync;
             vm.UndeleteRequested   -= OnSectionUndeleteAsync;
             vm.HardDeleteRequested -= OnSectionHardDeleteAsync;
+            vm.PlayerSoftDeleteRequested -= OnPlayerSoftDeleteAsync;
+            vm.PlayerUndeleteRequested   -= OnPlayerUndeleteAsync;
+            vm.PlayerHardDeleteRequested -= OnPlayerHardDeleteAsync;
+            vm.PlayerWithdrawRequested   -= OnPlayerWithdrawAsync;
+            vm.PlayerUnwithdrawRequested -= OnPlayerUnwithdrawAsync;
+            vm.PlayerManageByesRequested -= OnPlayerManageByesAsync;
+            vm.PlayerEditRequested -= OnPlayerEditAsync;
+            vm.PlayerAddRequested -= OnPlayerAddAsync;
         }
     }
 
@@ -613,6 +778,276 @@ public partial class TournamentViewModel : ViewModelBase
         catch (Exception ex)
         {
             ErrorMessage = $"Failed to delete section: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    // ================================================================
+    // Player lifecycle handlers
+    // ================================================================
+
+    private async Task OnPlayerSoftDeleteAsync(SectionViewModel section, int pairNumber)
+    {
+        if (Tournament is null) return;
+
+        var player = section.Section.Players.FirstOrDefault(p => p.PairNumber == pairNumber);
+        var label  = player is null ? $"#{pairNumber}" : $"#{pairNumber} {player.Name}";
+
+        if (PromptConfirmAsync is not null)
+        {
+            var confirmed = await PromptConfirmAsync(
+                "Soft-delete player",
+                $"Mark player {label} in '{section.Name}' as soft-deleted?\n\n" +
+                $"The player will be excluded from pairings, standings, and published results. " +
+                $"All data is preserved — click the ↩ icon to restore them later. " +
+                $"This is only allowed before round 1 is paired.",
+                "Soft-delete").ConfigureAwait(true);
+            if (!confirmed) return;
+        }
+
+        try
+        {
+            Tournament = TournamentMutations.SoftDeletePlayer(Tournament, section.Name, pairNumber);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to soft-delete player: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnPlayerUndeleteAsync(SectionViewModel section, int pairNumber)
+    {
+        if (Tournament is null) return;
+
+        try
+        {
+            Tournament = TournamentMutations.UndeletePlayer(Tournament, section.Name, pairNumber);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to undelete player: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnPlayerHardDeleteAsync(SectionViewModel section, int pairNumber)
+    {
+        if (Tournament is null) return;
+
+        var player = section.Section.Players.FirstOrDefault(p => p.PairNumber == pairNumber);
+        var label  = player is null ? $"#{pairNumber}" : $"#{pairNumber} {player.Name}";
+
+        if (PromptConfirmAsync is not null)
+        {
+            var confirmed = await PromptConfirmAsync(
+                "Permanently delete player",
+                $"PERMANENTLY DELETE player {label} from '{section.Name}'?\n\n" +
+                $"The player will be removed entirely from this section. This is only " +
+                $"allowed before round 1 is paired and cannot be undone short of " +
+                $"restoring a backup.",
+                "Permanently delete").ConfigureAwait(true);
+            if (!confirmed) return;
+        }
+
+        try
+        {
+            Tournament = TournamentMutations.HardDeletePlayer(Tournament, section.Name, pairNumber);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to delete player: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnPlayerWithdrawAsync(SectionViewModel section, int pairNumber)
+    {
+        if (Tournament is null) return;
+
+        var player = section.Section.Players.FirstOrDefault(p => p.PairNumber == pairNumber);
+        var label  = player is null ? $"#{pairNumber}" : $"#{pairNumber} {player.Name}";
+
+        if (PromptConfirmAsync is not null)
+        {
+            var confirmed = await PromptConfirmAsync(
+                "Withdraw player",
+                $"Withdraw {label} from '{section.Name}'?\n\n" +
+                $"The player's existing game results stay in place and still count " +
+                $"toward their opponents' tiebreaks. They won't be paired in any " +
+                $"future round. You can reverse this at any time via the undo icon " +
+                $"on the Players tab.",
+                "Withdraw").ConfigureAwait(true);
+            if (!confirmed) return;
+        }
+
+        try
+        {
+            Tournament = TournamentMutations.SetPlayerWithdrawn(Tournament, section.Name, pairNumber, withdrawn: true);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to withdraw player: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnPlayerUnwithdrawAsync(SectionViewModel section, int pairNumber)
+    {
+        if (Tournament is null) return;
+
+        try
+        {
+            Tournament = TournamentMutations.SetPlayerWithdrawn(Tournament, section.Name, pairNumber, withdrawn: false);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to return player from withdrawal: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnPlayerManageByesAsync(SectionViewModel section, int pairNumber)
+    {
+        if (Tournament is null || ShowManageByesDialogAsync is null) return;
+
+        var player = section.Section.Players.FirstOrDefault(p => p.PairNumber == pairNumber);
+        if (player is null) return;
+
+        var dialogVm = new ManageByesViewModel(
+            sectionName: section.Name,
+            player: player,
+            targetRounds: section.TargetRounds,
+            roundsPaired: section.Section.RoundsPaired);
+
+        var result = await ShowManageByesDialogAsync(dialogVm).ConfigureAwait(true);
+        if (result is null) return; // user cancelled
+
+        var diffs = result.BuildDiffs();
+        if (diffs.Count == 0) return;
+
+        try
+        {
+            foreach (var (round, newKind) in diffs)
+            {
+                Tournament = newKind is null
+                    ? TournamentMutations.RemoveRequestedBye(Tournament, section.Name, pairNumber, round)
+                    : TournamentMutations.AddRequestedBye(Tournament, section.Name, pairNumber, round, newKind.Value);
+            }
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to apply bye changes: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnPlayerEditAsync(SectionViewModel section, int pairNumber)
+    {
+        if (Tournament is null || ShowPlayerFormDialogAsync is null) return;
+
+        var player = section.Section.Players.FirstOrDefault(p => p.PairNumber == pairNumber);
+        if (player is null) return;
+
+        var dialogVm = PlayerFormViewModel.ForEdit(section.Name, player);
+        var result = await ShowPlayerFormDialogAsync(dialogVm).ConfigureAwait(true);
+        if (result is null) return; // cancelled
+
+        if (!result.TryValidate(out var rating, out var secondaryRating))
+        {
+            ErrorMessage = result.ErrorMessage;
+            return;
+        }
+
+        try
+        {
+            Tournament = TournamentMutations.UpdatePlayerInfo(
+                Tournament,
+                section.Name,
+                pairNumber,
+                name: result.Name,
+                uscfId: result.UscfId,
+                rating: rating,
+                secondaryRating: secondaryRating,
+                membershipExpiration: result.MembershipExpiration,
+                club: result.Club,
+                state: result.State,
+                team: result.Team,
+                email: result.Email,
+                phone: result.Phone);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to update player: {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnPlayerAddAsync(SectionViewModel section)
+    {
+        if (Tournament is null || ShowPlayerFormDialogAsync is null) return;
+
+        var nextPair = section.Section.Players.Count == 0
+            ? 1
+            : section.Section.Players.Max(p => p.PairNumber) + 1;
+        var dialogVm = PlayerFormViewModel.ForAdd(
+            sectionName: section.Name,
+            nextPairNumber: nextPair,
+            roundsPaired: section.Section.RoundsPaired);
+
+        var result = await ShowPlayerFormDialogAsync(dialogVm).ConfigureAwait(true);
+        if (result is null) return; // cancelled
+
+        if (!result.TryValidate(out var rating, out var secondaryRating))
+        {
+            ErrorMessage = result.ErrorMessage;
+            return;
+        }
+
+        try
+        {
+            Tournament = TournamentMutations.AddPlayer(
+                Tournament,
+                section.Name,
+                name: result.Name,
+                uscfId: result.UscfId,
+                rating: rating,
+                secondaryRating: secondaryRating,
+                membershipExpiration: result.MembershipExpiration,
+                club: result.Club,
+                state: result.State,
+                team: result.Team,
+                email: result.Email,
+                phone: result.Phone,
+                byesForPastRounds: result.CollectByesForPastRounds());
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to add player: {ex.Message}";
             return;
         }
 

@@ -62,6 +62,85 @@ public partial class SectionView : UserControl
         }
     }
 
+    // ================================================================
+    // Player lifecycle icon buttons on the Players grid
+    // ================================================================
+    // DataGrid cell Buttons have PlayerRow as their DataContext, so we
+    // pass the pair number through Tag and let the section VM do the
+    // rest (dispatches to TournamentViewModel's handlers which run the
+    // confirm prompt + mutation + auto-save).
+
+    private async void OnPlayerSoftDeleteClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is int pn
+            && DataContext is ViewModels.SectionViewModel vm)
+        {
+            await vm.RequestPlayerSoftDeleteAsync(pn);
+        }
+    }
+
+    private async void OnPlayerUndeleteClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is int pn
+            && DataContext is ViewModels.SectionViewModel vm)
+        {
+            await vm.RequestPlayerUndeleteAsync(pn);
+        }
+    }
+
+    private async void OnPlayerHardDeleteClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is int pn
+            && DataContext is ViewModels.SectionViewModel vm)
+        {
+            await vm.RequestPlayerHardDeleteAsync(pn);
+        }
+    }
+
+    private async void OnPlayerWithdrawClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is int pn
+            && DataContext is ViewModels.SectionViewModel vm)
+        {
+            await vm.RequestPlayerWithdrawAsync(pn);
+        }
+    }
+
+    private async void OnPlayerUnwithdrawClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is int pn
+            && DataContext is ViewModels.SectionViewModel vm)
+        {
+            await vm.RequestPlayerUnwithdrawAsync(pn);
+        }
+    }
+
+    private async void OnPlayerManageByesClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is int pn
+            && DataContext is ViewModels.SectionViewModel vm)
+        {
+            await vm.RequestPlayerManageByesAsync(pn);
+        }
+    }
+
+    private async void OnPlayerEditClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is int pn
+            && DataContext is ViewModels.SectionViewModel vm)
+        {
+            await vm.RequestPlayerEditAsync(pn);
+        }
+    }
+
+    private async void OnAddPlayerClick(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is ViewModels.SectionViewModel vm)
+        {
+            await vm.RequestPlayerAddAsync();
+        }
+    }
+
     private void OnClearPairingFilter(object? sender, RoutedEventArgs e)
     {
         if (DataContext is ViewModels.SectionViewModel vm) vm.PairingFilter = string.Empty;

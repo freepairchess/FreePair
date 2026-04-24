@@ -1,0 +1,121 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:FreePair.App.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="520" d:DesignHeight="520"
+        x:Class="FreePair.App.Views.PlayerFormDialog"
+        x:DataType="vm:PlayerFormViewModel"
+        Title="{Binding Title}"
+        Width="520"
+        SizeToContent="Height"
+        MaxHeight="640"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+
+    <DockPanel Margin="20" LastChildFill="True">
+
+        <StackPanel DockPanel.Dock="Top" Spacing="4" Margin="0,0,0,12">
+            <TextBlock Text="{Binding HeaderLabel}" FontWeight="SemiBold" FontSize="14"/>
+            <TextBlock Foreground="Gray" FontSize="11">
+                <Run Text="Section: "/><Run Text="{Binding SectionName}"/>
+            </TextBlock>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="8"
+                    Margin="0,12,0,0">
+            <TextBlock x:Name="ErrorText"
+                       Foreground="DarkRed"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       MaxWidth="240"
+                       Text="{Binding ErrorMessage}"
+                       IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+            <Button Content="Cancel"
+                    Click="OnCancel"
+                    MinWidth="90"
+                    IsCancel="True"/>
+            <Button Content="{Binding ConfirmLabel}"
+                    Click="OnConfirm"
+                    MinWidth="90"
+                    IsDefault="True"
+                    Classes="accent"/>
+        </StackPanel>
+
+        <ScrollViewer>
+            <StackPanel Spacing="12">
+                <Grid ColumnDefinitions="120,*"
+                      RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                      RowSpacing="8">
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Name *" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding Name}"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="USCF ID" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding UscfId}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Rating *" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="2" Grid.Column="1" Text="{Binding RatingText}" Watermark="e.g. 1500"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Rating 2" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="3" Grid.Column="1" Text="{Binding SecondaryRatingText}" Watermark="optional"/>
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Membership exp." VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="4" Grid.Column="1" Text="{Binding MembershipExpiration}"/>
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Club" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="5" Grid.Column="1" Text="{Binding Club}"/>
+
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="State" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="6" Grid.Column="1" Text="{Binding State}"/>
+
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="Team" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="7" Grid.Column="1" Text="{Binding Team}"/>
+
+                    <TextBlock Grid.Row="8" Grid.Column="0" Text="Email" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="8" Grid.Column="1" Text="{Binding Email}"/>
+
+                    <TextBlock Grid.Row="9" Grid.Column="0" Text="Phone" VerticalAlignment="Center" Foreground="DimGray"/>
+                    <TextBox  Grid.Row="9" Grid.Column="1" Text="{Binding Phone}"/>
+                </Grid>
+
+                <!-- Byes for already-paired rounds. Only surfaces on
+                     the Add flow when the section has at least one
+                     paired round; defaults every past round to a
+                     zero-point bye. TD can switch any round to half-
+                     or full-point. -->
+                <StackPanel Spacing="6" IsVisible="{Binding HasPastRoundByes}">
+                    <TextBlock Text="Byes for past rounds" FontWeight="SemiBold"/>
+                    <TextBlock Foreground="Gray" FontSize="11" TextWrapping="Wrap"
+                               Text="The player didn't play these rounds. Pick a bye kind for each; zero-point is the safe default for late entries."/>
+                    <Border BorderBrush="LightGray"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="8">
+                        <ItemsControl ItemsSource="{Binding PastRoundByes}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="vm:PastRoundByeRow">
+                                    <Grid ColumnDefinitions="80,*" Margin="0,4">
+                                        <TextBlock Grid.Column="0"
+                                                   Text="{Binding RoundLabel}"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Center"/>
+                                        <ComboBox Grid.Column="1"
+                                                  ItemsSource="{Binding Options}"
+                                                  SelectedItem="{Binding Choice, Mode=TwoWay}"
+                                                  MinWidth="260"
+                                                  HorizontalAlignment="Stretch"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

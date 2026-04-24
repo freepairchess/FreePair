@@ -34,7 +34,16 @@ public sealed record BbpPairingResult(
     IReadOnlyList<BbpPairing> Pairings,
     IReadOnlyList<int> ByePlayerPairs,
     IReadOnlyList<int>? HalfPointByePlayerPairs = null,
-    IReadOnlyList<string>? UnresolvedConflicts = null)
+    IReadOnlyList<string>? UnresolvedConflicts = null,
+    /// <summary>
+    /// Pair numbers pre-flagged for a zero-point bye via
+    /// <see cref="Tournaments.Player.ZeroPointByeRounds"/>. Like the
+    /// half-point variant, BBP never sees these players (they're
+    /// filtered out of the active roster before TRF generation); the
+    /// result surfaces them so <see cref="Tournaments.TournamentMutations.AppendRound"/>
+    /// can stamp a <c>ZeroPointBye</c> history entry.
+    /// </summary>
+    IReadOnlyList<int>? ZeroPointByePlayerPairs = null)
 {
     /// <summary>
     /// Non-null view of <see cref="HalfPointByePlayerPairs"/>.
@@ -47,4 +56,10 @@ public sealed record BbpPairingResult(
     /// </summary>
     public IReadOnlyList<string> Conflicts =>
         UnresolvedConflicts ?? System.Array.Empty<string>();
+
+    /// <summary>
+    /// Non-null view of <see cref="ZeroPointByePlayerPairs"/>.
+    /// </summary>
+    public IReadOnlyList<int> ZeroPointByes =>
+        ZeroPointByePlayerPairs ?? System.Array.Empty<int>();
 }

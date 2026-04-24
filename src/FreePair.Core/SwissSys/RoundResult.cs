@@ -51,7 +51,9 @@ public readonly record struct RoundResult(
     /// True when this slot represents a bye of either kind.
     /// </summary>
     public bool IsBye =>
-        Kind is RoundResultKind.FullPointBye or RoundResultKind.HalfPointBye;
+        Kind is RoundResultKind.FullPointBye
+             or RoundResultKind.HalfPointBye
+             or RoundResultKind.ZeroPointBye;
 
     /// <summary>
     /// Game points awarded for this result (1 / 0.5 / 0). Does <b>not</b>
@@ -104,6 +106,7 @@ public readonly record struct RoundResult(
             RoundResultKind.Draw         => "=",
             RoundResultKind.FullPointBye => "B",
             RoundResultKind.HalfPointBye => "H",
+            RoundResultKind.ZeroPointBye => "U",
             _                            => "~",
         };
 
@@ -171,10 +174,12 @@ public readonly record struct RoundResult(
             case "H": kind = RoundResultKind.HalfPointBye; return true;
             case "B": kind = RoundResultKind.FullPointBye; return true;
             case "~": kind = RoundResultKind.None; return true;
-            // SwissSys also emits "U" for slots a player was unpaired
-            // in (late entry, withdrawal, odd-count bye-with-no-points).
-            // Treat it the same as "~" / empty for FreePair purposes.
-            case "U": kind = RoundResultKind.None; return true;
+            // SwissSys "U" = player was unpaired for this round and
+            // received no points. Distinct from "~" / empty: "U" is
+            // an affirmative "got a zero-point bye" mark from the TD
+            // or SwissSys itself (late entry, withdrawal round, etc.).
+            // Modelled as RoundResultKind.ZeroPointBye with Score == 0.
+            case "U": kind = RoundResultKind.ZeroPointBye; return true;
             // Forfeit wins / losses. USCF rules: scoring is identical to
             // a regular win / loss. We don't preserve the forfeit-vs-
             // played distinction in the domain model (v1), so downstream

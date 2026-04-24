@@ -1,0 +1,71 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:FreePair.App.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="460" d:DesignHeight="340"
+        x:Class="FreePair.App.Views.ManageByesDialog"
+        x:DataType="vm:ManageByesViewModel"
+        Title="Manage requested byes"
+        Width="460"
+        SizeToContent="Height"
+        MaxHeight="520"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+
+    <DockPanel Margin="20" LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top" Spacing="4" Margin="0,0,0,12">
+            <TextBlock Text="{Binding PlayerLabel}" FontWeight="SemiBold" FontSize="14"/>
+            <TextBlock Foreground="Gray" FontSize="11">
+                <Run Text="Section: "/>
+                <Run Text="{Binding SectionName}"/>
+            </TextBlock>
+            <TextBlock Foreground="Gray" FontSize="11" TextWrapping="Wrap"
+                       Text="Pick a bye kind for each future unpaired round. The player will be excluded from BBP pairing for those rounds and their history will be stamped accordingly. Already-paired rounds aren't shown — byes must be set before pairing."/>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="8"
+                    Margin="0,12,0,0">
+            <Button x:Name="CancelButton"
+                    Content="Cancel"
+                    Click="OnCancel"
+                    MinWidth="90"
+                    IsCancel="True"/>
+            <Button x:Name="SaveButton"
+                    Content="Save"
+                    Click="OnSave"
+                    MinWidth="90"
+                    IsDefault="True"
+                    Classes="accent"/>
+        </StackPanel>
+
+        <Border BorderBrush="LightGray"
+                BorderThickness="1"
+                CornerRadius="4"
+                Padding="8">
+            <ScrollViewer>
+                <ItemsControl ItemsSource="{Binding Rows}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="vm:ManageByesRow">
+                            <Grid ColumnDefinitions="80,*" Margin="0,4">
+                                <TextBlock Grid.Column="0"
+                                           Text="{Binding RoundLabel}"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Center"/>
+                                <ComboBox Grid.Column="1"
+                                          ItemsSource="{Binding Options}"
+                                          SelectedItem="{Binding Choice, Mode=TwoWay}"
+                                          MinWidth="260"
+                                          HorizontalAlignment="Stretch"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+    </DockPanel>
+</Window>

@@ -319,7 +319,8 @@ public static class SwissSysResultJsonBuilder
         RoundResultKind.Draw         => "D",
         RoundResultKind.FullPointBye => "B",
         RoundResultKind.HalfPointBye => "H",
-        _                            => "",  // unplayed / paired-unplayed / unpaired
+        RoundResultKind.ZeroPointBye => "U",
+        _                            => "",  // unplayed / paired-unplayed
     };
 
     private static string MapColorLetter(RoundResult r) => r.Color switch

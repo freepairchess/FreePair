@@ -40,10 +40,26 @@ public class SwissSysTournamentWriter : ITournamentWriter
         ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
         ArgumentNullException.ThrowIfNull(tournament);
 
-        var json = await File.ReadAllTextAsync(filePath, cancellationToken).ConfigureAwait(false);
-
-        var root = JsonNode.Parse(json)
-            ?? throw new InvalidDataException($"File '{filePath}' is not valid JSON.");
+        // Load the existing file if present; otherwise seed a minimal
+        // SwissSys v11 scaffold in-memory. The new-file path supports
+        // the "create new event from scratch" TD flow — the TD picks
+        // a target path that doesn't yet exist, and SaveAsync writes a
+        // valid .sjson without needing a template file on disk.
+        JsonNode root;
+        if (File.Exists(filePath))
+        {
+            var json = await File.ReadAllTextAsync(filePath, cancellationToken).ConfigureAwait(false);
+            root = JsonNode.Parse(json)
+                ?? throw new InvalidDataException($"File '{filePath}' is not valid JSON.");
+        }
+        else
+        {
+            root = new JsonObject
+            {
+                ["Overview"] = new JsonObject(),
+                ["Sections"] = new JsonArray(),
+            };
+        }
 
         // ===== Overview / event-level metadata =====
         // Only keys whose domain value is non-null are patched. Null
@@ -64,10 +80,61 @@ public class SwissSysTournamentWriter : ITournamentWriter
             var sectionNode = FindSectionByName(sectionsArray, section.Name);
             if (sectionNode is null)
             {
-                // New section not present in the original file — skip; we
-                // don't currently synthesize sections from thin air.
-                continue;
+                // Section added in-session via AddSection — synthesize
+                // a raw JsonObject with the SwissSys keys SwissSys v11
+                // expects on load, then append to the Sections array.
+                // Every editable key (name / type / final round / time
+                // control / player list) is written here; the per-
+                // section patch block below fills in the rest
+                // (rounds paired / played, soft-deleted flag, etc.).
+                sectionNode = new JsonObject
+                {
+                    ["Section name"]          = section.Name,
+                    ["Section title"]         = section.Title,
+                    ["Type"]                  = section.Kind switch
+                    {
+                        SectionKind.Swiss      => 0,
+                        SectionKind.RoundRobin => 1,
+                        _                      => 0,
+                    },
+                    ["Section time control"]  = section.TimeControl,
+                    ["Number of players"]     = section.Players.Count,
+                    ["Number of teams"]       = section.Teams.Count,
+                    ["Rounds paired"]         = 0,
+                    ["Rounds played"]         = 0,
+                    ["Rating to use"]         = 0,
+                    ["Engine"]                = 0,
+                    ["Last unrestricted round"] = 0,
+                    ["Need search options"]   = false,
+                    ["First board"]           = section.FirstBoard,
+                    ["Final round"]           = section.FinalRound,
+                    ["Coin toss"]             = 0,
+                    ["Team cut"]              = 0,
+                    ["Acceleration"]          = 0,
+                    ["Blitz"]                 = false,
+                    ["Got logic"]             = false,
+                    ["Pair table items"]      = 0,
+                    ["Team pair table items"] = 0,
+                    ["Players"]               = new JsonArray(),
+                    ["Teams"]                 = new JsonArray(),
+                };
+                sectionsArray.Add(sectionNode);
             }
+
+            // Editable section metadata — written on every save so
+            // in-session edits (name, time control, final round) stick.
+            sectionNode["Section name"]         = section.Name;
+            sectionNode["Section title"]        = section.Title;
+            sectionNode["Section time control"] = section.TimeControl;
+            sectionNode["Final round"]          = section.FinalRound;
+            sectionNode["Type"] = section.Kind switch
+            {
+                SectionKind.Swiss      => 0,
+                SectionKind.RoundRobin => 1,
+                _                      => sectionNode["Type"] is JsonValue existing
+                                              ? existing.GetValue<int>()
+                                              : 0,
+            };
 
             sectionNode["Rounds paired"] = section.RoundsPaired;
             sectionNode["Rounds played"] = section.RoundsPlayed;
@@ -96,8 +163,30 @@ public class SwissSysTournamentWriter : ITournamentWriter
                 var playerNode = FindPlayerByPairNumber(playersArray, player.PairNumber);
                 if (playerNode is null)
                 {
-                    continue;
+                    // Player added in-session via AddPlayer — create a
+                    // fresh raw node so the field-patch code below has
+                    // something to write into. Minimal seed (just the
+                    // pair number); every other key is set by the
+                    // identity / contact / results patches below.
+                    playerNode = new JsonObject { ["Pair number"] = player.PairNumber };
+                    playersArray.Add(playerNode);
                 }
+
+                // Editable identity/contact fields — written back on
+                // every save so in-session edits from the Player form
+                // dialog stick. Nullable string fields serialize as
+                // JSON null when the domain value is null (SwissSys
+                // tolerates both null and empty-string).
+                playerNode["Name"]    = JsonValue.Create(player.Name);
+                playerNode["ID"]      = player.UscfId is null ? null : JsonValue.Create(player.UscfId);
+                playerNode["Rating"]  = JsonValue.Create(player.Rating);
+                playerNode["Rating2"] = player.SecondaryRating is null ? null : JsonValue.Create(player.SecondaryRating.Value);
+                playerNode["Exp1"]    = player.MembershipExpiration is null ? null : JsonValue.Create(player.MembershipExpiration);
+                playerNode["Club"]    = player.Club  is null ? null : JsonValue.Create(player.Club);
+                playerNode["State"]   = player.State is null ? null : JsonValue.Create(player.State);
+                playerNode["Team"]    = player.Team  is null ? null : JsonValue.Create(player.Team);
+                playerNode["Email"]   = player.Email is null ? null : JsonValue.Create(player.Email);
+                playerNode["Phone"]   = player.Phone is null ? null : JsonValue.Create(player.Phone);
 
                 var resultsArray = new JsonArray();
                 foreach (var entry in player.History)
@@ -106,6 +195,64 @@ public class SwissSysTournamentWriter : ITournamentWriter
                 }
 
                 playerNode["Results"] = resultsArray;
+
+                // FreePair-specific per-player flag. Same set/clear
+                // pattern as the section-level soft-deleted key.
+                if (player.SoftDeleted)
+                {
+                    playerNode["FreePair soft deleted"] = true;
+                }
+                else
+                {
+                    playerNode.Remove("FreePair soft deleted");
+                }
+
+                // FreePair-specific zero-point bye request list. SwissSys
+                // only carries half-point byes in its native "Reserved
+                // byes" field; this key adds the zero-point sibling. Set
+                // / remove symmetrically so empty lists don't persist.
+                var zeroRounds = player.ZeroPointByeRoundsOrEmpty;
+                if (zeroRounds.Count > 0)
+                {
+                    var arr = new JsonArray();
+                    foreach (var n in zeroRounds)
+                    {
+                        arr.Add(JsonValue.Create(n));
+                    }
+                    playerNode["FreePair zero-point bye rounds"] = arr;
+                }
+                else
+                {
+                    playerNode.Remove("FreePair zero-point bye rounds");
+                }
+
+                // Half-point requested byes round-trip via the native
+                // SwissSys "Reserved byes" string field (a single
+                // space-separated list of round numbers). Written on
+                // every save so in-session AddRequestedBye edits stick
+                // across file close / reopen. Keep the key even when
+                // empty: SwissSys tolerates an empty string and the
+                // field pre-exists in source files, so removing it
+                // could confuse the importer (which would then report a
+                // missing key rather than "no byes requested").
+                var halfRounds = player.RequestedByeRounds;
+                playerNode["Reserved byes"] = halfRounds.Count == 0
+                    ? string.Empty
+                    : string.Join(" ", halfRounds.OrderBy(r => r));
+            }
+
+            // Hard-delete propagation (per-player): any player node in
+            // the raw section whose pair number is missing from
+            // section.Players was removed by HardDeletePlayer. Prune.
+            var livePairs = new HashSet<int>(section.Players.Select(p => p.PairNumber));
+            for (var i = playersArray.Count - 1; i >= 0; i--)
+            {
+                if (playersArray[i] is JsonObject pobj &&
+                    pobj["Pair number"]?.GetValue<int>() is int pn &&
+                    !livePairs.Contains(pn))
+                {
+                    playersArray.RemoveAt(i);
+                }
             }
         }
 

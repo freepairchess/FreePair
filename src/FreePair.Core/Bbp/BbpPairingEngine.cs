@@ -70,6 +70,16 @@ public class BbpPairingEngine : IBbpPairingEngine
             .Select(p => p.PairNumber)
             .ToArray();
 
+        // Pair numbers whose ZeroPointByeRounds contain the upcoming
+        // round. Analogous to half-point byes but the player gets 0
+        // points instead of 0.5. Filtered out of BBP input (same
+        // filter that excludes withdrawn / soft-deleted players) and
+        // re-attached as ZeroPointBye history entries in AppendRound.
+        var requestedZeroByes = section.Players
+            .Where(p => p.ZeroPointByeRoundsOrEmpty.Contains(pairingRound))
+            .Select(p => p.PairNumber)
+            .ToArray();
+
         try
         {
             await using (var writer = new StreamWriter(trfPath, append: false, Encoding.ASCII))
@@ -166,7 +176,8 @@ public class BbpPairingEngine : IBbpPairingEngine
                 resolved.Pairings,
                 parsed.ByePlayerPairs,
                 HalfPointByePlayerPairs: requestedHalfByes,
-                UnresolvedConflicts: resolved.UnresolvedConflicts);
+                UnresolvedConflicts: resolved.UnresolvedConflicts,
+                ZeroPointByePlayerPairs: requestedZeroByes);
         }
         finally
         {

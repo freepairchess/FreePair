@@ -26,6 +26,11 @@ public partial class TournamentView : UserControl
             vm.PromptConfirmAsync = PromptConfirmAsync;
             vm.PromptPairingPreviewAsync = PromptPairingPreviewAsync;
             vm.ShowPublishingDialogAsync = ShowPublishingDialogAsync;
+            vm.ShowManageByesDialogAsync = ShowManageByesDialogAsync;
+            vm.ShowPlayerFormDialogAsync = ShowPlayerFormDialogAsync;
+            vm.ShowSectionFormDialogAsync = ShowSectionFormDialogAsync;
+            vm.ShowNewEventDialogAsync = ShowNewEventDialogAsync;
+            vm.PickNewEventSavePathAsync = PickNewEventSavePathAsync;
         }
     }
 
@@ -145,6 +150,98 @@ public partial class TournamentView : UserControl
         var dialog = new PublishingDialog { DataContext = vm };
         var result = await dialog.ShowDialog<object?>(owner);
         return result as PublishingDialogViewModel;
+    }
+
+    /// <summary>
+    /// Shows the Manage-requested-byes dialog modally. Returns the
+    /// VM on Save (so the caller can read BuildDiffs), or null on
+    /// Cancel / force-close.
+    /// </summary>
+    private async Task<ManageByesViewModel?> ShowManageByesDialogAsync(ManageByesViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner)
+        {
+            return null;
+        }
+
+        var dialog = new ManageByesDialog(vm);
+        return await dialog.ShowDialog<ManageByesViewModel?>(owner);
+    }
+
+    /// <summary>
+    /// Shows the Player form dialog modally (edit or add). Returns
+    /// the VM on Save, null on Cancel.
+    /// </summary>
+    private async Task<PlayerFormViewModel?> ShowPlayerFormDialogAsync(PlayerFormViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner)
+        {
+            return null;
+        }
+
+        var dialog = new PlayerFormDialog(vm);
+        return await dialog.ShowDialog<PlayerFormViewModel?>(owner);
+    }
+
+    /// <summary>
+    /// Shows the Section form dialog modally (add flow). Returns the
+    /// VM on Save, null on Cancel.
+    /// </summary>
+    private async Task<SectionFormViewModel?> ShowSectionFormDialogAsync(SectionFormViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner)
+        {
+            return null;
+        }
+
+        var dialog = new SectionFormDialog(vm);
+        return await dialog.ShowDialog<SectionFormViewModel?>(owner);
+    }
+
+    /// <summary>
+    /// Shows the New-event dialog modally. Returns the VM on Create,
+    /// null on Cancel.
+    /// </summary>
+    private async Task<NewEventViewModel?> ShowNewEventDialogAsync(NewEventViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner)
+        {
+            return null;
+        }
+
+        var dialog = new NewEventDialog(vm);
+        return await dialog.ShowDialog<NewEventViewModel?>(owner);
+    }
+
+    /// <summary>
+    /// Save-file picker scoped to <c>.sjson</c> for the New-event
+    /// flow. Returns the local path or null on cancel.
+    /// </summary>
+    private async Task<string?> PickNewEventSavePathAsync(string suggestedName)
+    {
+        var topLevel = TopLevel.GetTopLevel(this);
+        if (topLevel is null)
+        {
+            return null;
+        }
+
+        var options = new FilePickerSaveOptions
+        {
+            Title = "Save new tournament as",
+            SuggestedFileName = suggestedName,
+            DefaultExtension = "sjson",
+            FileTypeChoices = new[]
+            {
+                new FilePickerFileType("SwissSys tournament")
+                {
+                    Patterns = new[] { "*.sjson" }
+                },
+                FilePickerFileTypes.All
+            }
+        };
+
+        var file = await topLevel.StorageProvider.SaveFilePickerAsync(options);
+        return file?.TryGetLocalPath();
     }
 
     /// <summary>

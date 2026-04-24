@@ -72,7 +72,11 @@ public sealed record Section(
         for (var i = 0; i < playedCount; i++)
         {
             var r = player.History[i];
-            if (r.Kind == RoundResultKind.None && r.Opponent == 0)
+            // SwissSys marks withdrawal rounds with kind "~" / None /
+            // "U" (ZeroPointBye) and no opponent. Both parse variants
+            // count as a withdrawn-round marker.
+            if ((r.Kind == RoundResultKind.None || r.Kind == RoundResultKind.ZeroPointBye)
+                && r.Opponent == 0)
             {
                 return true;
             }

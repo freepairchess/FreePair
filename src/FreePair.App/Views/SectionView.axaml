@@ -142,7 +142,7 @@
                             CornerRadius="4"
                             Padding="8"
                             Margin="0,0,0,8">
-                        <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+                        <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto">
                             <TextBlock Grid.Column="0"
                                        Text="Filter:"
                                        VerticalAlignment="Center"
@@ -164,6 +164,12 @@
                                        FontSize="11"
                                        Margin="12,0,0,0"/>
                             <Button Grid.Column="4"
+                                    Content="➕ Add player"
+                                    Click="OnAddPlayerClick"
+                                    Margin="12,0,0,0"
+                                    IsEnabled="{Binding IsLive}"
+                                    ToolTip.Tip="Add a new player to this section. Late entries added after pairings have started can be granted a bye for each past round."/>
+                            <Button Grid.Column="5"
                                     Content="📄 Print as PDF"
                                     Click="OnPrintPlayersPdf"
                                     Margin="12,0,0,0"
@@ -354,10 +360,112 @@
                                                 Binding="{Binding ScoreText}"
                                                 SortMemberPath="Score"
                                                 Width="70"/>
+                            <!-- Player-requested byes, split into two
+                                 columns so the TD can spot each kind
+                                 at a glance. These are TD-granted
+                                 per-round requests (SwissSys "Reserved
+                                 byes" + FreePair "zero-point bye rounds")
+                                 — not the full-point byes BBP hands out
+                                 when a section has an odd count. Values
+                                 are comma-separated round numbers; empty
+                                 cell means no request of that kind. -->
+                            <DataGridTextColumn Header="½-pt byes"
+                                                Binding="{Binding HalfByeRounds}"
+                                                SortMemberPath="HalfByeRounds"
+                                                Width="90"/>
+                            <DataGridTextColumn Header="0-pt byes"
+                                                Binding="{Binding ZeroByeRounds}"
+                                                SortMemberPath="ZeroByeRounds"
+                                                Width="90"/>
                             <DataGridTextColumn Header="Status"
                                                 Binding="{Binding Status}"
                                                 SortMemberPath="Status"
                                                 Width="100"/>
+
+                            <!-- Player lifecycle actions. Five icons:
+                                 green 🗑 soft-delete, blue ↩ undelete,
+                                 red 🗑 hard-delete (all pre-round-1),
+                                 orange ⊘ withdraw, blue ↩ return from
+                                 withdrawal (both post-round-1). Visibility
+                                 bound to PlayerRow flags derived from
+                                 the player's SoftDeleted/Withdrawn state
+                                 and the section's RoundsPaired, so
+                                 exactly one set of icons applies. -->
+                            <DataGridTemplateColumn Header="" Width="200">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="vm:PlayerRow">
+                                        <StackPanel Orientation="Horizontal"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Left">
+                                            <Button Classes="icon-btn"
+                                                    Foreground="SeaGreen"
+                                                    Content="&#xE74D;"
+                                                    Tag="{Binding PairNumber}"
+                                                    Click="OnPlayerSoftDeleteClick"
+                                                    IsVisible="{Binding CanSoftDelete}"
+                                                    ToolTip.Tip="Soft-delete player (reversible). Only allowed before round 1 is paired."/>
+                                            <Button Classes="icon-btn"
+                                                    Foreground="#0E5DAA"
+                                                    Content="&#xE7A7;"
+                                                    Tag="{Binding PairNumber}"
+                                                    Click="OnPlayerUndeleteClick"
+                                                    IsVisible="{Binding CanUndelete}"
+                                                    ToolTip.Tip="Restore this soft-deleted player."/>
+                                            <Button Classes="icon-btn"
+                                                    Foreground="#C62828"
+                                                    Content="&#xE74D;"
+                                                    Tag="{Binding PairNumber}"
+                                                    Click="OnPlayerHardDeleteClick"
+                                                    IsVisible="{Binding CanHardDelete}"
+                                                    ToolTip.Tip="Permanently delete this player."/>
+                                            <Button Classes="icon-btn"
+                                                    Foreground="#D68100"
+                                                    Content="&#xE711;"
+                                                    Tag="{Binding PairNumber}"
+                                                    Click="OnPlayerWithdrawClick"
+                                                    IsVisible="{Binding CanWithdraw}"
+                                                    ToolTip.Tip="Withdraw player from future pairing. Past results stay in place; you can return them later."/>
+                                            <Button Classes="icon-btn"
+                                                    Foreground="#0E5DAA"
+                                                    Content="&#xE7A7;"
+                                                    Tag="{Binding PairNumber}"
+                                                    Click="OnPlayerUnwithdrawClick"
+                                                    IsVisible="{Binding CanUnwithdraw}"
+                                                    ToolTip.Tip="Return this withdrawn player to the active roster."/>
+                                            <!-- Manage requested byes. Visible
+                                                 for live, non-withdrawn players
+                                                 when at least one unpaired
+                                                 future round exists. Opens a
+                                                 modal dialog with a row per
+                                                 round and None / ½-pt / 0-pt
+                                                 choices. Calendar icon because
+                                                 this is about picking which
+                                                 future rounds the player will
+                                                 sit out; distinct from the
+                                                 pencil Edit-info icon below. -->
+                                            <Button Classes="icon-btn"
+                                                    Foreground="#5A5A5A"
+                                                    Content="&#xE787;"
+                                                    Tag="{Binding PairNumber}"
+                                                    Click="OnPlayerManageByesClick"
+                                                    IsVisible="{Binding CanManageByes}"
+                                                    ToolTip.Tip="Manage requested byes (📅) for this player's future unpaired rounds."/>
+                                            <!-- Edit player info. Opens the
+                                                 Player form dialog seeded
+                                                 with the current fields.
+                                                 Available for every non-soft-
+                                                 deleted player. -->
+                                            <Button Classes="icon-btn"
+                                                    Foreground="#2E7D32"
+                                                    Content="&#xE70F;"
+                                                    Tag="{Binding PairNumber}"
+                                                    Click="OnPlayerEditClick"
+                                                    IsVisible="{Binding CanEdit}"
+                                                    ToolTip.Tip="Edit (✎) this player's name, ID, rating, contact info, etc."/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
@@ -445,29 +553,25 @@
                                     <DataGridTextColumn Header="Black #"  Binding="{Binding BlackPair}"   SortMemberPath="BlackPair"   Width="70"  IsReadOnly="True"/>
                                     <DataGridTextColumn Header="Black"    Binding="{Binding BlackName}"   SortMemberPath="BlackName"   Width="*"   MinWidth="140" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="Rtg"      Binding="{Binding BlackRating}" SortMemberPath="BlackRating" Width="70"  IsReadOnly="True"/>
-                                    <!-- Result column: a plain TextBlock for the display state
-                                         and a ComboBox only in the editing state. Keeping the
-                                         ComboBox out of the default cell template avoids a
-                                         known Avalonia 12 Win32 popup-attach NullReferenceException
-                                         that reproduces when the cell's popup is re-attached
-                                         after the DataGrid recycles its rows (e.g. on filter
-                                         change or after a result-entry mutation rebuilds the
-                                         section VM). -->
-                                    <DataGridTemplateColumn Header="Result" SortMemberPath="ResultText" Width="140">
+                                    <!-- Result column: a ComboBox in the
+                                         default cell template so one click
+                                         drops it open. We previously kept
+                                         the ComboBox in CellEditingTemplate
+                                         to dodge an Avalonia 12 popup-attach
+                                         NRE, but that forced the TD to
+                                         double-click / F2 which turned out
+                                         to be too discoverable-poor. If the
+                                         NRE re-surfaces we'll handle it at
+                                         the VM rebuild path instead. -->
+                                    <DataGridTemplateColumn Header="Result" SortMemberPath="ResultText" Width="140" IsReadOnly="True">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate DataType="vm:PairingRow">
-                                                <TextBlock Text="{Binding ResultText}"
-                                                           VerticalAlignment="Center"
-                                                           Padding="8,0,0,0"/>
+                                                <ComboBox ItemsSource="{Binding AvailableResults}"
+                                                          SelectedItem="{Binding SelectedResult, Mode=TwoWay}"
+                                                          Margin="4,2" MinWidth="120"
+                                                          VerticalAlignment="Center"/>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
-                                        <DataGridTemplateColumn.CellEditingTemplate>
-                                            <DataTemplate DataType="vm:PairingRow">
-                                                <ComboBox ItemsSource="{Binding AvailableResults}"
-                                                          SelectedItem="{Binding SelectedResult}"
-                                                          Margin="4,2" MinWidth="120"/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellEditingTemplate>
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
@@ -740,15 +844,30 @@
 
                             <StackPanel Spacing="4">
                                 <TextBlock Text="Players with requested (future) byes" FontWeight="SemiBold"/>
+                                <!-- Split row: ½-pt rounds shown in
+                                     dark blue, 0-pt rounds in dark red
+                                     so the two kinds can be spotted
+                                     at a glance. Row hides if the
+                                     player has neither. -->
                                 <ItemsControl ItemsSource="{Binding Players}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate DataType="vm:PlayerRow">
                                             <Border Classes="row"
                                                     IsVisible="{Binding RequestedByes, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                                                <Grid ColumnDefinitions="60,*,120">
+                                                <Grid ColumnDefinitions="60,*,Auto,Auto">
                                                     <TextBlock Grid.Column="0" Classes="cell" Text="{Binding PairNumber}"/>
                                                     <TextBlock Grid.Column="1" Classes="cell" Text="{Binding Name}"/>
-                                                    <TextBlock Grid.Column="2" Classes="cell" Text="{Binding RequestedByes}" Foreground="DarkBlue"/>
+                                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4"
+                                                                Margin="0,0,16,0"
+                                                                IsVisible="{Binding HalfByeRounds, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                                        <TextBlock Classes="cell" Text="½-pt:" Foreground="Gray" FontSize="11"/>
+                                                        <TextBlock Classes="cell" Text="{Binding HalfByeRounds}" Foreground="DarkBlue"/>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="4"
+                                                                IsVisible="{Binding ZeroByeRounds, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                                        <TextBlock Classes="cell" Text="0-pt:" Foreground="Gray" FontSize="11"/>
+                                                        <TextBlock Classes="cell" Text="{Binding ZeroByeRounds}" Foreground="DarkRed"/>
+                                                    </StackPanel>
                                                 </Grid>
                                             </Border>
                                         </DataTemplate>
