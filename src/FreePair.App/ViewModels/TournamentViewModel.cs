@@ -133,6 +133,16 @@ public partial class TournamentViewModel : ViewModelBase
     /// </summary>
     public Func<PublishingDialogViewModel, Task<PublishingDialogViewModel?>>? ShowPublishingDialogAsync { get; set; }
 
+    /// <summary>
+    /// View-supplied callback that opens the Manage-requested-byes
+    /// dialog. Receives a preconfigured
+    /// <see cref="ManageByesViewModel"/>; the view shows it as modal
+    /// and returns the same VM on Save (so the caller reads
+    /// <see cref="ManageByesViewModel.BuildDiffs"/>) or <c>null</c>
+    /// on Cancel.
+    /// </summary>
+    public Func<ManageByesViewModel, Task<ManageByesViewModel?>>? ShowManageByesDialogAsync { get; set; }
+
     // ============ Online publishing (session-only, per-tournament) ============
 
     /// <summary>Sticky URL used by the Publish dialog. Seeded from <see cref="AppSettings.NaChessHubBaseUrl"/>.</summary>
@@ -452,7 +462,7 @@ public partial class TournamentViewModel : ViewModelBase
         vm.PlayerHardDeleteRequested += OnPlayerHardDeleteAsync;
         vm.PlayerWithdrawRequested   += OnPlayerWithdrawAsync;
         vm.PlayerUnwithdrawRequested += OnPlayerUnwithdrawAsync;
-        vm.PairingConvertToByeRequested += OnPairingConvertToBye;
+        vm.PlayerManageByesRequested += OnPlayerManageByesAsync;
     }
 
     private void DetachSectionEvents()
@@ -471,7 +481,7 @@ public partial class TournamentViewModel : ViewModelBase
             vm.PlayerHardDeleteRequested -= OnPlayerHardDeleteAsync;
             vm.PlayerWithdrawRequested   -= OnPlayerWithdrawAsync;
             vm.PlayerUnwithdrawRequested -= OnPlayerUnwithdrawAsync;
-            vm.PairingConvertToByeRequested -= OnPairingConvertToBye;
+            vm.PlayerManageByesRequested -= OnPlayerManageByesAsync;
         }
     }
 
@@ -771,39 +781,38 @@ public partial class TournamentViewModel : ViewModelBase
         await PersistCurrentTournamentAsync().ConfigureAwait(true);
     }
 
-    private async void OnPairingConvertToBye(
-        SectionViewModel section, int round, int pairToBye, ByeKind kind)
+    private async Task OnPlayerManageByesAsync(SectionViewModel section, int pairNumber)
     {
-        if (Tournament is null) return;
+        if (Tournament is null || ShowManageByesDialogAsync is null) return;
 
-        var player = section.Section.Players.FirstOrDefault(p => p.PairNumber == pairToBye);
-        var label  = player is null ? $"#{pairToBye}" : $"#{pairToBye} {player.Name}";
-        var kindLabel = kind == ByeKind.Half ? "half-point bye" : "zero-point bye";
+        var player = section.Section.Players.FirstOrDefault(p => p.PairNumber == pairNumber);
+        if (player is null) return;
 
-        if (PromptConfirmAsync is not null)
-        {
-            var confirmed = await PromptConfirmAsync(
-                $"Convert to {kindLabel}",
-                $"Convert pairing in round {round} of '{section.Name}' so {label} " +
-                $"receives a {kindLabel}?\n\n" +
-                $"The existing pairing will be removed and both players will get " +
-                $"bye entries in this round: {label} gets " +
-                $"{(kind == ByeKind.Half ? "0.5 points" : "0 points")}, their opponent " +
-                $"gets a full-point bye.",
-                $"Convert").ConfigureAwait(true);
-            if (!confirmed) return;
-        }
+        var dialogVm = new ManageByesViewModel(
+            sectionName: section.Name,
+            player: player,
+            targetRounds: section.TargetRounds,
+            roundsPaired: section.Section.RoundsPaired);
+
+        var result = await ShowManageByesDialogAsync(dialogVm).ConfigureAwait(true);
+        if (result is null) return; // user cancelled
+
+        var diffs = result.BuildDiffs();
+        if (diffs.Count == 0) return;
 
         try
         {
-            Tournament = kind == ByeKind.Half
-                ? TournamentMutations.ConvertPairingToHalfPointBye(Tournament, section.Name, round, pairToBye)
-                : TournamentMutations.ConvertPairingToZeroPointBye(Tournament, section.Name, round, pairToBye);
+            foreach (var (round, newKind) in diffs)
+            {
+                Tournament = newKind is null
+                    ? TournamentMutations.RemoveRequestedBye(Tournament, section.Name, pairNumber, round)
+                    : TournamentMutations.AddRequestedBye(Tournament, section.Name, pairNumber, round, newKind.Value);
+            }
             ErrorMessage = null;
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Failed to convert pairing: {ex.Message}";
+            ErrorMessage = $"Failed to apply bye changes: {ex.Message}";
             return;
         }
 

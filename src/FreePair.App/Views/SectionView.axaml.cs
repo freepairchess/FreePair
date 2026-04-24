@@ -115,23 +115,12 @@ public partial class SectionView : UserControl
         }
     }
 
-    // ================================================================
-    // Convert-to-bye buttons on the Pairings grid
-    // ================================================================
-
-    private void OnConvertToHalfByeClick(object? sender, RoutedEventArgs e)
+    private async void OnPlayerManageByesClick(object? sender, RoutedEventArgs e)
     {
-        if (sender is Button { Tag: int pair, DataContext: ViewModels.PairingRow row })
+        if (sender is Button btn && btn.Tag is int pn
+            && DataContext is ViewModels.SectionViewModel vm)
         {
-            row.RequestConvertToBye(pair, FreePair.Core.Tournaments.ByeKind.Half);
-        }
-    }
-
-    private void OnConvertToZeroByeClick(object? sender, RoutedEventArgs e)
-    {
-        if (sender is Button { Tag: int pair, DataContext: ViewModels.PairingRow row })
-        {
-            row.RequestConvertToBye(pair, FreePair.Core.Tournaments.ByeKind.Unpaired);
+            await vm.RequestPlayerManageByesAsync(pn);
         }
     }
 

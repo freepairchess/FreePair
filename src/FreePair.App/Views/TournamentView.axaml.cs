@@ -26,6 +26,7 @@ public partial class TournamentView : UserControl
             vm.PromptConfirmAsync = PromptConfirmAsync;
             vm.PromptPairingPreviewAsync = PromptPairingPreviewAsync;
             vm.ShowPublishingDialogAsync = ShowPublishingDialogAsync;
+            vm.ShowManageByesDialogAsync = ShowManageByesDialogAsync;
         }
     }
 
@@ -145,6 +146,22 @@ public partial class TournamentView : UserControl
         var dialog = new PublishingDialog { DataContext = vm };
         var result = await dialog.ShowDialog<object?>(owner);
         return result as PublishingDialogViewModel;
+    }
+
+    /// <summary>
+    /// Shows the Manage-requested-byes dialog modally. Returns the
+    /// VM on Save (so the caller can read BuildDiffs), or null on
+    /// Cancel / force-close.
+    /// </summary>
+    private async Task<ManageByesViewModel?> ShowManageByesDialogAsync(ManageByesViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner)
+        {
+            return null;
+        }
+
+        var dialog = new ManageByesDialog(vm);
+        return await dialog.ShowDialog<ManageByesViewModel?>(owner);
     }
 
     /// <summary>

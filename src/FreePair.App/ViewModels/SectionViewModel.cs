@@ -42,7 +42,13 @@ public sealed record PlayerRow(
     /// <summary>Withdraw icon visibility: live (non-soft-deleted, non-withdrawn) AND section has paired at least one round.</summary>
     bool CanWithdraw,
     /// <summary>Return-from-withdrawal icon visibility: currently withdrawn.</summary>
-    bool CanUnwithdraw);
+    bool CanUnwithdraw,
+    /// <summary>
+    /// Manage-byes icon visibility: player is live (not soft-deleted,
+    /// not withdrawn) AND the section has at least one unpaired
+    /// future round to assign a bye for.
+    /// </summary>
+    bool CanManageByes);
 
 /// <summary>
 /// Editable pairing row for the <b>Pairings</b> tab. Binds to a result
@@ -114,29 +120,9 @@ public partial class PairingRow : ObservableObject
 
     public PairingResult Result => SelectedResult.Value;
 
-    /// <summary>
-    /// True while no result has been recorded. The convert-to-bye
-    /// icons are bound to this so completed games can't accidentally
-    /// have their pairing rewritten.
-    /// </summary>
-    public bool IsUnplayed => Result == PairingResult.Unplayed;
-
-    /// <summary>
-    /// Invoked by the view when the TD clicks one of the four
-    /// convert-to-bye buttons. <c>which</c> is the pair number that
-    /// receives the bye (the opponent always gets a full-point bye);
-    /// <c>kind</c> is <see cref="ByeKind.Half"/> or
-    /// <see cref="ByeKind.Unpaired"/>.
-    /// </summary>
-    public void RequestConvertToBye(int which, ByeKind kind)
-    {
-        _onConvertToBye?.Invoke(this, which, kind);
-    }
-
     partial void OnSelectedResultChanged(PairingResultOption value)
     {
         ResultText = value.Text;
-        OnPropertyChanged(nameof(IsUnplayed));
         if (!_suppressCallback)
         {
             _onResultChanged?.Invoke(this, value.Value);
@@ -726,11 +712,17 @@ public partial class SectionViewModel : ViewModelBase
         PlayerUnwithdrawRequested?.Invoke(this, pairNumber) ?? Task.CompletedTask;
 
     /// <summary>
-    /// Raised when the TD clicks a convert-to-bye icon on a pairing
-    /// row. Parent VM runs a confirm prompt and invokes the matching
-    /// <c>TournamentMutations.ConvertPairingTo{Half,Zero}PointBye</c>.
+    /// Raised when the TD clicks the ✎ byes icon on a player row.
+    /// Parent VM opens the <see cref="Views.ManageByesDialog"/>,
+    /// diffs the TD's selections against the current state, and
+    /// applies the deltas via
+    /// <see cref="TournamentMutations.AddRequestedBye"/> /
+    /// <see cref="TournamentMutations.RemoveRequestedBye"/>.
     /// </summary>
-    public event Action<SectionViewModel, int /*round*/, int /*pairToBye*/, ByeKind>? PairingConvertToByeRequested;
+    public event Func<SectionViewModel, int /*pairNumber*/, Task>? PlayerManageByesRequested;
+
+    public Task RequestPlayerManageByesAsync(int pairNumber) =>
+        PlayerManageByesRequested?.Invoke(this, pairNumber) ?? Task.CompletedTask;
 
     private static PlayerRow BuildPlayerRowStatic(Player player, Section section, IScoreFormatter formatter)
     {
@@ -743,7 +735,7 @@ public partial class SectionViewModel : ViewModelBase
         {
             status = "Withdrawn";
         }
-        else if (player.RequestedByeRounds.Count > 0)
+        else if (player.RequestedByeRounds.Count > 0 || player.ZeroPointByeRoundsOrEmpty.Count > 0)
         {
             status = "Bye requested";
         }
@@ -752,9 +744,14 @@ public partial class SectionViewModel : ViewModelBase
             status = "Active";
         }
 
-        var requestedByes = player.RequestedByeRounds.Count == 0
-            ? null
-            : string.Join(", ", player.RequestedByeRounds);
+        // Concatenate half and zero point bye requests for the
+        // "Requested byes" text column; "2H, 3H, 5U" reads naturally
+        // (H = half-point, U = zero-point following SwissSys).
+        var byeParts = new System.Collections.Generic.List<string>();
+        foreach (var r in player.RequestedByeRounds)         byeParts.Add($"{r}H");
+        foreach (var r in player.ZeroPointByeRoundsOrEmpty)  byeParts.Add($"{r}U");
+        byeParts.Sort(); // simple lexical sort; round numbers are single-digit for typical events
+        var requestedByes = byeParts.Count == 0 ? null : string.Join(", ", byeParts);
 
         // Delete / undelete icon visibility. Soft / hard are gated on
         // section.RoundsPaired == 0 (post-round-1 the TD must withdraw
@@ -763,6 +760,12 @@ public partial class SectionViewModel : ViewModelBase
         // player is soft-deleted.
         var preRoundOne = section.RoundsPaired == 0;
         var isWithdrawn = section.IsWithdrawn(player);
+        // Target rounds = the larger of RoundsPaired, FinalRound,
+        // RoundsPlayed (matches TargetRounds on the enclosing
+        // SectionViewModel). Byes can be requested for any round
+        // strictly after RoundsPaired.
+        var target = System.Math.Max(System.Math.Max(section.RoundsPaired, section.FinalRound), section.RoundsPlayed);
+        var hasFutureRounds = target > section.RoundsPaired;
 
         return new PlayerRow(
             PairNumber: player.PairNumber,
@@ -789,7 +792,12 @@ public partial class SectionViewModel : ViewModelBase
             // section has at least one paired round (pre-round-1 the
             // TD should just soft/hard-delete instead).
             CanWithdraw:   !player.SoftDeleted && !isWithdrawn && !preRoundOne,
-            CanUnwithdraw: isWithdrawn);
+            CanUnwithdraw: isWithdrawn,
+            // Manage byes is offered for any live non-withdrawn player
+            // as long as there's at least one unpaired future round
+            // to assign a bye for. Pre-round-1 this is effectively
+            // always available for active players.
+            CanManageByes: !player.SoftDeleted && !isWithdrawn && hasFutureRounds);
     }
 
     private PlayerRow BuildPlayerRow(Player player, Section section) =>
@@ -812,9 +820,7 @@ public partial class SectionViewModel : ViewModelBase
             initialResult: p.Result,
             formatter: Formatter,
             onResultChanged: (row, newResult) =>
-                ResultChanged?.Invoke(this, roundNumber, row, newResult),
-            onConvertToBye: (row, which, kind) =>
-                PairingConvertToByeRequested?.Invoke(this, roundNumber, which, kind));
+                ResultChanged?.Invoke(this, roundNumber, row, newResult));
     }
 
     private ByeRow BuildByeRow(int round, ByeAssignment bye)

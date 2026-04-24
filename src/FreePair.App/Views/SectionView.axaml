@@ -368,7 +368,7 @@
                                  the player's SoftDeleted/Withdrawn state
                                  and the section's RoundsPaired, so
                                  exactly one set of icons applies. -->
-                            <DataGridTemplateColumn Header="" Width="140">
+                            <DataGridTemplateColumn Header="" Width="170">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="vm:PlayerRow">
                                         <StackPanel Orientation="Horizontal"
@@ -409,6 +409,20 @@
                                                     Click="OnPlayerUnwithdrawClick"
                                                     IsVisible="{Binding CanUnwithdraw}"
                                                     ToolTip.Tip="Return this withdrawn player to the active roster."/>
+                                            <!-- Manage requested byes. Visible
+                                                 for live, non-withdrawn players
+                                                 when at least one unpaired
+                                                 future round exists. Opens a
+                                                 modal dialog with a row per
+                                                 round and None / ½-pt / 0-pt
+                                                 choices. -->
+                                            <Button Classes="icon-btn"
+                                                    Foreground="#5A5A5A"
+                                                    Content="&#xE70F;"
+                                                    Tag="{Binding PairNumber}"
+                                                    Click="OnPlayerManageByesClick"
+                                                    IsVisible="{Binding CanManageByes}"
+                                                    ToolTip.Tip="Manage requested byes for this player's future unpaired rounds."/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -523,58 +537,6 @@
                                                           Margin="4,2" MinWidth="120"/>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellEditingTemplate>
-                                    </DataGridTemplateColumn>
-
-                                    <!-- Convert-to-bye affordance. Four tiny
-                                         text buttons per pairing row, visible
-                                         only while the pairing has no result
-                                         yet (IsUnplayed). "½W" / "½B" grant
-                                         a half-point bye to White / Black;
-                                         "0W" / "0B" grant a zero-point bye.
-                                         In every case the bye target's
-                                         opponent gets a full-point bye. -->
-                                    <DataGridTemplateColumn Header="" Width="150" IsReadOnly="True">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate DataType="vm:PairingRow">
-                                                <StackPanel Orientation="Horizontal"
-                                                            VerticalAlignment="Center"
-                                                            Spacing="2"
-                                                            IsVisible="{Binding IsUnplayed}">
-                                                    <Button Classes="icon-btn"
-                                                            FontFamily="{x:Null}"
-                                                            FontSize="11"
-                                                            Foreground="#D68100"
-                                                            Content="½W"
-                                                            Tag="{Binding WhitePair}"
-                                                            Click="OnConvertToHalfByeClick"
-                                                            ToolTip.Tip="White gets a half-point bye; Black gets a full-point bye."/>
-                                                    <Button Classes="icon-btn"
-                                                            FontFamily="{x:Null}"
-                                                            FontSize="11"
-                                                            Foreground="#D68100"
-                                                            Content="½B"
-                                                            Tag="{Binding BlackPair}"
-                                                            Click="OnConvertToHalfByeClick"
-                                                            ToolTip.Tip="Black gets a half-point bye; White gets a full-point bye."/>
-                                                    <Button Classes="icon-btn"
-                                                            FontFamily="{x:Null}"
-                                                            FontSize="11"
-                                                            Foreground="#C62828"
-                                                            Content="0W"
-                                                            Tag="{Binding WhitePair}"
-                                                            Click="OnConvertToZeroByeClick"
-                                                            ToolTip.Tip="White gets a zero-point bye; Black gets a full-point bye."/>
-                                                    <Button Classes="icon-btn"
-                                                            FontFamily="{x:Null}"
-                                                            FontSize="11"
-                                                            Foreground="#C62828"
-                                                            Content="0B"
-                                                            Tag="{Binding BlackPair}"
-                                                            Click="OnConvertToZeroByeClick"
-                                                            ToolTip.Tip="Black gets a zero-point bye; White gets a full-point bye."/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
