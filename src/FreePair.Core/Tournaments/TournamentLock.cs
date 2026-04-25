@@ -106,6 +106,52 @@ public sealed class TournamentLock : IDisposable
         return "FreePair_Tournament_" + Convert.ToHexString(hash)[..32];
     }
 
+    /// <summary>
+    /// Checks whether <paramref name="filePath"/> is currently
+    /// owned by some <i>other</i> process. Returns <c>false</c> if
+    /// the file is unlocked, owned by this process, or the probe
+    /// itself failed (we err on the side of letting the caller
+    /// proceed). The probe takes the lock momentarily and releases
+    /// it immediately — there's a tiny race window where another
+    /// process could grab it between the probe and a follow-up
+    /// acquire, but that's fine because the follow-up acquire
+    /// itself fails the same way and surfaces the same error.
+    /// </summary>
+    public static bool IsHeldByAnotherProcess(string filePath)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
+        var name = MakeMutexName(filePath);
+
+        // If WE hold it, that's not "another process".
+        lock (s_localOwnedGate)
+        {
+            if (s_localOwned.Contains(name)) return false;
+        }
+
+        // Check if a named mutex with that name already exists in
+        // the kernel. If TryOpenExisting fails, no one in any
+        // process has touched it ⇒ definitely not held.
+        if (!Mutex.TryOpenExisting(name, out var existing))
+        {
+            return false;
+        }
+        try
+        {
+            return !existing.WaitOne(System.TimeSpan.Zero);
+        }
+        catch (AbandonedMutexException)
+        {
+            // Previous owner crashed — about to be re-acquirable.
+            existing.ReleaseMutex();
+            return false;
+        }
+        finally
+        {
+            try { existing.ReleaseMutex(); } catch { /* not held by us */ }
+            existing.Dispose();
+        }
+    }
+
     public void Dispose()
     {
         if (_disposed) return;

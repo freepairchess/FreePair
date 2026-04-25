@@ -462,14 +462,7 @@ public partial class TournamentViewModel : ViewModelBase
         var picked = await PickTournamentFileAsync().ConfigureAwait(true);
         if (!string.IsNullOrWhiteSpace(picked))
         {
-            // If this instance already has a tournament loaded, route
-            // the new one to a fresh process so the TD can pair both
-            // events at once. Falls back to in-place load if we can't
-            // figure out our own exe path.
-            if (HasOpenTournament && TryHandoffToNewInstance(picked!))
-            {
-                return;
-            }
+            if (TryRouteOrShortCircuit(picked!)) return;
             await LoadAsync(picked!).ConfigureAwait(true);
         }
     }
@@ -542,6 +535,24 @@ public partial class TournamentViewModel : ViewModelBase
         // tournament open, write the new event directly to disk via
         // the writer (so the .sjson exists) and hand it off to a
         // fresh process instead of replacing the in-memory model.
+        // We pre-check the path against the same rules as
+        // TryRouteOrShortCircuit so the picker's "Save As" doesn't
+        // silently clobber a file that's already open here or in
+        // another instance.
+        if (IsSameFileAlreadyOpen(path))
+        {
+            ErrorMessage =
+                $"'{System.IO.Path.GetFileName(path)}' is already open in this window.";
+            return;
+        }
+        if (FreePair.Core.Tournaments.TournamentLock.IsHeldByAnotherProcess(path))
+        {
+            ErrorMessage =
+                $"'{System.IO.Path.GetFileName(path)}' is already open in another FreePair window. " +
+                "Switch to that window, or close it first.";
+            return;
+        }
+
         if (HasOpenTournament)
         {
             try
@@ -724,16 +735,9 @@ public partial class TournamentViewModel : ViewModelBase
             return;
         }
 
-        // Same multi-instance routing as OpenAsync: if a tournament
-        // is already open, hand the freshly-downloaded file off to a
-        // new process. The current instance keeps showing its own
-        // event so registry browsing doesn't blow away in-progress
-        // edits.
-        if (HasOpenTournament && TryHandoffToNewInstance(path))
-        {
-            return;
-        }
-
+        // Same routing as OpenAsync — same-file short-circuit,
+        // cross-instance lock detection, otherwise spawn-or-load.
+        if (TryRouteOrShortCircuit(path)) return;
         await LoadAsync(path).ConfigureAwait(true);
     }
 
@@ -758,6 +762,72 @@ public partial class TournamentViewModel : ViewModelBase
     /// </summary>
     public Task LoadFromStartupArgsAsync(string filePath) =>
         LoadAsync(filePath);
+
+    /// <summary>
+    /// True when <paramref name="filePath"/> is the same file this
+    /// window already has loaded (case-insensitive on Windows,
+    /// case-sensitive elsewhere — same rule as the lock). Used to
+    /// short-circuit "Open the same tournament again" with a no-op
+    /// instead of spawning another instance.
+    /// </summary>
+    private bool IsSameFileAlreadyOpen(string filePath)
+    {
+        if (string.IsNullOrWhiteSpace(CurrentFilePath)) return false;
+        try
+        {
+            var a = System.IO.Path.GetFullPath(CurrentFilePath);
+            var b = System.IO.Path.GetFullPath(filePath);
+            var cmp = OperatingSystem.IsWindows()
+                ? StringComparison.OrdinalIgnoreCase
+                : StringComparison.Ordinal;
+            return string.Equals(a, b, cmp);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Decides what to do when the TD picks <paramref name="filePath"/>
+    /// to open / download into. Returns <c>true</c> when the caller
+    /// should bail out (already handled — either a no-op for the
+    /// same file or a successful handoff to a new instance);
+    /// <c>false</c> when the caller should fall through and load
+    /// in place. Sets <see cref="ErrorMessage"/> on conflict cases.
+    /// </summary>
+    private bool TryRouteOrShortCircuit(string filePath)
+    {
+        // 1. Same file already open in THIS window — explicit no-op.
+        if (IsSameFileAlreadyOpen(filePath))
+        {
+            ErrorMessage =
+                $"'{System.IO.Path.GetFileName(filePath)}' is already open in this window.";
+            return true;
+        }
+
+        // 2. Same file open in ANOTHER FreePair instance — refuse
+        //    here instead of spawning a new (empty) window that just
+        //    shows the same error.
+        if (FreePair.Core.Tournaments.TournamentLock.IsHeldByAnotherProcess(filePath))
+        {
+            ErrorMessage =
+                $"'{System.IO.Path.GetFileName(filePath)}' is already open in another FreePair window. " +
+                "Switch to that window, or close it first.";
+            return true;
+        }
+
+        // 3. This window has its own tournament loaded — hand off
+        //    to a fresh process so both events stay editable.
+        if (HasOpenTournament && TryHandoffToNewInstance(filePath))
+        {
+            return true;
+        }
+
+        // 4. Empty window or handoff failed — fall through to
+        //    in-place load.
+        return false;
+    }
 
     /// <summary>
     /// True when the current instance already has a tournament open
