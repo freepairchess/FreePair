@@ -431,17 +431,29 @@ public partial class TournamentViewModel : ViewModelBase
     /// Loads persisted state and, if a previously-opened tournament file
     /// still exists, reopens it automatically.
     /// </summary>
-    public async Task InitializeAsync()
+    /// <param name="skipAutoLoadLast">
+    /// When <c>true</c>, the LastTournamentFilePath auto-reopen is
+    /// skipped — typically because a CLI arg supplied an explicit
+    /// path the caller will load right after Initialize. Without
+    /// this gate, an instance launched via the multi-instance
+    /// handoff would briefly try to load the previous instance's
+    /// tournament (the last value persisted to settings) and bounce
+    /// off its lock with a confusing "already open" banner.
+    /// </param>
+    public async Task InitializeAsync(bool skipAutoLoadLast = false)
     {
         try
         {
             var settings = await _settingsService.LoadAsync().ConfigureAwait(true);
             _formatter.UseAsciiOnly = settings.UseAsciiOnly;
 
-            var path = settings.LastTournamentFilePath;
-            if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
+            if (!skipAutoLoadLast)
             {
-                await LoadAsync(path).ConfigureAwait(true);
+                var path = settings.LastTournamentFilePath;
+                if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
+                {
+                    await LoadAsync(path).ConfigureAwait(true);
+                }
             }
         }
         catch (Exception ex)
