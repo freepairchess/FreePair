@@ -39,6 +39,24 @@ public partial class App : Application
             {
                 DataContext = Services.GetRequiredService<MainWindowViewModel>(),
             };
+
+            // Auto-load on startup when a tournament path is passed
+            // on the command line — this is how the multi-instance
+            // flow re-routes "Open" / "Open from online" clicks made
+            // in an instance that already has a tournament open.
+            // Only the first arg is consumed; everything else is
+            // ignored. Fired after the main window is wired so
+            // ErrorMessage banner / WindowTitle binding pick up.
+            if (desktop.Args is { Length: > 0 } args &&
+                !string.IsNullOrWhiteSpace(args[0]))
+            {
+                var initialPath = args[0];
+                desktop.MainWindow.Opened += async (_, _) =>
+                {
+                    var vm = Services.GetRequiredService<TournamentViewModel>();
+                    await vm.LoadFromStartupArgsAsync(initialPath);
+                };
+            }
         }
 
         base.OnFrameworkInitializationCompleted();

@@ -81,6 +81,14 @@ public partial class TournamentViewModel : ViewModelBase
     [ObservableProperty]
     private string? _currentFilePath;
 
+    /// <summary>
+    /// Lock held against the currently-open <see cref="CurrentFilePath"/>
+    /// to keep two FreePair instances from auto-saving the same
+    /// .sjson into each other. Released when the tournament is
+    /// closed or replaced.
+    /// </summary>
+    private FreePair.Core.Tournaments.TournamentLock? _currentFileLock;
+
     [ObservableProperty]
     private bool _isLoading;
 
@@ -454,7 +462,15 @@ public partial class TournamentViewModel : ViewModelBase
         var picked = await PickTournamentFileAsync().ConfigureAwait(true);
         if (!string.IsNullOrWhiteSpace(picked))
         {
-            await LoadAsync(picked).ConfigureAwait(true);
+            // If this instance already has a tournament loaded, route
+            // the new one to a fresh process so the TD can pair both
+            // events at once. Falls back to in-place load if we can't
+            // figure out our own exe path.
+            if (HasOpenTournament && TryHandoffToNewInstance(picked!))
+            {
+                return;
+            }
+            await LoadAsync(picked!).ConfigureAwait(true);
         }
     }
 
@@ -522,6 +538,29 @@ public partial class TournamentViewModel : ViewModelBase
         // Seed state + persist via the standard save path so the new
         // file is created on disk through the writer's missing-file
         // scaffold branch.
+        // Multi-instance routing: when this instance already has a
+        // tournament open, write the new event directly to disk via
+        // the writer (so the .sjson exists) and hand it off to a
+        // fresh process instead of replacing the in-memory model.
+        if (HasOpenTournament)
+        {
+            try
+            {
+                await _writer.SaveAsync(path, tournament).ConfigureAwait(true);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Failed to create new tournament file: {ex.Message}";
+                return;
+            }
+            if (TryHandoffToNewInstance(path))
+            {
+                return;
+            }
+            // exe-path lookup failed — fall through to the in-place
+            // load below as a last resort.
+        }
+
         Tournament = tournament;
         CurrentFilePath = path;
         LastSavedAt = null;
@@ -685,6 +724,16 @@ public partial class TournamentViewModel : ViewModelBase
             return;
         }
 
+        // Same multi-instance routing as OpenAsync: if a tournament
+        // is already open, hand the freshly-downloaded file off to a
+        // new process. The current instance keeps showing its own
+        // event so registry browsing doesn't blow away in-progress
+        // edits.
+        if (HasOpenTournament && TryHandoffToNewInstance(path))
+        {
+            return;
+        }
+
         await LoadAsync(path).ConfigureAwait(true);
     }
 
@@ -697,6 +746,56 @@ public partial class TournamentViewModel : ViewModelBase
         LastSavedAt = null;
         LastPublishedAt = null;
         LastPublishedUrl = null;
+        _currentFileLock?.Dispose();
+        _currentFileLock = null;
+    }
+
+    /// <summary>
+    /// CLI entry point: called once at app startup with the path
+    /// passed via <c>FreePair.App.exe &lt;file&gt;</c>. Identical to
+    /// the in-app Open flow except it never tries to spawn a new
+    /// instance (we ARE the new instance).
+    /// </summary>
+    public Task LoadFromStartupArgsAsync(string filePath) =>
+        LoadAsync(filePath);
+
+    /// <summary>
+    /// True when the current instance already has a tournament open
+    /// (or one is mid-load). The Open / OpenFromRegistry / etc.
+    /// commands consult this and route to a fresh process when set
+    /// so the TD can pair multiple events side-by-side.
+    /// </summary>
+    private bool HasOpenTournament =>
+        Tournament is not null || !string.IsNullOrWhiteSpace(CurrentFilePath) || IsLoading;
+
+    /// <summary>
+    /// Spawns a second FreePair process pointed at
+    /// <paramref name="filePath"/>. Returns <c>true</c> when the
+    /// process started (caller should bail out of the in-place
+    /// load). Returns <c>false</c> when we couldn't determine our
+    /// own executable path or the launch failed — caller falls
+    /// back to loading in place.
+    /// </summary>
+    private bool TryHandoffToNewInstance(string filePath)
+    {
+        var exe = System.Environment.ProcessPath;
+        if (string.IsNullOrWhiteSpace(exe)) return false;
+        try
+        {
+            var psi = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = exe,
+                UseShellExecute = false,
+                WorkingDirectory = System.IO.Path.GetDirectoryName(exe) ?? string.Empty,
+            };
+            psi.ArgumentList.Add(filePath);
+            var proc = System.Diagnostics.Process.Start(psi);
+            return proc is not null;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     /// <summary>
@@ -1708,6 +1807,24 @@ public partial class TournamentViewModel : ViewModelBase
     {
         IsLoading = true;
         ErrorMessage = null;
+
+        // Per-file exclusive lock: refuses to load if another FreePair
+        // instance has the same .sjson open. Without this, two
+        // instances would auto-save into each other and silently
+        // clobber edits. The lock is released when the tournament is
+        // closed (Close), replaced by another LoadAsync, or the
+        // process exits.
+        var newLock = FreePair.Core.Tournaments.TournamentLock.TryAcquire(filePath);
+        if (newLock is null)
+        {
+            IsLoading = false;
+            ErrorMessage =
+                $"'{System.IO.Path.GetFileName(filePath)}' is already open in another FreePair window. " +
+                "Switch to that window, or close it first.";
+            return;
+        }
+        _currentFileLock?.Dispose();
+        _currentFileLock = newLock;
 
         try
         {
