@@ -77,4 +77,24 @@ public class TournamentLockTests
             TournamentLock.MakeMutexName(rel),
             TournamentLock.MakeMutexName(abs));
     }
+
+    [Fact]
+    public void IsHeldByAnotherProcess_returns_false_when_unlocked()
+    {
+        var path = Path.Combine(Path.GetTempPath(), $"fp-probe-{System.Guid.NewGuid():N}.sjson");
+        Assert.False(TournamentLock.IsHeldByAnotherProcess(path));
+    }
+
+    [Fact]
+    public void IsHeldByAnotherProcess_returns_false_for_lock_owned_by_this_process()
+    {
+        // The probe explicitly excludes the current process — the
+        // method's purpose is to detect cross-instance conflicts,
+        // not same-instance reuse (which the caller short-circuits
+        // via CurrentFilePath comparison).
+        var path = Path.Combine(Path.GetTempPath(), $"fp-probe-{System.Guid.NewGuid():N}.sjson");
+        using var lease = TournamentLock.TryAcquire(path);
+        Assert.NotNull(lease);
+        Assert.False(TournamentLock.IsHeldByAnotherProcess(path));
+    }
 }
