@@ -20,6 +20,40 @@
                        FontWeight="SemiBold" FontSize="14"/>
             <TextBlock Foreground="Gray" FontSize="11" TextWrapping="Wrap"
                        Text="Enter the event ID and passcode you received from the organizer. The .sjson file will be downloaded into your tournaments folder."/>
+
+            <!-- Event-context block. Surfaces only when the dialog
+                 is launched from the browse-events flow (PrefilledEvent
+                 is non-null). Gives the TD visual confirmation of
+                 which row they clicked Open on so they're not just
+                 staring at a GUID. -->
+            <Border IsVisible="{Binding HasPrefilledEvent}"
+                    BorderBrush="LightGray"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Padding="10"
+                    Margin="0,8,0,0">
+                <StackPanel Spacing="2">
+                    <TextBlock FontWeight="SemiBold" Text="{Binding PrefilledEvent.Name}"/>
+                    <TextBlock FontSize="11" Foreground="Gray"
+                               Text="{Binding PrefilledEvent.Organizer}"
+                               IsVisible="{Binding PrefilledEvent.Organizer, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <TextBlock FontSize="11" Foreground="Gray" Text="Dates:"/>
+                        <TextBlock FontSize="11" Foreground="Gray" Text="{Binding PrefilledEvent.StartDate}"/>
+                        <TextBlock FontSize="11" Foreground="Gray" Text=" – "
+                                   IsVisible="{Binding PrefilledEvent.EndDate, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                        <TextBlock FontSize="11" Foreground="Gray" Text="{Binding PrefilledEvent.EndDate}"/>
+                    </StackPanel>
+                    <TextBlock FontSize="11" Foreground="Gray"
+                               Text="{Binding PrefilledEvent.Location}"
+                               IsVisible="{Binding PrefilledEvent.Location, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                    <TextBlock FontSize="11" Foreground="Gray"
+                               IsVisible="{Binding PrefilledEvent.Status, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                        <Run Text="Status: "/>
+                        <Run Text="{Binding PrefilledEvent.Status}"/>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
         </StackPanel>
 
         <StackPanel DockPanel.Dock="Bottom"

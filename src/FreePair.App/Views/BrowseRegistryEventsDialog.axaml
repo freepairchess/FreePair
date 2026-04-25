@@ -65,10 +65,8 @@
                 <!-- Per-row open button. Clicking closes the browse
                      dialog with the chosen event so the caller can
                      pop the by-id Open dialog with the event id
-                     pre-filled. Distinct from a SelectedItem flow
-                     because the row click itself is the action; no
-                     separate Open button at the bottom. -->
-                <DataGridTemplateColumn Header="" Width="60" CanUserSort="False" CanUserReorder="False">
+                     pre-filled. -->
+                <DataGridTemplateColumn Header="" Width="90" CanUserSort="False" CanUserReorder="False" CanUserResize="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Content="▶ Open"
@@ -76,17 +74,69 @@
                                     Click="OnRowOpenClick"
                                     Padding="8,2"
                                     Margin="2"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
                                     ToolTip.Tip="Open this event (you will be prompted for the passcode)."/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Name"      Binding="{Binding Name}"      SortMemberPath="Name"      Width="*" MinWidth="200"/>
-                <DataGridTextColumn Header="Start"     Binding="{Binding StartDate}" SortMemberPath="StartDate" Width="110"/>
-                <DataGridTextColumn Header="End"       Binding="{Binding EndDate}"   SortMemberPath="EndDate"   Width="110"/>
-                <DataGridTextColumn Header="Location"  Binding="{Binding Location}"  SortMemberPath="Location"  Width="160"/>
+
+                <!-- Hyperlink-styled Name column. Clicking the
+                     button shells out to the registry's web URL so
+                     the TD can read the event description in a
+                     browser before committing. Falls back to a
+                     plain TextBlock if the registry doesn't expose
+                     a public URL (GetEventWebUrl returns null). -->
+                <DataGridTemplateColumn Header="Name" Width="320" SortMemberPath="Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding Name}"
+                                    Tag="{Binding}"
+                                    Click="OnEventNameClick"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Foreground="DodgerBlue"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Left"
+                                    Padding="4,2"
+                                    Cursor="Hand"
+                                    ToolTip.Tip="Open the event details page in your browser."/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Header="Start"     Binding="{Binding StartDate}" SortMemberPath="StartDate" Width="100"/>
+                <DataGridTextColumn Header="End"       Binding="{Binding EndDate}"   SortMemberPath="EndDate"   Width="100"/>
+                <DataGridTextColumn Header="Location"  Binding="{Binding Location}"  SortMemberPath="Location"  Width="170"/>
                 <DataGridTextColumn Header="Organizer" Binding="{Binding Organizer}" SortMemberPath="Organizer" Width="160"/>
-                <DataGridTextColumn Header="Status"    Binding="{Binding Status}"    SortMemberPath="Status"    Width="100"/>
-                <DataGridTextColumn Header="ID"        Binding="{Binding Id}"        SortMemberPath="Id"        Width="220"/>
+                <DataGridTextColumn Header="Status"    Binding="{Binding Status}"    SortMemberPath="Status"    Width="90"/>
+
+                <!-- Event ID column with an inline copy-to-clipboard
+                     icon. Useful when the TD needs to share the id
+                     out-of-band (chat, email) without opening a
+                     terminal. -->
+                <DataGridTemplateColumn Header="ID" Width="240" SortMemberPath="Id">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Grid.Column="0"
+                                           Text="{Binding Id}"
+                                           VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis"
+                                           ToolTip.Tip="{Binding Id}"/>
+                                <Button Grid.Column="1"
+                                        Content="📋"
+                                        Tag="{Binding Id}"
+                                        Click="OnCopyEventIdClick"
+                                        Padding="4,0"
+                                        Margin="4,0,0,0"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        ToolTip.Tip="Copy event ID to clipboard."/>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 

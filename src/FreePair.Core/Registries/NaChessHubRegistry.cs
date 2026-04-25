@@ -31,10 +31,18 @@ public sealed class NaChessHubRegistry : IExternalRegistry
     private readonly Uri _baseUri;
     private readonly string _listEventsPath;
     private readonly string _downloadSjsonPathTemplate;
+    private readonly string _eventWebUrlTemplate;
 
     public const string DefaultBaseUrl = "https://nachesshub.com";
     public const string DefaultListEventsPath = "/api/events";
     public const string DefaultDownloadSjsonPathTemplate = "/api/events/{eventId}/swisssysfile";
+
+    /// <summary>
+    /// Public website URL where TDs can read about an event in a
+    /// browser. Note the <c>www.</c> prefix — this is intentionally
+    /// a different host from the API root (<see cref="DefaultBaseUrl"/>).
+    /// </summary>
+    public const string DefaultEventWebUrlTemplate = "https://www.nachesshub.com/Events/Details/{eventId}";
 
     public string Key => "nachesshub";
     public string DisplayName => "NA Chess Hub";
@@ -44,13 +52,22 @@ public sealed class NaChessHubRegistry : IExternalRegistry
         HttpClient http,
         string baseUrl = DefaultBaseUrl,
         string listEventsPath = DefaultListEventsPath,
-        string downloadSjsonPathTemplate = DefaultDownloadSjsonPathTemplate)
+        string downloadSjsonPathTemplate = DefaultDownloadSjsonPathTemplate,
+        string eventWebUrlTemplate = DefaultEventWebUrlTemplate)
     {
         _http = http ?? throw new ArgumentNullException(nameof(http));
         ArgumentException.ThrowIfNullOrWhiteSpace(baseUrl);
+        ArgumentException.ThrowIfNullOrWhiteSpace(eventWebUrlTemplate);
         _baseUri = new Uri(baseUrl.TrimEnd('/') + "/");
         _listEventsPath = listEventsPath.TrimStart('/');
         _downloadSjsonPathTemplate = downloadSjsonPathTemplate.TrimStart('/');
+        _eventWebUrlTemplate = eventWebUrlTemplate;
+    }
+
+    public string? GetEventWebUrl(string eventId)
+    {
+        if (string.IsNullOrWhiteSpace(eventId)) return null;
+        return _eventWebUrlTemplate.Replace("{eventId}", Uri.EscapeDataString(eventId.Trim()));
     }
 
     public async Task<byte[]> DownloadSjsonAsync(

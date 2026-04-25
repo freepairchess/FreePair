@@ -19,6 +19,22 @@ public partial class OpenFromRegistryViewModel : ObservableObject
     [ObservableProperty] private string _passcode = string.Empty;
     [ObservableProperty] private string? _errorMessage;
 
+    /// <summary>
+    /// When set (browse-flow handoff), the dialog shows this event's
+    /// name + dates + location + organizer + status above the form
+    /// so the TD knows exactly which event they're entering the
+    /// passcode for. Null in the by-id flow because we have nothing
+    /// to show — just an opaque GUID.
+    /// </summary>
+    public RegistryEvent? PrefilledEvent { get; init; }
+
+    /// <summary>
+    /// Convenience for XAML: <c>true</c> when
+    /// <see cref="PrefilledEvent"/> is non-null. Drives the
+    /// IsVisible toggle on the event-context block.
+    /// </summary>
+    public bool HasPrefilledEvent => PrefilledEvent is not null;
+
     public OpenFromRegistryViewModel(IReadOnlyList<IExternalRegistry> registries)
     {
         if (registries is null || registries.Count == 0)

@@ -59,6 +59,16 @@ public interface IExternalRegistry
     /// </summary>
     Task<IReadOnlyList<RegistryEvent>> ListEventsAsync(
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Returns the public web URL the TD can hit in a browser to
+    /// see an event's details page (separate from the API URL —
+    /// e.g. NA Chess Hub uses <c>www.nachesshub.com</c> for the
+    /// website and <c>nachesshub.com</c> for the API root).
+    /// Returns <c>null</c> when the registry doesn't have a
+    /// browsable event page.
+    /// </summary>
+    string? GetEventWebUrl(string eventId);
 }
 
 /// <summary>
