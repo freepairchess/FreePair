@@ -133,10 +133,16 @@ public sealed class NaChessHubRegistry : IExternalRegistry
             var end   = TryParseDate(e.EndDateTime   ?? e.EndDate   ?? e.End);
 
             // Location: the live API splits address into city / state
-            // / zipCode. Compose them into a single display string;
-            // fall back to a flat 'location' field if a future revision
-            // collapses them again.
-            var location = ComposeLocation(e.City, e.State, e.ZipCode)
+            // / zipCode. We surface the parts individually so the
+            // browse-events grid can sort by each, AND compose them
+            // into a single 'Location' display string for the
+            // passcode dialog's event-context block (one-line summary).
+            // Falls back to a flat 'location' field if a future API
+            // revision collapses them again.
+            var city    = string.IsNullOrWhiteSpace(e.City)    ? null : e.City.Trim();
+            var state   = string.IsNullOrWhiteSpace(e.State)   ? null : e.State.Trim();
+            var zipCode = string.IsNullOrWhiteSpace(e.ZipCode) ? null : e.ZipCode.Trim();
+            var location = ComposeLocation(city, state, zipCode)
                            ?? (string.IsNullOrWhiteSpace(e.Location) ? null : e.Location);
 
             list.Add(new RegistryEvent(
@@ -145,6 +151,9 @@ public sealed class NaChessHubRegistry : IExternalRegistry
                 StartDate: start,
                 EndDate:   end,
                 Location:  location,
+                City:      city,
+                State:     state,
+                ZipCode:   zipCode,
                 Organizer: string.IsNullOrWhiteSpace(e.Organizer) ? null : e.Organizer,
                 Status:    string.IsNullOrWhiteSpace(e.Status) ? null : e.Status));
         }

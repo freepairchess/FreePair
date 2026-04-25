@@ -77,11 +77,23 @@ public interface IExternalRegistry
 /// rest are display-only hints. Providers are expected to map
 /// their native field names onto this DTO.
 /// </summary>
+/// <remarks>
+/// <see cref="City"/>, <see cref="State"/>, and <see cref="ZipCode"/>
+/// are kept as separate fields so the browse-events grid can sort
+/// each column independently. <see cref="Location"/> is the
+/// composite display string ("City, ST 01752") providers can fill
+/// when their native API doesn't split the address (or when a
+/// downstream consumer just wants a single line — see the
+/// passcode dialog's event-context block).
+/// </remarks>
 public sealed record RegistryEvent(
     string Id,
     string Name,
     DateOnly? StartDate = null,
     DateOnly? EndDate = null,
     string? Location = null,
+    string? City = null,
+    string? State = null,
+    string? ZipCode = null,
     string? Organizer = null,
     string? Status = null);
