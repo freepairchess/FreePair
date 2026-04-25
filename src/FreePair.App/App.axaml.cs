@@ -35,28 +35,25 @@ public partial class App : Application
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
+            var mainWindow = new MainWindow
             {
                 DataContext = Services.GetRequiredService<MainWindowViewModel>(),
             };
 
-            // Auto-load on startup when a tournament path is passed
-            // on the command line — this is how the multi-instance
-            // flow re-routes "Open" / "Open from online" clicks made
-            // in an instance that already has a tournament open.
-            // Only the first arg is consumed; everything else is
-            // ignored. Fired after the main window is wired so
-            // ErrorMessage banner / WindowTitle binding pick up.
+            // CLI arg handoff: when this process was launched with a
+            // tournament path (typically because another FreePair
+            // instance routed an Open click here), tell MainWindow to
+            // load it instead of the persisted "last opened" path.
+            // The pre-set InitialTournamentPath is consumed in
+            // MainWindow.OnOpened so the load happens after the VM
+            // tree is wired but before any auto-load-last race.
             if (desktop.Args is { Length: > 0 } args &&
                 !string.IsNullOrWhiteSpace(args[0]))
             {
-                var initialPath = args[0];
-                desktop.MainWindow.Opened += async (_, _) =>
-                {
-                    var vm = Services.GetRequiredService<TournamentViewModel>();
-                    await vm.LoadFromStartupArgsAsync(initialPath);
-                };
+                mainWindow.InitialTournamentPath = args[0];
             }
+
+            desktop.MainWindow = mainWindow;
         }
 
         base.OnFrameworkInitializationCompleted();
