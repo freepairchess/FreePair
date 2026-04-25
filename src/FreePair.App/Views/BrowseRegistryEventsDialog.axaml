@@ -107,7 +107,9 @@
 
                 <DataGridTextColumn Header="Start"     Binding="{Binding StartDate}" SortMemberPath="StartDate" Width="100"/>
                 <DataGridTextColumn Header="End"       Binding="{Binding EndDate}"   SortMemberPath="EndDate"   Width="100"/>
-                <DataGridTextColumn Header="Location"  Binding="{Binding Location}"  SortMemberPath="Location"  Width="170"/>
+                <DataGridTextColumn Header="City"      Binding="{Binding City}"      SortMemberPath="City"      Width="120"/>
+                <DataGridTextColumn Header="State"     Binding="{Binding State}"     SortMemberPath="State"     Width="60"/>
+                <DataGridTextColumn Header="Zip"       Binding="{Binding ZipCode}"   SortMemberPath="ZipCode"   Width="70"/>
                 <DataGridTextColumn Header="Organizer" Binding="{Binding Organizer}" SortMemberPath="Organizer" Width="160"/>
                 <DataGridTextColumn Header="Status"    Binding="{Binding Status}"    SortMemberPath="Status"    Width="90"/>
 

@@ -241,6 +241,9 @@ public class NaChessHubRegistryTests
         Assert.Equal(new DateOnly(2025, 4, 26), senior.StartDate);
         Assert.Equal(new DateOnly(2025, 4, 27), senior.EndDate);
         Assert.Equal("Marlborough, MA 01752", senior.Location);
+        Assert.Equal("Marlborough", senior.City);
+        Assert.Equal("MA", senior.State);
+        Assert.Equal("01752", senior.ZipCode);
         Assert.Equal("Completed", senior.Status);
     }
 
