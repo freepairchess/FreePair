@@ -603,6 +603,7 @@ public partial class TournamentViewModel : ViewModelBase
         var byIdVm = new OpenFromRegistryViewModel(new[] { result.SelectedRegistry })
         {
             EventId = result.ChosenEvent.Id,
+            PrefilledEvent = result.ChosenEvent,
         };
         var confirmed = await ShowOpenFromRegistryDialogAsync(byIdVm).ConfigureAwait(true);
         if (confirmed is null) return;

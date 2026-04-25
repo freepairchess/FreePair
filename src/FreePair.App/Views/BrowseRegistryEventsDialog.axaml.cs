@@ -1,8 +1,11 @@
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using FreePair.App.ViewModels;
+using FreePair.Core.Registries;
 
 namespace FreePair.App.Views;
 
@@ -76,6 +79,57 @@ public partial class BrowseRegistryEventsDialog : Window
             vm.ChosenEvent = ev;
             Close(vm);
         }
+    }
+
+    /// <summary>
+    /// Hyperlink click on the event name — shells out to the
+    /// registry's public details URL via the OS default browser.
+    /// Best-effort; silently ignores when the registry has no
+    /// browsable URL or the launch fails.
+    /// </summary>
+    private void OnEventNameClick(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is not BrowseRegistryEventsViewModel vm) return;
+        if (sender is not Button b || b.Tag is not RegistryEvent ev) return;
+        if (vm.SelectedRegistry is null) return;
+
+        var url = vm.SelectedRegistry.GetEventWebUrl(ev.Id);
+        if (string.IsNullOrWhiteSpace(url)) return;
+
+        try
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true,
+            });
+        }
+        catch
+        {
+            // Best-effort — launching a URL can fail on hosts
+            // without a default browser registered.
+        }
+    }
+
+    /// <summary>
+    /// Copies the row's event ID to the clipboard. Same Avalonia 12
+    /// DataTransfer + IClipboard pattern used by the Players tab.
+    /// </summary>
+    private async void OnCopyEventIdClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is not Button b) return;
+        var text = b.Tag as string;
+        if (string.IsNullOrEmpty(text)) return;
+
+        var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
+        if (clipboard is null) return;
+        try
+        {
+            var transfer = new DataTransfer();
+            transfer.Add(DataTransferItem.CreateText(text));
+            await clipboard.SetDataAsync(transfer);
+        }
+        catch { /* best effort */ }
     }
 
     private void OnCancel(object? sender, RoutedEventArgs e) =>

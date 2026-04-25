@@ -243,4 +243,40 @@ public class NaChessHubRegistryTests
         Assert.Equal("Marlborough, MA 01752", senior.Location);
         Assert.Equal("Completed", senior.Status);
     }
+
+    [Fact]
+    public void GetEventWebUrl_uses_default_template_with_www_host()
+    {
+        // The website host is intentionally different from the API
+        // root: API is at nachesshub.com, web is at www.nachesshub.com.
+        using var http = new HttpClient(new StubHandler());
+        var reg = new NaChessHubRegistry(http);
+
+        var url = reg.GetEventWebUrl("8435ae92-0c59-474e-bae9-3a79fffaeb40");
+        Assert.Equal(
+            "https://www.nachesshub.com/Events/Details/8435ae92-0c59-474e-bae9-3a79fffaeb40",
+            url);
+    }
+
+    [Fact]
+    public void GetEventWebUrl_returns_null_for_blank_id()
+    {
+        using var http = new HttpClient(new StubHandler());
+        var reg = new NaChessHubRegistry(http);
+        Assert.Null(reg.GetEventWebUrl(""));
+        Assert.Null(reg.GetEventWebUrl(null!));
+    }
+
+    [Fact]
+    public void GetEventWebUrl_honours_constructor_override()
+    {
+        using var http = new HttpClient(new StubHandler());
+        var reg = new NaChessHubRegistry(
+            http,
+            eventWebUrlTemplate: "https://stage.example.com/e/{eventId}/details");
+
+        Assert.Equal(
+            "https://stage.example.com/e/abc-123/details",
+            reg.GetEventWebUrl("abc-123"));
+    }
 }
