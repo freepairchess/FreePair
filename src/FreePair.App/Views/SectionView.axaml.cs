@@ -236,18 +236,73 @@ public partial class SectionView : UserControl
     {
         try
         {
-            using var fs = File.Create(path);
-            write(fs);
+            using (var fs = File.Create(path))
+            {
+                write(fs);
+            }
             if (Vm?.ParentTournamentVm is { } parent)
             {
                 parent.SaveStatus = $"PDF saved: {Path.GetFileName(path)}";
             }
+
+            // Convenience post-export: pop the file in the default
+            // viewer + select it in Explorer so the TD can grab it
+            // for sharing without hunting for the path. Best-effort
+            // — every shell-out is wrapped because launching can
+            // fail (no default app registered, sandboxed host, etc.).
+            OpenPdfAndRevealInExplorer(path);
         }
         catch (Exception ex)
         {
             if (Vm?.ParentTournamentVm is { } parent)
             {
                 parent.ErrorMessage = $"Failed to write PDF: {ex.Message}";
+            }
+        }
+    }
+
+    /// <summary>
+    /// Opens <paramref name="path"/> with the OS default app
+    /// (typically Edge / Acrobat / Preview for PDFs) and, on
+    /// Windows, also reveals it in Explorer with the file selected
+    /// via <c>explorer.exe /select,"path"</c>. Best-effort —
+    /// failures are swallowed because none of this is essential
+    /// after a successful save.
+    /// </summary>
+    private static void OpenPdfAndRevealInExplorer(string path)
+    {
+        // Open in default viewer (cross-platform via shell-execute).
+        try
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = path,
+                UseShellExecute = true,
+            });
+        }
+        catch
+        {
+            // No registered handler / sandboxed shell — fine.
+        }
+
+        // Reveal in Explorer with the file pre-selected. Windows-
+        // only behaviour; the equivalents on macOS / Linux are
+        // intentionally skipped because the default-app open above
+        // already gives the TD a way to act on the file.
+        if (OperatingSystem.IsWindows())
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = "explorer.exe",
+                    Arguments = $"/select,\"{path}\"",
+                    UseShellExecute = false,
+                });
+            }
+            catch
+            {
+                // explorer.exe not on PATH (extremely unusual) — fine.
             }
         }
     }
