@@ -34,7 +34,13 @@ namespace FreePair.Core.UscfExport;
 /// </param>
 /// <param name="GrandPrix">'Y' / 'N'.</param>
 /// <param name="Scholastic">'Y' / 'N' / 'C' (collegiate).</param>
-/// <param name="FideRated">'Y' / 'N'.</param>
+    /// <param name="FideRated">'Y' / 'N'.</param>
+/// <param name="IncludeSectionDates">
+/// When <c>true</c>, the per-section <c>S_BEG_DATE</c> /
+/// <c>S_END_DATE</c> columns are filled with the tournament-level
+/// start / end dates. When <c>false</c> (default), they're left
+/// blank — both behaviours occur in real SwissSys exports.
+/// </param>
 public sealed record UscfExportOptions(
     string UscfEventId = "",
     string AffiliateId = "",
@@ -49,7 +55,8 @@ public sealed record UscfExportOptions(
     char RatingSystem = 'R',
     char GrandPrix = 'N',
     char Scholastic = ' ',
-    char FideRated = 'N')
+    char FideRated = 'N',
+    bool IncludeSectionDates = false)
 {
     /// <summary>
     /// Hardens user-entered values to the lengths the DBF schemas

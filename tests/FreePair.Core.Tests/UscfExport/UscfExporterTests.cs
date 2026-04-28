@@ -20,56 +20,85 @@ namespace FreePair.Core.Tests.UscfExport;
 /// </summary>
 public class UscfExporterTests
 {
-    private const string FixtureFolder = "tests/FreePair.Core.Tests/Data/UscfExport/Apr2026";
-    private const string SjsonName = "Chess_A2Z_April_Open_2026.sjson";
+    private const string FixtureFolder = "tests/FreePair.Core.Tests/Data/UscfExport";
 
     /// <summary>
-    /// Mirrors the H_* metadata SwissSys baked into the reference
-    /// THEXPORT.DBF for the Apr 2026 sample so we can compare
-    /// byte-for-byte. ProgramTag is matched to "SWISSSYS11" for
-    /// the same reason — production exports tag themselves as
-    /// "FREEPAIR".
+    /// One row per real-world tournament fixture provided by the
+    /// TD. Drives the parameterised round-trip tests below so every
+    /// new sample dropped into the fixtures folder picks up the
+    /// same byte-level coverage.
     /// </summary>
-    private static UscfExportOptions Apr2026Options() => new(
-        AffiliateId:    "A4000429",
-        City:           "Portland",
-        State:          "OR",
-        ZipCode:        "97225",
-        Country:        "USA",
-        ChiefTdId:      "16097497",
-        AssistantTdId:  "16097502",
-        SendCrossTable: 'N',
-        RatingSystem:   'R',
-        GrandPrix:      'N',
-        FideRated:      'N');
-
-    private static string FixturePath(string fileName) =>
-        Path.Combine(TestPaths.RepoRoot, FixtureFolder, fileName);
-
-    private static async Task<Tournament> LoadFixtureTournamentAsync()
+    public static readonly TheoryData<string, string, UscfExportOptions> Samples = new()
     {
-        var raw = await new SwissSysImporter().ImportAsync(FixturePath(SjsonName));
+        // Apr 2026 — 4 sections, 64 players, 3-4 rounds, US Open-style multi-tier.
+        {
+            "Apr2026",
+            "Chess_A2Z_April_Open_2026.sjson",
+            new UscfExportOptions(
+                AffiliateId: "A4000429", City: "Portland", State: "OR",
+                ZipCode: "97225", Country: "USA",
+                ChiefTdId: "16097497", AssistantTdId: "16097502",
+                SendCrossTable: 'N', RatingSystem: 'R',
+                GrandPrix: 'N', FideRated: 'N')
+        },
+        // Mar 2026 — 5 sections, larger field, CTD/ATD IDs swapped vs Apr.
+        // Includes a forfeit-loss (Saripalli, Prahlada R1) — exercises
+        // the IsForfeit flag → "F0" round-code path. Also the only
+        // sample where SwissSys filled S_BEG_DATE / S_END_DATE with
+        // tournament-level dates.
+        {
+            "Mar2026",
+            "The_2026_Chess_A2Z_Inaugural_Open.sjson",
+            new UscfExportOptions(
+                AffiliateId: "A4000429", City: "Portland", State: "OR",
+                ZipCode: "97225", Country: "USA",
+                ChiefTdId: "16097502", AssistantTdId: "16097497",
+                SendCrossTable: 'N', RatingSystem: 'R',
+                GrandPrix: 'N', FideRated: 'N',
+                IncludeSectionDates: true)
+        },
+        // Oct 2025 — 6 sections, biggest field of the four samples.
+        {
+            "Oct2025",
+            "Puddletown_Chess_Golden_Autumn_II_Chess_Tournament.sjson",
+            new UscfExportOptions(
+                AffiliateId: "A7911852", City: "Portland", State: "OR",
+                ZipCode: "97225", Country: "USA",
+                ChiefTdId: "16400584", AssistantTdId: "16097502",
+                SendCrossTable: 'N', RatingSystem: 'R',
+                GrandPrix: 'N', FideRated: 'N')
+        },
+    };
+
+    private static string FixturePath(string sampleFolder, string fileName) =>
+        Path.Combine(TestPaths.RepoRoot, FixtureFolder, sampleFolder, fileName);
+
+    private static async Task<Tournament> LoadFixtureTournamentAsync(string sampleFolder, string sjsonName)
+    {
+        var raw = await new SwissSysImporter().ImportAsync(FixturePath(sampleFolder, sjsonName));
         return SwissSysMapper.Map(raw);
     }
 
-    private static (string outFolder, string prefix) ExportToTemp(Tournament t, string programTag)
+    private static string ExportToTemp(Tournament t, UscfExportOptions opts, string programTag)
     {
         var folder = Path.Combine(Path.GetTempPath(), $"fp-uscf-{Guid.NewGuid():N}");
         var exporter = new UscfExporter { ProgramTag = programTag };
-        exporter.Export(t, Apr2026Options(), folder, filePrefix: string.Empty);
-        return (folder, string.Empty);
+        exporter.Export(t, opts, folder, filePrefix: string.Empty);
+        return folder;
     }
 
-    [Fact]
-    public async Task Header_dbf_matches_swisssys_reference_byte_for_byte()
+    [Theory]
+    [MemberData(nameof(Samples))]
+    public async Task Header_dbf_matches_swisssys_reference(string sampleFolder, string sjsonName, UscfExportOptions opts)
     {
-        var t = await LoadFixtureTournamentAsync();
-        var (folder, _) = ExportToTemp(t, programTag: "SWISSSYS11");
+        var t = await LoadFixtureTournamentAsync(sampleFolder, sjsonName);
+        var folder = ExportToTemp(t, opts, programTag: "SWISSSYS11");
         try
         {
-            var generated = File.ReadAllBytes(Path.Combine(folder, "THEXPORT.DBF"));
-            var reference = File.ReadAllBytes(FixturePath("THEXPORT.DBF"));
-            AssertDbfStructurallyEquivalent(generated, reference, "THEXPORT.DBF");
+            AssertDbfStructurallyEquivalent(
+                File.ReadAllBytes(Path.Combine(folder, "THEXPORT.DBF")),
+                File.ReadAllBytes(FixturePath(sampleFolder, "THEXPORT.DBF")),
+                $"{sampleFolder}/THEXPORT.DBF");
         }
         finally
         {
@@ -77,16 +106,18 @@ public class UscfExporterTests
         }
     }
 
-    [Fact]
-    public async Task Sections_dbf_matches_swisssys_reference_field_by_field()
+    [Theory]
+    [MemberData(nameof(Samples))]
+    public async Task Sections_dbf_matches_swisssys_reference(string sampleFolder, string sjsonName, UscfExportOptions opts)
     {
-        var t = await LoadFixtureTournamentAsync();
-        var (folder, _) = ExportToTemp(t, programTag: "SWISSSYS11");
+        var t = await LoadFixtureTournamentAsync(sampleFolder, sjsonName);
+        var folder = ExportToTemp(t, opts, programTag: "SWISSSYS11");
         try
         {
-            var generated = File.ReadAllBytes(Path.Combine(folder, "TSEXPORT.DBF"));
-            var reference = File.ReadAllBytes(FixturePath("TSEXPORT.DBF"));
-            AssertDbfStructurallyEquivalent(generated, reference, "TSEXPORT.DBF");
+            AssertDbfStructurallyEquivalent(
+                File.ReadAllBytes(Path.Combine(folder, "TSEXPORT.DBF")),
+                File.ReadAllBytes(FixturePath(sampleFolder, "TSEXPORT.DBF")),
+                $"{sampleFolder}/TSEXPORT.DBF");
         }
         finally
         {
@@ -94,16 +125,18 @@ public class UscfExporterTests
         }
     }
 
-    [Fact]
-    public async Task Details_dbf_matches_swisssys_reference_field_by_field()
+    [Theory]
+    [MemberData(nameof(Samples))]
+    public async Task Details_dbf_matches_swisssys_reference(string sampleFolder, string sjsonName, UscfExportOptions opts)
     {
-        var t = await LoadFixtureTournamentAsync();
-        var (folder, _) = ExportToTemp(t, programTag: "SWISSSYS11");
+        var t = await LoadFixtureTournamentAsync(sampleFolder, sjsonName);
+        var folder = ExportToTemp(t, opts, programTag: "SWISSSYS11");
         try
         {
-            var generated = File.ReadAllBytes(Path.Combine(folder, "TDEXPORT.DBF"));
-            var reference = File.ReadAllBytes(FixturePath("TDEXPORT.DBF"));
-            AssertDbfStructurallyEquivalent(generated, reference, "TDEXPORT.DBF");
+            AssertDbfStructurallyEquivalent(
+                File.ReadAllBytes(Path.Combine(folder, "TDEXPORT.DBF")),
+                File.ReadAllBytes(FixturePath(sampleFolder, "TDEXPORT.DBF")),
+                $"{sampleFolder}/TDEXPORT.DBF");
         }
         finally
         {
@@ -114,11 +147,15 @@ public class UscfExporterTests
     [Fact]
     public async Task Export_uses_file_prefix_for_all_three_files()
     {
-        var t = await LoadFixtureTournamentAsync();
+        var t = await LoadFixtureTournamentAsync("Apr2026", "Chess_A2Z_April_Open_2026.sjson");
         var folder = Path.Combine(Path.GetTempPath(), $"fp-uscf-{Guid.NewGuid():N}");
         try
         {
-            var paths = new UscfExporter().Export(t, Apr2026Options(), folder, "myevent_");
+            var paths = new UscfExporter().Export(
+                t,
+                new UscfExportOptions(AffiliateId: "A1", ChiefTdId: "1"),
+                folder,
+                "myevent_");
             Assert.Equal(3, paths.Count);
             Assert.True(File.Exists(Path.Combine(folder, "myevent_THEXPORT.DBF")));
             Assert.True(File.Exists(Path.Combine(folder, "myevent_TSEXPORT.DBF")));

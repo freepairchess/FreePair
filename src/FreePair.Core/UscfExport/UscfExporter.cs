@@ -63,7 +63,7 @@ public sealed class UscfExporter
         if (maxRounds < 1) maxRounds = 1;
 
         WriteHeader(header, tournament, liveSections.Length, opts);
-        WriteSections(sections, liveSections, opts);
+        WriteSections(sections, liveSections, opts, tournament);
         WriteDetails(details, liveSections, opts, maxRounds);
 
         return new[] { header, sections, details };
@@ -120,7 +120,7 @@ public sealed class UscfExporter
 
     // ============ TSEXPORT ============
 
-    private static void WriteSections(string path, IReadOnlyList<Section> sections, UscfExportOptions o)
+    private static void WriteSections(string path, IReadOnlyList<Section> sections, UscfExportOptions o, Tournament t)
     {
         var fields = new[]
         {
@@ -142,6 +142,12 @@ public sealed class UscfExporter
             new Dbf3Writer.Field("S_FIDE",     1),
         };
 
+        // SwissSys is inconsistent about per-section dates: some
+        // exports leave them blank, others fill in the tournament-
+        // level dates. We mirror that with an opt-in flag.
+        var sectionBeg = o.IncludeSectionDates ? FormatDate(t.StartDate) : string.Empty;
+        var sectionEnd = o.IncludeSectionDates ? FormatDate(t.EndDate)   : string.Empty;
+
         var rows = new List<IReadOnlyDictionary<string, string>>(sections.Count);
         for (var i = 0; i < sections.Count; i++)
         {
@@ -160,8 +166,8 @@ public sealed class UscfExporter
                 ["S_TRN_TYPE"] = SectionTypeLetter(s.Kind),
                 ["S_TOT_RNDS"] = s.FinalRound.ToString(CultureInfo.InvariantCulture),
                 ["S_LST_PAIR"] = liveCount.ToString(CultureInfo.InvariantCulture),
-                ["S_BEG_DATE"] = string.Empty, // SwissSys leaves these blank — per-section dates aren't tracked
-                ["S_END_DATE"] = string.Empty,
+                ["S_BEG_DATE"] = sectionBeg,
+                ["S_END_DATE"] = sectionEnd,
                 ["S_SCH_LVL"]  = o.Scholastic.ToString(),
                 ["S_GR_PRIX"]  = o.GrandPrix.ToString(),
                 ["S_GP_PTS"]   = string.Empty,

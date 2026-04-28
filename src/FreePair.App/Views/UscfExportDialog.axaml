@@ -87,6 +87,8 @@
                 <CheckBox Content="Send crosstable"   IsChecked="{Binding SendCrossTable}"/>
                 <CheckBox Content="Grand Prix"        IsChecked="{Binding GrandPrix}"/>
                 <CheckBox Content="FIDE-rated"        IsChecked="{Binding FideRated}"/>
+                <CheckBox Content="Per-section dates" IsChecked="{Binding IncludeSectionDates}"
+                          ToolTip.Tip="Fill the per-section S_BEG_DATE / S_END_DATE columns with the tournament's start/end dates. Off by default — both behaviours occur in real SwissSys exports."/>
             </StackPanel>
         </Grid>
     </DockPanel>

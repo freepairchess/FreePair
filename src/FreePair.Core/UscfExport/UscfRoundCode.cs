@@ -30,6 +30,19 @@ public static class UscfRoundCode
     /// </summary>
     public static string Encode(RoundResult result)
     {
+        // Forfeits drop the opponent number and color: USCF wants
+        // "X0     " for a forfeit win and "F0     " for a forfeit
+        // loss regardless of who the nominal opponent was.
+        if (result.IsForfeit)
+        {
+            return result.Kind switch
+            {
+                RoundResultKind.Win  => "X0".PadRight(Width),
+                RoundResultKind.Loss => "F0".PadRight(Width),
+                _                    => Unplayed,
+            };
+        }
+
         var (letter, opponent, colorLetter) = result.Kind switch
         {
             RoundResultKind.Win          => ('W', result.Opponent, ColorLetter(result.Color)),
