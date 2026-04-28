@@ -1,0 +1,93 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:FreePair.App.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="560" d:DesignHeight="540"
+        x:Class="FreePair.App.Views.UscfExportDialog"
+        x:DataType="vm:UscfExportViewModel"
+        Title="Export USCF report files"
+        Width="560"
+        SizeToContent="Height"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+
+    <DockPanel Margin="20" LastChildFill="True">
+
+        <StackPanel DockPanel.Dock="Top" Spacing="4" Margin="0,0,0,12">
+            <TextBlock Text="Export USCF rating-submission files"
+                       FontWeight="SemiBold" FontSize="14"/>
+            <TextBlock Foreground="Gray" FontSize="11" TextWrapping="Wrap"
+                       Text="FreePair will write three DBF files (THEXPORT, TSEXPORT, TDEXPORT) prefixed with the event name into the tournament folder. Fill in the metadata USCF requires below — pre-filled from your last export."/>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="8"
+                    Margin="0,16,0,0">
+            <TextBlock Foreground="DarkRed"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       MaxWidth="280"
+                       Text="{Binding ErrorMessage}"
+                       IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+            <Button Content="Cancel" Click="OnCancel" MinWidth="90" IsCancel="True"/>
+            <Button Content="Export" Click="OnConfirm" MinWidth="90" IsDefault="True" Classes="accent"/>
+        </StackPanel>
+
+        <Grid ColumnDefinitions="160,*"
+              RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+              RowSpacing="8">
+
+            <TextBlock Grid.Row="0"  Grid.Column="0" Text="USCF event ID"  VerticalAlignment="Center" Foreground="DimGray"/>
+            <TextBox   Grid.Row="0"  Grid.Column="1" Text="{Binding UscfEventId}"
+                       Watermark="Leave blank for first submission (USCF assigns)"/>
+
+            <TextBlock Grid.Row="1"  Grid.Column="0" Text="Affiliate ID *" VerticalAlignment="Center" Foreground="DimGray"/>
+            <TextBox   Grid.Row="1"  Grid.Column="1" Text="{Binding AffiliateId}" Watermark="e.g. A4000429"/>
+
+            <TextBlock Grid.Row="2"  Grid.Column="0" Text="Chief TD ID *"  VerticalAlignment="Center" Foreground="DimGray"/>
+            <TextBox   Grid.Row="2"  Grid.Column="1" Text="{Binding ChiefTdId}" Watermark="USCF member ID"/>
+
+            <TextBlock Grid.Row="3"  Grid.Column="0" Text="Assistant TD"   VerticalAlignment="Center" Foreground="DimGray"/>
+            <TextBox   Grid.Row="3"  Grid.Column="1" Text="{Binding AssistantTdId}" Watermark="USCF member ID (optional)"/>
+
+            <TextBlock Grid.Row="4"  Grid.Column="0" Text="Other TDs"      VerticalAlignment="Center" Foreground="DimGray"/>
+            <TextBox   Grid.Row="4"  Grid.Column="1" Text="{Binding OtherTdNotes}" Watermark="Comma-separated names (optional)"/>
+
+            <TextBlock Grid.Row="5"  Grid.Column="0" Text="City"           VerticalAlignment="Center" Foreground="DimGray"/>
+            <TextBox   Grid.Row="5"  Grid.Column="1" Text="{Binding City}"/>
+
+            <TextBlock Grid.Row="6"  Grid.Column="0" Text="State"          VerticalAlignment="Center" Foreground="DimGray"/>
+            <Grid      Grid.Row="6"  Grid.Column="1" ColumnDefinitions="60,12,*">
+                <TextBox Grid.Column="0" Text="{Binding State}" MaxLength="2" Watermark="OR"/>
+                <TextBlock Grid.Column="2" Text="(2-letter postal code)"
+                           Foreground="Gray" FontSize="11" VerticalAlignment="Center"/>
+            </Grid>
+
+            <TextBlock Grid.Row="7"  Grid.Column="0" Text="Zip code"       VerticalAlignment="Center" Foreground="DimGray"/>
+            <TextBox   Grid.Row="7"  Grid.Column="1" Text="{Binding ZipCode}"/>
+
+            <TextBlock Grid.Row="8"  Grid.Column="0" Text="Country"        VerticalAlignment="Center" Foreground="DimGray"/>
+            <TextBox   Grid.Row="8"  Grid.Column="1" Text="{Binding Country}"/>
+
+            <TextBlock Grid.Row="9"  Grid.Column="0" Text="Rating system"  VerticalAlignment="Center" Foreground="DimGray"/>
+            <ComboBox  Grid.Row="9"  Grid.Column="1" SelectedItem="{Binding RatingSystem, Mode=TwoWay}"
+                       HorizontalAlignment="Left" Width="220">
+                <ComboBoxItem Content="R"/>
+                <ComboBoxItem Content="Q"/>
+                <ComboBoxItem Content="B"/>
+                <ComboBoxItem Content="D"/>
+            </ComboBox>
+
+            <TextBlock Grid.Row="10" Grid.Column="0" Text="Flags" VerticalAlignment="Center" Foreground="DimGray"/>
+            <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal" Spacing="16">
+                <CheckBox Content="Send crosstable"   IsChecked="{Binding SendCrossTable}"/>
+                <CheckBox Content="Grand Prix"        IsChecked="{Binding GrandPrix}"/>
+                <CheckBox Content="FIDE-rated"        IsChecked="{Binding FideRated}"/>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Window>

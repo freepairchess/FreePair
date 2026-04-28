@@ -61,4 +61,18 @@ public class AppSettings
     /// <see cref="Tournaments.TournamentFolder"/>.
     /// </remarks>
     public string? TournamentsRootFolder { get; set; }
+
+    // ============ USCF export defaults ============
+    // Persisted across sessions so the export dialog pre-fills with
+    // the same TD / affiliate / venue info the TD used last time.
+    // Per-event fields (event id, send-cross-table flag) stay
+    // dialog-only since they vary by submission.
+
+    public string? UscfChiefTdId { get; set; }
+    public string? UscfAssistantTdId { get; set; }
+    public string? UscfAffiliateId { get; set; }
+    public string? UscfCity { get; set; }
+    public string? UscfState { get; set; }
+    public string? UscfZipCode { get; set; }
+    public string? UscfCountry { get; set; } = "USA";
 }
