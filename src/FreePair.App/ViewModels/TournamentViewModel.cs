@@ -199,6 +199,13 @@ public partial class TournamentViewModel : ViewModelBase
     /// </summary>
     public Func<BrowseRegistryEventsViewModel, Task<BrowseRegistryEventsViewModel?>>? ShowBrowseRegistryEventsDialogAsync { get; set; }
 
+    /// <summary>
+    /// View-supplied callback that opens the "Export USCF report
+    /// files" dialog. Returns the VM on OK (caller maps to
+    /// UscfExportOptions and runs the exporter), null on Cancel.
+    /// </summary>
+    public Func<UscfExportViewModel, Task<UscfExportViewModel?>>? ShowUscfExportDialogAsync { get; set; }
+
     // ============ Online publishing (session-only, per-tournament) ============
 
     /// <summary>Sticky URL used by the Publish dialog. Seeded from <see cref="AppSettings.NaChessHubBaseUrl"/>.</summary>
@@ -676,6 +683,83 @@ public partial class TournamentViewModel : ViewModelBase
             confirmed.Passcode,
             suggestedName: result.ChosenEvent.Name,
             settings).ConfigureAwait(true);
+    }
+
+    /// <summary>
+    /// "Export USCF report files" flow. Opens the metadata dialog
+    /// (pre-filled from settings), runs <c>UscfExporter</c> with
+    /// the supplied options, drops the three DBFs into the current
+    /// tournament folder using the .sjson basename as the file
+    /// prefix so multiple events can coexist, and reveals the
+    /// folder in Explorer.
+    /// </summary>
+    [RelayCommand]
+    private async Task ExportUscfAsync()
+    {
+        if (Tournament is null || string.IsNullOrWhiteSpace(CurrentFilePath))
+        {
+            ErrorMessage = "Open a tournament before exporting USCF reports.";
+            return;
+        }
+        if (ShowUscfExportDialogAsync is null) return;
+
+        var settings = await _settingsService.LoadAsync().ConfigureAwait(true);
+        var dialogVm = new UscfExportViewModel
+        {
+            ChiefTdId     = settings.UscfChiefTdId      ?? string.Empty,
+            AssistantTdId = settings.UscfAssistantTdId  ?? string.Empty,
+            AffiliateId   = settings.UscfAffiliateId    ?? string.Empty,
+            City          = settings.UscfCity           ?? string.Empty,
+            State         = settings.UscfState          ?? string.Empty,
+            ZipCode       = settings.UscfZipCode        ?? string.Empty,
+            Country       = string.IsNullOrWhiteSpace(settings.UscfCountry) ? "USA" : settings.UscfCountry!,
+        };
+
+        var confirmed = await ShowUscfExportDialogAsync(dialogVm).ConfigureAwait(true);
+        if (confirmed is null) return;
+
+        // Persist whatever the TD typed back as the new defaults so
+        // subsequent exports pre-fill with their latest values.
+        settings.UscfChiefTdId     = confirmed.ChiefTdId.Trim();
+        settings.UscfAssistantTdId = confirmed.AssistantTdId.Trim();
+        settings.UscfAffiliateId   = confirmed.AffiliateId.Trim();
+        settings.UscfCity          = confirmed.City.Trim();
+        settings.UscfState         = confirmed.State.Trim().ToUpperInvariant();
+        settings.UscfZipCode       = confirmed.ZipCode.Trim();
+        settings.UscfCountry       = string.IsNullOrWhiteSpace(confirmed.Country) ? "USA" : confirmed.Country.Trim();
+        try { await _settingsService.SaveAsync(settings).ConfigureAwait(true); } catch { /* defaults are best-effort */ }
+
+        var folder = System.IO.Path.GetDirectoryName(CurrentFilePath)
+                     ?? System.IO.Directory.GetCurrentDirectory();
+        var prefix = System.IO.Path.GetFileNameWithoutExtension(CurrentFilePath) + "_";
+
+        try
+        {
+            var exporter = new FreePair.Core.UscfExport.UscfExporter();
+            var written = exporter.Export(Tournament!, confirmed.ToOptions(), folder, prefix);
+            SaveStatus = $"USCF report files written: {written.Count} files in '{folder}'.";
+
+            // Reveal the folder so the TD can drag-and-drop the
+            // three DBFs onto the USCF rater. Same pattern as the
+            // post-PDF Explorer reveal.
+            try
+            {
+                if (OperatingSystem.IsWindows())
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = "explorer.exe",
+                        Arguments = $"/select,\"{written[0]}\"",
+                        UseShellExecute = false,
+                    });
+                }
+            }
+            catch { /* best-effort */ }
+        }
+        catch (System.Exception ex)
+        {
+            ErrorMessage = $"Failed to write USCF report files: {ex.Message}";
+        }
     }
 
     /// <summary>

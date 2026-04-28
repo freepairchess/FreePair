@@ -34,6 +34,7 @@ public partial class TournamentView : UserControl
             vm.PickPlayerImportFileAsync = PickPlayerImportFileAsync;
             vm.ShowOpenFromRegistryDialogAsync = ShowOpenFromRegistryDialogAsync;
             vm.ShowBrowseRegistryEventsDialogAsync = ShowBrowseRegistryEventsDialogAsync;
+            vm.ShowUscfExportDialogAsync = ShowUscfExportDialogAsync;
         }
     }
 
@@ -269,6 +270,14 @@ public partial class TournamentView : UserControl
         if (TopLevel.GetTopLevel(this) is not Window owner) return null;
         var dialog = new BrowseRegistryEventsDialog(vm);
         return await dialog.ShowDialog<BrowseRegistryEventsViewModel?>(owner);
+    }
+
+    /// <summary>Opens the "Export USCF report files" dialog.</summary>
+    private async Task<UscfExportViewModel?> ShowUscfExportDialogAsync(UscfExportViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner) return null;
+        var dialog = new UscfExportDialog(vm);
+        return await dialog.ShowDialog<UscfExportViewModel?>(owner);
     }
 
     /// <summary>

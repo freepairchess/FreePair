@@ -39,6 +39,10 @@
                         Command="{Binding PublishCommand}"
                         IsVisible="{Binding HasTournament}"
                         ToolTip.Tip="Upload the current .sjson to a publishing destination (NA Chess Hub, …), with optional auto-publish on every pairing update / result entry."/>
+                <Button Content="📤 Export USCF report..."
+                        Command="{Binding ExportUscfCommand}"
+                        IsVisible="{Binding HasTournament}"
+                        ToolTip.Tip="Generate the three .DBF files USCF requires for rating submissions (THEXPORT, TSEXPORT, TDEXPORT), prefixed with the event name and saved next to the .sjson."/>
                 <Button Content="Export section to TRF..."
                         Command="{Binding ExportTrfCommand}"
                         IsVisible="{Binding HasSelectedSection}"
