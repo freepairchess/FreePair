@@ -26,6 +26,7 @@ public partial class UscfExportViewModel : ObservableObject
     [ObservableProperty] private bool _sendCrossTable;
     [ObservableProperty] private bool _grandPrix;
     [ObservableProperty] private bool _fideRated;
+    [ObservableProperty] private bool _includeSectionDates;
 
     /// <summary>
     /// One letter — <c>R</c> regular, <c>Q</c> quick, <c>B</c>
@@ -74,5 +75,6 @@ public partial class UscfExportViewModel : ObservableObject
         SendCrossTable: SendCrossTable ? 'Y' : 'N',
         RatingSystem:   string.IsNullOrEmpty(RatingSystem) ? 'R' : RatingSystem[0],
         GrandPrix:      GrandPrix ? 'Y' : 'N',
-        FideRated:      FideRated ? 'Y' : 'N');
+        FideRated:      FideRated ? 'Y' : 'N',
+        IncludeSectionDates: IncludeSectionDates);
 }

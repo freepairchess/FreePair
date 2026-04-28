@@ -31,7 +31,8 @@ public readonly record struct RoundResult(
     int Board,
     int Logic1,
     int Logic2,
-    decimal GamePoints)
+    decimal GamePoints,
+    bool IsForfeit = false)
 {
     /// <summary>
     /// An uninitialized round slot, equivalent to a raw <c>\u0000;0;-;0;0;0;0</c>
@@ -99,15 +100,21 @@ public readonly record struct RoundResult(
     /// </summary>
     public string ToSwissSysToken()
     {
-        var prefix = Kind switch
+        // Forfeit wins / losses use distinct prefixes so the
+        // forfeit flag survives a round-trip through the .sjson —
+        // and so USCF report output can emit "X0" / "F0" instead
+        // of "W{opp}" / "L{opp}".
+        var prefix = (Kind, IsForfeit) switch
         {
-            RoundResultKind.Win          => "+",
-            RoundResultKind.Loss         => "-",
-            RoundResultKind.Draw         => "=",
-            RoundResultKind.FullPointBye => "B",
-            RoundResultKind.HalfPointBye => "H",
-            RoundResultKind.ZeroPointBye => "U",
-            _                            => "~",
+            (RoundResultKind.Win,          true)  => "X",
+            (RoundResultKind.Loss,         true)  => "F",
+            (RoundResultKind.Win,          _)     => "+",
+            (RoundResultKind.Loss,         _)     => "-",
+            (RoundResultKind.Draw,         _)     => "=",
+            (RoundResultKind.FullPointBye, _)     => "B",
+            (RoundResultKind.HalfPointBye, _)     => "H",
+            (RoundResultKind.ZeroPointBye, _)     => "U",
+            _                                     => "~",
         };
 
         var color = Color switch
@@ -140,7 +147,7 @@ public readonly record struct RoundResult(
         var parts = token.Split(';');
 
         var kindToken = parts.Length > 0 ? parts[0] : string.Empty;
-        if (!TryParseKind(kindToken, out var kind))
+        if (!TryParseKind(kindToken, out var kind, out var isForfeit))
         {
             error = $"Unrecognized result prefix '{kindToken}'.";
             return false;
@@ -153,12 +160,13 @@ public readonly record struct RoundResult(
         var logic2 = ParseIntOrDefault(parts, 5, 0);
         var gamePoints = ParseDecimalOrDefault(parts, 6, 0m);
 
-        result = new RoundResult(kind, opponent, color, board, logic1, logic2, gamePoints);
+        result = new RoundResult(kind, opponent, color, board, logic1, logic2, gamePoints, isForfeit);
         return true;
     }
 
-    private static bool TryParseKind(string token, out RoundResultKind kind)
+    private static bool TryParseKind(string token, out RoundResultKind kind, out bool isForfeit)
     {
+        isForfeit = false;
         // Empty string and leading-NUL both mean "uninitialized".
         if (token.Length == 0 || token[0] == '\0')
         {
@@ -180,12 +188,11 @@ public readonly record struct RoundResult(
             // or SwissSys itself (late entry, withdrawal round, etc.).
             // Modelled as RoundResultKind.ZeroPointBye with Score == 0.
             case "U": kind = RoundResultKind.ZeroPointBye; return true;
-            // Forfeit wins / losses. USCF rules: scoring is identical to
-            // a regular win / loss. We don't preserve the forfeit-vs-
-            // played distinction in the domain model (v1), so downstream
-            // display will show "W" / "L" instead of "X" / "F".
-            case "X": kind = RoundResultKind.Win;  return true;
-            case "F": kind = RoundResultKind.Loss; return true;
+            // Forfeit wins / losses score the same as regular wins /
+            // losses but carry a flag so the on-disk SwissSys token
+            // and the USCF report DBF can distinguish them.
+            case "X": kind = RoundResultKind.Win;  isForfeit = true; return true;
+            case "F": kind = RoundResultKind.Loss; isForfeit = true; return true;
             default:
                 kind = RoundResultKind.None;
                 return false;
