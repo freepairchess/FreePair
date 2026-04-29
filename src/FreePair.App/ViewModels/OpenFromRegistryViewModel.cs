@@ -35,6 +35,18 @@ public partial class OpenFromRegistryViewModel : ObservableObject
     /// </summary>
     public bool HasPrefilledEvent => PrefilledEvent is not null;
 
+    /// <summary>
+    /// Public web URL for <see cref="PrefilledEvent"/> on the
+    /// selected registry — e.g. <c>https://www.nachesshub.com/Events/Details/{id}</c>.
+    /// Returns <c>null</c> when there's no prefilled event or the
+    /// registry doesn't expose a browsable details page. The dialog
+    /// uses this to hyperlink the event name.
+    /// </summary>
+    public string? PrefilledEventWebUrl =>
+        PrefilledEvent is null ? null : SelectedRegistry?.GetEventWebUrl(PrefilledEvent.Id);
+
+    public bool HasPrefilledEventWebUrl => !string.IsNullOrEmpty(PrefilledEventWebUrl);
+
     public OpenFromRegistryViewModel(IReadOnlyList<IExternalRegistry> registries)
     {
         if (registries is null || registries.Count == 0)

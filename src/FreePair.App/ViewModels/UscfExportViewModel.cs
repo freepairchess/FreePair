@@ -139,6 +139,22 @@ public partial class UscfExportViewModel : ObservableObject
             AffiliateId = tournament.OrganizerId!;
         }
 
+        // Rating-system letter from the Time control type via the
+        // Core helper. Anything else (Other / null) leaves the
+        // previous value alone.
+        if (UscfReportPrefs.RatingSystemFromTimeControl(tournament.TimeControlType) is char rsLetter)
+        {
+            RatingSystem = rsLetter.ToString();
+        }
+
+        // FIDE-rated flag: any Rating type whose enum name contains
+        // "FIDE" qualifies. Doesn't auto-uncheck if the TD already
+        // had it ticked — derivation is additive.
+        if (UscfReportPrefs.IsFideRated(tournament.RatingType))
+        {
+            FideRated = true;
+        }
+
         // Chief / Assistant TD from Delegations:
         //   - first entries with Level == TournamentDirector → Chief, Assistant
         //   - otherwise the first delegation (any level) → Chief, no Assistant

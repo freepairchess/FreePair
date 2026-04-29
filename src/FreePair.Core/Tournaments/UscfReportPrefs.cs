@@ -1,5 +1,7 @@
 namespace FreePair.Core.Tournaments;
 
+using FreePair.Core.Tournaments.Enums;
+
 /// <summary>
 /// Per-tournament USCF report preferences. Persisted as
 /// <c>"FreePair USCF *"</c> keys in the SwissSys Overview block,
@@ -34,4 +36,35 @@ public sealed record UscfReportPrefs(
     bool? SendCrossTable = null,
     bool? GrandPrix = null,
     bool? FideRated = null,
-    bool? IncludeSectionDates = null);
+    bool? IncludeSectionDates = null)
+{
+    /// <summary>
+    /// Maps a NAChessHub <see cref="TimeControlType"/> onto the
+    /// USCF rating-system letter accepted by USCF report files.
+    /// Returns <c>null</c> when no useful mapping exists (the
+    /// caller should keep its current value, default to <c>'R'</c>,
+    /// or prompt the TD).
+    /// </summary>
+    public static char? RatingSystemFromTimeControl(TimeControlType? tct) => tct switch
+    {
+        TimeControlType.Bullet            => 'B',
+        TimeControlType.Blitz             => 'B',
+        TimeControlType.Rapid             => 'Q',
+        TimeControlType.Classical         => 'R',
+        // Dual-rated rapid + classical maps to USCF "Dual" code.
+        TimeControlType.RapidAndClassical => 'D',
+        _                                 => null,
+    };
+
+    /// <summary>
+    /// True when the event's <see cref="RatingType"/> includes a
+    /// FIDE component — covers <c>FIDE</c>, <c>USCF_FIDE</c>,
+    /// <c>CFC_FIDE</c>, <c>CFC_USCF_FIDE</c>, <c>USCF_FIDE_NW</c>,
+    /// <c>CFC_FIDE_NW</c>, <c>USCF_CFC_FIDE_NW</c>. Detected by
+    /// substring on the enum's name so any future FIDE-bearing
+    /// composite picks up automatically.
+    /// </summary>
+    public static bool IsFideRated(RatingType? rt) =>
+        rt is not null &&
+        rt.Value.ToString().Contains("FIDE", System.StringComparison.OrdinalIgnoreCase);
+}
