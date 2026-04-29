@@ -14,6 +14,20 @@ namespace FreePair.Core.Tournaments;
 public static class TournamentMutations
 {
     /// <summary>
+    /// Replaces the per-tournament USCF report preferences in a
+    /// single immutable step. Called by the export dialog after
+    /// the TD confirms — the new prefs round-trip through
+    /// <c>"FreePair USCF *"</c> keys in the SwissSys Overview block
+    /// and pre-fill the dialog on subsequent export invocations.
+    /// </summary>
+    public static Tournament SetUscfReportPrefs(Tournament tournament, UscfReportPrefs prefs)
+    {
+        if (tournament is null) throw new System.ArgumentNullException(nameof(tournament));
+        if (prefs is null)      throw new System.ArgumentNullException(nameof(prefs));
+        return tournament with { UscfReportPrefs = prefs };
+    }
+
+    /// <summary>
     /// Applies a batch of event-level metadata edits in a single
     /// immutable step. Any parameter left at its default sentinel
     /// (<see langword="null"/>) is treated as "leave unchanged". Used

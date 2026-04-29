@@ -80,7 +80,25 @@ public sealed record Tournament(
     /// as <c>"FreePair last published at"</c> (ISO-8601 UTC). Null when
     /// the tournament has never been published.
     /// </summary>
-    DateTimeOffset? LastPublishedAt = null)
+    DateTimeOffset? LastPublishedAt = null,
+
+    // ============ delegations + per-tournament USCF report prefs ============
+
+    /// <summary>
+    /// People delegated rights on the event (owner / TDs).
+    /// Read-only mirror of the SwissSys Overview's
+    /// <c>"Delegations"</c> array — used by the USCF export dialog
+    /// to pre-fill Chief TD / Assistant TD ids.
+    /// </summary>
+    IReadOnlyList<Delegation>? Delegations = null,
+
+    /// <summary>
+    /// Per-tournament USCF report preferences. Sticky settings the
+    /// TD enters in the export dialog the first time and rarely
+    /// changes thereafter. <c>null</c> means "never exported yet —
+    /// fall back to Overview-derived values + AppSettings defaults".
+    /// </summary>
+    UscfReportPrefs? UscfReportPrefs = null)
 {
     /// <summary>
     /// Human-readable one-line location summary built from the

@@ -57,7 +57,63 @@ public static class SwissSysMapper
             HalfPointByesAllowed: raw.Overview?.HalfPointByes,
             AutoPublishPairings:  raw.Overview?.FreePairAutoPublishPairings,
             AutoPublishResults:   raw.Overview?.FreePairAutoPublishResults,
-            LastPublishedAt:      ParseIsoTimestamp(raw.Overview?.FreePairLastPublishedAt));
+            LastPublishedAt:      ParseIsoTimestamp(raw.Overview?.FreePairLastPublishedAt),
+
+            Delegations:    MapDelegations(raw.Overview?.Delegations),
+            UscfReportPrefs: MapUscfReportPrefs(raw.Overview));
+    }
+
+    private static System.Collections.Generic.IReadOnlyList<Delegation>? MapDelegations(
+        System.Collections.Generic.List<Raw.RawDelegation>? raw)
+    {
+        if (raw is null || raw.Count == 0) return null;
+        var list = new System.Collections.Generic.List<Delegation>(raw.Count);
+        foreach (var r in raw)
+        {
+            if (string.IsNullOrWhiteSpace(r.PlayerId) && string.IsNullOrWhiteSpace(r.PlayerName))
+                continue;
+            list.Add(new Delegation(
+                PlayerId:   r.PlayerId   ?? string.Empty,
+                PlayerName: r.PlayerName ?? string.Empty,
+                Email:      r.Email,
+                Phone:      r.Phone,
+                Level:      r.Level ?? DelegationLevel.Other));
+        }
+        return list.Count == 0 ? null : list;
+    }
+
+    private static UscfReportPrefs? MapUscfReportPrefs(Raw.RawOverview? o)
+    {
+        if (o is null) return null;
+        // Build the record only when at least one preference key is
+        // present — leaving it null lets the export dialog fall
+        // back to Overview-derived + AppSettings defaults.
+        var anySet =
+            !string.IsNullOrEmpty(o.FreePairUscfAffiliateId)   ||
+            !string.IsNullOrEmpty(o.FreePairUscfChiefTdId)     ||
+            !string.IsNullOrEmpty(o.FreePairUscfAssistantTdId) ||
+            !string.IsNullOrEmpty(o.FreePairUscfOtherTdNotes)  ||
+            !string.IsNullOrEmpty(o.FreePairUscfRatingSystem)  ||
+            o.FreePairUscfSendCrossTable.HasValue              ||
+            o.FreePairUscfGrandPrix.HasValue                   ||
+            o.FreePairUscfFideRated.HasValue                   ||
+            o.FreePairUscfIncludeSectionDates.HasValue;
+        if (!anySet) return null;
+
+        char? rs = !string.IsNullOrEmpty(o.FreePairUscfRatingSystem)
+            ? o.FreePairUscfRatingSystem![0]
+            : null;
+
+        return new UscfReportPrefs(
+            AffiliateId:         o.FreePairUscfAffiliateId,
+            ChiefTdId:           o.FreePairUscfChiefTdId,
+            AssistantTdId:       o.FreePairUscfAssistantTdId,
+            OtherTdNotes:        o.FreePairUscfOtherTdNotes,
+            RatingSystem:        rs,
+            SendCrossTable:      o.FreePairUscfSendCrossTable,
+            GrandPrix:           o.FreePairUscfGrandPrix,
+            FideRated:           o.FreePairUscfFideRated,
+            IncludeSectionDates: o.FreePairUscfIncludeSectionDates);
     }
 
     /// <summary>

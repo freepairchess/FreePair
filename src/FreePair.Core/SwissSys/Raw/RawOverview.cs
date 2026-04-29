@@ -105,6 +105,15 @@ public sealed class RawOverview
     [JsonConverter(typeof(JsonStringEnumConverter<RatingType>))]
     public RatingType? RatingType { get; set; }
 
+    /// <summary>
+    /// Per-tournament delegations array — owner + tournament
+    /// directors entered by the organiser at registration time.
+    /// FreePair reads this to pre-fill the USCF export dialog's
+    /// CTD / ATD fields.
+    /// </summary>
+    [JsonPropertyName("Delegations")]
+    public System.Collections.Generic.List<RawDelegation>? Delegations { get; set; }
+
     // ==== FreePair-specific extensions ====================================
     // Harmless to SwissSys (it ignores unknown keys); persisted at the
     // top of the Overview block so the writer can pass them through
@@ -134,4 +143,40 @@ public sealed class RawOverview
     /// </summary>
     [JsonPropertyName("FreePair last published at")]
     public string? FreePairLastPublishedAt { get; set; }
+
+    // ==== FreePair USCF report preferences (per-tournament sticky) ====
+
+    /// <summary>
+    /// Affiliate ID override for the USCF export. When set, takes
+    /// precedence over <see cref="OrganizerId"/>. Useful when the
+    /// organiser ID isn't actually a USCF affiliate id (e.g. a FIDE
+    /// id) but the TD still wants to submit to USCF.
+    /// </summary>
+    [JsonPropertyName("FreePair USCF affiliate ID")]
+    public string? FreePairUscfAffiliateId { get; set; }
+
+    [JsonPropertyName("FreePair USCF chief TD ID")]
+    public string? FreePairUscfChiefTdId { get; set; }
+
+    [JsonPropertyName("FreePair USCF assistant TD ID")]
+    public string? FreePairUscfAssistantTdId { get; set; }
+
+    [JsonPropertyName("FreePair USCF other TD notes")]
+    public string? FreePairUscfOtherTdNotes { get; set; }
+
+    /// <summary>One letter — R / Q / B / D.</summary>
+    [JsonPropertyName("FreePair USCF rating system")]
+    public string? FreePairUscfRatingSystem { get; set; }
+
+    [JsonPropertyName("FreePair USCF send crosstable")]
+    public bool? FreePairUscfSendCrossTable { get; set; }
+
+    [JsonPropertyName("FreePair USCF grand prix")]
+    public bool? FreePairUscfGrandPrix { get; set; }
+
+    [JsonPropertyName("FreePair USCF FIDE rated")]
+    public bool? FreePairUscfFideRated { get; set; }
+
+    [JsonPropertyName("FreePair USCF include section dates")]
+    public bool? FreePairUscfIncludeSectionDates { get; set; }
 }

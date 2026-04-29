@@ -704,22 +704,20 @@ public partial class TournamentViewModel : ViewModelBase
         if (ShowUscfExportDialogAsync is null) return;
 
         var settings = await _settingsService.LoadAsync().ConfigureAwait(true);
-        var dialogVm = new UscfExportViewModel
-        {
-            ChiefTdId     = settings.UscfChiefTdId      ?? string.Empty,
-            AssistantTdId = settings.UscfAssistantTdId  ?? string.Empty,
-            AffiliateId   = settings.UscfAffiliateId    ?? string.Empty,
-            City          = settings.UscfCity           ?? string.Empty,
-            State         = settings.UscfState          ?? string.Empty,
-            ZipCode       = settings.UscfZipCode        ?? string.Empty,
-            Country       = string.IsNullOrWhiteSpace(settings.UscfCountry) ? "USA" : settings.UscfCountry!,
-        };
+        var dialogVm = new UscfExportViewModel();
+        // Priority cascade: per-tournament prefs > Overview-derived
+        // (Organizer ID / Event city/state/zip/country / Delegations
+        // first TD as chief, second as assistant) > AppSettings.
+        dialogVm.Prefill(Tournament!, settings);
 
         var confirmed = await ShowUscfExportDialogAsync(dialogVm).ConfigureAwait(true);
         if (confirmed is null) return;
 
-        // Persist whatever the TD typed back as the new defaults so
-        // subsequent exports pre-fill with their latest values.
+        // Persist whatever the TD typed back as both the new
+        // app-wide defaults AND the per-tournament sticky prefs so
+        // subsequent exports of the SAME event pre-fill instantly
+        // and a NEW event still pre-fills with the latest seen
+        // values.
         settings.UscfChiefTdId     = confirmed.ChiefTdId.Trim();
         settings.UscfAssistantTdId = confirmed.AssistantTdId.Trim();
         settings.UscfAffiliateId   = confirmed.AffiliateId.Trim();
@@ -728,6 +726,12 @@ public partial class TournamentViewModel : ViewModelBase
         settings.UscfZipCode       = confirmed.ZipCode.Trim();
         settings.UscfCountry       = string.IsNullOrWhiteSpace(confirmed.Country) ? "USA" : confirmed.Country.Trim();
         try { await _settingsService.SaveAsync(settings).ConfigureAwait(true); } catch { /* defaults are best-effort */ }
+
+        // Per-tournament sticky prefs: stamp them onto the
+        // Tournament record and persist so the writer round-trips
+        // them as "FreePair USCF *" Overview keys.
+        Tournament = TournamentMutations.SetUscfReportPrefs(Tournament!, confirmed.ToPersistedPrefs());
+        try { await PersistCurrentTournamentAsync().ConfigureAwait(true); } catch { /* best-effort */ }
 
         var folder = System.IO.Path.GetDirectoryName(CurrentFilePath)
                      ?? System.IO.Directory.GetCurrentDirectory();
