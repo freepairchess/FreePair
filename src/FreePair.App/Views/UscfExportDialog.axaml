@@ -74,13 +74,10 @@
             <TextBox   Grid.Row="8"  Grid.Column="1" Text="{Binding Country}"/>
 
             <TextBlock Grid.Row="9"  Grid.Column="0" Text="Rating system"  VerticalAlignment="Center" Foreground="DimGray"/>
-            <ComboBox  Grid.Row="9"  Grid.Column="1" SelectedItem="{Binding RatingSystem, Mode=TwoWay}"
-                       HorizontalAlignment="Left" Width="220">
-                <ComboBoxItem Content="R"/>
-                <ComboBoxItem Content="Q"/>
-                <ComboBoxItem Content="B"/>
-                <ComboBoxItem Content="D"/>
-            </ComboBox>
+            <ComboBox  Grid.Row="9"  Grid.Column="1"
+                       ItemsSource="{Binding RatingSystemOptions}"
+                       SelectedItem="{Binding RatingSystem, Mode=TwoWay}"
+                       HorizontalAlignment="Left" Width="220"/>
 
             <TextBlock Grid.Row="10" Grid.Column="0" Text="Flags" VerticalAlignment="Center" Foreground="DimGray"/>
             <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal" Spacing="16">

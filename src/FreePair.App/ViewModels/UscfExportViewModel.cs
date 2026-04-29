@@ -38,6 +38,18 @@ public partial class UscfExportViewModel : ObservableObject
     /// </summary>
     [ObservableProperty] private string _ratingSystem = "R";
 
+    /// <summary>
+    /// Items source for the rating-system combobox. The dialog
+    /// previously declared inline <c>&lt;ComboBoxItem&gt;</c>
+    /// children, but binding <see cref="RatingSystem"/> (a
+    /// <c>string</c>) to <c>SelectedItem</c> compared against
+    /// <c>ComboBoxItem</c> instances and never matched — leaving
+    /// the field visibly empty even when the cascade had already
+    /// pre-filled <c>"D"</c>. Binding ItemsSource to a string
+    /// collection makes SelectedItem comparison straightforward.
+    /// </summary>
+    public IReadOnlyList<string> RatingSystemOptions { get; } = new[] { "R", "Q", "B", "D" };
+
     [ObservableProperty] private string? _errorMessage;
 
     /// <summary>
