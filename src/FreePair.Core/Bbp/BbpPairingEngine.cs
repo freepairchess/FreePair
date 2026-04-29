@@ -22,15 +22,45 @@ public class BbpPairingEngine : IBbpPairingEngine
 {
     /// <summary>
     /// Friendly instructions shown when the user has not yet configured the
-    /// pairing engine binary path. Includes the official releases URL.
+    /// pairing engine binary path AND no bundled binary was found next to
+    /// the FreePair executable.
     /// </summary>
     public const string NotConfiguredInstructions =
         "Pairing engine (BBP) is not configured.\n\n" +
+        "FreePair installers normally bundle bbpPairings.exe — you should\n" +
+        "not have to set this manually. If you're running from a manual\n" +
+        "build:\n" +
         "1. Download bbpPairings from:\n" +
         "   https://github.com/BieremaBoyzProgramming/bbpPairings/releases\n" +
         "2. Unzip the release somewhere on your computer (e.g. C:\\Tools\\bbpPairings).\n" +
         "3. Open Settings in FreePair and set \"Pairing engine binary\" to the\n" +
         "   bbppairings executable inside that folder.";
+
+    /// <summary>
+    /// Default file name probed in the FreePair install directory when
+    /// <see cref="GenerateNextRoundAsync"/> is invoked without an
+    /// explicit <c>executablePath</c>. Released installers bundle this
+    /// next to <c>FreePair.App.exe</c>.
+    /// </summary>
+    public const string BundledExeName = "bbpPairings.exe";
+
+    /// <summary>
+    /// Resolves the pairing-engine binary to use. Returns
+    /// <paramref name="configuredPath"/> when it points at a real file;
+    /// otherwise falls back to <c>bbpPairings.exe</c> in the FreePair
+    /// install directory (<see cref="AppContext.BaseDirectory"/>) when
+    /// that exists. Returns <c>null</c> when neither is available — the
+    /// caller surfaces <see cref="BbpNotConfiguredException"/>.
+    /// </summary>
+    public static string? ResolveEffectivePath(string? configuredPath)
+    {
+        if (!string.IsNullOrWhiteSpace(configuredPath) && File.Exists(configuredPath))
+        {
+            return configuredPath;
+        }
+        var bundled = Path.Combine(AppContext.BaseDirectory, BundledExeName);
+        return File.Exists(bundled) ? bundled : null;
+    }
 
     public async Task<BbpPairingResult> GenerateNextRoundAsync(
         string? executablePath,
@@ -47,10 +77,16 @@ public class BbpPairingEngine : IBbpPairingEngine
         // doesn't supply an explicit override.
         var effectiveInitialColor = initialColor ?? section.InitialColor;
 
-        if (string.IsNullOrWhiteSpace(executablePath) || !File.Exists(executablePath))
+        // Resolve the engine binary: configured Settings path wins,
+        // otherwise probe for a bundled bbpPairings.exe next to the
+        // FreePair install (the path the release installer drops it
+        // into). Only error when neither is usable.
+        var resolvedPath = ResolveEffectivePath(executablePath);
+        if (string.IsNullOrWhiteSpace(resolvedPath))
         {
             throw new BbpNotConfiguredException(NotConfiguredInstructions);
         }
+        executablePath = resolvedPath;
 
         var trfPath = Path.Combine(Path.GetTempPath(),
             $"freepair-{Guid.NewGuid():N}.trf");

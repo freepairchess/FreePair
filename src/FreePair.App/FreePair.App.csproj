@@ -27,9 +27,28 @@
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <!-- Velopack drives release packaging + auto-update from GitHub
+         Releases. The runtime API surface we use is a single line in
+         Program.cs (VelopackApp.Build().Run); the meaty bits live in
+         the `vpk` global tool invoked by release\release.ps1. -->
+    <PackageReference Include="Velopack" Version="0.0.*" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FreePair.Core\FreePair.Core.csproj" />
+  </ItemGroup>
+
+  <!-- Bundled bbpPairings binary so installed users never have to
+       download / configure the pairing engine separately. The exe
+       is gitignored under tools/ — see tools/README.md for the
+       one-time per-developer download step. The Condition keeps
+       the build green when the file is missing locally; release
+       builds explicitly verify presence in release\release.ps1. -->
+  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\..\tools\bbpPairings.exe')">
+    <Content Include="..\..\tools\bbpPairings.exe">
+      <Link>bbpPairings.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 </Project>
