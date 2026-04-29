@@ -360,6 +360,24 @@ public class SwissSysTournamentWriter : ITournamentWriter
         if (t.AutoPublishResults  is bool apr)  overview["FreePair auto publish results"]  = apr;
         if (t.LastPublishedAt is System.DateTimeOffset lp)
             overview["FreePair last published at"] = lp.ToUniversalTime().ToString("o", System.Globalization.CultureInfo.InvariantCulture);
+
+        // Per-tournament USCF report preferences (sticky across
+        // export-dialog invocations). Each setter is gated on the
+        // corresponding field being non-null so we don't blast a
+        // legacy file with a wall of FreePair USCF keys when the
+        // TD has never opened the export dialog.
+        if (t.UscfReportPrefs is { } u)
+        {
+            SetIfSet(overview, "FreePair USCF affiliate ID",     u.AffiliateId);
+            SetIfSet(overview, "FreePair USCF chief TD ID",      u.ChiefTdId);
+            SetIfSet(overview, "FreePair USCF assistant TD ID",  u.AssistantTdId);
+            SetIfSet(overview, "FreePair USCF other TD notes",   u.OtherTdNotes);
+            if (u.RatingSystem is char rs)         overview["FreePair USCF rating system"]         = rs.ToString();
+            if (u.SendCrossTable      is bool sct) overview["FreePair USCF send crosstable"]       = sct;
+            if (u.GrandPrix           is bool gp)  overview["FreePair USCF grand prix"]            = gp;
+            if (u.FideRated           is bool fr)  overview["FreePair USCF FIDE rated"]            = fr;
+            if (u.IncludeSectionDates is bool isd) overview["FreePair USCF include section dates"] = isd;
+        }
     }
 
     private static void SetIfSet(JsonObject o, string key, string? value)

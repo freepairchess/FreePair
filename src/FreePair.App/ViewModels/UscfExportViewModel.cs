@@ -1,5 +1,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using FreePair.Core.Tournaments;
 using FreePair.Core.UscfExport;
+using FreePair.Core.Tournaments.Enums;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FreePair.App.ViewModels;
 
@@ -77,4 +81,94 @@ public partial class UscfExportViewModel : ObservableObject
         GrandPrix:      GrandPrix ? 'Y' : 'N',
         FideRated:      FideRated ? 'Y' : 'N',
         IncludeSectionDates: IncludeSectionDates);
+
+    /// <summary>
+    /// Maps the dialog state into the persisted per-tournament
+    /// <see cref="UscfReportPrefs"/> so the next export pre-fills
+    /// without re-asking. Distinct from <see cref="ToOptions"/>
+    /// (which is the single-shot input to the exporter).
+    /// </summary>
+    public UscfReportPrefs ToPersistedPrefs() => new(
+        AffiliateId:         AffiliateId.Trim(),
+        ChiefTdId:           ChiefTdId.Trim(),
+        AssistantTdId:       AssistantTdId.Trim(),
+        OtherTdNotes:        OtherTdNotes.Trim(),
+        RatingSystem:        string.IsNullOrEmpty(RatingSystem) ? 'R' : RatingSystem[0],
+        SendCrossTable:      SendCrossTable,
+        GrandPrix:           GrandPrix,
+        FideRated:           FideRated,
+        IncludeSectionDates: IncludeSectionDates);
+
+    /// <summary>
+    /// Pre-fills this VM with the right values for a tournament,
+    /// using the priority cascade:
+    /// <list type="number">
+    /// <item>per-tournament USCF prefs (from a previous export);</item>
+    /// <item>fields derived from the SwissSys Overview block —
+    ///       Organizer ID (when type is USCFAffiliateID), Event
+    ///       city/state/zip/country, Delegations (TDs first; else
+    ///       the first delegation as chief);</item>
+    /// <item>app-wide defaults from <c>AppSettings</c> (last-used).</item>
+    /// </list>
+    /// Higher-priority sources only fill fields the lower ones
+    /// haven't already populated.
+    /// </summary>
+    public void Prefill(Tournament tournament, FreePair.Core.Settings.AppSettings appDefaults)
+    {
+        // Layer 3 (lowest): app-wide defaults.
+        ChiefTdId     = appDefaults.UscfChiefTdId      ?? string.Empty;
+        AssistantTdId = appDefaults.UscfAssistantTdId  ?? string.Empty;
+        AffiliateId   = appDefaults.UscfAffiliateId    ?? string.Empty;
+        City          = appDefaults.UscfCity           ?? string.Empty;
+        State         = appDefaults.UscfState          ?? string.Empty;
+        ZipCode       = appDefaults.UscfZipCode        ?? string.Empty;
+        Country       = string.IsNullOrWhiteSpace(appDefaults.UscfCountry) ? "USA" : appDefaults.UscfCountry!;
+
+        // Layer 2: derive from the tournament's Overview block.
+        if (!string.IsNullOrWhiteSpace(tournament.EventCity))    City    = tournament.EventCity!;
+        if (!string.IsNullOrWhiteSpace(tournament.EventState))   State   = tournament.EventState!;
+        if (!string.IsNullOrWhiteSpace(tournament.EventZipCode)) ZipCode = tournament.EventZipCode!;
+        if (!string.IsNullOrWhiteSpace(tournament.EventCountry)) Country = tournament.EventCountry!;
+
+        // Affiliate id from Overview only when the organiser id
+        // is actually a USCF affiliate id (otherwise it'd be a
+        // FIDE / CFC org id which USCF would reject).
+        if (tournament.OrganizerIdType == UserIDType.USCFAffiliateID &&
+            !string.IsNullOrWhiteSpace(tournament.OrganizerId))
+        {
+            AffiliateId = tournament.OrganizerId!;
+        }
+
+        // Chief / Assistant TD from Delegations:
+        //   - first entries with Level == TournamentDirector → Chief, Assistant
+        //   - otherwise the first delegation (any level) → Chief, no Assistant
+        if (tournament.Delegations is { Count: > 0 } dels)
+        {
+            var tds = dels.Where(d => d.Level == DelegationLevel.TournamentDirector).ToList();
+            if (tds.Count > 0)
+            {
+                if (!string.IsNullOrWhiteSpace(tds[0].PlayerId)) ChiefTdId     = tds[0].PlayerId;
+                if (tds.Count > 1 && !string.IsNullOrWhiteSpace(tds[1].PlayerId))
+                    AssistantTdId = tds[1].PlayerId;
+            }
+            else if (!string.IsNullOrWhiteSpace(dels[0].PlayerId))
+            {
+                ChiefTdId = dels[0].PlayerId;
+            }
+        }
+
+        // Layer 1 (highest): persisted per-tournament prefs.
+        if (tournament.UscfReportPrefs is { } u)
+        {
+            if (!string.IsNullOrWhiteSpace(u.AffiliateId))   AffiliateId   = u.AffiliateId!;
+            if (!string.IsNullOrWhiteSpace(u.ChiefTdId))     ChiefTdId     = u.ChiefTdId!;
+            if (!string.IsNullOrWhiteSpace(u.AssistantTdId)) AssistantTdId = u.AssistantTdId!;
+            if (!string.IsNullOrWhiteSpace(u.OtherTdNotes))  OtherTdNotes  = u.OtherTdNotes!;
+            if (u.RatingSystem is char rs)         RatingSystem        = rs.ToString();
+            if (u.SendCrossTable      is bool sct) SendCrossTable      = sct;
+            if (u.GrandPrix           is bool gp)  GrandPrix           = gp;
+            if (u.FideRated           is bool fr)  FideRated           = fr;
+            if (u.IncludeSectionDates is bool isd) IncludeSectionDates = isd;
+        }
+    }
 }
