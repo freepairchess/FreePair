@@ -1,0 +1,5 @@
+# Per-developer binaries that ship in the FreePair installer.
+# The actual exe is gitignored — see tools/.gitignore + tools/README.md.
+*.exe
+!.gitignore
+!README.md
