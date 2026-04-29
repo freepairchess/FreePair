@@ -46,13 +46,49 @@
                        Watermark="Leave blank for first submission (USCF assigns)"/>
 
             <TextBlock Grid.Row="1"  Grid.Column="0" Text="Affiliate ID *" VerticalAlignment="Center" Foreground="DimGray"/>
-            <TextBox   Grid.Row="1"  Grid.Column="1" Text="{Binding AffiliateId}" Watermark="e.g. A4000429"/>
+            <Grid      Grid.Row="1"  Grid.Column="1" ColumnDefinitions="*,Auto">
+                <TextBox Grid.Column="0" Text="{Binding AffiliateId}" Watermark="e.g. A4000429"/>
+                <Button  Grid.Column="1" Content="🔗"
+                         Tag="affiliate"
+                         Click="OnLookupIdClick"
+                         IsVisible="{Binding AffiliateId, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                         Margin="6,0,0,0"
+                         Padding="6,0"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Cursor="Hand"
+                         ToolTip.Tip="Look up this affiliate on USCF (ratings.uschess.org/affiliate/{id})"/>
+            </Grid>
 
             <TextBlock Grid.Row="2"  Grid.Column="0" Text="Chief TD ID *"  VerticalAlignment="Center" Foreground="DimGray"/>
-            <TextBox   Grid.Row="2"  Grid.Column="1" Text="{Binding ChiefTdId}" Watermark="USCF member ID"/>
+            <Grid      Grid.Row="2"  Grid.Column="1" ColumnDefinitions="*,Auto">
+                <TextBox Grid.Column="0" Text="{Binding ChiefTdId}" Watermark="USCF member ID"/>
+                <Button  Grid.Column="1" Content="🔗"
+                         Tag="chief"
+                         Click="OnLookupIdClick"
+                         IsVisible="{Binding ChiefTdId, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                         Margin="6,0,0,0"
+                         Padding="6,0"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Cursor="Hand"
+                         ToolTip.Tip="Look up this player on USCF (ratings.uschess.org/player/{id})"/>
+            </Grid>
 
             <TextBlock Grid.Row="3"  Grid.Column="0" Text="Assistant TD"   VerticalAlignment="Center" Foreground="DimGray"/>
-            <TextBox   Grid.Row="3"  Grid.Column="1" Text="{Binding AssistantTdId}" Watermark="USCF member ID (optional)"/>
+            <Grid      Grid.Row="3"  Grid.Column="1" ColumnDefinitions="*,Auto">
+                <TextBox Grid.Column="0" Text="{Binding AssistantTdId}" Watermark="USCF member ID (optional)"/>
+                <Button  Grid.Column="1" Content="🔗"
+                         Tag="assistant"
+                         Click="OnLookupIdClick"
+                         IsVisible="{Binding AssistantTdId, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                         Margin="6,0,0,0"
+                         Padding="6,0"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Cursor="Hand"
+                         ToolTip.Tip="Look up this player on USCF (ratings.uschess.org/player/{id})"/>
+            </Grid>
 
             <TextBlock Grid.Row="4"  Grid.Column="0" Text="Other TDs"      VerticalAlignment="Center" Foreground="DimGray"/>
             <TextBox   Grid.Row="4"  Grid.Column="1" Text="{Binding OtherTdNotes}" Watermark="Comma-separated names (optional)"/>
