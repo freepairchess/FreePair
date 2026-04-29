@@ -33,7 +33,26 @@
                     Padding="10"
                     Margin="0,8,0,0">
                 <StackPanel Spacing="2">
-                    <TextBlock FontWeight="SemiBold" Text="{Binding PrefilledEvent.Name}"/>
+                    <!-- Event name as a hyperlink-styled button when
+                         the registry exposes a public details URL,
+                         falling back to a plain TextBlock otherwise.
+                         Clicking shells out to the OS default
+                         browser via OnEventNameClick in the code-
+                         behind (same pattern as the browse list). -->
+                    <Button Content="{Binding PrefilledEvent.Name}"
+                            Click="OnEventNameClick"
+                            IsVisible="{Binding HasPrefilledEventWebUrl}"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Foreground="DodgerBlue"
+                            FontWeight="SemiBold"
+                            HorizontalAlignment="Left"
+                            HorizontalContentAlignment="Left"
+                            Padding="0"
+                            Cursor="Hand"
+                            ToolTip.Tip="Open the event details page in your browser."/>
+                    <TextBlock FontWeight="SemiBold" Text="{Binding PrefilledEvent.Name}"
+                               IsVisible="{Binding !HasPrefilledEventWebUrl}"/>
                     <TextBlock FontSize="11" Foreground="Gray"
                                Text="{Binding PrefilledEvent.Organizer}"
                                IsVisible="{Binding PrefilledEvent.Organizer, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
