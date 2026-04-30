@@ -24,6 +24,15 @@ this in your "how to install" message.
    the script does this automatically, but you can pre-warm it with
    `dotnet tool install -g vpk`.
 
+> **Heads-up about `vpk`'s runtime**: at the time of writing,
+> `vpk` ships against .NET 9. FreePair targets .NET 10 and many dev
+> boxes don't have a side-by-side .NET 9 runtime. The release script
+> sets `$env:DOTNET_ROLL_FORWARD = "LatestMajor"` automatically so vpk
+> runs on whatever major you have installed (.NET 10 in our case). If
+> you ever invoke `vpk` directly outside the script and see *"You must
+> install or update .NET to run this application"*, run
+> `$env:DOTNET_ROLL_FORWARD = "LatestMajor"` first.
+
 ### Cutting a release
 
 ```powershell
@@ -43,10 +52,11 @@ Output lands in `release\output\<version>\`:
 
 | File | Purpose |
 |---|---|
-| `FreePair-win-Setup.exe` | The single-file installer you send to TDs. ~80 MB. |
-| `FreePair-<version>-full.nupkg` | Velopack package (full release). Upload alongside Setup so future installs can delta against it. |
-| `FreePair-<version>-delta.nupkg` | Created from the 2nd release on; tiny binary diff. |
-| `RELEASES` | Velopack manifest. Required for auto-update to work. |
+| `FreePair-win-x64-Setup.exe` | The single-file installer you send to TDs. ~90 MB. |
+| `FreePair-win-x64-Portable.zip` | Portable zip — extract anywhere, no install. Useful for TDs who can't run installers. |
+| `FreePair-<version>-win-x64-full.nupkg` | Velopack full package. Upload alongside Setup so future installs can delta against it. |
+| `RELEASES-win-x64` / `releases.win-x64.json` | Velopack manifest + feed metadata. Required for auto-update to work. |
+| `assets.win-x64.json` | Velopack metadata. |
 
 ### Smoke-testing before publish
 
@@ -68,7 +78,7 @@ On a clean Windows VM that **doesn't** already have FreePair or .NET 10:
    `release\output\<version>\`. Mark as a pre-release for early
    versions until you're confident in the auto-update flow.
 2. **Direct link** — point TDs at the latest release URL:
-   `https://github.com/<owner>/FreePair/releases/latest/download/FreePair-win-Setup.exe`.
+   `https://github.com/<owner>/FreePair/releases/latest/download/FreePair-win-x64-Setup.exe`.
 3. **Release notes** — pass `-ReleaseNotes` to the script with a
    markdown file. End users see this in the Velopack updater UI.
 
