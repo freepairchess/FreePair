@@ -1,5 +1,8 @@
-# Per-developer binaries that ship in the FreePair installer.
-# The actual exe is gitignored — see tools/.gitignore + tools/README.md.
-*.exe
+# Per-developer / installer-bundled binaries — see tools/README.md.
+# Whitelist approach: ignore everything in this folder except the
+# two files FreePair itself authors. Anything else (bbpPairings.exe,
+# its LICENSE.txt / README.txt, future bundled tools) lives only on
+# the dev / CI host that needs it.
+*
 !.gitignore
 !README.md
