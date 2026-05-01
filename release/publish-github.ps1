@@ -292,6 +292,31 @@ if ($assets.Count -eq 0)
     Write-Error "Output folder is empty: $outputDir"
     exit 1
 }
+
+# 5b. Pre-flight: -ReleaseNotes file exists -----------------------------
+# Validated up-front so we never push a tag and then bail on a missing
+# Markdown file (which leaves a tag on the remote with no GitHub
+# release attached — the awkward state the previous run hit).
+if ($ReleaseNotes -and -not (Test-Path $ReleaseNotes))
+{
+    Write-Error @"
+-ReleaseNotes path does not exist:
+
+    $ReleaseNotes
+
+Pick one:
+  * Create the file (Markdown body of the GitHub release).
+  * Re-run with -GenerateNotes to auto-generate from commit messages
+    since the previous tag.
+  * Omit -ReleaseNotes entirely; the script falls back to a one-line
+    stub you can edit later in the GitHub UI.
+
+(Refusing to continue: this check fires BEFORE tag/push so a typo in
+the path can't leave a tag on the remote with no release attached.)
+"@
+    exit 1
+}
+
 Write-Host ""
 Write-Host "Assets to upload ($($assets.Count) file(s)):"
 $assets | ForEach-Object {
@@ -346,10 +371,8 @@ if ($GenerateNotes) { $ghArgs += "--generate-notes" }
 
 if ($ReleaseNotes)
 {
-    if (-not (Test-Path $ReleaseNotes))
-    {
-        throw "ReleaseNotes path does not exist: $ReleaseNotes"
-    }
+    # Existence already validated in the pre-flight block above; the
+    # Resolve-Path is just to give gh a normalised absolute path.
     $ghArgs += @("--notes-file", (Resolve-Path $ReleaseNotes))
 }
 elseif (-not $GenerateNotes)
