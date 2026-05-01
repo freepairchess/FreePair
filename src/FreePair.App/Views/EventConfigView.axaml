@@ -167,6 +167,42 @@
                 </Grid>
             </Border>
 
+            <!-- ============ Section starting boards ============ -->
+            <TextBlock Text="Section starting boards" FontWeight="SemiBold" Margin="0,6,0,0"/>
+            <TextBlock FontSize="11" Foreground="Gray" TextWrapping="Wrap"
+                       Text="Each section's first physical board number. Multi-section events should offset these so Open's board #1 isn't also U1700's board #1. The recommended values give each section a buffer based on its player count (ceil(active players / 2)). Already-paired rounds keep their existing board numbers — only future pairings use the new offset."/>
+            <Border Background="#F6F6F6" BorderBrush="LightGray" BorderThickness="1" CornerRadius="4" Padding="16">
+                <StackPanel Spacing="8">
+                    <Grid ColumnDefinitions="*,120,120" Margin="0,0,0,4">
+                        <TextBlock Grid.Column="0" Text="Section"     FontWeight="SemiBold" Foreground="DimGray"/>
+                        <TextBlock Grid.Column="1" Text="Starting #"  FontWeight="SemiBold" Foreground="DimGray" HorizontalAlignment="Left"/>
+                        <TextBlock Grid.Column="2" Text="Recommended" FontWeight="SemiBold" Foreground="DimGray" HorizontalAlignment="Left"/>
+                    </Grid>
+                    <ItemsControl ItemsSource="{Binding SectionBoards}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="vm:SectionBoardRow">
+                                <Grid ColumnDefinitions="*,120,120" Margin="0,2">
+                                    <TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center"/>
+                                    <NumericUpDown Grid.Column="1"
+                                                   Value="{Binding FirstBoard, Mode=TwoWay}"
+                                                   Minimum="1" Maximum="9999" Increment="1"
+                                                   FormatString="0"
+                                                   ShowButtonSpinner="True"/>
+                                    <TextBlock Grid.Column="2"
+                                               Text="{Binding Recommended}"
+                                               VerticalAlignment="Center"
+                                               Foreground="Gray"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Button Content="Use recommended"
+                            Command="{Binding UseRecommendedBoardsCommand}"
+                            HorizontalAlignment="Left"
+                            ToolTip.Tip="Copy each section's recommended starting board into the editable column. Click Apply below to persist."/>
+                </StackPanel>
+            </Border>
+
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
                 <Button Content="Discard changes" Command="{Binding DiscardCommand}" MinWidth="140"/>
                 <Button Content="Apply" Command="{Binding ApplyCommand}" IsDefault="True" MinWidth="100" Background="#0E5DAA" Foreground="White"/>

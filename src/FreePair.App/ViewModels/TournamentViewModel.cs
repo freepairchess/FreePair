@@ -686,6 +686,46 @@ public partial class TournamentViewModel : ViewModelBase
     }
 
     /// <summary>
+    /// "Renumber section starting boards" flow. Auto-applies the
+    /// <see cref="BoardNumberRecommender"/>'s suggested
+    /// <c>FirstBoard</c> to every section so multi-section events
+    /// don't reuse the same physical board #1 across Open / U1700
+    /// / etc. Future-only — already-paired rounds stay at their
+    /// existing board numbers (a deliberate choice so printed
+    /// pairings don't drift after the TD has handed them out).
+    /// </summary>
+    [RelayCommand]
+    private async Task RenumberSectionBoardsAsync()
+    {
+        if (Tournament is null) return;
+
+        var recommended = BoardNumberRecommender.Recommend(Tournament);
+        if (recommended.Count == 0) return;
+
+        var t = Tournament;
+        var changedNames = new System.Collections.Generic.List<string>();
+        foreach (var section in t.Sections)
+        {
+            if (!recommended.TryGetValue(section.Name, out var rec)) continue;
+            if (section.FirstBoard == rec) continue;
+            t = TournamentMutations.SetSectionFirstBoard(t, section.Name, rec);
+            changedNames.Add($"{section.Name}={rec}");
+        }
+
+        if (changedNames.Count == 0)
+        {
+            SaveStatus = "Section starting boards already match the recommendation.";
+            return;
+        }
+
+        Tournament = t;
+        try { await PersistCurrentTournamentAsync().ConfigureAwait(true); } catch { /* best-effort */ }
+
+        SaveStatus = $"Renumbered: {string.Join(", ", changedNames)}. " +
+                     "(Already-paired rounds keep their existing board numbers.)";
+    }
+
+    /// <summary>
     /// "Export USCF report files" flow. Opens the metadata dialog
     /// (pre-filled from settings), runs <c>UscfExporter</c> with
     /// the supplied options, drops the three DBFs into the current

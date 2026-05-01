@@ -43,6 +43,10 @@
                         Command="{Binding ExportUscfCommand}"
                         IsVisible="{Binding HasTournament}"
                         ToolTip.Tip="Generate the three .DBF files USCF requires for rating submissions (THEXPORT, TSEXPORT, TDEXPORT), prefixed with the event name and saved next to the .sjson."/>
+                <Button Content="🔢 Renumber boards"
+                        Command="{Binding RenumberSectionBoardsCommand}"
+                        IsVisible="{Binding HasTournament}"
+                        ToolTip.Tip="Recompute each section's starting board number based on player counts so multi-section events don't reuse the same physical board #1. Already-paired rounds keep their existing numbers — only future pairings use the new offsets."/>
                 <Button Content="Export section to TRF..."
                         Command="{Binding ExportTrfCommand}"
                         IsVisible="{Binding HasSelectedSection}"

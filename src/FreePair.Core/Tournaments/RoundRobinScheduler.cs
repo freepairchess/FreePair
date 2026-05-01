@@ -44,6 +44,13 @@ public static class RoundRobinScheduler
     /// Seating order of players 1..N. Must contain at least 2 distinct
     /// positive integers.
     /// </param>
+    /// <param name="firstBoard">
+    /// Physical board number of this section's first board. Boards are
+    /// emitted as <c>firstBoard</c>, <c>firstBoard + 1</c>, ... so
+    /// downstream sections in a multi-section event don't reuse the
+    /// same physical board #1. Defaults to 1 (legacy single-section
+    /// behaviour). Values ≤ 0 are clamped to 1.
+    /// </param>
     /// <returns>
     /// One <see cref="Round"/> per schedule round. Each round's
     /// <see cref="Round.Pairings"/> is non-empty and covers every
@@ -51,7 +58,7 @@ public static class RoundRobinScheduler
     /// <see cref="Round.Byes"/> carries at most one entry (the player
     /// matched against the phantom seat when <c>N</c> is odd).
     /// </returns>
-    public static IReadOnlyList<Round> Build(IReadOnlyList<int> pairNumbers)
+    public static IReadOnlyList<Round> Build(IReadOnlyList<int> pairNumbers, int firstBoard = 1)
     {
         ArgumentNullException.ThrowIfNull(pairNumbers);
         if (pairNumbers.Count < 2)
@@ -64,6 +71,8 @@ public static class RoundRobinScheduler
             throw new ArgumentException(
                 "Pair numbers must be distinct.", nameof(pairNumbers));
         }
+
+        var boardOffset = (firstBoard <= 0 ? 1 : firstBoard) - 1;
 
         // Phantom seat (value 0) padding for odd player counts.
         var seats = pairNumbers.ToList();
@@ -127,7 +136,7 @@ public static class RoundRobinScheduler
                 blackCount[black]++;
 
                 pairings.Add(new Pairing(
-                    Board: board + 1,
+                    Board: board + 1 + boardOffset,
                     WhitePair: white,
                     BlackPair: black,
                     Result: PairingResult.Unplayed));
