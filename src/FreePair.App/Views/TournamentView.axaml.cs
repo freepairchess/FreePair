@@ -37,6 +37,7 @@ public partial class TournamentView : UserControl
             vm.ShowBrowseRegistryEventsDialogAsync = ShowBrowseRegistryEventsDialogAsync;
             vm.ShowUscfExportDialogAsync = ShowUscfExportDialogAsync;
             vm.ShowRenumberBoardsDialogAsync = ShowRenumberBoardsDialogAsync;
+            vm.ShowPairAllSectionsDialogAsync = ShowPairAllSectionsDialogAsync;
         }
     }
 
@@ -306,6 +307,18 @@ public partial class TournamentView : UserControl
         if (TopLevel.GetTopLevel(this) is not Window owner) return null;
         var dialog = new RenumberBoardsDialog(vm);
         return await dialog.ShowDialog<RenumberBoardsViewModel?>(owner);
+    }
+
+    /// <summary>
+    /// Opens the Pair-all-sections status dashboard ("Pair all
+    /// sections" toolbar button). Returns the VM on Apply so the
+    /// caller can iterate ReadySectionNames; null on Cancel.
+    /// </summary>
+    private async Task<PairAllSectionsViewModel?> ShowPairAllSectionsDialogAsync(PairAllSectionsViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner) return null;
+        var dialog = new PairAllSectionsDialog(vm);
+        return await dialog.ShowDialog<PairAllSectionsViewModel?>(owner);
     }
 
     /// <summary>

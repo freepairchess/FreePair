@@ -310,6 +310,14 @@ public partial class TournamentViewModel : ViewModelBase
     public Func<RenumberBoardsViewModel, Task<RenumberBoardsViewModel?>>? ShowRenumberBoardsDialogAsync { get; set; }
 
     /// <summary>
+    /// Callback opened by the "Pair all sections" toolbar button —
+    /// shows a status dashboard for every section + a confirm
+    /// button that runs the standard pairing flow on every Ready
+    /// section. Returns the VM on Apply, null on Cancel.
+    /// </summary>
+    public Func<PairAllSectionsViewModel, Task<PairAllSectionsViewModel?>>? ShowPairAllSectionsDialogAsync { get; set; }
+
+    /// <summary>
     /// Callback used by destructive commands (e.g. Delete round) to prompt
     /// the user for confirmation. Returns <c>true</c> when the user confirms.
     /// Parameters: title, message, confirm-button label.
@@ -716,6 +724,78 @@ public partial class TournamentViewModel : ViewModelBase
     /// existing board numbers (a deliberate choice so printed
     /// pairings don't drift after the TD has handed them out).
     /// </summary>
+    /// <summary>
+    /// "Pair all sections" toolbar flow. Opens a status-dashboard
+    /// dialog showing every section's readiness (and start board)
+    /// so the TD can confirm before kicking off a batch pair.
+    /// Each ready section then runs through the same pairing flow
+    /// the per-section "Pair next round" button uses (BBP →
+    /// preview → persist), but with the per-pairing
+    /// starting-board prompt skipped — start boards have already
+    /// been reviewed in the dialog. Errors on individual sections
+    /// are collected and reported but don't abort the rest of the
+    /// batch.
+    /// </summary>
+    [RelayCommand]
+    private async Task PairAllSectionsAsync()
+    {
+        if (Tournament is null) return;
+        if (ShowPairAllSectionsDialogAsync is null) return;
+
+        var dialogVm = new PairAllSectionsViewModel(Tournament);
+        if (dialogVm.Rows.Count == 0) return;
+
+        var result = await ShowPairAllSectionsDialogAsync(dialogVm).ConfigureAwait(true);
+        if (result is null) return; // cancelled
+
+        var readyNames = result.ReadySectionNames;
+        if (readyNames.Count == 0)
+        {
+            SaveStatus = "No sections were ready to pair.";
+            return;
+        }
+
+        var paired = new System.Collections.Generic.List<string>();
+        var failed = new System.Collections.Generic.List<string>();
+
+        foreach (var name in readyNames)
+        {
+            // Re-snapshot Sections each iteration — every successful
+            // pair mutates Tournament, and we want to re-check the
+            // section's state in case (e.g.) a player just got
+            // withdrawn between rows.
+            var sectionVm = Sections.FirstOrDefault(s => s.Name == name);
+            if (sectionVm is null) { failed.Add($"{name} (not found)"); continue; }
+
+            var beforeRoundCount = sectionVm.Section.Rounds.Count;
+            try
+            {
+                await PairSectionNextRoundAsync(sectionVm, skipStartingBoardPrompt: true).ConfigureAwait(true);
+            }
+            catch (System.Exception ex)
+            {
+                failed.Add($"{name} ({ex.Message})");
+                continue;
+            }
+
+            // The pair-next flow exits silently on user cancel of
+            // the preview dialog (no new round committed). We
+            // detect that by comparing round count before/after.
+            var afterSection = Tournament?.Sections.FirstOrDefault(s => s.Name == name);
+            var afterRoundCount = afterSection?.Rounds.Count ?? beforeRoundCount;
+            if (afterRoundCount > beforeRoundCount) paired.Add(name);
+        }
+
+        SaveStatus = (paired.Count, failed.Count) switch
+        {
+            (0, 0) => "No sections paired (all cancelled by you).",
+            (_, 0) => $"Paired {paired.Count} section(s): {string.Join(", ", paired)}.",
+            (0, _) => $"Failed to pair: {string.Join("; ", failed)}.",
+            _      => $"Paired {paired.Count} section(s): {string.Join(", ", paired)}. " +
+                      $"Failed: {string.Join("; ", failed)}.",
+        };
+    }
+
     [RelayCommand]
     private async Task RenumberSectionBoardsAsync()
     {
@@ -1706,7 +1786,20 @@ public partial class TournamentViewModel : ViewModelBase
         await PersistCurrentTournamentAsync().ConfigureAwait(true);
     }
 
-    private async Task OnSectionPairNextRoundAsync(SectionViewModel section)
+    private async Task OnSectionPairNextRoundAsync(SectionViewModel section) =>
+        await PairSectionNextRoundAsync(section, skipStartingBoardPrompt: false).ConfigureAwait(true);
+
+    /// <summary>
+    /// Underlying pairing flow for a single section. Used both by
+    /// the per-section "Pair next round" button (with the standard
+    /// prompts) and by the batch "Pair all sections" command (with
+    /// <paramref name="skipStartingBoardPrompt"/>=<c>true</c> so
+    /// the TD isn't dialog-bombed N times for an already-confirmed
+    /// batch). Returns when the round has been appended (and
+    /// optionally previewed/persisted) — exits early on any user
+    /// cancellation in any sub-prompt without partial side-effects.
+    /// </summary>
+    private async Task PairSectionNextRoundAsync(SectionViewModel section, bool skipStartingBoardPrompt)
     {
         if (Tournament is null)
         {
@@ -1779,7 +1872,10 @@ public partial class TournamentViewModel : ViewModelBase
             // value differs from the current FirstBoard we
             // SetSectionFirstBoard before pairing so the new offset
             // applies to this round (and persists for the next).
-            if (PromptStartingBoardAsync is not null)
+            // Skipped when invoked from batch "Pair all sections"
+            // since the TD has already reviewed start boards in
+            // that flow.
+            if (!skipStartingBoardPrompt && PromptStartingBoardAsync is not null)
             {
                 var recommended = BoardNumberRecommender.Recommend(tournamentSnapshot)
                     .TryGetValue(section.Name, out var rec) ? rec : 1;
