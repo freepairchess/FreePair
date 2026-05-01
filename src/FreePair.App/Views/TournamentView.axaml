@@ -47,6 +47,10 @@
                         Command="{Binding RenumberSectionBoardsCommand}"
                         IsVisible="{Binding HasTournament}"
                         ToolTip.Tip="Recompute each section's starting board number based on player counts so multi-section events don't reuse the same physical board #1. Already-paired rounds keep their existing numbers — only future pairings use the new offsets."/>
+                <Button Content="♟ Pair all sections"
+                        Command="{Binding PairAllSectionsCommand}"
+                        IsVisible="{Binding HasTournament}"
+                        ToolTip.Tip="Open a status dashboard showing every section's readiness, then pair the next round of every section that's ready in one click."/>
                 <Button Content="Export section to TRF..."
                         Command="{Binding ExportTrfCommand}"
                         IsVisible="{Binding HasSelectedSection}"
