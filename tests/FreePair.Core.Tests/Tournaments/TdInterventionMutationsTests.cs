@@ -173,6 +173,38 @@ public class TdInterventionMutationsTests
     }
 
     [Fact]
+    public async Task SwapBoardOpponents_force_overrides_rematch_guard_and_annotates_pairings()
+    {
+        var t = await LoadWithUnplayedRound4Async();
+        // Same scenario as the rejection test above — boards 1 (1
+        // vs 2) and 2 (3 vs 4) would swap to (1 vs 4) and (3 vs 2),
+        // which recreates 1 vs 4 from round 2. With force=true the
+        // mutation succeeds and both updated pairings receive a
+        // session-only Note flagging the violation.
+        var swapped = TournamentMutations.SwapBoardOpponents(
+            t, "Open I", round: 4, boardA: 1, boardB: 2, force: true);
+
+        var round = swapped.Sections.Single(s => s.Name == "Open I")
+            .Rounds.Single(r => r.Number == 4);
+        var b1 = round.Pairings.Single(p => p.Board == 1);
+        var b2 = round.Pairings.Single(p => p.Board == 2);
+
+        // Swap actually happened.
+        Assert.Equal(1, b1.WhitePair);
+        Assert.Equal(4, b1.BlackPair);
+        Assert.Equal(3, b2.WhitePair);
+        Assert.Equal(2, b2.BlackPair);
+
+        // At least one of the two boards has a rematch note; the
+        // exact wording is implementation-defined but always starts
+        // with the warning glyph.
+        Assert.NotNull(b1.Note);
+        Assert.NotNull(b2.Note);
+        Assert.Contains("⚠", b1.Note);
+        Assert.Contains("⚠", b2.Note);
+    }
+
+    [Fact]
     public async Task SwapBoardOpponents_throws_on_scored_pairing()
     {
         var t = await LoadAsync();

@@ -1,6 +1,10 @@
 using System;
+using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 using FreePair.App.ViewModels;
 using FreePair.Core.Tournaments;
 
@@ -15,9 +19,23 @@ namespace FreePair.App.Views;
 /// </summary>
 public partial class PairingPreviewDialog : Window
 {
+    /// <summary>Drag payload: a string of the form
+    /// <c>"{colour}:{board}"</c> where colour is "W" or "B".
+    /// Avalonia 12 uses application-scoped DataFormats for typed
+    /// drag/drop; we use a string format keyed under our app name
+    /// so other apps' drops don't collide.</summary>
+    private static readonly DataFormat<string> PlayerChipFormat =
+        DataFormat.CreateStringApplicationFormat("freepair/player-chip");
+
     public PairingPreviewDialog()
     {
         InitializeComponent();
+        // Drop targets are declared on the chips themselves
+        // (DragDrop.AllowDrop="True"). We hook the events at the
+        // window level so a single handler can see the source
+        // payload and walk to the target chip.
+        AddHandler(DragDrop.DragOverEvent, OnPlayerChipDragOver);
+        AddHandler(DragDrop.DropEvent, OnPlayerChipDrop);
     }
 
     /// <summary>
@@ -60,14 +78,149 @@ public partial class PairingPreviewDialog : Window
         catch (Exception ex) { ShowError(ex.Message); }
     }
 
-    private void OnSwapBoards(object? sender, RoutedEventArgs e)
+    // ============ drag-and-drop ============
+
+    /// <summary>
+    /// Starts a drag from a player chip. The source chip's
+    /// <c>Tag</c> ("W" / "B") + DataContext (the
+    /// <see cref="PairingPreviewRow"/>) together identify the
+    /// (board, colour) pair the TD wants to move; we encode that
+    /// as <c>"{colour}:{board}"</c> in the data transfer.
+    /// </summary>
+    private async void OnPlayerChipPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (sender is not Border chip) return;
+        if (!e.GetCurrentPoint(chip).Properties.IsLeftButtonPressed) return;
+        if (chip.Tag is not string colour) return;
+        if (chip.DataContext is not PairingPreviewRow row) return;
+
+        ClearError();
+
+        var transfer = new DataTransfer();
+        transfer.Add(DataTransferItem.Create(PlayerChipFormat, $"{colour}:{row.Board}"));
+
+        try
+        {
+            await DragDrop.DoDragDropAsync(e, transfer, DragDropEffects.Move).ConfigureAwait(true);
+        }
+        catch
+        {
+            // DoDragDropAsync can throw if the platform refuses
+            // the drag (e.g. the user clicked but didn't actually
+            // start moving). Swallow — there's nothing for the TD
+            // to act on.
+        }
+    }
+
+    /// <summary>
+    /// Allows the drop only when source and target chips share the
+    /// same colour ("W" onto "W" or "B" onto "B"). Cross-colour
+    /// drops are silently rejected so the cursor visibly refuses.
+    /// </summary>
+    private void OnPlayerChipDragOver(object? sender, DragEventArgs e)
+    {
+        var allowed = TryGetSourceTarget(e, out var srcColour, out _, out var tgtColour, out _)
+                      && srcColour == tgtColour;
+        e.DragEffects = allowed ? DragDropEffects.Move : DragDropEffects.None;
+    }
+
+    /// <summary>
+    /// Performs the swap on drop. Same-colour pre-checked by
+    /// <see cref="OnPlayerChipDragOver"/>. On rematch error,
+    /// prompts the TD to confirm a forced swap; if confirmed, calls
+    /// <see cref="PairingPreviewViewModel.SwapBoardsForced"/> which
+    /// annotates both pairings with a session note.
+    /// </summary>
+    private async void OnPlayerChipDrop(object? sender, DragEventArgs e)
     {
         if (Vm is null) return;
-        var a = (int)(SwapBoardA.Value ?? 0);
-        var b = (int)(SwapBoardB.Value ?? 0);
-        if (a == 0 || b == 0) return;
-        try { Vm.SwapBoards(a, b); ClearError(); }
-        catch (Exception ex) { ShowError(ex.Message); }
+        if (!TryGetSourceTarget(e, out var srcColour, out var srcBoard, out var tgtColour, out var tgtBoard))
+            return;
+        if (srcColour != tgtColour) return;
+        if (srcBoard == tgtBoard) return;
+
+        try
+        {
+            Vm.SwapBoards(srcBoard, tgtBoard);
+            ClearError();
+            return;
+        }
+        catch (InvalidOperationException ex) when (ex.Message.Contains("recreate", StringComparison.OrdinalIgnoreCase))
+        {
+            // Rematch — ask before forcing.
+            var proceed = await PromptForceSwapAsync(srcBoard, tgtBoard).ConfigureAwait(true);
+            if (!proceed) { ClearError(); return; }
+            try
+            {
+                Vm.SwapBoardsForced(srcBoard, tgtBoard);
+                ClearError();
+            }
+            catch (Exception inner)
+            {
+                ShowError(inner.Message);
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowError(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Reads the drag payload and walks up the visual tree from the
+    /// drop target to find the nearest player chip
+    /// (<see cref="Border"/> with <c>Tag</c>="W"/"B" and a
+    /// <see cref="PairingPreviewRow"/> DataContext).
+    /// </summary>
+    private static bool TryGetSourceTarget(
+        DragEventArgs e,
+        out string srcColour,
+        out int srcBoard,
+        out string tgtColour,
+        out int tgtBoard)
+    {
+        srcColour = string.Empty; srcBoard = 0;
+        tgtColour = string.Empty; tgtBoard = 0;
+
+        if (e.DataTransfer.TryGetValue(PlayerChipFormat) is not { } raw || string.IsNullOrEmpty(raw))
+            return false;
+        var parts = raw.Split(':', 2);
+        if (parts.Length != 2 || !int.TryParse(parts[1], out var srcBd)) return false;
+
+        // Walk up the visual tree from e.Source to find the chip
+        // Border. Avalonia routes the event through nested visuals
+        // so e.Source could be the inner TextBlock or a Run.
+        Visual? cursor = e.Source as Visual;
+        while (cursor is not null)
+        {
+            if (cursor is Border br
+                && br.Tag is string col
+                && (col == "W" || col == "B")
+                && br.DataContext is PairingPreviewRow row)
+            {
+                srcColour = parts[0];
+                srcBoard  = srcBd;
+                tgtColour = col;
+                tgtBoard  = row.Board;
+                return true;
+            }
+            cursor = cursor.GetVisualParent();
+        }
+        return false;
+    }
+
+    private async Task<bool> PromptForceSwapAsync(int boardA, int boardB)
+    {
+        var dialog = new ConfirmDialog();
+        dialog.Configure(
+            "Swap recreates a previous game",
+            $"Swapping boards {boardA} and {boardB} would recreate a previously-played pairing. " +
+            "If both rooms truly need this matchup (e.g. a make-up game), you can proceed and " +
+            "FreePair will flag both boards with a warning note until results are entered.\n\n" +
+            "Swap anyway?",
+            confirmLabel: "Swap with note");
+        var result = await dialog.ShowDialog<bool?>(this);
+        return result == true;
     }
 
     private void OnCommit(object? sender, RoutedEventArgs e) =>
