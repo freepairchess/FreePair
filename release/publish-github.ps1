@@ -56,6 +56,16 @@
     since the previous tag. Layered on top of -ReleaseNotes if both
     are passed.
 
+.PARAMETER ExpectedUser
+    GitHub username the script must be authenticated as before doing
+    anything destructive (tagging, pushing, creating releases). Used
+    to prevent cross-account contamination when one machine has
+    multiple `gh auth login` identities (e.g. a personal Copilot
+    account + a separate FreePair-publisher account). On mismatch
+    the script prints the exact `gh auth switch` command and exits.
+    Cached in release\github-user.txt on first use so subsequent
+    runs are zero-arg.
+
 .EXAMPLE
     # First-time: tell the script which repo to publish to. The repo is
     # remembered in release\github-repo.txt for future runs.
@@ -64,6 +74,12 @@
 .EXAMPLE
     # Subsequent runs — repo + remote auto-detected.
     .\release\publish-github.ps1 -Version 0.3.0 -ReleaseNotes .\docs\release-notes\0.3.0.md -GenerateNotes
+
+.EXAMPLE
+    # Multi-account safety: the script verifies the active gh user is
+    # the FreePair publisher before doing anything. ExpectedUser is
+    # cached after the first run.
+    .\release\publish-github.ps1 -Version 0.4.0 -ExpectedUser freepair-publisher
 
 .NOTES
     The Azure DevOps origin remote is left untouched. We only push the
@@ -78,6 +94,7 @@ param(
     [string] $Remote,
     [string] $ReleaseNotes,
     [string] $Title,
+    [string] $ExpectedUser,
     [switch] $PreRelease,
     [switch] $Draft,
     [switch] $SkipTagPush,
@@ -90,6 +107,7 @@ $ProgressPreference   = "SilentlyContinue"
 $repoRoot   = Resolve-Path (Join-Path $PSScriptRoot "..")
 $outputDir  = Join-Path $repoRoot "release\output\$Version"
 $repoFile   = Join-Path $repoRoot "release\github-repo.txt"
+$userFile   = Join-Path $repoRoot "release\github-user.txt"
 $tag        = "v$Version"
 
 Write-Host "==> Publishing FreePair $tag to GitHub" -ForegroundColor Cyan
@@ -128,6 +146,62 @@ the Windows Credential Manager so this script never sees a token)
 Then re-run this script.
 "@
     exit 1
+}
+
+# 2b. Multi-account safety: verify the active gh user matches the
+# FreePair publisher identity. Prevents accidentally publishing from
+# a Copilot / personal / day-job account that also happens to have
+# `gh auth login` on this machine.
+if (-not $ExpectedUser -and (Test-Path $userFile))
+{
+    $ExpectedUser = (Get-Content $userFile -Raw).Trim()
+    if ($ExpectedUser) {
+        Write-Host "    Expected gh user (from release\github-user.txt): $ExpectedUser"
+    }
+}
+$activeUser = (& gh api user --jq .login 2>$null).Trim()
+if (-not $activeUser)
+{
+    Write-Error "Could not determine the active gh user. Run 'gh auth status' to investigate."
+    exit 1
+}
+Write-Host "    Active gh user: $activeUser"
+
+if ($ExpectedUser -and ($activeUser -ne $ExpectedUser))
+{
+    Write-Host ""
+    Write-Error @"
+Active gh user is '$activeUser' but the FreePair publisher should be
+'$ExpectedUser'. Switch with:
+
+    gh auth switch --hostname github.com --user $ExpectedUser
+
+If '$ExpectedUser' isn't yet logged in on this machine:
+
+    gh auth login --hostname github.com --git-protocol https --web
+
+(then run 'gh auth switch ...' again to make $ExpectedUser the active
+account before re-running this script)
+
+Refusing to continue rather than risk publishing from the wrong account.
+"@
+    exit 1
+}
+
+# Persist ExpectedUser so subsequent runs auto-verify even if the
+# argument is omitted. First successful run sets the value.
+if ($ExpectedUser -and (-not (Test-Path $userFile) -or ((Get-Content $userFile -Raw).Trim() -ne $ExpectedUser)))
+{
+    Set-Content -Path $userFile -Value $ExpectedUser -NoNewline
+    Write-Host "    Cached '$ExpectedUser' in release\github-user.txt"
+}
+elseif (-not $ExpectedUser)
+{
+    Write-Warning @"
+No -ExpectedUser argument and no release\github-user.txt cache. Continuing
+with active user '$activeUser', but consider passing -ExpectedUser once
+to lock in the publisher identity for future runs.
+"@
 }
 
 # 3. Resolve the target repo (param > config file > github remote) ------
