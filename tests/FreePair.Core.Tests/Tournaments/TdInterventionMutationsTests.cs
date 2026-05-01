@@ -223,6 +223,79 @@ public class TdInterventionMutationsTests
                 round: 4, boardA: 1, boardB: 1));
     }
 
+    // ============ SwapPlayerPositions (cross-colour position swap) ============
+
+    [Fact]
+    public async Task SwapPlayerPositions_cross_colour_swaps_players_and_flips_their_colours()
+    {
+        var t = await LoadWithUnplayedRound4Async();
+        // Round 4 boards 1 and 2 in the unpaired-round-4 fixture:
+        // board 1 = (1 vs 2), board 2 = (3 vs 4).
+        // Drag #1 (white on board 1) onto #4 (black on board 2):
+        //   #1 takes #4's slot → black on board 2
+        //   #4 takes #1's slot → white on board 1
+        // New board 1: (4 vs 2)
+        // New board 2: (3 vs 1)
+        var swapped = TournamentMutations.SwapPlayerPositions(
+            t, "Open I",
+            round: 4,
+            sourceBoard: 1, sourceColor: PlayerColor.White,
+            targetBoard: 2, targetColor: PlayerColor.Black);
+
+        var round = swapped.Sections.Single(s => s.Name == "Open I")
+            .Rounds.Single(r => r.Number == 4);
+        var b1 = round.Pairings.Single(p => p.Board == 1);
+        var b2 = round.Pairings.Single(p => p.Board == 2);
+
+        Assert.Equal(4, b1.WhitePair);
+        Assert.Equal(2, b1.BlackPair);
+        Assert.Equal(3, b2.WhitePair);
+        Assert.Equal(1, b2.BlackPair);
+
+        // Cross-colour intent always gets a "Position swap" note on
+        // both boards regardless of whether a rematch results.
+        Assert.NotNull(b1.Note);
+        Assert.NotNull(b2.Note);
+        Assert.Contains("Position swap", b1.Note);
+        Assert.Contains("Position swap", b2.Note);
+    }
+
+    [Fact]
+    public async Task SwapPlayerPositions_same_board_diff_colour_routes_to_SwapPairingColors()
+    {
+        var t = await LoadWithUnplayedRound4Async();
+        // White↔black on the same board — should produce the same
+        // result as calling SwapPairingColors directly. We compare
+        // round 4 board 1's resulting (WhitePair, BlackPair).
+        var byPositions = TournamentMutations.SwapPlayerPositions(
+            t, "Open I",
+            round: 4,
+            sourceBoard: 1, sourceColor: PlayerColor.White,
+            targetBoard: 1, targetColor: PlayerColor.Black);
+        var byColors = TournamentMutations.SwapPairingColors(
+            t, "Open I", round: 4, whitePair: 1, blackPair: 2);
+
+        var bp = byPositions.Sections.Single(s => s.Name == "Open I")
+            .Rounds.Single(r => r.Number == 4).Pairings.Single(p => p.Board == 1);
+        var bc = byColors.Sections.Single(s => s.Name == "Open I")
+            .Rounds.Single(r => r.Number == 4).Pairings.Single(p => p.Board == 1);
+
+        Assert.Equal(bc.WhitePair, bp.WhitePair);
+        Assert.Equal(bc.BlackPair, bp.BlackPair);
+    }
+
+    [Fact]
+    public async Task SwapPlayerPositions_rejects_identical_slot()
+    {
+        var t = await LoadWithUnplayedRound4Async();
+        Assert.Throws<ArgumentException>(() =>
+            TournamentMutations.SwapPlayerPositions(
+                t, "Open I",
+                round: 4,
+                sourceBoard: 1, sourceColor: PlayerColor.White,
+                targetBoard: 1, targetColor: PlayerColor.White));
+    }
+
     // ============ #8 ConvertPairingToHalfPointBye ============
 
     [Fact]

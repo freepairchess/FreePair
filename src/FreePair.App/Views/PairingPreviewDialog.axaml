@@ -64,7 +64,7 @@
                 <TextBlock FontWeight="SemiBold"
                            Text="Drag-and-drop to swap opponents"/>
                 <TextBlock FontSize="11" Foreground="DimGray" TextWrapping="Wrap"
-                           Text="Drag a player's name onto another player of the same colour to swap them between two boards. Colours are preserved (white-onto-white or black-onto-black). If the swap would recreate a previously-played game, FreePair asks before proceeding and flags the resulting boards with a warning note."/>
+                           Text="Drag a player onto another player to swap them between two boards. Same-colour drops swap opponents (colours preserved). Cross-colour drops literally exchange positions (the two players' colours flip). Any swap that recreates a previously-played game or shifts colours unexpectedly is flagged inline with a warning note until results are entered. Pairings only publish to NA Chess Hub after you press Commit; cancelled previews are discarded entirely."/>
                 <TextBlock x:Name="SwapErrorText"
                            Foreground="DarkRed"
                            FontSize="11"

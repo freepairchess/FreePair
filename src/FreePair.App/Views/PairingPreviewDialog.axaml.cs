@@ -115,32 +115,54 @@ public partial class PairingPreviewDialog : Window
     }
 
     /// <summary>
-    /// Allows the drop only when source and target chips share the
-    /// same colour ("W" onto "W" or "B" onto "B"). Cross-colour
-    /// drops are silently rejected so the cursor visibly refuses.
+    /// Allows a drop onto any other player chip — same-colour
+    /// drops do an opponent swap; cross-colour drops do a position
+    /// swap (literal player exchange, colours flip). Self-drops on
+    /// the same chip are rejected so the cursor refuses.
     /// </summary>
     private void OnPlayerChipDragOver(object? sender, DragEventArgs e)
     {
-        var allowed = TryGetSourceTarget(e, out var srcColour, out _, out var tgtColour, out _)
-                      && srcColour == tgtColour;
+        var allowed = TryGetSourceTarget(e, out var srcColour, out var srcBoard, out var tgtColour, out var tgtBoard)
+                      && !(srcColour == tgtColour && srcBoard == tgtBoard);
         e.DragEffects = allowed ? DragDropEffects.Move : DragDropEffects.None;
     }
 
     /// <summary>
-    /// Performs the swap on drop. Same-colour pre-checked by
-    /// <see cref="OnPlayerChipDragOver"/>. On rematch error,
-    /// prompts the TD to confirm a forced swap; if confirmed, calls
-    /// <see cref="PairingPreviewViewModel.SwapBoardsForced"/> which
-    /// annotates both pairings with a session note.
+    /// Performs the swap on drop. Three paths:
+    /// <list type="bullet">
+    /// <item>Same colour, different board → opponent swap (existing
+    /// SwapBoardOpponents). On rematch, prompts to force.</item>
+    /// <item>Different colour, any board → position swap (new
+    /// SwapPlayerPositions). Always proceeds; rematches surface as
+    /// session notes on the resulting pairings.</item>
+    /// <item>Same colour AND same board → ignored (already filtered
+    /// out by <see cref="OnPlayerChipDragOver"/>).</item>
+    /// </list>
     /// </summary>
     private async void OnPlayerChipDrop(object? sender, DragEventArgs e)
     {
         if (Vm is null) return;
         if (!TryGetSourceTarget(e, out var srcColour, out var srcBoard, out var tgtColour, out var tgtBoard))
             return;
-        if (srcColour != tgtColour) return;
-        if (srcBoard == tgtBoard) return;
+        if (srcColour == tgtColour && srcBoard == tgtBoard) return;
 
+        // Cross-colour: literal position swap. Always allowed; any
+        // rematch / colour-flip is annotated via Pairing.Note.
+        if (srcColour != tgtColour)
+        {
+            var srcPc = ParseColour(srcColour);
+            var tgtPc = ParseColour(tgtColour);
+            try
+            {
+                Vm.SwapPlayerPositions(srcBoard, srcPc, tgtBoard, tgtPc);
+                ClearError();
+            }
+            catch (Exception ex) { ShowError(ex.Message); }
+            return;
+        }
+
+        // Same-colour, different board: opponent swap, with
+        // rematch-confirmation flow.
         try
         {
             Vm.SwapBoards(srcBoard, tgtBoard);
@@ -149,7 +171,6 @@ public partial class PairingPreviewDialog : Window
         }
         catch (InvalidOperationException ex) when (ex.Message.Contains("recreate", StringComparison.OrdinalIgnoreCase))
         {
-            // Rematch — ask before forcing.
             var proceed = await PromptForceSwapAsync(srcBoard, tgtBoard).ConfigureAwait(true);
             if (!proceed) { ClearError(); return; }
             try
@@ -167,6 +188,9 @@ public partial class PairingPreviewDialog : Window
             ShowError(ex.Message);
         }
     }
+
+    private static FreePair.Core.SwissSys.PlayerColor ParseColour(string s) =>
+        s == "W" ? FreePair.Core.SwissSys.PlayerColor.White : FreePair.Core.SwissSys.PlayerColor.Black;
 
     /// <summary>
     /// Reads the drag payload and walks up the visual tree from the

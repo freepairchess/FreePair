@@ -133,6 +133,24 @@ public sealed partial class PairingPreviewViewModel : ObservableObject
     }
 
     /// <summary>
+    /// Cross-colour position swap (one player from each board
+    /// trades places, colours flip). Always allowed; resulting
+    /// rematches are flagged as session notes on both pairings
+    /// instead of throwing. Drives the cross-colour drag-and-drop
+    /// path in the preview dialog.
+    /// </summary>
+    public void SwapPlayerPositions(
+        int sourceBoard, FreePair.Core.SwissSys.PlayerColor sourceColor,
+        int targetBoard, FreePair.Core.SwissSys.PlayerColor targetColor)
+    {
+        Tournament = TournamentMutations.SwapPlayerPositions(
+            Tournament, SectionName, Round,
+            sourceBoard, sourceColor,
+            targetBoard, targetColor);
+        RefreshRows();
+    }
+
+    /// <summary>
     /// Converts the pairing at <paramref name="row"/> into a half-point
     /// bye for <paramref name="halfByePair"/> (must be one of the row's
     /// two players). Their opponent receives a full-point bye and the
