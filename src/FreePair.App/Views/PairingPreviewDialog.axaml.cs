@@ -21,11 +21,13 @@ public partial class PairingPreviewDialog : Window
 {
     /// <summary>Drag payload: a string of the form
     /// <c>"{colour}:{board}"</c> where colour is "W" or "B".
-    /// Avalonia 12 uses application-scoped DataFormats for typed
-    /// drag/drop; we use a string format keyed under our app name
-    /// so other apps' drops don't collide.</summary>
+    /// Avalonia 12 application-scoped DataFormats reject slashes
+    /// in the identifier (validated at construction time —
+    /// otherwise the static initializer throws and the whole
+    /// dialog fails to load), so we use a dotted reverse-DNS
+    /// shape: app name + payload kind.</summary>
     private static readonly DataFormat<string> PlayerChipFormat =
-        DataFormat.CreateStringApplicationFormat("freepair/player-chip");
+        DataFormat.CreateStringApplicationFormat("freepair.player-chip");
 
     public PairingPreviewDialog()
     {
