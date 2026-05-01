@@ -1,0 +1,61 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="440" d:DesignHeight="240"
+        x:Class="FreePair.App.Views.StartingBoardDialog"
+        Title="Starting board for next round"
+        Width="440"
+        SizeToContent="Height"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+
+    <StackPanel Margin="20" Spacing="12">
+
+        <TextBlock x:Name="HeaderText"
+                   FontWeight="SemiBold"
+                   FontSize="14"
+                   TextWrapping="Wrap"
+                   Text="Pair next round"/>
+
+        <TextBlock Text="Confirm or override the physical starting board number for this round. Use this to keep multi-section events from doubling up on the same physical board, or to re-shift a section between rooms mid-event."
+                   Foreground="Gray"
+                   FontSize="11"
+                   TextWrapping="Wrap"/>
+
+        <Grid ColumnDefinitions="160,*" RowDefinitions="Auto,Auto" RowSpacing="6">
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Starting board #" VerticalAlignment="Center" Foreground="DimGray"/>
+            <NumericUpDown Grid.Row="0" Grid.Column="1"
+                           x:Name="BoardSpinner"
+                           Minimum="1" Maximum="9999" Increment="1"
+                           FormatString="0"
+                           HorizontalAlignment="Left" MinWidth="160"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Recommended" VerticalAlignment="Center" Foreground="DimGray"/>
+            <TextBlock Grid.Row="1" Grid.Column="1"
+                       x:Name="RecommendedText"
+                       VerticalAlignment="Center"
+                       Foreground="Gray"
+                       Text="—"/>
+        </Grid>
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="8"
+                    Margin="0,8,0,0">
+            <Button Content="Use recommended"
+                    Click="OnUseRecommended"
+                    MinWidth="140"/>
+            <Button Content="Cancel"
+                    Click="OnCancel"
+                    MinWidth="90"
+                    IsCancel="True"/>
+            <Button Content="Pair this round"
+                    Click="OnConfirm"
+                    MinWidth="140"
+                    IsDefault="True"
+                    Classes="accent"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

@@ -288,6 +288,17 @@ public partial class TournamentViewModel : ViewModelBase
     public Func<Task<InitialColor?>>? PromptInitialColorAsync { get; set; }
 
     /// <summary>
+    /// Callback opened before every "Pair next round" action so the
+    /// TD can confirm or override the section's starting board
+    /// number for this specific round. Args: section name, upcoming
+    /// round number, current <c>Section.FirstBoard</c> (or 1 if
+    /// null), recommended board from
+    /// <see cref="BoardNumberRecommender"/>. Returns the chosen
+    /// value, or <c>null</c> when the TD cancels (pairing aborts).
+    /// </summary>
+    public Func<string, int, int, int, Task<int?>>? PromptStartingBoardAsync { get; set; }
+
+    /// <summary>
     /// Callback used by destructive commands (e.g. Delete round) to prompt
     /// the user for confirmation. Returns <c>true</c> when the user confirms.
     /// Parameters: title, message, confirm-button label.
@@ -709,20 +720,40 @@ public partial class TournamentViewModel : ViewModelBase
             if (!recommended.TryGetValue(section.Name, out var rec)) continue;
             if (section.FirstBoard == rec) continue;
             t = TournamentMutations.SetSectionFirstBoard(t, section.Name, rec);
-            changedNames.Add($"{section.Name}={rec}");
+            changedNames.Add($"{section.Name} → {rec}");
         }
 
         if (changedNames.Count == 0)
         {
+            // Status banner is too subtle when the user clicks a
+            // toolbar button and nothing visible changes — show a
+            // proper confirmation dialog.
             SaveStatus = "Section starting boards already match the recommendation.";
+            if (PromptConfirmAsync is not null)
+            {
+                await PromptConfirmAsync(
+                    "Renumber section boards",
+                    "All sections are already at their recommended starting boards. " +
+                    "Nothing to change.\n\nRecommended values:\n" +
+                    string.Join("\n", recommended.Select(kv => $"  • {kv.Key} → {kv.Value}")),
+                    "OK").ConfigureAwait(true);
+            }
             return;
         }
 
         Tournament = t;
         try { await PersistCurrentTournamentAsync().ConfigureAwait(true); } catch { /* best-effort */ }
 
-        SaveStatus = $"Renumbered: {string.Join(", ", changedNames)}. " +
-                     "(Already-paired rounds keep their existing board numbers.)";
+        var summary = $"Renumbered {changedNames.Count} section(s):\n" +
+                      string.Join("\n", changedNames.Select(s => $"  • {s}")) +
+                      "\n\nAlready-paired rounds keep their existing board numbers — " +
+                      "only future pairings use the new offset.";
+        SaveStatus = $"Renumbered: {string.Join(", ", changedNames)}.";
+
+        if (PromptConfirmAsync is not null)
+        {
+            await PromptConfirmAsync("Renumber section boards", summary, "OK").ConfigureAwait(true);
+        }
     }
 
     /// <summary>
@@ -1710,6 +1741,35 @@ public partial class TournamentViewModel : ViewModelBase
                     return;
                 }
                 initialColor = picked.Value;
+            }
+
+            // Every-round prompt: confirm/override the physical
+            // starting board number. Pre-fills with the section's
+            // current FirstBoard; the TD can jump to the
+            // recommendation or pick anything in [1, 9999]. Cancel
+            // aborts pairing without side-effects. If the chosen
+            // value differs from the current FirstBoard we
+            // SetSectionFirstBoard before pairing so the new offset
+            // applies to this round (and persists for the next).
+            if (PromptStartingBoardAsync is not null)
+            {
+                var recommended = BoardNumberRecommender.Recommend(tournamentSnapshot)
+                    .TryGetValue(section.Name, out var rec) ? rec : 1;
+                var currentFirst = sectionSnapshot.FirstBoard ?? 1;
+                var nextRoundNumber = sectionSnapshot.Rounds.Count + 1;
+
+                var chosen = await PromptStartingBoardAsync(
+                    section.Name, nextRoundNumber, currentFirst, recommended).ConfigureAwait(true);
+                if (chosen is null) return; // cancelled
+
+                if (chosen.Value != currentFirst)
+                {
+                    var newFirst = chosen.Value <= 1 ? (int?)null : chosen.Value;
+                    Tournament = TournamentMutations.SetSectionFirstBoard(
+                        Tournament, section.Name, newFirst);
+                    tournamentSnapshot = Tournament;
+                    sectionSnapshot = tournamentSnapshot.Sections.Single(s => s.Name == section.Name);
+                }
             }
 
             var result = await Task.Run(() =>

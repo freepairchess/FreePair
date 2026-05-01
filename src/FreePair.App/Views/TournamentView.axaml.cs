@@ -24,6 +24,7 @@ public partial class TournamentView : UserControl
             vm.PickExportTrfPathAsync = PickExportTrfPathAsync;
             vm.PromptInitialColorAsync = PromptInitialColorAsync;
             vm.PromptConfirmAsync = PromptConfirmAsync;
+            vm.PromptStartingBoardAsync = PromptStartingBoardAsync;
             vm.PromptPairingPreviewAsync = PromptPairingPreviewAsync;
             vm.ShowPublishingDialogAsync = ShowPublishingDialogAsync;
             vm.ShowManageByesDialogAsync = ShowManageByesDialogAsync;
@@ -106,6 +107,19 @@ public partial class TournamentView : UserControl
 
         var dialog = new InitialColorDialog();
         return await dialog.ShowDialog<InitialColor?>(owner);
+    }
+
+    private async Task<int?> PromptStartingBoardAsync(string sectionName, int roundNumber, int current, int recommended)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner)
+        {
+            // No owner window (designer / smoke-test) — pass through
+            // the current value so pairing proceeds unchanged.
+            return current;
+        }
+
+        var dialog = new StartingBoardDialog(sectionName, roundNumber, current, recommended);
+        return await dialog.ShowDialog<int?>(owner);
     }
 
     private async Task<bool> PromptConfirmAsync(string title, string message, string confirmLabel)
