@@ -35,6 +35,15 @@
     GitHub <owner>/<repo> for -PublishGitHub. Optional after the first
     run (publish-github.ps1 caches the value in release\github-repo.txt).
 
+.PARAMETER GitHubUser
+    GitHub username the publisher MUST be authenticated as before
+    pushing tags / creating releases. Forwarded to publish-github.ps1
+    as -ExpectedUser. Cached in release\github-user.txt after first
+    use so subsequent runs are zero-arg. Use this when the same
+    machine has multiple `gh auth login` identities (e.g. a Copilot
+    account + a separate FreePair-publisher account) and you don't
+    want to risk picking the wrong one.
+
 .PARAMETER PreRelease
     Forwarded to publish-github.ps1: marks the GitHub release as a
     pre-release. Recommended for early builds.
@@ -56,6 +65,7 @@ param(
     [string] $ReleaseNotes,
     [switch] $PublishGitHub,
     [string] $GitHubRepo,
+    [string] $GitHubUser,
     [switch] $PreRelease,
     [switch] $Draft
 )
@@ -173,6 +183,7 @@ if ($PublishGitHub)
     $publishScript = Join-Path $PSScriptRoot "publish-github.ps1"
     $publishArgs = @{ Version = $Version }
     if ($GitHubRepo)   { $publishArgs.Repo         = $GitHubRepo }
+    if ($GitHubUser)   { $publishArgs.ExpectedUser = $GitHubUser }
     if ($ReleaseNotes) { $publishArgs.ReleaseNotes = $ReleaseNotes }
     if ($PreRelease)   { $publishArgs.PreRelease   = $true }
     if ($Draft)        { $publishArgs.Draft        = $true }

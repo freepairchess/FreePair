@@ -118,6 +118,41 @@ keyring on each invocation. Re-running on a different machine just
 needs another `gh auth login`. There's no PAT to commit, rotate, or
 leak.
 
+#### Multiple GitHub accounts on one machine
+
+If you have **more than one** `gh auth login` identity on the same
+machine (typical: a personal Copilot account + a separate
+FreePair-publisher account), pass `-ExpectedUser <username>` (or
+`-GitHubUser` to `release.ps1`) so the publisher refuses to run
+under the wrong account:
+
+```powershell
+.\release\release.ps1 `
+    -Version 0.1.0 -PublishGitHub `
+    -GitHubRepo freepairchess/FreePair `
+    -GitHubUser <freepair-publisher-username> `
+    -PreRelease -Draft
+```
+
+The script:
+
+1. Reads the active gh user via `gh api user --jq .login`.
+2. If it doesn't match `-ExpectedUser`, prints `gh auth switch -h github.com -u <username>` and exits before doing anything destructive.
+3. Caches the expected user to `release\github-user.txt` so subsequent runs are zero-arg.
+
+To switch accounts manually (no script involvement):
+
+```powershell
+gh auth status                                     # see all logged-in accounts
+gh auth switch -h github.com -u <freepair-user>    # make FreePair account active
+gh auth switch -h github.com -u <copilot-user>     # switch back when done
+```
+
+`gh auth switch` only changes which account `gh` uses; nothing else
+on the machine is affected. The Copilot extension in your editor
+keeps working because it has its own auth session independent of the
+`gh` CLI.
+
 #### Useful flags
 
 | Flag | What it does |

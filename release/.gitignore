@@ -2,3 +2,4 @@ output/
 publish/
 *.nupkg
 github-repo.txt
+github-user.txt
