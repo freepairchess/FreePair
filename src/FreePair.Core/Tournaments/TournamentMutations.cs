@@ -591,8 +591,151 @@ public static class TournamentMutations
     }
 
     /// <summary>
-    /// Converts a scheduled but un-played pairing into a late
-    /// half-point bye for <paramref name="halfByePair"/>: that player
+    /// Cross-colour position swap: literally exchanges two specific
+    /// players between two boards, regardless of their current
+    /// colours. Drives the drag-and-drop UI when the TD drops a
+    /// white player onto a black-coloured slot (or vice-versa).
+    /// Unlike <see cref="SwapBoardOpponents"/> (same-colour, blacks
+    /// only) this mutation rewrites both the white and black pair
+    /// numbers on the affected boards, so colour history shifts for
+    /// the two swapped players.
+    /// <para>
+    /// Always allowed when colours differ — the TD is explicitly
+    /// choosing a position swap. Rematches that would result are
+    /// flagged via per-pairing <see cref="Pairing.Note"/> entries
+    /// rather than thrown, mirroring the
+    /// <c>SwapBoardOpponents(force:true)</c> contract. The
+    /// <paramref name="warnOnRematch"/> escape hatch lets the
+    /// caller still receive the throw for non-UI use cases.
+    /// </para>
+    /// </summary>
+    /// <exception cref="ArgumentException">Source and target are the same (board, colour) slot.</exception>
+    /// <exception cref="InvalidOperationException">Pairings missing, scored, or rematch with <paramref name="warnOnRematch"/>=true.</exception>
+    public static Tournament SwapPlayerPositions(
+        Tournament tournament,
+        string sectionName,
+        int round,
+        int sourceBoard,
+        PlayerColor sourceColor,
+        int targetBoard,
+        PlayerColor targetColor,
+        bool warnOnRematch = false)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        if (sourceColor is not (PlayerColor.White or PlayerColor.Black))
+            throw new ArgumentException("Source colour must be White or Black.", nameof(sourceColor));
+        if (targetColor is not (PlayerColor.White or PlayerColor.Black))
+            throw new ArgumentException("Target colour must be White or Black.", nameof(targetColor));
+        if (sourceBoard == targetBoard && sourceColor == targetColor)
+            throw new ArgumentException("Source and target identify the same player slot.", nameof(targetBoard));
+
+        var section = FindSection(tournament, sectionName);
+        var targetRound = section.Rounds.FirstOrDefault(r => r.Number == round)
+            ?? throw new InvalidOperationException(
+                $"Round {round} does not exist in section '{sectionName}'.");
+
+        var src = targetRound.Pairings.FirstOrDefault(p => p.Board == sourceBoard)
+            ?? throw new InvalidOperationException($"Board {sourceBoard} not found in round {round}.");
+        var tgt = targetRound.Pairings.FirstOrDefault(p => p.Board == targetBoard)
+            ?? throw new InvalidOperationException($"Board {targetBoard} not found in round {round}.");
+
+        if (src.Result != PairingResult.Unplayed || tgt.Result != PairingResult.Unplayed)
+        {
+            throw new InvalidOperationException(
+                "Both boards must be un-played before swapping positions.");
+        }
+
+        // Same-board cross-colour collapses to a colour swap on a
+        // single pairing; route through the existing mutation so
+        // there's exactly one canonical path.
+        if (sourceBoard == targetBoard)
+        {
+            return SwapPairingColors(tournament, sectionName, round, src.WhitePair, src.BlackPair);
+        }
+
+        // Resolve the two players we're physically moving.
+        var sourcePlayer = sourceColor == PlayerColor.White ? src.WhitePair : src.BlackPair;
+        var targetPlayer = targetColor == PlayerColor.White ? tgt.WhitePair : tgt.BlackPair;
+
+        // Replace sourcePlayer in its slot with targetPlayer; vice
+        // versa for tgt. The other slot on each board is unchanged.
+        var newSrc = src with
+        {
+            WhitePair = sourceColor == PlayerColor.White ? targetPlayer : src.WhitePair,
+            BlackPair = sourceColor == PlayerColor.Black ? targetPlayer : src.BlackPair,
+        };
+        var newTgt = tgt with
+        {
+            WhitePair = targetColor == PlayerColor.White ? sourcePlayer : tgt.WhitePair,
+            BlackPair = targetColor == PlayerColor.Black ? sourcePlayer : tgt.BlackPair,
+        };
+
+        // Rematch detection on the resulting pairings.
+        var roundIndex = round - 1;
+        var byPair = section.Players.ToDictionary(p => p.PairNumber);
+        var rematchSrc = HasPlayedBefore(byPair, newSrc.WhitePair, newSrc.BlackPair, roundIndex);
+        var rematchTgt = HasPlayedBefore(byPair, newTgt.WhitePair, newTgt.BlackPair, roundIndex);
+        if ((rematchSrc || rematchTgt) && warnOnRematch)
+        {
+            throw new InvalidOperationException(
+                "Swap would recreate a previously-played pairing.");
+        }
+
+        // Notes summarise both the cross-colour intent and any
+        // rematch the TD just opted into. Visible inline in the
+        // preview row until results are entered.
+        string? noteSrc = null;
+        string? noteTgt = null;
+        if (sourceColor != targetColor)
+        {
+            noteSrc = $"⚠ Position swap: #{sourcePlayer} ↔ #{targetPlayer} (colours flipped).";
+            noteTgt = $"⚠ Position swap: #{sourcePlayer} ↔ #{targetPlayer} (colours flipped).";
+        }
+        if (rematchSrc)
+        {
+            noteSrc = (noteSrc is null ? "" : noteSrc + " ")
+                + $"Rematch: #{newSrc.WhitePair} vs #{newSrc.BlackPair}.";
+        }
+        if (rematchTgt)
+        {
+            noteTgt = (noteTgt is null ? "" : noteTgt + " ")
+                + $"Rematch: #{newTgt.WhitePair} vs #{newTgt.BlackPair}.";
+        }
+
+        newSrc = newSrc with { Note = noteSrc };
+        newTgt = newTgt with { Note = noteTgt };
+
+        var updatedPairings = targetRound.Pairings
+            .Select(p => p == src ? newSrc : p == tgt ? newTgt : p)
+            .ToArray();
+        var updatedRound = targetRound with { Pairings = updatedPairings };
+
+        // Update history for all four affected players. Each
+        // player's roundIndex entry is rewritten to point at their
+        // new opponent + colour + board.
+        var affected = new Dictionary<int, (int Opponent, PlayerColor Color, int Board)>
+        {
+            [newSrc.WhitePair] = (newSrc.BlackPair, PlayerColor.White, newSrc.Board),
+            [newSrc.BlackPair] = (newSrc.WhitePair, PlayerColor.Black, newSrc.Board),
+            [newTgt.WhitePair] = (newTgt.BlackPair, PlayerColor.White, newTgt.Board),
+            [newTgt.BlackPair] = (newTgt.WhitePair, PlayerColor.Black, newTgt.Board),
+        };
+        var updatedPlayers = section.Players
+            .Select(p => affected.TryGetValue(p.PairNumber, out var info)
+                ? OverwriteHistoryPairing(p, roundIndex, info.Opponent, info.Color, info.Board)
+                : p)
+            .ToArray();
+
+        var updatedSection = section with
+        {
+            Players = updatedPlayers,
+            Rounds = section.Rounds.Select(r => r.Number == round ? updatedRound : r).ToArray(),
+        };
+
+        return ReplaceSection(tournament, sectionName, updatedSection);
+    }
     /// is awarded 0.5, their opponent receives a full-point bye
     /// (1.0), the pairing is removed from the round, and two
     /// <see cref="ByeAssignment"/>s are added. Typical use: a player
