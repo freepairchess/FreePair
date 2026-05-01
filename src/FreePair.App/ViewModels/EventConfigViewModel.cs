@@ -1,10 +1,48 @@
 using System;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FreePair.Core.Tournaments;
 using FreePair.Core.Tournaments.Enums;
 
 namespace FreePair.App.ViewModels;
+
+/// <summary>
+/// One row in the "Section starting boards" panel on the Event
+/// configuration tab — exposes a single section's name, the
+/// recommended <see cref="Section.FirstBoard"/> derived from
+/// player counts, and the editable value the TD has chosen.
+/// Apply on the parent VM walks these rows and persists changes
+/// via <see cref="TournamentMutations.SetSectionFirstBoard"/>.
+/// </summary>
+public sealed partial class SectionBoardRow : ObservableObject
+{
+    public string Name { get; }
+
+    /// <summary>
+    /// Recommended start board (from <see cref="BoardNumberRecommender"/>).
+    /// Read-only; refreshes when the parent VM rebuilds the rows.
+    /// </summary>
+    public int Recommended { get; }
+
+    /// <summary>
+    /// Editable starting board for this section. Bound to a
+    /// <c>NumericUpDown</c> in the view. Null means "use board 1
+    /// (no offset)" — displayed as 1 in the spinner because
+    /// NumericUpDown doesn't support null cleanly.
+    /// </summary>
+    [ObservableProperty] private int _firstBoard;
+
+    public SectionBoardRow(string name, int? currentFirstBoard, int recommended)
+    {
+        Name = name;
+        Recommended = recommended;
+        _firstBoard = currentFirstBoard ?? 1;
+    }
+
+    /// <summary>True when the user changed the value vs the recommended start.</summary>
+    public bool DiffersFromRecommended => FirstBoard != Recommended;
+}
 
 /// <summary>
 /// Backs the Event configuration tab: exposes editable copies of the
@@ -124,6 +162,15 @@ public sealed partial class EventConfigViewModel : ViewModelBase
     public string? NachEventId => _getTournament().NachEventId;
 
     /// <summary>
+    /// Per-section starting-board rows shown on the Event
+    /// configuration tab. One row per non-soft-deleted section,
+    /// ordered the same as <see cref="Tournament.Sections"/>.
+    /// Rebuilt on every <see cref="Reset"/>; persisted on
+    /// <see cref="ApplyCommand"/>.
+    /// </summary>
+    public System.Collections.ObjectModel.ObservableCollection<SectionBoardRow> SectionBoards { get; } = new();
+
+    /// <summary>
     /// US Chess affiliate URL derived from <see cref="OrganizerId"/>
     /// when the id type is <see cref="FreePair.Core.Tournaments.Enums.UserIDType.USCFAffiliateID"/>,
     /// otherwise null. Bound in the view as a clickable link next to
@@ -184,6 +231,36 @@ public sealed partial class EventConfigViewModel : ViewModelBase
         TimeZone             = t.TimeZone;
 
         OnPropertyChanged(nameof(NachEventId));
+
+        // Rebuild the per-section starting-board rows. Recommended
+        // values come from the BoardNumberRecommender; current
+        // values come from each section's FirstBoard. Soft-deleted
+        // sections are skipped (they aren't in the recommender's
+        // output either).
+        SectionBoards.Clear();
+        var recommended = BoardNumberRecommender.Recommend(t);
+        foreach (var s in t.Sections)
+        {
+            if (s.SoftDeleted) continue;
+            var rec = recommended.TryGetValue(s.Name, out var r) ? r : 1;
+            SectionBoards.Add(new SectionBoardRow(s.Name, s.FirstBoard, rec));
+        }
+    }
+
+    /// <summary>
+    /// Copies the recommended starting board into every editable
+    /// row, leaving Apply to actually persist. Used by the
+    /// "Use recommended" button on the Section starting boards
+    /// panel — the global toolbar "🔢 Renumber boards" button is a
+    /// shortcut that does this AND applies in one click.
+    /// </summary>
+    [RelayCommand]
+    private void UseRecommendedBoards()
+    {
+        foreach (var row in SectionBoards)
+        {
+            row.FirstBoard = row.Recommended;
+        }
     }
 
     [RelayCommand]
@@ -217,8 +294,34 @@ public sealed partial class EventConfigViewModel : ViewModelBase
             roundsPlanned:        RoundsPlanned,
             halfPointByesAllowed: HalfPointByesAllowed);
 
+        // Fold per-section FirstBoard edits into the same Apply
+        // round-trip so both event-level and section-level edits
+        // land as one auto-save.
+        updated = ApplySectionBoardEdits(updated);
+
         _setTournament(updated);
         Reset();
+    }
+
+    /// <summary>
+    /// Persists pending edits to the per-section starting board
+    /// rows back onto the tournament. Called from
+    /// <see cref="ApplyCommand"/> after <see cref="SetTournamentInfo"/>
+    /// so both event-level and per-section edits land in a single
+    /// auto-save. Skipped rows (no change vs the section's current
+    /// FirstBoard) are no-ops.
+    /// </summary>
+    private Tournament ApplySectionBoardEdits(Tournament t)
+    {
+        foreach (var row in SectionBoards)
+        {
+            var current = t.Sections.FirstOrDefault(s => s.Name == row.Name);
+            if (current is null) continue;
+            var newValue = row.FirstBoard <= 1 ? (int?)null : row.FirstBoard;
+            if (current.FirstBoard == newValue) continue;
+            t = TournamentMutations.SetSectionFirstBoard(t, row.Name, newValue);
+        }
+        return t;
     }
 
     [RelayCommand]

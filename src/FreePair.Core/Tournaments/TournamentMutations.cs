@@ -28,6 +28,28 @@ public static class TournamentMutations
     }
 
     /// <summary>
+    /// Sets <see cref="Section.FirstBoard"/> for one section. The
+    /// new value is the offset applied to every future round paired
+    /// in that section so multi-section events don't reuse the same
+    /// physical board #1 across Open / U1700 / etc. Already-paired
+    /// rounds are NOT renumbered — printed pairings stay stable.
+    /// Pass <c>null</c> to clear (collapses to a 1-based offset).
+    /// </summary>
+    public static Tournament SetSectionFirstBoard(Tournament tournament, string sectionName, int? firstBoard)
+    {
+        if (tournament is null) throw new System.ArgumentNullException(nameof(tournament));
+        System.ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+        if (firstBoard is < 1)
+        {
+            throw new System.ArgumentOutOfRangeException(nameof(firstBoard),
+                "First board must be 1 or greater (or null to clear).");
+        }
+        var section = FindSection(tournament, sectionName);
+        var updated = section with { FirstBoard = firstBoard };
+        return ReplaceSection(tournament, sectionName, updated);
+    }
+
+    /// <summary>
     /// Applies a batch of event-level metadata edits in a single
     /// immutable step. Any parameter left at its default sentinel
     /// (<see langword="null"/>) is treated as "leave unchanged". Used
@@ -177,8 +199,17 @@ public static class TournamentMutations
         GuardNoSoftDeletedPlayers(section);
         var newRoundNumber = section.Rounds.Count + 1;
 
+        // Section.FirstBoard offsets every board number in this
+        // section's output so multi-section tournaments don't reuse
+        // the same physical board #1 across Open / U1700 / etc.
+        // BBP returns 1-based boards, we shift them by (FirstBoard - 1).
+        // Null / 0 / 1 all collapse to a no-op offset for legacy
+        // single-section events.
+        var boardOffset = (section.FirstBoard ?? 1) - 1;
+        if (boardOffset < 0) boardOffset = 0;
+
         var boardPairings = pairings.Pairings
-            .Select((p, i) => new Pairing(i + 1, p.WhitePair, p.BlackPair, PairingResult.Unplayed))
+            .Select((p, i) => new Pairing(i + 1 + boardOffset, p.WhitePair, p.BlackPair, PairingResult.Unplayed))
             .ToArray();
 
         var fullByeAssignments = pairings.ByePlayerPairs
@@ -702,7 +733,7 @@ public static class TournamentMutations
             .Select(p => p.PairNumber)
             .ToArray();
 
-        var schedule = RoundRobinScheduler.Build(activeSeats);
+        var schedule = RoundRobinScheduler.Build(activeSeats, section.FirstBoard ?? 1);
         var nextRoundIndex = section.Rounds.Count;
         if (nextRoundIndex >= schedule.Count)
         {
