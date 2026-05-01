@@ -748,6 +748,25 @@ public partial class TournamentViewModel : ViewModelBase
         var result = await ShowPairAllSectionsDialogAsync(dialogVm).ConfigureAwait(true);
         if (result is null) return; // cancelled
 
+        // Apply any per-section StartingBoard edits the TD made in
+        // the dashboard before kicking off the batch pair, so each
+        // section's first round lands at the chosen offset. Skipped
+        // when the value is unchanged (no-op mutation).
+        var chosenBoards = result.SnapshotChosenStartingBoards();
+        var t = Tournament;
+        foreach (var (name, value) in chosenBoards)
+        {
+            var section = t.Sections.FirstOrDefault(s => s.Name == name);
+            if (section is null) continue;
+            var newValue = value <= 1 ? (int?)null : value;
+            if (section.FirstBoard == newValue) continue;
+            t = TournamentMutations.SetSectionFirstBoard(t, name, newValue);
+        }
+        if (!ReferenceEquals(t, Tournament))
+        {
+            Tournament = t;
+        }
+
         var readyNames = result.ReadySectionNames;
         if (readyNames.Count == 0)
         {
