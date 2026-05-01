@@ -497,3 +497,13 @@ src/FreePair.App/PairingEngine/bbpPairings-*/
 # OS cruft
 .DS_Store
 Thumbs.db
+
+# Top-level release/ folder holds the distribution scripts (release.ps1,
+# publish-github.ps1) — not the VS Release build output, which is caught
+# by [Bb]in/ above. Re-include the folder + contents so the [Rr]elease/
+# pattern (VS template default) doesn't swallow the publishing scripts.
+!/release/
+!/release/**
+# Same for tools/ (bbpPairings.exe download instructions, helper scripts).
+!/tools/
+!/tools/**

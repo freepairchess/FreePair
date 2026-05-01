@@ -1,0 +1,4 @@
+output/
+publish/
+*.nupkg
+github-repo.txt
