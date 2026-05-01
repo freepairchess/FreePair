@@ -75,4 +75,16 @@ public class AppSettings
     public string? UscfState { get; set; }
     public string? UscfZipCode { get; set; }
     public string? UscfCountry { get; set; } = "USA";
+
+    /// <summary>
+    /// Set to <c>true</c> after the TD dismisses the first-run
+    /// "FreePair uses BBP / FIDE Dutch" disclosure dialog with the
+    /// "Don't show this again" option. Defaults to <c>false</c> so
+    /// fresh installs always see the disclosure on first launch
+    /// (we want every TD to know up-front which pairing engine
+    /// they're using and how it relates to USCF rules). The
+    /// dialog also exposes a "Show this again every launch"
+    /// option which simply leaves this flag at <c>false</c>.
+    /// </summary>
+    public bool HasAcknowledgedPairingEngineNotice { get; set; }
 }

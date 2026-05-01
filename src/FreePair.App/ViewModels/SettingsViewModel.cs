@@ -144,6 +144,30 @@ public partial class SettingsViewModel : ViewModelBase
         StatusMessage = null;
     }
 
+    /// <summary>
+    /// Returns whether the TD has previously dismissed the
+    /// first-run "FreePair uses BBP / FIDE Dutch" disclosure with
+    /// "Don't show this again" checked. <c>InitializeAsync</c>
+    /// must be called first; otherwise this returns the default
+    /// (<c>false</c>) and the dialog will appear on next call.
+    /// </summary>
+    public bool HasAcknowledgedPairingEngineNotice =>
+        _settings?.HasAcknowledgedPairingEngineNotice ?? false;
+
+    /// <summary>
+    /// Persists the TD's choice from the disclosure dialog. Pass
+    /// <paramref name="dontShowAgain"/>=<c>true</c> to suppress
+    /// the dialog on subsequent launches; <c>false</c> to keep
+    /// showing it (returning user re-acknowledgement each launch).
+    /// </summary>
+    public async Task SetPairingEngineNoticeAcknowledgedAsync(bool dontShowAgain)
+    {
+        _settings ??= await _settingsService.LoadAsync().ConfigureAwait(true);
+        if (_settings.HasAcknowledgedPairingEngineNotice == dontShowAgain) return;
+        _settings.HasAcknowledgedPairingEngineNotice = dontShowAgain;
+        await _settingsService.SaveAsync(_settings).ConfigureAwait(true);
+    }
+
     partial void OnUseAsciiOnlyChanged(bool value)
     {
         if (_suppressFormatterUpdate)

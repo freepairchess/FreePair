@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using FreePair.App.ViewModels;
 
@@ -75,5 +76,22 @@ public partial class SettingsView : UserControl
 
         var folders = await topLevel.StorageProvider.OpenFolderPickerAsync(options);
         return folders.Count == 0 ? null : folders[0].TryGetLocalPath();
+    }
+
+    /// <summary>
+    /// Re-opens the first-run pairing-engine disclosure dialog on
+    /// demand from the Settings view. The TD's "Don't show this
+    /// again" choice on close updates
+    /// <c>AppSettings.HasAcknowledgedPairingEngineNotice</c> so
+    /// they can also use this to UN-suppress the dialog (uncheck
+    /// the box) and have it re-appear on the next launch.
+    /// </summary>
+    private async void OnShowPairingEngineNotice(object? sender, RoutedEventArgs e)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner) return;
+        if (DataContext is not SettingsViewModel vm) return;
+
+        var dontShowAgain = await new PairingEngineNoticeDialog().ShowDialog<bool>(owner);
+        await vm.SetPairingEngineNoticeAcknowledgedAsync(dontShowAgain);
     }
 }
