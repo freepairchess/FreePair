@@ -36,6 +36,7 @@ public partial class TournamentView : UserControl
             vm.ShowOpenFromRegistryDialogAsync = ShowOpenFromRegistryDialogAsync;
             vm.ShowBrowseRegistryEventsDialogAsync = ShowBrowseRegistryEventsDialogAsync;
             vm.ShowUscfExportDialogAsync = ShowUscfExportDialogAsync;
+            vm.ShowRenumberBoardsDialogAsync = ShowRenumberBoardsDialogAsync;
         }
     }
 
@@ -292,6 +293,19 @@ public partial class TournamentView : UserControl
         if (TopLevel.GetTopLevel(this) is not Window owner) return null;
         var dialog = new UscfExportDialog(vm);
         return await dialog.ShowDialog<UscfExportViewModel?>(owner);
+    }
+
+    /// <summary>
+    /// Opens the interactive Renumber-section-boards review dialog
+    /// (🔢 Renumber boards toolbar button). Returns the VM on Apply
+    /// so the caller can extract per-section chosen starting boards.
+    /// Null on Cancel.
+    /// </summary>
+    private async Task<RenumberBoardsViewModel?> ShowRenumberBoardsDialogAsync(RenumberBoardsViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner) return null;
+        var dialog = new RenumberBoardsDialog(vm);
+        return await dialog.ShowDialog<RenumberBoardsViewModel?>(owner);
     }
 
     /// <summary>
