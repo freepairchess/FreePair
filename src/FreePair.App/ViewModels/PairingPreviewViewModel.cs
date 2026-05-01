@@ -16,7 +16,8 @@ public sealed record PairingPreviewRow(
     int WhitePair,
     string WhiteName,
     int BlackPair,
-    string BlackName);
+    string BlackName,
+    string? Note = null);
 
 /// <summary>
 /// Backing view-model for the pre-commit pairing-preview dialog
@@ -85,7 +86,8 @@ public sealed partial class PairingPreviewViewModel : ObservableObject
                 WhitePair: p.WhitePair,
                 WhiteName: w?.Name ?? $"#{p.WhitePair}",
                 BlackPair: p.BlackPair,
-                BlackName: b?.Name ?? $"#{p.BlackPair}"));
+                BlackName: b?.Name ?? $"#{p.BlackPair}",
+                Note: p.Note));
         }
     }
 
@@ -113,6 +115,20 @@ public sealed partial class PairingPreviewViewModel : ObservableObject
     {
         Tournament = TournamentMutations.SwapBoardOpponents(
             Tournament, SectionName, Round, boardA, boardB);
+        RefreshRows();
+    }
+
+    /// <summary>
+    /// Force-variant of <see cref="SwapBoards(int, int)"/>: skips
+    /// the rematch guard and adds a session-only
+    /// <see cref="Pairing.Note"/> to both updated pairings flagging
+    /// the violation. Used by the drag-and-drop UI when the TD
+    /// confirms a "yes, swap anyway" prompt.
+    /// </summary>
+    public void SwapBoardsForced(int boardA, int boardB)
+    {
+        Tournament = TournamentMutations.SwapBoardOpponents(
+            Tournament, SectionName, Round, boardA, boardB, force: true);
         RefreshRows();
     }
 

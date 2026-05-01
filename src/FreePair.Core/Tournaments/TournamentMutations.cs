@@ -487,13 +487,21 @@ public static class TournamentMutations
     /// FIDE C.04 allocation is not disturbed. Throws when either
     /// pairing is already scored, or when the swap would recreate a
     /// previously-played game.
+    /// <para>
+    /// Pass <paramref name="force"/>=<c>true</c> to override the
+    /// rematch guard — the swap proceeds and both resulting
+    /// pairings receive a session-only <see cref="Pairing.Note"/>
+    /// flagging the violation so the TD can see the warning at a
+    /// glance until results are entered.
+    /// </para>
     /// </summary>
     public static Tournament SwapBoardOpponents(
         Tournament tournament,
         string sectionName,
         int round,
         int boardA,
-        int boardB)
+        int boardB,
+        bool force = false)
     {
         ArgumentNullException.ThrowIfNull(tournament);
         ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
@@ -519,18 +527,39 @@ public static class TournamentMutations
                 "Both boards must be un-played before swapping opponents.");
         }
 
-        // Guard against rematches.
+        // Guard against rematches — unless the TD has explicitly
+        // opted in via force=true, in which case we annotate both
+        // pairings with a session note instead of throwing.
         var roundIndex = round - 1;
         var byPair = section.Players.ToDictionary(p => p.PairNumber);
-        if (HasPlayedBefore(byPair, a.WhitePair, b.BlackPair, roundIndex) ||
-            HasPlayedBefore(byPair, b.WhitePair, a.BlackPair, roundIndex))
+        var rematchA = HasPlayedBefore(byPair, a.WhitePair, b.BlackPair, roundIndex);
+        var rematchB = HasPlayedBefore(byPair, b.WhitePair, a.BlackPair, roundIndex);
+        if (rematchA || rematchB)
         {
-            throw new InvalidOperationException(
-                "Swap would recreate a previously-played pairing.");
+            if (!force)
+            {
+                throw new InvalidOperationException(
+                    "Swap would recreate a previously-played pairing.");
+            }
         }
 
-        var newA = a with { BlackPair = b.BlackPair };
-        var newB = b with { BlackPair = a.BlackPair };
+        string? noteA = null;
+        string? noteB = null;
+        if (force && (rematchA || rematchB))
+        {
+            if (rematchA)
+                noteA = $"⚠ Forced swap: #{a.WhitePair} vs #{b.BlackPair} is a rematch.";
+            if (rematchB)
+                noteB = $"⚠ Forced swap: #{b.WhitePair} vs #{a.BlackPair} is a rematch.";
+            // If only one side rematches, still flag both boards so
+            // the TD sees the warning on whichever board they're
+            // looking at.
+            noteA ??= $"⚠ Forced swap (paired with board {b.Board}).";
+            noteB ??= $"⚠ Forced swap (paired with board {a.Board}).";
+        }
+
+        var newA = a with { BlackPair = b.BlackPair, Note = noteA };
+        var newB = b with { BlackPair = a.BlackPair, Note = noteB };
 
         var updatedPairings = targetRound.Pairings
             .Select(p => p == a ? newA : p == b ? newB : p)
