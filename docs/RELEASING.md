@@ -72,7 +72,76 @@ On a clean Windows VM that **doesn't** already have FreePair or .NET 10:
 5. Check **Add or remove programs**: a "FreePair" entry with the right
    version should appear, with a working uninstaller.
 
-### Publishing to TDs
+### Publishing to GitHub Releases (automated)
+
+Once you've smoke-tested, push the build to GitHub Releases with a
+single command:
+
+```powershell
+# First time: pass -Repo so publish-github.ps1 caches it in
+# release\github-repo.txt for subsequent runs.
+.\release\publish-github.ps1 -Version 0.1.0 -Repo myorg/FreePair -PreRelease -Draft
+
+# Or do build + publish in one step:
+.\release\release.ps1 -Version 0.1.0 -PublishGitHub -GitHubRepo myorg/FreePair -PreRelease -Draft
+```
+
+What the publish step does:
+
+1. **Pre-flight**: verifies the [`gh` CLI](https://cli.github.com/) is
+   installed and authenticated; if not, prints exact commands to fix
+   it and exits.
+2. **Resolves the target repo**: command-line `-Repo` →
+   `release\github-repo.txt` → URL of the `github` git remote, in
+   that order. Caches the resolved value to `github-repo.txt`
+   (gitignored) on first run.
+3. **Tags the commit**: creates an annotated `v<Version>` tag if it
+   doesn't exist locally, then pushes it to the GitHub remote
+   (`github` if the remote exists, otherwise `origin`).
+4. **Creates the release**: calls `gh release create v<Version>`
+   with the title, optional release-notes file, and every file in
+   `release\output\<Version>\` as an attached asset.
+5. If the release already exists (re-cut of an existing version),
+   re-uploads assets via `gh release upload --clobber`.
+
+#### Credential management
+
+Authentication runs through the `gh` CLI. One-time setup:
+
+```powershell
+winget install --id GitHub.cli   # or choco / scoop, your pick
+gh auth login                     # browser-based; stores creds in Windows Credential Manager
+```
+
+After that, the script never sees a token — `gh` reads from the OS
+keyring on each invocation. Re-running on a different machine just
+needs another `gh auth login`. There's no PAT to commit, rotate, or
+leak.
+
+#### Useful flags
+
+| Flag | What it does |
+|---|---|
+| `-PreRelease` | Marks the GitHub release as a pre-release (keeps it out of `/releases/latest` until you flip the flag). Use until you're confident in the build. |
+| `-Draft` | Creates as draft — open the release URL and click *Publish release* manually. Recommended for the first run. |
+| `-ReleaseNotes <path.md>` | Body of the release. Markdown rendered by GitHub. |
+| `-GenerateNotes` | Asks GitHub to auto-generate notes from the commit list since the previous tag. Layered on top of `-ReleaseNotes` if both are passed. |
+| `-SkipTagPush` | Skip the `git push` of the tag. Useful when the tag is already on the remote. |
+
+#### What TDs see
+
+The TD-facing direct download URL is stable:
+
+```
+https://github.com/<owner>/FreePair/releases/latest/download/FreePair-win-x64-Setup.exe
+```
+
+(GitHub redirects to whichever release is marked "latest" — pre-release
+and draft releases are skipped by `/latest`.)
+
+### Manual fallback (rare)
+
+If `gh` is unavailable, fall back to the GitHub web UI:
 
 1. **GitHub Releases** — tag `v<version>` and upload every file in
    `release\output\<version>\`. Mark as a pre-release for early
@@ -94,9 +163,12 @@ click **More info → Run anyway** until we ship Phase 3.
 
 Move the script into a GitHub Actions workflow triggered on `v*` tag
 pushes. Workflow does the same `dotnet test` → `dotnet publish` → `vpk
-pack` dance, then uploads via the `softprops/action-gh-release` action.
-Removes the "did I forget a step?" risk and lets non-developers cut
-releases by tagging.
+pack` → `gh release create` dance from inside the runner instead of
+the developer's machine. Removes the "did I forget a step?" risk and
+lets non-developers cut releases by tagging. The current
+`publish-github.ps1` is the basis — it works unchanged inside an
+Actions runner that has `gh` pre-installed; the only swap-out is
+authentication (`GITHUB_TOKEN` env var instead of `gh auth login`).
 
 ## Phase 3 — code signing (TL;DR Trusted Signing)
 
