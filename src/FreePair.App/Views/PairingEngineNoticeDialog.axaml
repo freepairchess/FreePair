@@ -1,0 +1,53 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="380"
+        x:Class="FreePair.App.Views.PairingEngineNoticeDialog"
+        Title="About FreePair pairings"
+        Width="540"
+        SizeToContent="Height"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+
+    <DockPanel Margin="20" LastChildFill="True">
+
+        <StackPanel DockPanel.Dock="Bottom" Spacing="10" Margin="0,12,0,0">
+            <CheckBox x:Name="DontShowAgainBox"
+                      Content="Don't show this again"
+                      IsChecked="True"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="I understand"
+                        Click="OnAcknowledge"
+                        MinWidth="160"
+                        IsDefault="True"
+                        Background="#0E5DAA"
+                        Foreground="White"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Spacing="10">
+            <TextBlock Text="A note about pairings"
+                       FontWeight="SemiBold"
+                       FontSize="16"/>
+
+            <TextBlock TextWrapping="Wrap">
+                <Run Text="FreePair drives all Swiss pairings through the"/>
+                <Run Text=" BBP Pairings " FontWeight="SemiBold"/>
+                <Run Text="engine — the FIDE Dutch System reference implementation. It is the only pairing engine FreePair supports."/>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+                <Run Text="Pairings are bit-for-bit FIDE-compliant for FIDE-rated events."/>
+                <LineBreak/>
+                <LineBreak/>
+                <Run Text="USCF events:" FontWeight="SemiBold"/>
+                <Run Text=" the resulting crosstable is accepted for rating submission, but the pairings themselves follow FIDE Rule C.04 (Dutch System), not USCF Rule 27. Most weekend Swisses pair identically; edge cases (color repeats, last-round prize protection) may differ from a strict-USCF tool such as SwissSys."/>
+            </TextBlock>
+
+            <TextBlock Foreground="Gray" FontSize="11" TextWrapping="Wrap"
+                       Text="You can read this note again any time from Settings → Pairing engine."/>
+        </StackPanel>
+    </DockPanel>
+</Window>

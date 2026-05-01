@@ -15,108 +15,110 @@
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False">
 
-    <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                  VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="20" Spacing="12">
+    <DockPanel Margin="20" LastChildFill="True">
 
-        <TextBlock Text="Renumber section starting boards"
-                   FontWeight="SemiBold"
-                   FontSize="14"/>
-
-        <TextBlock Text="Set each section's first physical board number. The Boards column shows the worst-case count this section needs (ceil(active players / 2)). Click 'Use recommended' to cascade — each section starts right after the previous ends. You can override any value: overlap is allowed (different rooms), and only flagged as a non-blocking warning."
-                   Foreground="Gray"
-                   FontSize="11"
-                   TextWrapping="Wrap"/>
-
-        <Border Background="#F6F6F6" BorderBrush="LightGray" BorderThickness="1" CornerRadius="4" Padding="12">
-            <StackPanel Spacing="6">
-                <Grid ColumnDefinitions="2*,80,80,140,120,*" Margin="0,0,0,4">
-                    <TextBlock Grid.Column="0" Text="Section"     FontWeight="SemiBold" Foreground="DimGray"/>
-                    <TextBlock Grid.Column="1" Text="Players"     FontWeight="SemiBold" Foreground="DimGray" HorizontalAlignment="Right" Margin="0,0,12,0"/>
-                    <TextBlock Grid.Column="2" Text="Boards"      FontWeight="SemiBold" Foreground="DimGray" HorizontalAlignment="Right" Margin="0,0,12,0"/>
-                    <TextBlock Grid.Column="3" Text="Starting #"  FontWeight="SemiBold" Foreground="DimGray"/>
-                    <TextBlock Grid.Column="4" Text="Range"       FontWeight="SemiBold" Foreground="DimGray"/>
-                    <TextBlock Grid.Column="5" Text="Conflict"    FontWeight="SemiBold" Foreground="DimGray"/>
-                </Grid>
-
-                <ItemsControl ItemsSource="{Binding Rows}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="vm:RenumberBoardRow">
-                            <Grid ColumnDefinitions="2*,80,80,140,120,*" Margin="0,3">
-                                <TextBlock Grid.Column="0"
-                                           Text="{Binding Name}"
-                                           VerticalAlignment="Center"/>
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding PlayerCount}"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Right"
-                                           Margin="0,0,12,0"
-                                           Foreground="Gray"/>
-                                <TextBlock Grid.Column="2"
-                                           Text="{Binding MaxBoards}"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Right"
-                                           Margin="0,0,12,0"
-                                           Foreground="Gray"/>
-                                <NumericUpDown Grid.Column="3"
-                                               Value="{Binding StartingBoard, Mode=TwoWay}"
-                                               Minimum="1" Maximum="9999" Increment="1"
-                                               FormatString="0"
-                                               ShowButtonSpinner="True"
-                                               HorizontalAlignment="Stretch"/>
-                                <TextBlock Grid.Column="4"
-                                           Text="{Binding BoardRangeText}"
-                                           VerticalAlignment="Center"
-                                           Foreground="Gray"
-                                           Margin="6,0,0,0"/>
-                                <StackPanel Grid.Column="5"
-                                            Orientation="Horizontal"
-                                            VerticalAlignment="Center"
-                                            IsVisible="{Binding HasConflict}">
-                                    <TextBlock Text="⚠"
-                                               Foreground="DarkOrange"
-                                               FontSize="14"
-                                               VerticalAlignment="Center"
-                                               Margin="0,0,6,0"/>
-                                    <TextBlock Text="{Binding ConflictMessage}"
-                                               Foreground="DarkOrange"
-                                               FontSize="11"
-                                               VerticalAlignment="Center"
-                                               TextWrapping="Wrap"/>
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-        </Border>
-
-        <TextBlock Text="{Binding ConflictSummary}"
-                   FontSize="11"
-                   TextWrapping="Wrap"
-                   Foreground="{Binding HasAnyConflict, Converter={StaticResource ConflictBrush}}"/>
-
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Spacing="8"
-                    Margin="0,8,0,0">
-            <Button Content="Use recommended"
-                    Command="{Binding UseRecommendedCommand}"
-                    MinWidth="160"
-                    ToolTip.Tip="Cascade each section's starting board so they stack with no overlap."/>
-            <Button Content="Cancel"
-                    Click="OnCancel"
-                    MinWidth="90"
-                    IsCancel="True"/>
-            <Button Content="Apply"
-                    Click="OnApply"
-                    MinWidth="100"
-                    IsDefault="True"
-                    Background="#0E5DAA"
-                    Foreground="White"/>
+        <StackPanel DockPanel.Dock="Top" Spacing="6" Margin="0,0,0,10">
+            <TextBlock Text="Renumber section starting boards"
+                       FontWeight="SemiBold"
+                       FontSize="14"/>
+            <TextBlock Text="Set each section's first physical board number. The Boards column shows the worst-case count this section needs (ceil(active players / 2)). Click 'Use recommended' to cascade — each section starts right after the previous ends. You can override any value: overlap is allowed (different rooms), and only flagged as a non-blocking warning."
+                       Foreground="Gray"
+                       FontSize="11"
+                       TextWrapping="Wrap"/>
         </StackPanel>
-    </StackPanel>
-    </ScrollViewer>
+
+        <StackPanel DockPanel.Dock="Bottom" Spacing="6" Margin="0,10,0,0">
+            <TextBlock Text="{Binding ConflictSummary}"
+                       FontSize="11"
+                       TextWrapping="Wrap"
+                       Foreground="{Binding HasAnyConflict, Converter={StaticResource ConflictBrush}}"/>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Spacing="8"
+                        Margin="0,4,0,0">
+                <Button Content="Use recommended"
+                        Command="{Binding UseRecommendedCommand}"
+                        MinWidth="160"
+                        ToolTip.Tip="Cascade each section's starting board so they stack with no overlap."/>
+                <Button Content="Cancel"
+                        Click="OnCancel"
+                        MinWidth="90"
+                        IsCancel="True"/>
+                <Button Content="Apply"
+                        Click="OnApply"
+                        MinWidth="100"
+                        IsDefault="True"
+                        Background="#0E5DAA"
+                        Foreground="White"/>
+            </StackPanel>
+        </StackPanel>
+
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
+            <Border Background="#F6F6F6" BorderBrush="LightGray" BorderThickness="1" CornerRadius="4" Padding="12">
+                <StackPanel Spacing="6">
+                    <Grid ColumnDefinitions="2*,80,80,140,120,*" Margin="0,0,0,4">
+                        <TextBlock Grid.Column="0" Text="Section"     FontWeight="SemiBold" Foreground="DimGray"/>
+                        <TextBlock Grid.Column="1" Text="Players"     FontWeight="SemiBold" Foreground="DimGray" HorizontalAlignment="Right" Margin="0,0,12,0"/>
+                        <TextBlock Grid.Column="2" Text="Boards"      FontWeight="SemiBold" Foreground="DimGray" HorizontalAlignment="Right" Margin="0,0,12,0"/>
+                        <TextBlock Grid.Column="3" Text="Starting #"  FontWeight="SemiBold" Foreground="DimGray"/>
+                        <TextBlock Grid.Column="4" Text="Range"       FontWeight="SemiBold" Foreground="DimGray"/>
+                        <TextBlock Grid.Column="5" Text="Conflict"    FontWeight="SemiBold" Foreground="DimGray"/>
+                    </Grid>
+
+                    <ItemsControl ItemsSource="{Binding Rows}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="vm:RenumberBoardRow">
+                                <Grid ColumnDefinitions="2*,80,80,140,120,*" Margin="0,3">
+                                    <TextBlock Grid.Column="0"
+                                               Text="{Binding Name}"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding PlayerCount}"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Right"
+                                               Margin="0,0,12,0"
+                                               Foreground="Gray"/>
+                                    <TextBlock Grid.Column="2"
+                                               Text="{Binding MaxBoards}"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Right"
+                                               Margin="0,0,12,0"
+                                               Foreground="Gray"/>
+                                    <NumericUpDown Grid.Column="3"
+                                                   Value="{Binding StartingBoard, Mode=TwoWay}"
+                                                   Minimum="1" Maximum="9999" Increment="1"
+                                                   FormatString="0"
+                                                   ShowButtonSpinner="True"
+                                                   HorizontalAlignment="Stretch"/>
+                                    <TextBlock Grid.Column="4"
+                                               Text="{Binding BoardRangeText}"
+                                               VerticalAlignment="Center"
+                                               Foreground="Gray"
+                                               Margin="6,0,0,0"/>
+                                    <StackPanel Grid.Column="5"
+                                                Orientation="Horizontal"
+                                                VerticalAlignment="Center"
+                                                IsVisible="{Binding HasConflict}">
+                                        <TextBlock Text="⚠"
+                                                   Foreground="DarkOrange"
+                                                   FontSize="14"
+                                                   VerticalAlignment="Center"
+                                                   Margin="0,0,6,0"/>
+                                        <TextBlock Text="{Binding ConflictMessage}"
+                                                   Foreground="DarkOrange"
+                                                   FontSize="11"
+                                                   VerticalAlignment="Center"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
+    </DockPanel>
 
     <Window.Resources>
         <vm:BoolToBrushConverter x:Key="ConflictBrush"
