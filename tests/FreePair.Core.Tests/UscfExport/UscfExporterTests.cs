@@ -68,6 +68,22 @@ public class UscfExporterTests
                 SendCrossTable: 'N', RatingSystem: 'R',
                 GrandPrix: 'N', FideRated: 'N')
         },
+        // MCC 2026-04 — multi-day month-long club event (Apr 1 → Apr 29),
+        // 2 sections (Open + U1700), Massachusetts affiliate. Different
+        // CTD / ATD pair from the Oregon samples, exercises a different
+        // affiliate id format (A6006924) and confirms multi-day events
+        // (different start / end dates) round-trip correctly through
+        // H_BEG_DATE / H_END_DATE.
+        {
+            "MCC_2026_04",
+            "MCC__2026_04.sjson",
+            new UscfExportOptions(
+                AffiliateId: "A6006924", City: "Framingham", State: "MA",
+                ZipCode: "01701", Country: "USA",
+                ChiefTdId: "10007763", AssistantTdId: "12584196",
+                SendCrossTable: 'N', RatingSystem: 'R',
+                GrandPrix: 'N', FideRated: 'N')
+        },
     };
 
     private static string FixturePath(string sampleFolder, string fileName) =>
