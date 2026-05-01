@@ -299,6 +299,17 @@ public partial class TournamentViewModel : ViewModelBase
     public Func<string, int, int, int, Task<int?>>? PromptStartingBoardAsync { get; set; }
 
     /// <summary>
+    /// Callback opened by the 🔢 Renumber boards toolbar button —
+    /// shows an interactive review dialog where the TD can edit
+    /// each section's starting board, see overlap warnings, and
+    /// confirm. Returns the populated VM on Apply (caller
+    /// extracts the chosen values via
+    /// <see cref="RenumberBoardsViewModel.SnapshotChosenStartingBoards"/>),
+    /// or <c>null</c> on Cancel.
+    /// </summary>
+    public Func<RenumberBoardsViewModel, Task<RenumberBoardsViewModel?>>? ShowRenumberBoardsDialogAsync { get; set; }
+
+    /// <summary>
     /// Callback used by destructive commands (e.g. Delete round) to prompt
     /// the user for confirmation. Returns <c>true</c> when the user confirms.
     /// Parameters: title, message, confirm-button label.
@@ -709,50 +720,67 @@ public partial class TournamentViewModel : ViewModelBase
     private async Task RenumberSectionBoardsAsync()
     {
         if (Tournament is null) return;
+        if (ShowRenumberBoardsDialogAsync is null)
+        {
+            // Headless / smoke-test fallback: behave like the legacy
+            // one-click button so we don't deadlock waiting for a
+            // dialog that'll never appear.
+            await ApplyRecommendedSilentAsync().ConfigureAwait(true);
+            return;
+        }
 
-        var recommended = BoardNumberRecommender.Recommend(Tournament);
-        if (recommended.Count == 0) return;
+        var dialogVm = new RenumberBoardsViewModel(Tournament);
+        if (dialogVm.Rows.Count == 0) return;
 
+        var result = await ShowRenumberBoardsDialogAsync(dialogVm).ConfigureAwait(true);
+        if (result is null) return; // cancelled
+
+        var chosen = result.SnapshotChosenStartingBoards();
         var t = Tournament;
         var changedNames = new System.Collections.Generic.List<string>();
-        foreach (var section in t.Sections)
+        foreach (var (name, value) in chosen)
         {
-            if (!recommended.TryGetValue(section.Name, out var rec)) continue;
-            if (section.FirstBoard == rec) continue;
-            t = TournamentMutations.SetSectionFirstBoard(t, section.Name, rec);
-            changedNames.Add($"{section.Name} → {rec}");
+            var section = t.Sections.FirstOrDefault(s => s.Name == name);
+            if (section is null) continue;
+            var newValue = value <= 1 ? (int?)null : value;
+            if (section.FirstBoard == newValue) continue;
+            t = TournamentMutations.SetSectionFirstBoard(t, name, newValue);
+            changedNames.Add($"{name} → {value}");
         }
 
         if (changedNames.Count == 0)
         {
-            // Status banner is too subtle when the user clicks a
-            // toolbar button and nothing visible changes — show a
-            // proper confirmation dialog.
-            SaveStatus = "Section starting boards already match the recommendation.";
-            if (PromptConfirmAsync is not null)
-            {
-                await PromptConfirmAsync(
-                    "Renumber section boards",
-                    "All sections are already at their recommended starting boards. " +
-                    "Nothing to change.\n\nRecommended values:\n" +
-                    string.Join("\n", recommended.Select(kv => $"  • {kv.Key} → {kv.Value}")),
-                    "OK").ConfigureAwait(true);
-            }
+            SaveStatus = "No changes — section starting boards already match those values.";
             return;
         }
 
         Tournament = t;
         try { await PersistCurrentTournamentAsync().ConfigureAwait(true); } catch { /* best-effort */ }
+        SaveStatus = $"Renumbered {changedNames.Count} section(s): {string.Join(", ", changedNames)}.";
+    }
 
-        var summary = $"Renumbered {changedNames.Count} section(s):\n" +
-                      string.Join("\n", changedNames.Select(s => $"  • {s}")) +
-                      "\n\nAlready-paired rounds keep their existing board numbers — " +
-                      "only future pairings use the new offset.";
-        SaveStatus = $"Renumbered: {string.Join(", ", changedNames)}.";
-
-        if (PromptConfirmAsync is not null)
+    /// <summary>
+    /// Headless fallback for the renumber flow when no dialog
+    /// callback is wired (designer / unit tests). Applies the
+    /// recommender's values directly.
+    /// </summary>
+    private async Task ApplyRecommendedSilentAsync()
+    {
+        if (Tournament is null) return;
+        var recommended = BoardNumberRecommender.Recommend(Tournament);
+        var t = Tournament;
+        var changed = false;
+        foreach (var section in t.Sections)
         {
-            await PromptConfirmAsync("Renumber section boards", summary, "OK").ConfigureAwait(true);
+            if (!recommended.TryGetValue(section.Name, out var rec)) continue;
+            if (section.FirstBoard == rec) continue;
+            t = TournamentMutations.SetSectionFirstBoard(t, section.Name, rec);
+            changed = true;
+        }
+        if (changed)
+        {
+            Tournament = t;
+            try { await PersistCurrentTournamentAsync().ConfigureAwait(true); } catch { }
         }
     }
 
