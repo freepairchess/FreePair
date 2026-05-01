@@ -65,19 +65,19 @@
                            VerticalAlignment="Center"
                            FontWeight="SemiBold"/>
                 <NumericUpDown x:Name="SwapBoardA"
-                               Minimum="1" Maximum="999"
+                               Minimum="1" Maximum="9999"
                                Value="1"
                                Increment="1"
                                FormatString="0"
-                               Width="80"/>
-                <TextBlock Text="↔" VerticalAlignment="Center"/>
+                               Width="120"/>
+                <TextBlock Text="↔" VerticalAlignment="Center" FontSize="14"/>
                 <NumericUpDown x:Name="SwapBoardB"
-                               Minimum="1" Maximum="999"
+                               Minimum="1" Maximum="9999"
                                Value="2"
                                Increment="1"
                                FormatString="0"
-                               Width="80"/>
-                <Button Content="Swap" Click="OnSwapBoards" MinWidth="60"/>
+                               Width="120"/>
+                <Button Content="Swap" Click="OnSwapBoards" MinWidth="70"/>
                 <TextBlock x:Name="SwapErrorText"
                            Foreground="DarkRed"
                            FontSize="11"
