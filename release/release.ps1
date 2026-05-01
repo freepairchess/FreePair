@@ -52,10 +52,26 @@
     Forwarded to publish-github.ps1: creates the GitHub release as a
     draft so you can review assets + notes before publishing.
 
+.PARAMETER GenerateNotes
+    Forwarded to publish-github.ps1: tells GitHub to auto-generate
+    release notes from the commit list since the previous tag.
+    Layered on top of -ReleaseNotes if both are passed; either alone
+    is fine.
+
+.PARAMETER SkipTagPush
+    Forwarded to publish-github.ps1: skip the `git push` of the tag.
+    Useful when the tag is already on the GitHub remote and you only
+    want to (re)create the release attached to it.
+
+.PARAMETER GitHubReleaseTitle
+    Forwarded to publish-github.ps1 as -Title. Defaults to
+    'FreePair v<Version>' if omitted.
+
 .EXAMPLE
     .\release\release.ps1 -Version 0.1.0
     .\release\release.ps1 -Version 0.2.0 -ReleaseNotes .\docs\release-notes\0.2.0.md
     .\release\release.ps1 -Version 0.3.0 -PublishGitHub -GitHubRepo myorg/FreePair -PreRelease -Draft
+    .\release\release.ps1 -Version 0.4.0 -PublishGitHub -GenerateNotes -PreRelease -Draft
 #>
 
 [CmdletBinding()]
@@ -66,8 +82,11 @@ param(
     [switch] $PublishGitHub,
     [string] $GitHubRepo,
     [string] $GitHubUser,
+    [string] $GitHubReleaseTitle,
     [switch] $PreRelease,
-    [switch] $Draft
+    [switch] $Draft,
+    [switch] $GenerateNotes,
+    [switch] $SkipTagPush
 )
 
 $ErrorActionPreference = "Stop"
@@ -182,11 +201,14 @@ if ($PublishGitHub)
     Write-Host "==> Handing off to publish-github.ps1 ..." -ForegroundColor Cyan
     $publishScript = Join-Path $PSScriptRoot "publish-github.ps1"
     $publishArgs = @{ Version = $Version }
-    if ($GitHubRepo)   { $publishArgs.Repo         = $GitHubRepo }
-    if ($GitHubUser)   { $publishArgs.ExpectedUser = $GitHubUser }
-    if ($ReleaseNotes) { $publishArgs.ReleaseNotes = $ReleaseNotes }
-    if ($PreRelease)   { $publishArgs.PreRelease   = $true }
-    if ($Draft)        { $publishArgs.Draft        = $true }
+    if ($GitHubRepo)         { $publishArgs.Repo          = $GitHubRepo }
+    if ($GitHubUser)         { $publishArgs.ExpectedUser  = $GitHubUser }
+    if ($ReleaseNotes)       { $publishArgs.ReleaseNotes  = $ReleaseNotes }
+    if ($GitHubReleaseTitle) { $publishArgs.Title         = $GitHubReleaseTitle }
+    if ($PreRelease)         { $publishArgs.PreRelease    = $true }
+    if ($Draft)              { $publishArgs.Draft         = $true }
+    if ($GenerateNotes)      { $publishArgs.GenerateNotes = $true }
+    if ($SkipTagPush)        { $publishArgs.SkipTagPush   = $true }
     & $publishScript @publishArgs
     if ($LASTEXITCODE -ne 0) { throw "GitHub publish step failed; build artefacts are still in $outputDir." }
     return
