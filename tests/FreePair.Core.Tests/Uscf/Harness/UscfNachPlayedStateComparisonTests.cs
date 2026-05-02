@@ -35,20 +35,38 @@ namespace FreePair.Core.Tests.Uscf.Harness;
 /// no team-tagging — most divergence is pure score-group / float /
 /// transposition algorithmic difference.</para>
 /// </remarks>
-public class UscfGreaterBostonOpenComparisonTests
+public class UscfNachPlayedStateComparisonTests
 {
     private readonly ITestOutputHelper _output;
 
-    public UscfGreaterBostonOpenComparisonTests(ITestOutputHelper output)
+    public UscfNachPlayedStateComparisonTests(ITestOutputHelper output)
     {
         _output = output;
     }
 
     [Fact]
-    public void Greater_Boston_Open_round_by_round_pair_set_comparison()
+    public void Greater_Boston_Open_90th_round_by_round_pair_set_comparison()
     {
-        var path = Path.Combine(TestPaths.RepoRoot,
-            "docs", "samples", "nach", "90th_Greater_Boston_Open.json");
+        RunComparison("90th_Greater_Boston_Open.json");
+    }
+
+    [Fact]
+    public void Massachusetts_Senior_Open_9th_round_by_round_pair_set_comparison()
+    {
+        RunComparison("9th_Massachusetts_Senior_Open.json");
+    }
+
+    /// <summary>
+    /// Loads a NACH-format played-state JSON file and walks every
+    /// section's rounds 2..N comparing actual SwissSys-produced pair
+    /// sets against <see cref="UscfPairer"/>'s output. Pure
+    /// informational dump — never fails. The diagnostic output is
+    /// written to the xunit test output channel so the IDE / CLI
+    /// surfaces it on demand.
+    /// </summary>
+    private void RunComparison(string nachFileName)
+    {
+        var path = Path.Combine(TestPaths.RepoRoot, "docs", "samples", "nach", nachFileName);
         if (!File.Exists(path))
         {
             _output.WriteLine($"(NACH-format played-state file not found at {path} — diagnostic is a no-op)");
@@ -104,7 +122,7 @@ public class UscfGreaterBostonOpenComparisonTests
             for (var round = 2; round <= roundsPlayed; round++)
             {
                 var (caseSeen, matched, actualCount, matchedCount) =
-                    CompareRound(sb, sectionName, players, round);
+                    CompareRound(sb, players, round, tournamentName, date);
                 if (caseSeen)
                 {
                     sectionTotalRounds++;
@@ -142,7 +160,7 @@ public class UscfGreaterBostonOpenComparisonTests
     /// R-1, and compares pair sets unordered (white/black agnostic).
     /// </summary>
     private static (bool caseSeen, bool matched, int actualCount, int matchedCount) CompareRound(
-        StringBuilder sb, string sectionName, IReadOnlyList<NachPlayer> players, int round)
+        StringBuilder sb, IReadOnlyList<NachPlayer> players, int round, string tournamentName, string date)
     {
         // Reconstruct actual pairings: a player at index i with ops[r] = j
         // means a game between (i+1, j) in round r+1. We canonicalise
@@ -208,7 +226,7 @@ public class UscfGreaterBostonOpenComparisonTests
         UscfPairingResult produced;
         try
         {
-            var trf = BuildTrfDoc(roster, endedRound: round - 1)
+            var trf = BuildTrfDoc(roster, endedRound: round - 1, tournamentName, date)
                 with { RequestedByes = requestedByes.Count == 0 ? null : requestedByes };
             produced = UscfPairer.Pair(trf);
         }
@@ -242,7 +260,9 @@ public class UscfGreaterBostonOpenComparisonTests
         return (true, matched, actualSet.Count, matchedPairs);
     }
 
-    private static TrfDocument BuildTrfDoc(IReadOnlyList<NachPlayer> roster, int endedRound)
+    private static TrfDocument BuildTrfDoc(
+        IReadOnlyList<NachPlayer> roster, int endedRound,
+        string tournamentName, string date)
     {
         var trfPlayers = roster
             .Select(p => new TrfPlayer(
@@ -252,14 +272,14 @@ public class UscfGreaterBostonOpenComparisonTests
                 Id: p.Id,
                 Points: ScoreThroughRound(p, endedRound),
                 Rounds: BuildRoundCells(p, endedRound),
-                Team: ""))    // 90th GBO has minimal team data; ignored here.
+                Team: ""))    // NACH tournaments in our corpus have minimal team data; ignored here.
             .ToList();
 
         return new TrfDocument(
-            TournamentName: "90th Greater Boston Open",
-            StartDate: "2025/10/26",
-            EndDate: "2025/10/26",
-            TotalRounds: 4,
+            TournamentName: tournamentName,
+            StartDate: date,
+            EndDate: date,
+            TotalRounds: Math.Max(roster.Max(p => p.Results.Count) + 1, 1),
             InitialColor: 'w',
             Players: trfPlayers);
     }
