@@ -319,11 +319,30 @@ public static class UscfPairer
 
         if (!TryFindNonRematchMatching(top, bot, assignment))
         {
-            // No non-rematch arrangement exists in this pool —
-            // commit the natural pairing as a least-bad fallback.
-            // Future work (P2-deeper-still) could try interchanges
-            // across half-boundaries (USCF 28L3) to escape this case.
-            for (var i = 0; i < half; i++) assignment[i] = bot[i];
+            // 28L3 cross-half interchange (P2-deeper-still): when no
+            // within-half non-rematch matching exists, USCF allows
+            // SWAPPING one player from the top half with one from
+            // the bottom half, then re-running the standard top-vs-
+            // bot pairing on the new halves. The smallest disturbance
+            // is interchanging the lowest-rated top with the highest-
+            // rated bot (i = half-1, j = 0); we widen from there.
+            //
+            // Concrete case: GBO 2025 Premier R4, score 1.5 group of 4
+            // players (#6, #10, #15, #18). Both SLIDE (6-15, 10-18)
+            // and FOLD (6-18, 10-15) have one rematch each. Only the
+            // cross-half (6-10, 15-18) is rematch-free, and SwissSys
+            // produced exactly that.
+            if (!TryCrossHalfInterchange(top, bot, assignment, out var newTop, out var newBot))
+            {
+                // No 28L3 solution either — commit the natural
+                // pairing as a least-bad fallback.
+                for (var i = 0; i < half; i++) assignment[i] = bot[i];
+            }
+            else
+            {
+                top = (List<TrfPlayer>)newTop;
+                bot = (List<TrfPlayer>)newBot;
+            }
         }
 
         for (var i = 0; i < half; i++)
@@ -337,6 +356,78 @@ public static class UscfPairer
         }
 
         return board;
+    }
+
+    /// <summary>
+    /// USCF 28L3 cross-half interchange. When the within-half
+    /// matcher (<see cref="TryFindNonRematchMatching"/>) returns
+    /// false because every bot[*] arrangement still produces a
+    /// rematch, swap ONE player from the top half with ONE player
+    /// from the bottom half and re-run the matcher on the new
+    /// halves. Iterates interchange candidates in order of
+    /// disturbance (smallest first — swap the lowest-rated top
+    /// with the highest-rated bot, i.e. <c>i == half-1 &amp;&amp; j == 0</c>),
+    /// returning the first interchange that yields a rematch-free
+    /// assignment.
+    /// </summary>
+    /// <param name="newTop">
+    /// New top half with the interchange applied, when the method
+    /// returns <c>true</c>. Same reference as <paramref name="top"/>
+    /// when it returns <c>false</c>.
+    /// </param>
+    /// <param name="newBot">Same convention for the bottom half.</param>
+    /// <returns>
+    /// <c>true</c> when a single interchange yielded a rematch-free
+    /// matching; <c>false</c> when every interchange still produced
+    /// at least one rematch. Multi-step interchanges (swap two from
+    /// each half, etc.) aren't attempted — they're rare in practice
+    /// and would warrant a deeper investigation if they ever showed
+    /// up in the corpus.
+    /// </returns>
+    private static bool TryCrossHalfInterchange(
+        IList<TrfPlayer> top, IList<TrfPlayer> bot,
+        TrfPlayer[] assignment,
+        out IList<TrfPlayer> newTop, out IList<TrfPlayer> newBot)
+    {
+        var n = top.Count;
+
+        // Disturbance metric: distance from the boundary swap
+        // (i == n-1, j == 0). Small disturbance = swap players
+        // closest to the rating boundary; large disturbance =
+        // swap players far from the boundary.
+        var candidates = new List<(int i, int j, int disturbance)>(n * n);
+        for (var i = 0; i < n; i++)
+        {
+            for (var j = 0; j < n; j++)
+            {
+                candidates.Add((i, j, (n - 1 - i) + j));
+            }
+        }
+        candidates.Sort((a, b) => a.disturbance.CompareTo(b.disturbance));
+
+        foreach (var (i, j, _) in candidates)
+        {
+            // Skip the no-op swap (only happens when n == 1, but
+            // covered defensively).
+            if (top[i].PairNumber == bot[j].PairNumber) continue;
+
+            // Apply the interchange to fresh lists so failed
+            // candidates don't pollute the next attempt.
+            var trialTop = top.ToList();
+            var trialBot = bot.ToList();
+            (trialTop[i], trialBot[j]) = (trialBot[j], trialTop[i]);
+
+            if (TryFindNonRematchMatching(trialTop, trialBot, assignment))
+            {
+                newTop = trialTop;
+                newBot = trialBot;
+                return true;
+            }
+        }
+
+        newTop = top;
+        newBot = bot;
+        return false;
     }
 
     /// <summary>
