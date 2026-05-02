@@ -1,5 +1,6 @@
 output/
 publish/
+github-staging/
 *.nupkg
 github-repo.txt
 github-user.txt

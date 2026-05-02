@@ -82,16 +82,19 @@
     .\release\publish-github.ps1 -Version 0.4.0 -ExpectedUser freepair-publisher
 
 .NOTES
-    The Azure DevOps origin remote is left untouched. We only push the
-    release tag to the github remote so the .sjson + Avalonia source
-    can stay primary on Azure DevOps while binaries ship via GitHub.
+    The Azure DevOps origin remote and your source-repo working tree
+    are NEVER touched by this script. Tags + commits live in a
+    separate gitignored staging clone at
+    release\github-staging\<owner>-<repo>\, which contains only a
+    minimal README + per-release Markdown notes — no FreePair source.
+    This is the deliberate two-repo model: source on Azure DevOps
+    (private), binaries on GitHub (public, releases-only).
 #>
 
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)] [string] $Version,
     [string] $Repo,
-    [string] $Remote,
     [string] $ReleaseNotes,
     [string] $Title,
     [string] $ExpectedUser,
@@ -244,34 +247,34 @@ if (-not (Test-Path $repoFile) -or ((Get-Content $repoFile -Raw).Trim() -ne $Rep
     Write-Host "    Cached '$Repo' in release\github-repo.txt"
 }
 
-# 4. Resolve the git remote we'll push the tag to ----------------------
-if (-not $Remote)
+# 4. Prepare the GitHub-staging clone ---------------------------------
+# Tags + commits live here, NOT in the source working tree. Keeps the
+# Azure DevOps source repo from leaking onto GitHub via reachable-
+# commit semantics of `git push <remote> <tag>`.
+$stagingRoot = Join-Path $repoRoot "release\github-staging"
+$stagingDir  = Join-Path $stagingRoot ($Repo -replace "/", "-")
+if (-not (Test-Path $stagingRoot)) { New-Item -ItemType Directory -Path $stagingRoot | Out-Null }
+
+if (-not (Test-Path (Join-Path $stagingDir ".git")))
 {
-    $hasGithub = & git -C $repoRoot remote 2>$null | Select-String -SimpleMatch "github"
-    $Remote = $hasGithub ? "github" : "origin"
+    Write-Host "==> Cloning $Repo into staging dir $stagingDir" -ForegroundColor Cyan
+    & git clone "https://github.com/$Repo.git" $stagingDir
+    if ($LASTEXITCODE -ne 0) { throw "git clone of $Repo failed." }
+}
+else
+{
+    Write-Host "    Staging clone exists at $stagingDir"
 }
 
-# Verify the remote points at the GitHub repo we just resolved.
-if (-not $SkipTagPush)
-{
-    $remoteUrl = & git -C $repoRoot remote get-url $Remote 2>$null
-    if (-not $remoteUrl)
-    {
-        Write-Error @"
-Git remote '$Remote' is not configured. Add it with:
-
-    git remote add $Remote https://github.com/$Repo.git
-
-Or pass -SkipTagPush if you've pushed the tag to GitHub through some
-other means.
-"@
-        exit 1
-    }
-    if ($remoteUrl -notmatch "github\.com[:/]$([regex]::Escape($Repo))(\.git)?$")
-    {
-        Write-Warning "Remote '$Remote' URL ($remoteUrl) doesn't obviously match $Repo. Continuing anyway."
-    }
-}
+# Fetch latest + reset to origin/main so we always tag against the
+# canonical GitHub state. Detect the default branch (main vs master)
+# from the remote HEAD; new gh-created repos default to 'main'.
+& git -C $stagingDir fetch origin --tags --prune 2>&1 | Out-Null
+$defaultBranch = (& git -C $stagingDir symbolic-ref refs/remotes/origin/HEAD 2>$null)
+if ($defaultBranch) { $defaultBranch = $defaultBranch -replace "^refs/remotes/origin/", "" }
+if (-not $defaultBranch) { $defaultBranch = "main" }
+& git -C $stagingDir checkout $defaultBranch 2>&1 | Out-Null
+& git -C $stagingDir reset --hard "origin/$defaultBranch" 2>&1 | Out-Null
 
 # 5. Pre-flight: artefacts exist ---------------------------------------
 if (-not (Test-Path $outputDir))
@@ -324,31 +327,64 @@ $assets | ForEach-Object {
     Write-Host ("    {0}   ({1} MB)" -f $_.Name, $sizeMB)
 }
 
-# 6. Tag the current commit (if needed) and push it --------------------
-$tagExistsLocal = (& git -C $repoRoot tag --list $tag) -ne $null -and (& git -C $repoRoot tag --list $tag) -ne ""
-if (-not $tagExistsLocal)
+# 6. Tag in the staging clone (NOT the source repo) and push ----------
+# A small per-release Markdown file lands on the GitHub repo's main
+# branch as part of the release commit; that becomes the public audit
+# trail of which versions were cut. The annotated tag points at THIS
+# commit, so even if the tag pushes everything reachable, the only
+# thing reachable is `release-notes\v<Version>.md` — never source.
+$notesDir  = Join-Path $stagingDir "release-notes"
+if (-not (Test-Path $notesDir)) { New-Item -ItemType Directory -Path $notesDir | Out-Null }
+$notesFile = Join-Path $notesDir "v$Version.md"
+
+$notesContent = "# FreePair v$Version`n`nReleased $(Get-Date -Format 'yyyy-MM-dd HH:mm') UTC$([Environment]::NewLine)" +
+                "`nBinaries attached to this release. See https://github.com/$Repo/releases/tag/$tag."
+if ($ReleaseNotes)
+{
+    $notesContent = (Get-Content $ReleaseNotes -Raw)
+}
+Set-Content -Path $notesFile -Value $notesContent -NoNewline
+
+& git -C $stagingDir add (Join-Path "release-notes" "v$Version.md") 2>&1 | Out-Null
+
+$status = & git -C $stagingDir status --porcelain
+if ($status)
 {
     Write-Host ""
-    Write-Host "==> Creating annotated tag $tag" -ForegroundColor Cyan
-    & git -C $repoRoot tag -a $tag -m "Release $tag"
-    if ($LASTEXITCODE -ne 0) { throw "git tag failed." }
+    Write-Host "==> Committing release marker for $tag in staging clone" -ForegroundColor Cyan
+    & git -C $stagingDir -c "user.name=FreePair Publisher" -c "user.email=publisher@freepairchess.invalid" `
+        commit -m "Release $tag" 2>&1 | Out-Host
+    if ($LASTEXITCODE -ne 0) { throw "git commit in staging dir failed." }
 }
 else
 {
-    Write-Host "    Tag $tag already exists locally."
+    Write-Host "    No release-notes change to commit (re-cut of existing version)."
+}
+
+$tagExistsLocal = -not [string]::IsNullOrWhiteSpace((& git -C $stagingDir tag --list $tag))
+if (-not $tagExistsLocal)
+{
+    Write-Host "==> Creating annotated tag $tag in staging clone" -ForegroundColor Cyan
+    & git -C $stagingDir tag -a $tag -m "Release $tag"
+    if ($LASTEXITCODE -ne 0) { throw "git tag in staging dir failed." }
+}
+else
+{
+    Write-Host "    Tag $tag already exists in staging clone."
 }
 
 if (-not $SkipTagPush)
 {
-    Write-Host "==> Pushing tag $tag to '$Remote'" -ForegroundColor Cyan
-    & git -C $repoRoot push $Remote $tag 2>&1 | Tee-Object -Variable pushOut | Out-Host
+    Write-Host "==> Pushing $defaultBranch + tag $tag to GitHub" -ForegroundColor Cyan
+    & git -C $stagingDir push origin $defaultBranch 2>&1 | Out-Host
+    if ($LASTEXITCODE -ne 0) { throw "git push of $defaultBranch (staging) failed." }
+
+    & git -C $stagingDir push origin $tag 2>&1 | Tee-Object -Variable pushOut | Out-Host
     if ($LASTEXITCODE -ne 0)
     {
-        # If the tag is already on the remote, gh release create still
-        # works against it — surface a friendlier message.
         if ($pushOut -match "already exists" -or $pushOut -match "rejected")
         {
-            Write-Warning "Tag $tag already on remote '$Remote'; continuing."
+            Write-Warning "Tag $tag already on origin (GitHub); continuing."
         }
         else
         {
