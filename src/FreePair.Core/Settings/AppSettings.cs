@@ -87,4 +87,34 @@ public class AppSettings
     /// option which simply leaves this flag at <c>false</c>.
     /// </summary>
     public bool HasAcknowledgedPairingEngineNotice { get; set; }
+
+    // ============ Auto-update ============
+
+    /// <summary>
+    /// When <c>true</c> (default), FreePair silently polls the
+    /// configured GitHub Releases feed on startup and surfaces a
+    /// banner in the main window when a newer version is available.
+    /// TDs uncomfortable with phone-home behaviour can flip this
+    /// off; the Help → Check for updates… menu item still works
+    /// on demand. The startup check is fire-and-forget — it never
+    /// blocks the UI even on a slow / offline network.
+    /// </summary>
+    public bool CheckForUpdatesOnStartup { get; set; } = true;
+
+    /// <summary>
+    /// Full GitHub repository URL hosting FreePair releases.
+    /// Defaults to the canonical publisher
+    /// (<c>https://github.com/freepairchess/FreePair</c>); forks
+    /// can override per-install by editing settings.json or via
+    /// the Settings UI. Used by Velopack's <c>GithubSource</c>.
+    /// </summary>
+    public string UpdateFeedRepoUrl { get; set; } = "https://github.com/freepairchess/FreePair";
+
+    /// <summary>
+    /// When <c>true</c>, the update check considers pre-release
+    /// GitHub releases. Off by default — stable-channel TDs
+    /// don't want to be pulled into preview builds. Beta testers
+    /// flip this on per-install.
+    /// </summary>
+    public bool UpdateIncludePreReleases { get; set; }
 }

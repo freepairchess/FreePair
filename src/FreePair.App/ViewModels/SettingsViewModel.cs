@@ -35,6 +35,28 @@ public partial class SettingsViewModel : ViewModelBase
     [ObservableProperty] private bool _autoPublishPairingsDefault;
     [ObservableProperty] private bool _autoPublishResultsDefault;
 
+    // ============ Auto-update ============
+
+    /// <summary>
+    /// Mirror of <see cref="AppSettings.CheckForUpdatesOnStartup"/>;
+    /// drives the "Check for updates on startup" checkbox in the
+    /// Settings view. Persisted to settings.json on Save.
+    /// </summary>
+    [ObservableProperty] private bool _checkForUpdatesOnStartup = true;
+
+    /// <summary>
+    /// Mirror of <see cref="AppSettings.UpdateFeedRepoUrl"/>; full
+    /// URL of the GitHub repo to poll for releases. Forks override.
+    /// </summary>
+    [ObservableProperty] private string _updateFeedRepoUrl = "https://github.com/freepairchess/FreePair";
+
+    /// <summary>
+    /// Mirror of <see cref="AppSettings.UpdateIncludePreReleases"/>;
+    /// when on, the update check considers pre-release tags. Off
+    /// by default — stable-channel TDs don't want preview builds.
+    /// </summary>
+    [ObservableProperty] private bool _updateIncludePreReleases;
+
     // ============ Tournament file layout ============
 
     /// <summary>
@@ -130,6 +152,9 @@ public partial class SettingsViewModel : ViewModelBase
             AutoPublishPairingsDefault = _settings.AutoPublishPairingsDefault;
             AutoPublishResultsDefault  = _settings.AutoPublishResultsDefault;
             TournamentsRootFolder      = _settings.TournamentsRootFolder;
+            CheckForUpdatesOnStartup   = _settings.CheckForUpdatesOnStartup;
+            UpdateFeedRepoUrl          = _settings.UpdateFeedRepoUrl;
+            UpdateIncludePreReleases   = _settings.UpdateIncludePreReleases;
         }
         finally
         {
@@ -226,6 +251,10 @@ public partial class SettingsViewModel : ViewModelBase
         _settings.AutoPublishResultsDefault  = AutoPublishResultsDefault;
         _settings.TournamentsRootFolder      = string.IsNullOrWhiteSpace(TournamentsRootFolder)
             ? null : TournamentsRootFolder!.Trim();
+        _settings.CheckForUpdatesOnStartup   = CheckForUpdatesOnStartup;
+        _settings.UpdateFeedRepoUrl          = string.IsNullOrWhiteSpace(UpdateFeedRepoUrl)
+            ? "https://github.com/freepairchess/FreePair" : UpdateFeedRepoUrl.Trim();
+        _settings.UpdateIncludePreReleases   = UpdateIncludePreReleases;
 
         try
         {

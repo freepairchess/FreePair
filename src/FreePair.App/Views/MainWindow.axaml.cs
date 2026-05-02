@@ -1,5 +1,6 @@
 using System;
 using Avalonia.Controls;
+using FreePair.App.Services;
 using FreePair.App.ViewModels;
 
 namespace FreePair.App.Views;
@@ -53,6 +54,21 @@ public partial class MainWindow : Window
         else
         {
             await vm.Tournament.InitializeAsync();
+        }
+
+        // Auto-update wiring: build the Velopack-backed service from
+        // the current settings, attach to the VM, and (when enabled)
+        // kick off a fire-and-forget startup check. The check runs on
+        // a worker thread; the VM marshals state changes back to the
+        // UI thread via Avalonia's dispatcher because the [RelayCommand]
+        // generator's Task continuation honours the captured context.
+        var updateService = new VelopackUpdateService(
+            githubRepoUrl:        vm.Settings.UpdateFeedRepoUrl,
+            includePreReleases:   vm.Settings.UpdateIncludePreReleases);
+        vm.AttachUpdateService(updateService);
+        if (vm.Settings.CheckForUpdatesOnStartup)
+        {
+            _ = vm.CheckForUpdatesAsync();
         }
     }
 }
