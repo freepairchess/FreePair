@@ -408,15 +408,58 @@ else
 }
 
 # 9. Print the public URL ---------------------------------------------
-$releaseUrl = & gh release view $tag --repo $Repo --json url --jq .url 2>$null
+# Drafts get a transient '/releases/tag/untagged-XXXX' URL — assets
+# sit at /releases/download/untagged-XXXX/FILE until the TD publishes
+# the draft. Both the release URL and asset URLs flip to /v<Version>/
+# only after `gh release edit --draft=false` runs. Tell the TD which
+# URLs are reachable RIGHT NOW vs after publishing the draft so they
+# don't paste a transient URL into NA Chess Hub or Discord.
+$releaseInfo = & gh release view $tag --repo $Repo --json url,isDraft,isPrerelease 2>$null `
+    | ConvertFrom-Json
+$isDraft      = $releaseInfo.isDraft
+$isPrerelease = $releaseInfo.isPrerelease
+$releaseUrl   = $releaseInfo.url
+
 Write-Host ""
 Write-Host "==> Done." -ForegroundColor Green
 Write-Host "    Release: $releaseUrl"
 Write-Host ""
-Write-Host "TD-facing direct download for the latest stable build:"
-Write-Host "    https://github.com/$Repo/releases/latest/download/FreePair-win-x64-Setup.exe"
-if ($Draft)
+
+if ($isDraft)
 {
+    Write-Host "Status: DRAFT (assets uploaded under a transient URL)." -ForegroundColor Yellow
+    Write-Host "        Neither the /v$Version/ nor the /latest/ URLs work yet."
     Write-Host ""
-    Write-Host "(Release was created as a DRAFT — open the URL above and click 'Publish release' when ready.)" -ForegroundColor Yellow
+    Write-Host "To publish the draft (binds assets to the v$Version tag):" -ForegroundColor Cyan
+    if ($isPrerelease)
+    {
+        Write-Host "    gh release edit $tag --repo $Repo --draft=false                    # keep as pre-release"
+        Write-Host "    gh release edit $tag --repo $Repo --draft=false --prerelease=false --latest    # promote to latest"
+    }
+    else
+    {
+        Write-Host "    gh release edit $tag --repo $Repo --draft=false --latest"
+    }
+    Write-Host ""
+    Write-Host "After publishing, the TD-facing URLs become:" -ForegroundColor Cyan
+    Write-Host "    https://github.com/$Repo/releases/download/$tag/FreePair-win-x64-Setup.exe   (always works)"
+    Write-Host "    https://github.com/$Repo/releases/latest/download/FreePair-win-x64-Setup.exe (only after --latest)"
+}
+elseif ($isPrerelease)
+{
+    Write-Host "Status: pre-release (kept out of /releases/latest/)." -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "TD-facing direct download (works now, version-pinned):" -ForegroundColor Cyan
+    Write-Host "    https://github.com/$Repo/releases/download/$tag/FreePair-win-x64-Setup.exe"
+    Write-Host ""
+    Write-Host "/releases/latest/ won't resolve until you flip the pre-release flag:" -ForegroundColor Cyan
+    Write-Host "    gh release edit $tag --repo $Repo --prerelease=false --latest"
+}
+else
+{
+    Write-Host "Status: published (and marked latest if --latest was set)." -ForegroundColor Green
+    Write-Host ""
+    Write-Host "TD-facing direct downloads:" -ForegroundColor Cyan
+    Write-Host "    https://github.com/$Repo/releases/latest/download/FreePair-win-x64-Setup.exe"
+    Write-Host "    https://github.com/$Repo/releases/download/$tag/FreePair-win-x64-Setup.exe (version-pinned)"
 }
