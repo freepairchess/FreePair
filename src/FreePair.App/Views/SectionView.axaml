@@ -577,13 +577,9 @@
                                       AutoGenerateColumns="False"
                                       HorizontalScrollBarVisibility="Auto">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Bd"       Binding="{Binding Board}"       SortMemberPath="Board"       Width="50"  IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="White #"  Binding="{Binding WhitePair}"   SortMemberPath="WhitePair"   Width="70"  IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="White"    Binding="{Binding WhiteName}"   SortMemberPath="WhiteName"   Width="*"   MinWidth="140" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="Rtg"      Binding="{Binding WhiteRating}" SortMemberPath="WhiteRating" Width="70"  IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="Black #"  Binding="{Binding BlackPair}"   SortMemberPath="BlackPair"   Width="70"  IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="Black"    Binding="{Binding BlackName}"   SortMemberPath="BlackName"   Width="*"   MinWidth="140" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="Rtg"      Binding="{Binding BlackRating}" SortMemberPath="BlackRating" Width="70"  IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Bd"     Binding="{Binding Board}"            SortMemberPath="Board"        Width="50"  IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Rtg"    Binding="{Binding WhiteRating}"      SortMemberPath="WhiteRating"  Width="60"  IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="White"  Binding="{Binding WhiteTitledName}"  SortMemberPath="WhiteName"    Width="*"   MinWidth="160" IsReadOnly="True"/>
                                     <!-- Result column: a ComboBox in the
                                          default cell template so one click
                                          drops it open. We previously kept
@@ -593,17 +589,25 @@
                                          double-click / F2 which turned out
                                          to be too discoverable-poor. If the
                                          NRE re-surfaces we'll handle it at
-                                         the VM rebuild path instead. -->
+                                         the VM rebuild path instead.
+                                         Background highlights upsets:
+                                         LightCoral when the lower-rated
+                                         player wins; LightGoldenrodYellow
+                                         when a >100-point spread draws. -->
                                     <DataGridTemplateColumn Header="Result" SortMemberPath="ResultText" Width="140" IsReadOnly="True">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate DataType="vm:PairingRow">
-                                                <ComboBox ItemsSource="{Binding AvailableResults}"
-                                                          SelectedItem="{Binding SelectedResult, Mode=TwoWay}"
-                                                          Margin="4,2" MinWidth="120"
-                                                          VerticalAlignment="Center"/>
+                                                <Border Background="{Binding ResultBackground}" Padding="2">
+                                                    <ComboBox ItemsSource="{Binding AvailableResults}"
+                                                              SelectedItem="{Binding SelectedResult, Mode=TwoWay}"
+                                                              Margin="4,2" MinWidth="120"
+                                                              VerticalAlignment="Center"/>
+                                                </Border>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Black"  Binding="{Binding BlackTitledName}"  SortMemberPath="BlackName"    Width="*"   MinWidth="160" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Rtg"    Binding="{Binding BlackRating}"      SortMemberPath="BlackRating"  Width="60"  IsReadOnly="True"/>
                                 </DataGrid.Columns>
                             </DataGrid>
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FreePair.Core.Formatting;
@@ -91,7 +92,9 @@ public partial class PairingRow : ObservableObject
         PairingResult initialResult,
         IScoreFormatter formatter,
         Action<PairingRow, PairingResult>? onResultChanged,
-        Action<PairingRow, int, ByeKind>? onConvertToBye = null)
+        Action<PairingRow, int, ByeKind>? onConvertToBye = null,
+        string? whiteTitle = null,
+        string? blackTitle = null)
     {
         ArgumentNullException.ThrowIfNull(formatter);
 
@@ -103,9 +106,11 @@ public partial class PairingRow : ObservableObject
         WhitePair = whitePair;
         WhiteName = whiteName;
         WhiteRating = whiteRating;
+        WhiteTitle = string.IsNullOrWhiteSpace(whiteTitle) ? null : whiteTitle.Trim();
         BlackPair = blackPair;
         BlackName = blackName;
         BlackRating = blackRating;
+        BlackTitle = string.IsNullOrWhiteSpace(blackTitle) ? null : blackTitle.Trim();
 
         AvailableResults = new[]
         {
@@ -123,17 +128,76 @@ public partial class PairingRow : ObservableObject
     public int WhitePair { get; }
     public string WhiteName { get; }
     public int WhiteRating { get; }
+    public string? WhiteTitle { get; }
     public int BlackPair { get; }
     public string BlackName { get; }
     public int BlackRating { get; }
+    public string? BlackTitle { get; }
+
+    /// <summary>
+    /// White's display name with optional title prefix (e.g.
+    /// <c>"GM Sun, Ryan"</c>). Falls back to bare name when the
+    /// player has no title set.
+    /// </summary>
+    public string WhiteTitledName =>
+        string.IsNullOrEmpty(WhiteTitle) ? WhiteName : $"{WhiteTitle} {WhiteName}";
+
+    /// <summary>Black's display name with optional title prefix.</summary>
+    public string BlackTitledName =>
+        string.IsNullOrEmpty(BlackTitle) ? BlackName : $"{BlackTitle} {BlackName}";
 
     public IReadOnlyList<PairingResultOption> AvailableResults { get; }
 
     public PairingResult Result => SelectedResult.Value;
 
+    /// <summary>
+    /// Background brush for the result cell, encoding game-result
+    /// upset semantics:
+    /// <list type="bullet">
+    ///   <item><b>LightCoral</b> — the lower-rated player won
+    ///         (rating spread is irrelevant; any lower-rating win
+    ///         is an upset).</item>
+    ///   <item><b>LightGoldenrodYellow</b> — drawn game where the
+    ///         lower-rated player is at least 100 points below
+    ///         their opponent (a "draw upset" — the favourite
+    ///         dropped half a point against a much weaker player).</item>
+    ///   <item><b>Transparent</b> — expected result, no highlight.</item>
+    /// </list>
+    /// <para>Unplayed games and bye-converted rows always render
+    /// transparent — there's no "upset" without a played result.
+    /// Unrated players (rating <c>0</c>) are excluded from upset
+    /// detection on either side: comparing against a 0 rating
+    /// would flag every unrated win as an upset, which is not
+    /// useful.</para>
+    /// </summary>
+    public IBrush ResultBackground
+    {
+        get
+        {
+            // Need both ratings non-zero for a meaningful comparison.
+            if (WhiteRating <= 0 || BlackRating <= 0)
+                return Brushes.Transparent;
+
+            switch (Result)
+            {
+                case PairingResult.WhiteWins:
+                    return WhiteRating < BlackRating ? Brushes.LightCoral : Brushes.Transparent;
+                case PairingResult.BlackWins:
+                    return BlackRating < WhiteRating ? Brushes.LightCoral : Brushes.Transparent;
+                case PairingResult.Draw:
+                    var spread = Math.Abs(WhiteRating - BlackRating);
+                    return spread > 100 ? Brushes.LightGoldenrodYellow : Brushes.Transparent;
+                default:
+                    return Brushes.Transparent;
+            }
+        }
+    }
+
     partial void OnSelectedResultChanged(PairingResultOption value)
     {
         ResultText = value.Text;
+        // Background depends on the result, so notify when it changes.
+        OnPropertyChanged(nameof(ResultBackground));
         if (!_suppressCallback)
         {
             _onResultChanged?.Invoke(this, value.Value);
@@ -991,7 +1055,9 @@ public partial class SectionViewModel : ViewModelBase
             initialResult: p.Result,
             formatter: Formatter,
             onResultChanged: (row, newResult) =>
-                ResultChanged?.Invoke(this, roundNumber, row, newResult));
+                ResultChanged?.Invoke(this, roundNumber, row, newResult),
+            whiteTitle: white?.Title,
+            blackTitle: black?.Title);
     }
 
     private ByeRow BuildByeRow(int round, ByeAssignment bye)

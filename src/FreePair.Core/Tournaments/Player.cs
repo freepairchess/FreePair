@@ -52,7 +52,18 @@ public sealed record Player(
     /// pairing (filtered from the active roster) and their history
     /// is stamped <see cref="RoundResult.ZeroPointBye"/>.
     /// </summary>
-    IReadOnlyList<int>? ZeroPointByeRounds = null)
+    IReadOnlyList<int>? ZeroPointByeRounds = null,
+    /// <summary>
+    /// Chess title — typically <c>"GM"</c>, <c>"IM"</c>, <c>"FM"</c>,
+    /// <c>"WGM"</c>, etc. for FIDE-titled players, or NM/SM/etc. for
+    /// USCF national titles. Sourced from SwissSys's
+    /// <c>"Player title"</c> field; <c>null</c> / blank for untitled
+    /// players. Used by the Pairings tab to prefix the player's
+    /// display name (e.g. "GM Sun, Ryan"). Round-trips via the raw
+    /// JSON pass-through writer (FreePair doesn't write the field
+    /// itself but preserves it from the source file).
+    /// </summary>
+    string? Title = null)
 {
     /// <summary>
     /// Sum of scoring results across <see cref="History"/> (1 per win / full
