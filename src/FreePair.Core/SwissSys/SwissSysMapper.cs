@@ -60,7 +60,8 @@ public static class SwissSysMapper
             LastPublishedAt:      ParseIsoTimestamp(raw.Overview?.FreePairLastPublishedAt),
 
             Delegations:    MapDelegations(raw.Overview?.Delegations),
-            UscfReportPrefs: MapUscfReportPrefs(raw.Overview));
+            UscfReportPrefs: MapUscfReportPrefs(raw.Overview),
+            PairingEngine:   raw.Overview?.FreePairPairingEngine);
     }
 
     private static System.Collections.Generic.IReadOnlyList<Delegation>? MapDelegations(
@@ -171,7 +172,8 @@ public static class SwissSysMapper
             Prizes: prizes,
             UseAcceleration: raw.Acceleration != 0,
             InitialColor: MapCoinToss(raw.CoinToss),
-            SoftDeleted: raw.FreePairSoftDeleted ?? false);
+            SoftDeleted: raw.FreePairSoftDeleted ?? false,
+            PairingEngine: raw.FreePairPairingEngine);
     }
 
     /// <summary>

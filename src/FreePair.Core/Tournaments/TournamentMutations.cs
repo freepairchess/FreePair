@@ -14,6 +14,71 @@ namespace FreePair.Core.Tournaments;
 public static class TournamentMutations
 {
     /// <summary>
+    /// Replaces the tournament-level pairing engine override. Pass
+    /// <c>null</c> to clear (effective engine then falls back to the
+    /// rating-type-derived default per
+    /// <see cref="PairingEngineDefaults.ForRatingType"/>).
+    /// </summary>
+    /// <exception cref="System.InvalidOperationException">
+    /// Thrown when any section already has at least one paired
+    /// round. Once SwissSys / FreePair has produced pairings using a
+    /// given engine, switching engines mid-event would compromise
+    /// USCF / FIDE rating-report reproducibility, so the lock is a
+    /// hard correctness boundary, not a soft warning.
+    /// </exception>
+    public static Tournament SetTournamentPairingEngine(
+        Tournament tournament,
+        FreePair.Core.Tournaments.Enums.PairingEngineKind? engine)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+
+        var pairedSections = tournament.Sections
+            .Where(s => !s.SoftDeleted && s.RoundsPaired > 0)
+            .Select(s => s.Name)
+            .ToArray();
+
+        if (pairedSections.Length > 0)
+        {
+            throw new System.InvalidOperationException(
+                "Cannot change the tournament-level pairing engine after a round has been paired. " +
+                $"Sections already paired: {string.Join(", ", pairedSections)}.");
+        }
+
+        return tournament with { PairingEngine = engine };
+    }
+
+    /// <summary>
+    /// Replaces the per-section pairing engine override. Pass
+    /// <c>null</c> to clear (the section then inherits from the
+    /// tournament-level override, which itself falls back to the
+    /// rating-type default).
+    /// </summary>
+    /// <exception cref="System.InvalidOperationException">
+    /// Thrown when the named section already has at least one
+    /// paired round. Same correctness rationale as
+    /// <see cref="SetTournamentPairingEngine"/>.
+    /// </exception>
+    public static Tournament SetSectionPairingEngine(
+        Tournament tournament,
+        string sectionName,
+        FreePair.Core.Tournaments.Enums.PairingEngineKind? engine)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        System.ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+        if (section.RoundsPaired > 0)
+        {
+            throw new System.InvalidOperationException(
+                $"Cannot change the pairing engine for section '{sectionName}' " +
+                $"after round 1 is paired (currently RoundsPaired = {section.RoundsPaired}).");
+        }
+
+        var updated = section with { PairingEngine = engine };
+        return ReplaceSection(tournament, sectionName, updated);
+    }
+
+    /// <summary>
     /// Replaces the per-tournament USCF report preferences in a
     /// single immutable step. Called by the export dialog after
     /// the TD confirms — the new prefs round-trip through

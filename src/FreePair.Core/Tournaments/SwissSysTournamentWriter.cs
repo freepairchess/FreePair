@@ -152,6 +152,21 @@ public class SwissSysTournamentWriter : ITournamentWriter
                 sectionNode.Remove("FreePair soft deleted");
             }
 
+            // FreePair-specific section pairing-engine override.
+            // Persisted as the enum's name ("Bbp" / "Uscf") so a
+            // reader skimming the .sjson can tell at a glance which
+            // engine paired the section. Null = inherit from
+            // tournament / rating-type default; we drop the key
+            // entirely in that case to keep the file lean.
+            if (section.PairingEngine is FreePair.Core.Tournaments.Enums.PairingEngineKind pe)
+            {
+                sectionNode["FreePair pairing engine"] = pe.ToString();
+            }
+            else
+            {
+                sectionNode.Remove("FreePair pairing engine");
+            }
+
             var playersArray = sectionNode["Players"]?.AsArray();
             if (playersArray is null)
             {
@@ -360,6 +375,20 @@ public class SwissSysTournamentWriter : ITournamentWriter
         if (t.AutoPublishResults  is bool apr)  overview["FreePair auto publish results"]  = apr;
         if (t.LastPublishedAt is System.DateTimeOffset lp)
             overview["FreePair last published at"] = lp.ToUniversalTime().ToString("o", System.Globalization.CultureInfo.InvariantCulture);
+
+        // Tournament-level pairing engine override. Same persistence
+        // shape as the per-section override (string name of the
+        // enum). Null means "use the rating-type-derived default";
+        // we drop the key entirely so a freshly-loaded tournament
+        // doesn't carry a stale value.
+        if (t.PairingEngine is FreePair.Core.Tournaments.Enums.PairingEngineKind tpe)
+        {
+            overview["FreePair pairing engine"] = tpe.ToString();
+        }
+        else
+        {
+            overview.Remove("FreePair pairing engine");
+        }
 
         // Per-tournament USCF report preferences (sticky across
         // export-dialog invocations). Each setter is gated on the

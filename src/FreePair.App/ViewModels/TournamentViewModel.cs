@@ -1865,9 +1865,20 @@ public partial class TournamentViewModel : ViewModelBase
             }
 
             var settings = await _settingsService.LoadAsync().ConfigureAwait(true);
-            var enginePath = settings.PairingEngineBinaryPath;
             var sectionSnapshot = section.Section;
             var tournamentSnapshot = Tournament;
+
+            // Pick the right binary for the section's effective pairing
+            // engine. FIDE-rated events default to BBP / FIDE Dutch;
+            // everything else defaults to FreePair's USCF engine. The
+            // TD can pin either tournament-wide (Tournament.PairingEngine)
+            // or per-section (Section.PairingEngine).
+            var effectiveEngine = FreePair.Core.Tournaments.PairingEngineDefaults
+                .Resolve(tournamentSnapshot, sectionSnapshot);
+            var enginePath = FreePair.Core.Bbp.BbpPairingEngine.ResolveEffectivePathFor(
+                effectiveEngine,
+                settings.PairingEngineBinaryPath,
+                settings.UscfEngineBinaryPath);
 
             // Round 1: ask the TD which colour the top seed should receive.
             // Later rounds: BBP derives colours from history.

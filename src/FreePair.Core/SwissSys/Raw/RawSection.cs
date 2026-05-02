@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using FreePair.Core.Tournaments.Enums;
 
 namespace FreePair.Core.SwissSys.Raw;
 
@@ -97,4 +98,14 @@ public sealed class RawSection
     /// </summary>
     [JsonPropertyName("FreePair soft deleted")]
     public bool? FreePairSoftDeleted { get; set; }
+
+    /// <summary>
+    /// Per-section pairing engine override. <c>null</c> means
+    /// "inherit from the tournament-level setting, which itself falls
+    /// back to the rating-type-derived default". Persisted as the
+    /// string form of <see cref="PairingEngineKind"/>.
+    /// </summary>
+    [JsonPropertyName("FreePair pairing engine")]
+    [JsonConverter(typeof(JsonStringEnumConverter<PairingEngineKind>))]
+    public PairingEngineKind? FreePairPairingEngine { get; set; }
 }

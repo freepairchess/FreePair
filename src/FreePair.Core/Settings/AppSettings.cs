@@ -11,6 +11,16 @@ public class AppSettings
     public string? PairingEngineBinaryPath { get; set; }
 
     /// <summary>
+    /// Absolute path to the FreePair USCF pairing engine binary
+    /// (<c>FreePair.UscfEngine.exe</c>). Optional — when blank,
+    /// <see cref="Bbp.BbpPairingEngine.ResolveEffectivePathFor"/> probes
+    /// for the bundled exe next to the FreePair install. Surfaced in
+    /// Settings alongside the BBP path so a TD running from a manual
+    /// build can point at a custom location.
+    /// </summary>
+    public string? UscfEngineBinaryPath { get; set; }
+
+    /// <summary>
     /// Absolute path to the most recently opened SwissSys <c>.sjson</c>
     /// tournament file. Used to auto-load on application startup.
     /// </summary>
