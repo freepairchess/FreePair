@@ -213,7 +213,7 @@ public class UscfMultiRoundHarnessTests
             // Players in section.Players who don't appear in this set were
             // absent for this round (withdrew / late entry / TD-excluded)
             // — they must NOT be in the pre-round-N TRF roster.
-            var actual = ExtractActuals(roundEntry);
+            var actual = ExtractActuals(roundEntry, section.FirstBoard ?? 1);
             var roundPool = new HashSet<int>();
             foreach (var p in actual.Pairings)
             {
@@ -448,10 +448,17 @@ public class UscfMultiRoundHarnessTests
         int? ByePair,
         IReadOnlyList<UscfRequestedBye> RequestedByes);
 
-    private static RoundActuals ExtractActuals(Round round)
+    private static RoundActuals ExtractActuals(Round round, int sectionFirstBoard)
     {
+        // Section.FirstBoard is the physical board offset for the
+        // section -- the same Pairing in TournamentMutations.AppendRound
+        // gets stamped with (engineBoard + FirstBoard - 1). To compare
+        // against the engine's 1-based output we strip the offset back
+        // off here so a section starting at board 62 compares as
+        // board 1 / 2 / 3 just like the engine emits.
+        var offset = sectionFirstBoard - 1;
         var pairings = round.Pairings
-            .Select(p => new UscfPairing(p.WhitePair, p.BlackPair, p.Board))
+            .Select(p => new UscfPairing(p.WhitePair, p.BlackPair, p.Board - offset))
             .ToArray();
         var bye = round.Byes.FirstOrDefault(b => b.Kind == ByeKind.Full);
 
