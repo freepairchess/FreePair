@@ -74,9 +74,9 @@ public class UscfMultiRoundHarnessTests
     /// the bad numbers) and upward (for matches) when the engine
     /// improves.
     /// </summary>
-    private const int MinExpectedMatches         = 19;
-    private const int MaxExpectedHardMismatches  = 382;
-    private const int MaxExpectedColorOnlyDiffs  = 11;
+    private const int MinExpectedMatches         = 25;
+    private const int MaxExpectedHardMismatches  = 373;
+    private const int MaxExpectedColorOnlyDiffs  = 14;
 
     private readonly ITestOutputHelper _output;
 

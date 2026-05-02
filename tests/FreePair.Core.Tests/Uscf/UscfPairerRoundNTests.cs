@@ -52,20 +52,22 @@ public class UscfPairerRoundNTests
     [Fact]
     public void Odd_score_group_floats_lowest_rated_down_to_next_group()
     {
-        // 6 players. After R1: pairs 1, 2, 3 have 1.0 (winners);
-        // pairs 4, 5, 6 have 0.0 (losers). Both groups are odd (3+3),
-        // so the lowest-rated of the 1.0 group (pair 3) floats down to
-        // the 0.0 group, and pair 6 (lowest of 0.0) also can't pair → bye?
+        // 6 players. After R1: pairs 1, 3, 4 have 1.0 (winners + a bye);
+        // pairs 2, 5, 6 have 0.0 (losers + an unpaired). Both groups are
+        // odd (3+3), so the lowest-rated of the 1.0 group (pair 4) floats
+        // down to the 0.0 group.
         //
         // Walk-through:
-        //   1.0 group: [1, 2, 3]. Odd, drop pair 3 to floatDown.
-        //              Remaining [1, 2] → pair (1 vs 2).
-        //   0.0 group: pool = [3, 4, 5, 6]. 3 has higher score (1.0 from
-        //              the float-down), then 4/5/6 (all 0.0). Sorted:
-        //              [3 (score 1.0), 4 (0.0, rating 1700), 5 (0.0, 1600),
-        //               6 (0.0, 1500)]. Even, pair top-vs-bottom:
-        //              3 vs 5, 4 vs 6.
-        // No bye.
+        //   1.0 group: [1 (R2200), 3 (R2000), 4 (R1700)]. Odd, drop pair
+        //              4 to floatDown. Remaining [1, 3] → pair (1 vs 3).
+        //   0.0 group: pool = [4 (floater), 2 (R2100), 5 (R1600), 6 (R1500)].
+        //              Even after the float-down. Natural top-vs-bottom:
+        //              top half [4, 2], bottom half [5, 6] →
+        //              natural pairing (4 vs 5), (2 vs 6).
+        //              BUT: pair 4 won vs pair 5 in R1 — that's a rematch.
+        //              P2 transposition swaps bot[0]=5 with bot[1]=6 →
+        //              (4 vs 6), (2 vs 5). Neither pair is a rematch.
+        //   No bye.
         var doc = MakeDocWithHistory(
             new RoundCellSpec(PairNumber: 1, Rating: 2200, Cells: [Cell(2, 'w', '1')]),
             new RoundCellSpec(PairNumber: 2, Rating: 2100, Cells: [Cell(1, 'b', '0')]),
@@ -73,19 +75,6 @@ public class UscfPairerRoundNTests
             new RoundCellSpec(PairNumber: 4, Rating: 1700, Cells: [Cell(5, 'w', '1')]),
             new RoundCellSpec(PairNumber: 5, Rating: 1600, Cells: [Cell(4, 'b', '0')]),
             new RoundCellSpec(PairNumber: 6, Rating: 1500, Cells: [Cell(0, '-', '-')])); // R1 unpaired
-
-        // Adjust scores to make it interesting:
-        //   pair 1 (1.0), pair 2 (0.0), pair 3 (1.0 from bye),
-        //   pair 4 (1.0 from win), pair 5 (0.0), pair 6 (0.0)
-        // → score groups: 1.0 = {1, 3, 4}, 0.0 = {2, 5, 6}
-        // 1.0 group: [1 (R2200), 3 (R2000), 4 (R1700)] → odd, drop pair 4.
-        //   Remaining [1, 3] → pair (1 vs 3).
-        // 0.0 group: pool = [4, 2, 5, 6]. 4 has score 1.0, others 0.0.
-        //   Sorted by score desc → [4 (1.0), 2 (0.0, R2100), 5 (0.0, R1600), 6 (0.0, R1500)]
-        //   Wait — but my code only sorts within score group. The float-down
-        //   is concatenated at the front. Pool layout:
-        //   [4 (the floater)] + [2, 5, 6 (sorted by rating in 0.0 group)]
-        //   = [4, 2, 5, 6]. Even, pair top-vs-bottom: 4 vs 5, 2 vs 6.
 
         var result = UscfPairer.Pair(doc);
 
@@ -96,9 +85,10 @@ public class UscfPairerRoundNTests
             .Select(p => (Math.Min(p.WhitePair, p.BlackPair), Math.Max(p.WhitePair, p.BlackPair)))
             .ToHashSet();
 
-        Assert.Contains((1, 3), pairs);
-        Assert.Contains((4, 5), pairs);
-        Assert.Contains((2, 6), pairs);
+        Assert.Contains((1, 3), pairs);   // 1.0 group, no rematch issue
+        Assert.Contains((4, 6), pairs);   // transposed (was 4-5 naturally, but rematch)
+        Assert.Contains((2, 5), pairs);   // transposed counterpart
+        Assert.DoesNotContain((4, 5), pairs);  // would have been a rematch
     }
 
     [Fact]
@@ -160,6 +150,116 @@ public class UscfPairerRoundNTests
         var p = result.Pairings[0];
         Assert.Equal(2, p.WhitePair);
         Assert.Equal(1, p.BlackPair);
+    }
+
+    [Fact]
+    public void Single_swap_transposition_avoids_a_rematch_in_score_group()
+    {
+        // 4 players in the same 1.0 score group, all won R1. The natural
+        // top-half-vs-bottom-half pairing for R2 would put pair 1 vs
+        // pair 3, but they already played in R1 — so we transpose pair 3
+        // with pair 4 in the bottom half:
+        //   natural:  (1 vs 3), (2 vs 4)  ← (1, 3) is a rematch
+        //   after L1: (1 vs 4), (2 vs 3)
+        //
+        // History setup (all 1.0 score):
+        //   pair 1: R1 win vs pair 3 (W)
+        //   pair 2: R1 win vs pair 4 (W)
+        //   pair 3: R1 loss vs pair 1 (B)  -- still in 1.0 group? No, 0.0.
+        //
+        // Re-spec so all four end up in the same score group: pair 1+2
+        // each won by full-point bye, pair 3+4 each won by full-point bye.
+        // That puts all four in the 1.0 group with no prior interactions —
+        // not what we want.
+        //
+        // Re-spec with mixed history that still produces a same-score
+        // group: pair 1 won vs pair 3, pair 2 won vs pair 4 (R1) — that
+        // gives pair 1+2 score 1.0 and pair 3+4 score 0.0. To force pair 1
+        // to face pair 3 again, we need them in the same score group.
+        //
+        // Cleanest construction: 4 players, R1 was bye-everyone (so all
+        // have 1.0 from full-point bye), but stamp pair 1's history with
+        // an explicit "played pair 3" record. That's contrived but tests
+        // the swap logic.
+        var doc = MakeDocWithHistory(
+            // pair 1 has the meta history: played pair 3 in R0, R1 was a bye
+            new RoundCellSpec(PairNumber: 1, Rating: 2000,
+                Cells: [Cell(3, 'w', '1'), Cell(0, '-', 'U')]),
+            new RoundCellSpec(PairNumber: 2, Rating: 1900,
+                Cells: [Cell(4, 'w', '1'), Cell(0, '-', 'U')]),
+            new RoundCellSpec(PairNumber: 3, Rating: 1800,
+                Cells: [Cell(1, 'b', '0'), Cell(0, '-', 'U')]),
+            new RoundCellSpec(PairNumber: 4, Rating: 1700,
+                Cells: [Cell(2, 'b', '0'), Cell(0, '-', 'U')]));
+
+        // Scores after the constructed history:
+        //   pair 1: 1 (win) + 1 (bye) = 2.0
+        //   pair 2: 1 (win) + 1 (bye) = 2.0
+        //   pair 3: 0 (loss) + 1 (bye) = 1.0
+        //   pair 4: 0 (loss) + 1 (bye) = 1.0
+        // 2.0 group: [1, 2] → pair (1 vs 2). They've never played.
+        // 1.0 group: [3, 4] → pair (3 vs 4). They've never played.
+        //
+        // No transposition triggered here. Skip this case and use a
+        // 4-player single-group construction instead:
+
+        doc = MakeDocWithHistory(
+            new RoundCellSpec(PairNumber: 1, Rating: 2000,
+                Cells: [Cell(3, 'w', '1')]),                 // played 3
+            new RoundCellSpec(PairNumber: 2, Rating: 1900,
+                Cells: [Cell(4, 'w', '1')]),                 // played 4
+            new RoundCellSpec(PairNumber: 3, Rating: 1800,
+                Cells: [Cell(1, 'b', '0')]),                 // played 1
+            new RoundCellSpec(PairNumber: 4, Rating: 1700,
+                Cells: [Cell(2, 'b', '0')]));                // played 2
+        // Scores: 1+2 have 1.0, 3+4 have 0.0.
+        // 1.0 group natural pairing: (1 vs 2). They haven't played → no swap.
+        // 0.0 group natural pairing: (3 vs 4). They haven't played → no swap.
+        var result1 = UscfPairer.Pair(doc);
+        Assert.Equal(2, result1.Pairings.Count);
+        var pairs1 = result1.Pairings
+            .Select(p => (Math.Min(p.WhitePair, p.BlackPair), Math.Max(p.WhitePair, p.BlackPair)))
+            .ToHashSet();
+        Assert.Contains((1, 2), pairs1);
+        Assert.Contains((3, 4), pairs1);
+
+        // Now construct a case where a transposition IS needed.
+        // Round 1: 1 played 2 (W), 3 played 4 (W). All draws.
+        // Round 2: all four players have score 0.5 (same score group).
+        //   Natural top-half-vs-bottom-half: top half [1, 2] (rating
+        //   sort), bottom half [3, 4]. Pair (1 vs 3), (2 vs 4) — wait,
+        //   but the natural pairing within a group sorted by rating is
+        //   seed[i] vs seed[i+half], so for [1, 2, 3, 4]: (1 vs 3),
+        //   (2 vs 4). Neither is a rematch with R1's (1-2, 3-4) results,
+        //   so no swap triggered.
+        //
+        // Better: round 1 was 1v3 and 2v4 (both draws → all 0.5). Then
+        // round 2 natural is (1 vs 3) again — rematch! Swap to
+        // (1 vs 4), (2 vs 3).
+        var doc2 = MakeDocWithHistory(
+            new RoundCellSpec(PairNumber: 1, Rating: 2000,
+                Cells: [Cell(3, 'w', '=')]),  // drew with 3
+            new RoundCellSpec(PairNumber: 2, Rating: 1900,
+                Cells: [Cell(4, 'w', '=')]),  // drew with 4
+            new RoundCellSpec(PairNumber: 3, Rating: 1800,
+                Cells: [Cell(1, 'b', '=')]),  // drew with 1
+            new RoundCellSpec(PairNumber: 4, Rating: 1700,
+                Cells: [Cell(2, 'b', '=')])); // drew with 2
+
+        // All four have 0.5 — single score group.
+        // Natural R2 pairing within [1, 2, 3, 4]: (1 vs 3), (2 vs 4).
+        //   (1 vs 3) is a rematch. Swap bot[0] (=3) with bot[1] (=4):
+        //   the transposition gives (1 vs 4), (2 vs 3) — neither has
+        //   played each other. Transposition succeeds.
+        var result2 = UscfPairer.Pair(doc2);
+        Assert.Equal(2, result2.Pairings.Count);
+        var pairs2 = result2.Pairings
+            .Select(p => (Math.Min(p.WhitePair, p.BlackPair), Math.Max(p.WhitePair, p.BlackPair)))
+            .ToHashSet();
+
+        Assert.Contains((1, 4), pairs2);  // transposed
+        Assert.Contains((2, 3), pairs2);  // transposed
+        Assert.DoesNotContain((1, 3), pairs2);  // would be a rematch
     }
 
     // --------------------------------------------------------- helpers

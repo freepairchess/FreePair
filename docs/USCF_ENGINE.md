@@ -41,7 +41,7 @@ app keeps working.
 |---|---|---|
 | **P0** | Project skeleton, `TrfReader`, `BbpFormatWriter`, **round-1 pairing** (USCF 28C top-half-vs-bottom-half by rating, alternating colours starting from `XXC`). | ✅ |
 | **P1** | **Round 2+: score-group pairing** (USCF 28D / 28L). Score groups (highest first), top-half-vs-bottom-half within each group, lowest-rated of odd groups floats down to the next group, last-group leftover gets the round's bye. Simple "fewer whites gets white" colour rule as a P3 placeholder. | ✅ |
-| P2 | Repeat-pairing avoidance via transpositions inside score groups (USCF 28L1–L3). | TODO |
+| **P2** | **Repeat-pairing avoidance** via single-swap transpositions (USCF 28L1). When the natural top-half-vs-bottom-half pairing inside a score group would force a rematch, swap `bot[i]` with the closest `bot[j]` (j > i) where neither resulting pair is a rematch. Deeper transpositions / interchanges (28L2-L3) are P2-future. | ✅ |
 | P3 | Colour allocation per USCF 29D (absolute / strong / mild preference); cross-score-group drop-downs. | TODO |
 | P4 | Half-point bye / withdrawal / forced-pairing parity with `BbpPairingEngine`. | TODO |
 | **P5a** | **Round-1 verification harness**: replays round 1 of every USCF-rated `.sjson` under `docs/samples/swisssys/uscf/`, compares against SwissSys actuals. Pinned to baseline counts (matched ≥ N, hard-fail ≤ M); fails on regression in either direction. | ✅ |
@@ -79,20 +79,21 @@ synthesises a `TrfDocument` for every (section, round) where the round
 was actually played and round ≥ 2, then runs `UscfPairer.Pair` against
 it. Same pinned-counts contract as P5a.
 
-Current baseline (immediately after P1 landed):
+Current baseline (after P2 — single-swap transpositions):
 
-| Outcome | Count | Meaning |
+| Outcome | Count | Δ from P1 baseline |
 |---|---|---|
-| ✓ matched | **19** | Pairings + bye + colours all agree with SwissSys, purely from naive top-half-vs-bottom-half within score groups (no transpositions, no 29D). |
-| ◐ colour-only diff | **11** | Matching is correct; colour allocation differs. P3 (29D) work. |
-| ✗ mismatch | **382** | Pair-set disagrees, almost always because SwissSys transposed within a score group to avoid pairing two players who already met. P2 (transpositions) will reduce this. |
-| ⤬ unimplemented | 0 | Was 412 before P1; the engine no longer throws for round 2+. |
-| ⤼ section / round skip | 235 | Single-round / not-yet-started events + pre-flagged byes. |
-| ! error | 0 | No unexpected exceptions. |
+| ✓ matched | **25** | +6 (transpositions fixed cases that were rematches) |
+| ◐ colour-only diff | **14** | +3 (cases where transposition produced the right matching but colour was already off) |
+| ✗ mismatch | **373** | -9 (each fixed by a single bot[i]↔bot[j] swap) |
+| ⤬ unimplemented | 0 | — |
+| ⤼ section / round skip | 235 | — |
+| ! error | 0 | — |
 
-Each P2 / P3 / P4 commit can ratchet the pinned counts in the good
-direction (matches up, mismatches down) and the harness will hold the
-new floor as a regression net.
+Net: **+9 cases now have correct matching** (matched + colour-only).
+The remaining 373 hard mismatches need either deeper transpositions
+(28L2-L3 — multi-swap, interchanges across half-boundaries) or colour-
+balance-aware swap selection. Both are P2-future / P3 work.
 
 ## CLI compatibility cheat-sheet
 

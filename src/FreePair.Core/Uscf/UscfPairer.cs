@@ -7,7 +7,8 @@ namespace FreePair.Core.Uscf;
 
 /// <summary>
 /// FreePair's USCF Swiss pairing engine. Implements rounds 1 and 2+
-/// at the matching-correctness level.
+/// at the matching-correctness level, with USCF 28L1-style transposition-
+/// based repeat-pairing avoidance.
 /// </summary>
 /// <remarks>
 /// <para><b>Round 1 algorithm (USCF 28C):</b></para>
@@ -38,6 +39,11 @@ namespace FreePair.Core.Uscf;
 ///   <item>Within each balanced score-group pool, pair top half against
 ///         bottom half (seed[i] vs seed[i + half]) — same matching shape
 ///         as round 1.</item>
+///   <item>USCF 28L1: when a natural pairing would force a rematch,
+///         attempt a single transposition within the bottom half — swap
+///         bot[i] with the closest bot[j] (j &gt; i) such that neither
+///         resulting pair is a rematch. Prefer the smallest j (least
+///         disturbance from natural rating order).</item>
 ///   <item>If the lowest-score group ends up with one unpairable player,
 ///         that player gets the round's full-point bye.</item>
 ///   <item>Colour allocation (placeholder for P3): give white to whichever
@@ -45,15 +51,14 @@ namespace FreePair.Core.Uscf;
 ///         higher seed the opposite of their last colour.</item>
 /// </list>
 ///
-/// <para><b>Not yet modelled (P2 / P3 / P4):</b></para>
+/// <para><b>Not yet modelled (P2-future / P3 / P4):</b></para>
 /// <list type="bullet">
-///   <item>Repeat-pairing avoidance via transpositions (USCF 28L1–L3) —
-///         today the engine will happily pair two players who already
-///         met if the simple top-half-vs-bottom-half rule schedules them.
-///         The harness surfaces this as a hard mismatch when SwissSys
-///         transposed to avoid it.</item>
+///   <item>USCF 28L2-L3 deeper transpositions (multiple swaps,
+///         interchanges across half-boundaries) and the colour-balance
+///         constraints that govern which transposition is preferred when
+///         several would resolve a rematch.</item>
 ///   <item>Full USCF 29D colour preference resolution
-///         (absolute / strong / mild) — P1 uses a simplified
+///         (absolute / strong / mild) — current code uses a simplified
 ///         fewer-whites-gets-white tiebreaker.</item>
 ///   <item>Pre-flagged half-point byes / withdrawals embedded in the TRF
 ///         (those players must be filtered out by the caller before
@@ -215,9 +220,11 @@ public static class UscfPairer
 
     /// <summary>
     /// Pairs an even-sized score-group pool top-half-vs-bottom-half,
-    /// appending the resulting <see cref="UscfPairing"/>s to <paramref name="pairings"/>
-    /// and returning the next board number to use. If the pool is odd,
-    /// the trailing element is left unpaired (caller's responsibility to
+    /// applying USCF 28L1-style transpositions on the bottom half when
+    /// the natural pairing would force a rematch. Appends the resulting
+    /// <see cref="UscfPairing"/>s to <paramref name="pairings"/> and
+    /// returns the next board number to use. If the pool is odd, the
+    /// trailing element is left unpaired (caller's responsibility to
     /// either float it down or assign as bye).
     /// </summary>
     private static int PairPool(IList<TrfPlayer> pool, int startBoard, List<UscfPairing> pairings)
@@ -226,17 +233,57 @@ public static class UscfPairer
         var half = pairableCount / 2;
         var board = startBoard;
 
+        // Take the top and bottom halves. We mutate `bot` in place to
+        // resolve rematches via single-swap transpositions (USCF 28L1
+        // calls these "transpositions of the bottom half").
+        var top = pool.Take(half).ToList();
+        var bot = pool.Skip(half).Take(half).ToList();
+
         for (var i = 0; i < half; i++)
         {
-            var top = pool[i];
-            var bottom = pool[i + half];
-            var topGetsWhite = TopGetsWhite(top, bottom);
-            var (white, black) = topGetsWhite ? (top, bottom) : (bottom, top);
+            // If the natural pair (top[i], bot[i]) is a rematch, try to
+            // swap bot[i] with some bot[j] (j > i) such that:
+            //   - top[i] hasn't played the new bot[i]
+            //   - top[j] hasn't played the displaced bot[j] (was bot[i])
+            // Prefer the smallest j (closest to natural rating order).
+            // If no such j exists, keep the natural pairing — at least
+            // it's a USCF-shaped pair, even if it's a rematch the engine
+            // can't avoid with a simple single swap (P2-future: deeper
+            // backtracking / interchanges per 28L2-L3).
+            if (HasPlayed(top[i], bot[i]))
+            {
+                for (var j = i + 1; j < half; j++)
+                {
+                    if (!HasPlayed(top[i], bot[j]) && !HasPlayed(top[j], bot[i]))
+                    {
+                        (bot[i], bot[j]) = (bot[j], bot[i]);
+                        break;
+                    }
+                }
+            }
+
+            var topPlayer = top[i];
+            var bottomPlayer = bot[i];
+            var topGetsWhite = TopGetsWhite(topPlayer, bottomPlayer);
+            var (white, black) = topGetsWhite ? (topPlayer, bottomPlayer) : (bottomPlayer, topPlayer);
             pairings.Add(new UscfPairing(white.PairNumber, black.PairNumber, Board: board));
             board++;
         }
 
         return board;
+    }
+
+    /// <summary>
+    /// True when <paramref name="a"/>'s round history shows a game
+    /// against <paramref name="b"/>. Byes / unpaired cells are ignored.
+    /// </summary>
+    private static bool HasPlayed(TrfPlayer a, TrfPlayer b)
+    {
+        foreach (var cell in a.Rounds)
+        {
+            if (cell.Opponent == b.PairNumber) return true;
+        }
+        return false;
     }
 
     private static decimal ComputeScore(TrfPlayer p)
