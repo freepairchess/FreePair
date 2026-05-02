@@ -87,7 +87,68 @@ public static class TrfReader
         }
 
         var resolvedRounds = totalRounds ?? InferRoundsFromPlayers(players);
-        return new TrfDocument(name, startDate, endDate, resolvedRounds, initialColor, players);
+        var requestedByes  = ExtractRequestedByes(players);
+        return new TrfDocument(
+            name, startDate, endDate, resolvedRounds, initialColor, players,
+            RequestedByes: requestedByes.Count == 0 ? null : requestedByes);
+    }
+
+    /// <summary>
+    /// Pulls upcoming-round half-point bye markers out of the parsed
+    /// player history. The wrapper / writer convention is:
+    /// <list type="bullet">
+    ///   <item>Past rounds with an H cell are already-honoured byes
+    ///         and stay in the player's history; we ignore them.</item>
+    ///   <item>The cell at index <c>playedRounds</c> (0-based) — i.e.
+    ///         the FIRST cell past the last actually-played round —
+    ///         encodes a TD-pre-flagged half-point bye for the round
+    ///         being paired. Players with that cell get added to the
+    ///         document's <c>RequestedByes</c> dict so
+    ///         <see cref="UscfPairer"/> filters them out of the
+    ///         pairing pool.</item>
+    /// </list>
+    /// <para>Zero-point byes don't appear in the TRF at all (the
+    /// writer filters those players out entirely), so this method
+    /// only emits 'H' entries.</para>
+    /// </summary>
+    private static Dictionary<int, char> ExtractRequestedByes(IReadOnlyList<TrfPlayer> players)
+    {
+        // playedRounds = the maximum index + 1 across all players where
+        // any cell records a real game (Opponent > 0). Anything past
+        // that index in any player's row is "future" — and the only
+        // future cell content the writer ever emits is the upcoming
+        // half-point bye marker.
+        var playedRounds = 0;
+        foreach (var p in players)
+        {
+            for (var i = 0; i < p.Rounds.Count; i++)
+            {
+                if (p.Rounds[i].Opponent > 0)
+                {
+                    if (i + 1 > playedRounds) playedRounds = i + 1;
+                }
+            }
+        }
+
+        var requested = new Dictionary<int, char>();
+        foreach (var p in players)
+        {
+            if (playedRounds >= p.Rounds.Count) continue;
+            var cell = p.Rounds[playedRounds];
+            if (cell.Opponent != 0) continue;
+            // Result codes for TD-pre-flagged byes: 'H' = half-point,
+            // 'Z' = zero-point (rarely emitted by the writer but
+            // honour it if present).
+            if (cell.Result == 'H')
+            {
+                requested[p.PairNumber] = 'H';
+            }
+            else if (cell.Result == 'Z')
+            {
+                requested[p.PairNumber] = 'Z';
+            }
+        }
+        return requested;
     }
 
     private static string ValueAfterTag(string line) =>

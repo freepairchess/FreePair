@@ -133,4 +133,100 @@ public class TrfReaderTests
         Assert.Equal(0, player.Rating);
         Assert.Empty(player.Rounds);
     }
+
+    [Fact]
+    public void Parse_extracts_upcoming_round_half_point_bye_into_RequestedByes()
+    {
+        // Four-player section, round 1 paired 1v2 and 3v4 (so
+        // playedRounds = 1). Player 3 has a pre-flagged half-point
+        // bye for the upcoming round 2 (cell at index 1 is "0000 - H").
+        // The other three played round 1 normally and have no
+        // upcoming-round cell, so they're absent from RequestedByes.
+        var p1 = MakePlayerLine(pair: 1, name: "Alpha", rating: 2000, points: 1m,
+            new[] { Cell(opp: 2, color: 'w', result: '1') });
+        var p2 = MakePlayerLine(pair: 2, name: "Beta",  rating: 1900, points: 0m,
+            new[] { Cell(opp: 1, color: 'b', result: '0') });
+        var p3 = MakePlayerLine(pair: 3, name: "Gamma", rating: 1800, points: 1.5m,
+            new[]
+            {
+                Cell(opp: 4, color: 'w', result: '1'),  // round 1: actual game
+                Cell(opp: 0, color: '-', result: 'H'),  // round 2: pre-flagged half-bye
+            });
+        var p4 = MakePlayerLine(pair: 4, name: "Delta", rating: 1700, points: 0m,
+            new[] { Cell(opp: 3, color: 'b', result: '0') });
+
+        var trf = $"XXR 5\n{p1}\n{p2}\n{p3}\n{p4}\n";
+
+        var doc = TrfReader.Parse(trf);
+
+        Assert.NotNull(doc.RequestedByes);
+        Assert.Single(doc.RequestedByes!);
+        Assert.Equal('H', doc.RequestedByes![3]);
+        // Players 1, 2, 4 are NOT in the dict — none has an upcoming-
+        // round H cell.
+        Assert.False(doc.RequestedByes!.ContainsKey(1));
+        Assert.False(doc.RequestedByes!.ContainsKey(2));
+        Assert.False(doc.RequestedByes!.ContainsKey(4));
+    }
+
+    [Fact]
+    public void Parse_ignores_past_round_half_point_byes()
+    {
+        // Two players: player 1 played player 2 in round 2 (so
+        // playedRounds = 2). Player 1 has a past H cell at round 1
+        // (already-honoured bye, not an upcoming request).
+        var p1 = MakePlayerLine(pair: 1, name: "Alpha", rating: 2000, points: 1.5m,
+            new[]
+            {
+                Cell(opp: 0, color: '-', result: 'H'),  // round 1: PAST half-bye
+                Cell(opp: 2, color: 'w', result: '1'),  // round 2: actual game
+            });
+        var p2 = MakePlayerLine(pair: 2, name: "Beta",  rating: 1900, points: 0m,
+            new[]
+            {
+                Cell(opp: 0, color: '-', result: '-'),  // round 1: didn't play
+                Cell(opp: 1, color: 'b', result: '0'),  // round 2: actual game
+            });
+
+        var trf = $"XXR 5\n{p1}\n{p2}\n";
+
+        var doc = TrfReader.Parse(trf);
+
+        Assert.Null(doc.RequestedByes);
+    }
+
+    /// <summary>
+    /// Render a TRF 001-line with the FIDE column layout TrfWriter
+    /// emits. Pads each round cell to the canonical 10-char width.
+    /// </summary>
+    private static string MakePlayerLine(
+        int pair, string name, int rating, decimal points, IReadOnlyList<string> roundCells)
+    {
+        // Layout: cols 1-3 "001", 5-8 pair, 15-47 name, 49-52 rating,
+        // 81-84 points, 91+ rounds.
+        var sb = new System.Text.StringBuilder(new string(' ', 90));
+        sb[0] = '0'; sb[1] = '0'; sb[2] = '1';
+        var pairStr = pair.ToString().PadLeft(4);
+        for (var i = 0; i < 4; i++) sb[4 + i] = pairStr[i];
+        var nameStr = name.PadRight(33).Substring(0, 33);
+        for (var i = 0; i < 33; i++) sb[14 + i] = nameStr[i];
+        var ratingStr = rating.ToString().PadLeft(4);
+        for (var i = 0; i < 4; i++) sb[48 + i] = ratingStr[i];
+        var pointsStr = points.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture).PadLeft(4);
+        for (var i = 0; i < 4; i++) sb[80 + i] = pointsStr[i];
+
+        var line = sb.ToString();
+        foreach (var cell in roundCells) line += cell;
+        return line;
+    }
+
+    /// <summary>
+    /// Render a single round cell in the FIDE 10-char layout: " OOOO C R "
+    /// (1 space, 4-digit opponent, 1 space, colour, 1 space, result, 1 space).
+    /// </summary>
+    private static string Cell(int opp, char color, char result)
+    {
+        var oppStr = opp == 0 ? "    " : opp.ToString().PadLeft(4);
+        return $" {oppStr} {color} {result} ";
+    }
 }
