@@ -37,6 +37,30 @@ namespace FreePair.Core.Tests.Uscf.Harness;
 /// </remarks>
 public class UscfNachPlayedStateComparisonTests
 {
+    /// <summary>
+    /// Pinned baselines captured after the post-cleanup NACH corpus
+    /// landed (56 tournaments, RR / norm / pre-event noise removed).
+    /// The aggregate test fails when either:
+    /// <list type="bullet">
+    ///   <item><c>matchedRounds</c> drops below
+    ///         <see cref="MinExpectedMatchedRounds"/> — a previously-
+    ///         matching round/section started failing;</item>
+    ///   <item><c>matchedPairs</c> drops below
+    ///         <see cref="MinExpectedMatchedPairs"/> — same diagnosis
+    ///         at the individual-pair granularity.</item>
+    /// </list>
+    /// <para>NACH is the user's preferred truth source over the older
+    /// .sjson corpus because it captures every played round verbatim
+    /// (each player's <c>ops</c> / <c>colors</c> / <c>results</c>
+    /// arrays are direct from the SwissSys publishing export, with no
+    /// schema lossiness). Any algorithmic engine change that improves
+    /// either count above the baseline can ratchet these constants
+    /// upward in the same commit; a regression that drops either
+    /// below the baseline fails the test.</para>
+    /// </summary>
+    private const int MinExpectedMatchedRounds = 61;
+    private const int MinExpectedMatchedPairs  = 2269;
+
     private readonly ITestOutputHelper _output;
 
     public UscfNachPlayedStateComparisonTests(ITestOutputHelper output)
@@ -47,12 +71,10 @@ public class UscfNachPlayedStateComparisonTests
     /// <summary>
     /// Aggregate sweep across the entire NACH played-state corpus.
     /// Walks every <c>docs/samples/nach/*.json</c>, runs the engine on
-    /// every section's rounds 2..N, and prints a per-tournament + grand-
-    /// total summary table to the test output. Purely informational —
-    /// never fails. The aggregate gives a single number to track as
-    /// the engine improves; the per-tournament rows surface which
-    /// tournaments / sections drag the average down so the next
-    /// algorithmic investigation can target them.
+    /// every section's rounds 2..N, prints a per-tournament + grand-
+    /// total summary table to the test output, and asserts the
+    /// matched-rounds / matched-pairs counts haven't regressed below
+    /// the pinned baselines.
     /// </summary>
     [Fact]
     public void All_NACH_tournaments_aggregate_pair_set_comparison()
@@ -105,8 +127,31 @@ public class UscfNachPlayedStateComparisonTests
         sb.AppendLine(new string('-', 100));
         sb.AppendLine($"  {"TOTALS",-56}  {matchedRounds,4} / {totalRounds,4}    {matchedPairs,4} / {totalPairs,4}   {Pct(matchedPairs, totalPairs),5}");
         if (loadFailures > 0) sb.AppendLine($"  load failures: {loadFailures}");
+        sb.AppendLine();
+        sb.AppendLine($"baselines: matched rounds ≥ {MinExpectedMatchedRounds}, matched pairs ≥ {MinExpectedMatchedPairs}");
 
         _output.WriteLine(sb.ToString());
+
+        // Pinned regression guard. Improvements ratchet these
+        // constants upward in the same commit; regressions fail the
+        // test so a future engine change that drops the corpus match
+        // rate below baseline is caught immediately.
+        var problems = new List<string>();
+        if (matchedRounds < MinExpectedMatchedRounds)
+        {
+            problems.Add($"matched-rounds regressed: {matchedRounds} < expected ≥ {MinExpectedMatchedRounds}");
+        }
+        if (matchedPairs < MinExpectedMatchedPairs)
+        {
+            problems.Add($"matched-pairs regressed: {matchedPairs} < expected ≥ {MinExpectedMatchedPairs}");
+        }
+        if (problems.Count > 0)
+        {
+            throw new Xunit.Sdk.XunitException(
+                "NACH aggregate regression(s):" + Environment.NewLine +
+                "  - " + string.Join(Environment.NewLine + "  - ", problems) +
+                Environment.NewLine + "(see test output for the full per-tournament breakdown)");
+        }
     }
 
     /// <summary>Detailed per-round dump for a specific tournament.</summary>
