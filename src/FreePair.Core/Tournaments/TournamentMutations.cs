@@ -1459,17 +1459,35 @@ public static class TournamentMutations
     }
 
     /// <summary>
-    /// Adds a new player to the section. The pair number is assigned
-    /// as <c>max(existing) + 1</c> (gaps from hard-deleted players
-    /// are not filled). If the section already has paired rounds,
-    /// the new player's <see cref="Player.History"/> is back-filled
-    /// one entry per past round according to
-    /// <paramref name="byesForPastRounds"/>: any paired round not in
-    /// the dictionary defaults to <see cref="ByeKind.Unpaired"/>
-    /// (zero-point bye). Each past round's
-    /// <see cref="Round.Byes"/> gains a matching
-    /// <see cref="ByeAssignment"/> so standings, wall chart, and the
-    /// Byes tab all reflect the new player's presence retroactively.
+    /// Adds a new player to the section. Pair-number assignment depends
+    /// on whether any rounds have been paired:
+    /// <list type="bullet">
+    ///   <item><b>Pre-round-1 (<c>RoundsPaired == 0</c>)</b>: the new
+    ///         player slots into the rating-correct position and the
+    ///         entire section's pair numbers are re-issued 1..N by
+    ///         rating descending. This keeps the seeding correct so the
+    ///         engine's round-1 pairings reflect the actual rating
+    ///         order — adding a mid-rated late entry no longer parks
+    ///         them at the bottom of the seeding when they belong in
+    ///         the middle. Stable tiebreak (existing pair-number ASC)
+    ///         preserves the relative order of equal-rated players.</item>
+    ///   <item><b>Mid-tournament (<c>RoundsPaired &gt;= 1</c>)</b>: pair
+    ///         number assigned as <c>max(existing) + 1</c> (gaps from
+    ///         hard-deleted players are not filled). Renumbering after
+    ///         a paired round would break every <see cref="Pairing.WhitePair"/>
+    ///         / <see cref="Pairing.BlackPair"/> / <see cref="ByeAssignment.PlayerPair"/>
+    ///         / <see cref="RoundResult.Opponent"/> reference baked
+    ///         into past rounds, so the late-entry pair number stays
+    ///         at the end and the player's <see cref="Player.History"/>
+    ///         is back-filled one entry per past round according to
+    ///         <paramref name="byesForPastRounds"/>: any paired round
+    ///         not in the dictionary defaults to
+    ///         <see cref="ByeKind.Unpaired"/> (zero-point bye). Each
+    ///         past round's <see cref="Round.Byes"/> gains a matching
+    ///         <see cref="ByeAssignment"/> so standings, wall chart,
+    ///         and the Byes tab all reflect the new player's presence
+    ///         retroactively.</item>
+    /// </list>
     /// </summary>
     public static Tournament AddPlayer(
         Tournament tournament,
@@ -1531,12 +1549,30 @@ public static class TournamentMutations
             ZeroPointByeRounds: null);
 
         // Insert player at the end of the section's roster.
-        var newPlayers = section.Players.Append(newPlayer).ToArray();
+        Player[] newPlayers = section.Players.Append(newPlayer).ToArray();
+
+        // Pre-round-1 re-rank: re-issue pair numbers 1..N by rating
+        // descending so the late-entry sits in the correct seeding
+        // slot. Stable tiebreak on the existing pair number preserves
+        // the relative order of equal-rated players (the new player
+        // gets nextPair = max+1 above, so among ties they sort to
+        // the end — matching the "later entries break ties last"
+        // convention SwissSys uses).
+        if (section.RoundsPaired == 0)
+        {
+            newPlayers = newPlayers
+                .OrderByDescending(p => p.Rating)
+                .ThenBy(p => p.PairNumber)
+                .Select((p, i) => p with { PairNumber = i + 1 })
+                .ToArray();
+        }
 
         // Back-fill each paired round's Byes list with a matching
         // assignment so the bye surfaces on the Byes tab and is
         // persisted correctly (Round.Byes is the source of truth for
         // "what happened this round" independent of player history).
+        // Skipped when no rounds are paired -- section.Rounds is
+        // empty in that case so the .Select below produces nothing.
         var newRounds = section.Rounds
             .Select(round =>
             {

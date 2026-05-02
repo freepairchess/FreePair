@@ -25,11 +25,16 @@ public class AddPlayerTests
     }
 
     [Fact]
-    public async Task AddPlayer_pre_round_one_assigns_next_pair_and_empty_history()
+    public async Task AddPlayer_pre_round_one_slots_into_rating_correct_pair_number()
     {
+        // Late Alice rating 1500 sits between fixture pair #7 Saripalli
+        // (rt 1541) and pair #8 Rahul (rt 1483), so post-add she should
+        // BE the new pair #8 with everyone from #8 onwards bumping
+        // down by one slot. Pair #1-#7 stay put because their ratings
+        // are higher.
         var t = await LoadAsync();
         var name = t.Sections[0].Name;
-        var expectedPair = t.Sections[0].Players.Max(p => p.PairNumber) + 1;
+        var preCount = t.Sections[0].Players.Count;
 
         t = TournamentMutations.AddPlayer(
             t, name,
@@ -40,10 +45,51 @@ public class AddPlayerTests
             membershipExpiration: null,
             club: null, state: null, team: null, email: null, phone: null);
 
-        var p = t.Sections.First(s => s.Name == name).Players.Last();
-        Assert.Equal(expectedPair, p.PairNumber);
-        Assert.Equal("Late Alice", p.Name);
-        Assert.Empty(p.History);
+        var section = t.Sections.First(s => s.Name == name);
+        Assert.Equal(preCount + 1, section.Players.Count);
+
+        var alice = section.Players.Single(p => p.Name == "Late Alice");
+        Assert.Equal(8, alice.PairNumber);
+        Assert.Empty(alice.History);
+
+        // Pair numbers are now monotonic by rating descending and
+        // dense (1..N with no gaps).
+        var orderedByPair = section.Players.OrderBy(p => p.PairNumber).ToList();
+        for (var i = 0; i < orderedByPair.Count; i++)
+        {
+            Assert.Equal(i + 1, orderedByPair[i].PairNumber);
+        }
+        for (var i = 1; i < orderedByPair.Count; i++)
+        {
+            Assert.True(
+                orderedByPair[i - 1].Rating >= orderedByPair[i].Rating,
+                $"pair #{orderedByPair[i - 1].PairNumber} (rt {orderedByPair[i - 1].Rating}) " +
+                $"should outrank pair #{orderedByPair[i].PairNumber} (rt {orderedByPair[i].Rating})");
+        }
+    }
+
+    [Fact]
+    public async Task AddPlayer_pre_round_one_with_top_rating_takes_pair_one()
+    {
+        // Late Top rating 9999 should end up at pair #1, pushing the
+        // rest down. Original pair #1 becomes pair #2.
+        var t = await LoadAsync();
+        var name = t.Sections[0].Name;
+        var originalTopName = t.Sections[0].Players.OrderByDescending(p => p.Rating).First().Name;
+
+        t = TournamentMutations.AddPlayer(
+            t, name,
+            name: "Late Top", uscfId: null, rating: 9999,
+            secondaryRating: null, membershipExpiration: null,
+            club: null, state: null, team: null, email: null, phone: null);
+
+        var section = t.Sections.First(s => s.Name == name);
+        var top = section.Players.Single(p => p.PairNumber == 1);
+        Assert.Equal("Late Top", top.Name);
+        Assert.Equal(9999, top.Rating);
+
+        var oldTop = section.Players.Single(p => p.Name == originalTopName);
+        Assert.Equal(2, oldTop.PairNumber);
     }
 
     [Fact]
@@ -134,8 +180,10 @@ public class AddPlayerTests
             var t2 = SwissSysMapper.Map(raw2);
             var sec = t2.Sections.First(s => s.Name == name);
             Assert.Equal(before + 1, sec.Players.Count);
-            var p = sec.Players.Last();
-            Assert.Equal("New Entrant", p.Name);
+            // Pre-round-1 re-rank: find by name, not by ".Last()" --
+            // with rating 1234 the new entrant slots somewhere in the
+            // middle of the rating-sorted roster, not at the bottom.
+            var p = sec.Players.Single(pl => pl.Name == "New Entrant");
             Assert.Equal("99999999", p.UscfId);
             Assert.Equal(1234, p.Rating);
             Assert.Equal(1100, p.SecondaryRating);
