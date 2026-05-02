@@ -1,0 +1,3071 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.6,
+    "Tournament title": "Puddletown Chess Golden Autumn II Chess Tournament",
+    "Tournament time controls": "G/45;d5",
+    "Starting date": "2025-10-18",
+    "Ending date": "2025-10-18",
+    "NACH event ID": "dceb5fbd-7ba7-4028-9e99-86c601f8d486",
+    "NACH passcode": "19d52ccd-cc32-4e8c-b63a-2a919ab9414a",
+    "Trace": "1.3.7.3.3.3.7.1.3.7."
+  },
+  "Sections": [
+    {
+      "Section name": "Open I",
+      "Type": 0,
+      "Section title": "Open I",
+      "Section time control": "G/45;d5",
+      "Number of players": 26,
+      "Number of teams": 1,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 2,
+      "Need search options": false,
+      "Lower rating limit": 900,
+      "Final round": 3,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 13,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Pedram, Mehrdad",
+          "ID": "12536681",
+          "Rating": 1900,
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 \u0026 2; Game pnts",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "Club": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Maokhampio, Lucas",
+          "ID": "31368597",
+          "Rating": 1897,
+          "Club": "OR",
+          "Team": "Maokhampio",
+          "Current result": "\u00BD",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Ball, Larry V",
+          "ID": "10504864",
+          "Rating": 1800,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Dollinger, Eli Joseph",
+          "ID": "31309624",
+          "Rating": 1750,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Kayser, Elliott Charles",
+          "ID": "31809225",
+          "Rating": 1526,
+          "Club": "OR",
+          "Current result": "\u00BD",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Zhao, Raymond",
+          "ID": "31956702",
+          "Rating": 1513,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Shukla, Weg",
+          "ID": "30853222",
+          "Rating": 1500,
+          "Club": "OR",
+          "Current result": "\u00BD",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Wise, Ezra",
+          "ID": "30681842",
+          "Rating": 1485,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Saripalli, Prahlada",
+          "ID": "30709775",
+          "Rating": 1434,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Rahul, Rihaan",
+          "ID": "31619668",
+          "Rating": 1421,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Kesavan, Vihaan",
+          "ID": "31471845",
+          "Rating": 1419,
+          "Club": "OR",
+          "Team": "KESA",
+          "Current result": "\u00BD",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Randall, Dylan",
+          "ID": "31475872",
+          "Rating": 1360,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Maokhampio, Olivia",
+          "ID": "31368540",
+          "Rating": 1337,
+          "Club": "OR",
+          "Team": "Maokhampio",
+          "Current result": "0",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Arunkumar, Pragit",
+          "ID": "30562931",
+          "Rating": 1290,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Mallapu, Mokshith Kumar",
+          "ID": "32069722",
+          "Rating": 1282,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Tare, Eevie",
+          "ID": "31610593",
+          "Rating": 1265,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Yu, Jayden",
+          "ID": "30824048",
+          "Rating": 1247,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Kesavan, Suhaan",
+          "ID": "31471881",
+          "Rating": 1172,
+          "Club": "OR",
+          "Team": "KESA",
+          "Current result": "0",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 19,
+          "Name": "Yang, Kyle",
+          "ID": "31362591",
+          "Rating": 1167,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 20,
+          "Name": "Aravind, Eshan",
+          "ID": "30389746",
+          "Rating": 1165,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 21,
+          "Name": "Frias, Preston Daniel",
+          "ID": "30858751",
+          "Rating": 1149,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 22,
+          "Name": "Samson, Dallas Andrew",
+          "ID": "31505635",
+          "Rating": 1136,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 23,
+          "Name": "Ramesh, Harish",
+          "ID": "31893284",
+          "Rating": 1109,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 24,
+          "Name": "Teoh, Lucas",
+          "ID": "30027249",
+          "Rating": 1087,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 25,
+          "Name": "Maokhampio, Corina",
+          "ID": "31368613",
+          "Rating": 1078,
+          "Club": "OR",
+          "Team": "Maokhampio",
+          "Current result": "0",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 26,
+          "Name": "Jamil, Matisse",
+          "ID": "30890124",
+          "Rating": 1073,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        }
+      ],
+      "Teams": [
+        {
+          "Pair number": 1,
+          "Full name": "KESA",
+          "Team code": "KESA",
+          "Rating": 0,
+          "Results": [
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0"
+          ]
+        }
+      ],
+      "Prizes": {
+        "Place prizes": [
+          {
+            "Value": 50,
+            "Description": ""
+          },
+          {
+            "Value": 30,
+            "Description": ""
+          },
+          {
+            "Value": 20,
+            "Description": ""
+          }
+        ],
+        "Class prizes": []
+      },
+      "Ladder": {}
+    },
+    {
+      "Section name": "Open II",
+      "Type": 0,
+      "Section title": "Open II",
+      "Section time control": "G/45;d5",
+      "Number of players": 25,
+      "Number of teams": 1,
+      "Rounds paired": 1,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 2,
+      "Need search options": false,
+      "First board": 14,
+      "Lower rating limit": 900,
+      "Final round": 3,
+      "Coin toss": 1,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 13,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Beller, Gary R",
+          "ID": "12687372",
+          "Rating": 1068,
+          "Club": "OR",
+          "Current result": "0",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 \u0026 2; Game pnts",
+          "Results": [
+            "~;13;W;14;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Adzhigirey, Philip",
+          "ID": "31806658",
+          "Rating": 1066,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;14;B;15;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Le, Alicia",
+          "ID": "31184129",
+          "Rating": 1058,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;15;W;16;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Khanolkar, Aabha Aditya",
+          "ID": "31380748",
+          "Rating": 1043,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;16;B;17;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Paul, Riana",
+          "ID": "31701754",
+          "Rating": 1041,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;17;W;18;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Ranjit, Nimay",
+          "ID": "30292365",
+          "Rating": 1040,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;18;B;19;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Xie, Vincent",
+          "ID": "31210338",
+          "Rating": 1032,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;19;W;20;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Balasubramanian, Pranav",
+          "ID": "31685074",
+          "Rating": 1030,
+          "Club": "OR",
+          "Team": "BALA",
+          "Current result": "\u00BD",
+          "Results": [
+            "~;20;B;21;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Chen, Stephen",
+          "ID": "31444699",
+          "Rating": 1028,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;21;W;22;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Balasubramanian, Prakrithi",
+          "ID": "31649217",
+          "Rating": 1028,
+          "Club": "OR",
+          "Team": "BALA",
+          "Current result": "0",
+          "Results": [
+            "~;22;B;23;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Vutukuri, Yuvan Sai",
+          "ID": "31713858",
+          "Rating": 1006,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;23;W;24;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Shah, Garud",
+          "ID": "30365846",
+          "Rating": 994,
+          "Club": "OR",
+          "Current result": "\u00BD",
+          "Results": [
+            "~;24;B;25;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Balaji, Achyut",
+          "ID": "30183345",
+          "Rating": 984,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;1;B;14;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Ence, Bastian",
+          "ID": "32532430",
+          "Rating": 975,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;2;W;15;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Akhmetov, Saian",
+          "ID": "31531476",
+          "Rating": 961,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;3;B;16;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Daas, Adrito",
+          "ID": "31805118",
+          "Rating": 948,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;4;W;17;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Singh, Jaskaran",
+          "ID": "30698870",
+          "Rating": 945,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;5;B;18;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Seethamraju, Sai Priyanka",
+          "ID": "32550488",
+          "Rating": 934,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;6;W;19;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 19,
+          "Name": "Rahul, Vihaan",
+          "ID": "32163892",
+          "Rating": 932,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;7;B;20;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 20,
+          "Name": "Sathaye, Anay",
+          "ID": "31357139",
+          "Rating": 932,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;8;W;21;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 21,
+          "Name": "Dollinger, Daniel",
+          "ID": "31432298",
+          "Rating": 930,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;9;B;22;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 22,
+          "Name": "Alok, Aditya",
+          "ID": "31621099",
+          "Rating": 923,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;10;W;23;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 23,
+          "Name": "Mudgalmath, Vishruth",
+          "ID": "32011532",
+          "Rating": 910,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;11;B;24;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 24,
+          "Name": "Juneja, Parth",
+          "ID": "30794725",
+          "Rating": 901,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;12;W;25;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 25,
+          "Name": "Valler, Nicholas",
+          "ID": "32489281",
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "B;-1;-;0;0;0;1"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        }
+      ],
+      "Teams": [
+        {
+          "Pair number": 1,
+          "Full name": "BALA",
+          "Team code": "BALA",
+          "Rating": 0,
+          "Results": [
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0"
+          ]
+        }
+      ],
+      "Prizes": {
+        "Place prizes": [
+          {
+            "Value": 50,
+            "Description": ""
+          },
+          {
+            "Value": 30,
+            "Description": ""
+          },
+          {
+            "Value": 20,
+            "Description": ""
+          }
+        ],
+        "Class prizes": []
+      },
+      "Ladder": {}
+    },
+    {
+      "Section name": "Under_1000",
+      "Type": 0,
+      "Section title": "Under 1000",
+      "Section time control": "G/25;\u002B5",
+      "Number of players": 30,
+      "Number of teams": 0,
+      "Rounds paired": 1,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 3,
+      "Need search options": false,
+      "First board": 28,
+      "Upper rating limit": 999,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 17,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Bogle, Jack",
+          "ID": "31536887",
+          "Rating": 982,
+          "Club": "OR",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 \u0026 2; Game pnts",
+          "Results": [
+            "~;16;W;27;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Christiansen, Este Johannes",
+          "ID": "32293389",
+          "Rating": 980,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;17;B;28;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Yu, Jensen",
+          "ID": "30462128",
+          "Rating": 974,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;18;W;29;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Chen, Naomi",
+          "ID": "32384102",
+          "Rating": 932,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;19;B;30;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Dasari, Vasishta Sai",
+          "ID": "32072740",
+          "Rating": 911,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;20;W;31;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Mishra, Sniksha",
+          "ID": "32063135",
+          "Rating": 873,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;21;B;32;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Chien, Evan",
+          "ID": "32013734",
+          "Rating": 863,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;22;W;33;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Dasari, Laxit",
+          "ID": "32232076",
+          "Rating": 861,
+          "Club": "OR",
+          "Reserved byes": "4",
+          "Current result": "\u00BD",
+          "Results": [
+            "~;23;B;34;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        },
+        {
+          "Pair number": 9,
+          "Name": "Pingale, Sharanya",
+          "ID": "31180471",
+          "Rating": 861,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;24;W;35;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Kadali, Amartya Benegal",
+          "ID": "31711477",
+          "Rating": 860,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;25;B;36;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Vemprala, Lasya Sri",
+          "ID": "30569123",
+          "Rating": 816,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;26;W;37;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Astekar, Nikhil",
+          "ID": "31882354",
+          "Rating": 813,
+          "Club": "OR",
+          "Reserved byes": "",
+          "Current result": "0",
+          "Results": [
+            "~;27;B;38;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        },
+        {
+          "Pair number": 13,
+          "Name": "Okamoto, Miles",
+          "ID": "30923516",
+          "Rating": 813,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;28;W;39;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Kadali, Aadya Benegal",
+          "ID": "31715178",
+          "Rating": 808,
+          "Club": "OR",
+          "Reserved byes": "2 3",
+          "Current result": "0",
+          "Results": [
+            "~;29;B;40;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        },
+        {
+          "Pair number": 15,
+          "Name": "Snyder, Evan Hart",
+          "ID": "32448476",
+          "Rating": 773,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;30;W;41;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Larsen, Heath",
+          "ID": "32067377",
+          "Rating": 770,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;1;B;27;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Sarkar, Aadrito",
+          "ID": "31923134",
+          "Rating": 768,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;2;W;28;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Paul, Raina",
+          "ID": "31814860",
+          "Rating": 751,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;3;B;29;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 19,
+          "Name": "Tare, Reya",
+          "ID": "31993103",
+          "Rating": 748,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;4;W;30;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 20,
+          "Name": "Tej Basavaraju, Trishal",
+          "ID": "31736330",
+          "Rating": 724,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;5;B;31;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 21,
+          "Name": "Cattone, Jocelyn",
+          "ID": "30460759",
+          "Rating": 724,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;6;W;32;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 22,
+          "Name": "Burbank, Isaiah",
+          "ID": "31469754",
+          "Rating": 721,
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "1",
+          "Results": [
+            "~;7;B;33;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 23,
+          "Name": "Salvi, Ekansh",
+          "ID": "31907972",
+          "Rating": 714,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;8;W;34;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 24,
+          "Name": "Katira, Neil",
+          "ID": "31240259",
+          "Rating": 694,
+          "Club": "OR",
+          "Current result": "\u00BD",
+          "Results": [
+            "~;9;B;35;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 25,
+          "Name": "Zalavadiya, Om",
+          "ID": "32063877",
+          "Rating": 690,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;10;W;36;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 26,
+          "Name": "Khetan, Shaarav",
+          "ID": "31686856",
+          "Rating": 685,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;11;B;37;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 27,
+          "Name": "Annamareddy, Akshara",
+          "ID": "31809241",
+          "Rating": 670,
+          "Club": "WI",
+          "Current result": "\u00BD",
+          "Results": [
+            "~;12;W;38;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 28,
+          "Name": "Thompson, Benjamin",
+          "ID": "32379030",
+          "Rating": 650,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;13;B;39;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 29,
+          "Name": "Mudgalmath, Stuti",
+          "ID": "32011558",
+          "Rating": 627,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;14;W;40;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 30,
+          "Name": "Sureshkumar, Subram",
+          "ID": "32584703",
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;15;B;41;0;0;0"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        }
+      ],
+      "Teams": [],
+      "Prizes": {
+        "Place prizes": [],
+        "Class prizes": []
+      },
+      "Ladder": {}
+    },
+    {
+      "Section name": "Under_700",
+      "Type": 0,
+      "Section title": "Under 700",
+      "Section time control": "G/25;\u002B5",
+      "Number of players": 30,
+      "Number of teams": 0,
+      "Rounds paired": 1,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 3,
+      "Need search options": false,
+      "First board": 43,
+      "Upper rating limit": 699,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 17,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Johnson, Daxton",
+          "ID": "31665698",
+          "Rating": 670,
+          "Club": "OR",
+          "Current result": "0",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 \u0026 2; Game pnts",
+          "Results": [
+            "~;15;B;42;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Bang, Eric",
+          "ID": "32206162",
+          "Rating": 647,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;16;W;43;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Borochkin, Eduard",
+          "ID": "31523209",
+          "Rating": 640,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;17;B;44;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Aravind, Akshaj",
+          "ID": "31162605",
+          "Rating": 632,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;18;W;45;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "James, Ryan",
+          "ID": "31878257",
+          "Rating": 629,
+          "Club": "OR",
+          "Current result": "\u00BD",
+          "Results": [
+            "~;19;B;46;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Berkey, Siddhartha",
+          "ID": "31992077",
+          "Rating": 613,
+          "Club": "WA",
+          "Current result": "0",
+          "Results": [
+            "~;20;W;47;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Xiao, Yunhan",
+          "ID": "32242427",
+          "Rating": 610,
+          "Club": "OR",
+          "Current result": "\u00BD",
+          "Results": [
+            "~;21;B;48;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Muddagowda, Bhuvanesh",
+          "ID": "31981601",
+          "Rating": 608,
+          "Club": "OR",
+          "Team": "Muddagowda",
+          "Current result": "1",
+          "Results": [
+            "~;22;W;49;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Muppalla, Dhruvan",
+          "ID": "31853822",
+          "Rating": 605,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;23;B;50;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Puligundla, Bhoomi",
+          "ID": "32059092",
+          "Rating": 595,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;24;W;51;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Adzhigirey, Michael",
+          "ID": "32230664",
+          "Rating": 556,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;25;B;52;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Robinson, Oliver",
+          "ID": "31903836",
+          "Rating": 544,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;27;W;53;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Turner, Winter Blake",
+          "ID": "31572182",
+          "Rating": 539,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;28;B;54;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Shadrak, Rajita",
+          "ID": "30985963",
+          "Rating": 537,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;29;W;55;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Singh, Ayaan",
+          "ID": "32111144",
+          "Rating": 525,
+          "Club": "OR",
+          "Reserved byes": "",
+          "Current result": "0",
+          "Results": [
+            "~;1;W;42;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        },
+        {
+          "Pair number": 16,
+          "Name": "Vemprala, Pragnya Sri",
+          "ID": "31385872",
+          "Rating": 513,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;2;B;43;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Kaur, Harnoor",
+          "ID": "32006189",
+          "Rating": 492,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;3;W;44;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Yeh, Evangeline",
+          "ID": "32187073",
+          "Rating": 481,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;4;B;45;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 19,
+          "Name": "Bestha, Vinisha",
+          "ID": "31873687",
+          "Rating": 477,
+          "Club": "OR",
+          "Reserved byes": "",
+          "Current result": "0",
+          "Results": [
+            "~;5;W;46;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        },
+        {
+          "Pair number": 20,
+          "Name": "Katayama, Jayden",
+          "ID": "31444673",
+          "Rating": 471,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;6;B;47;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 21,
+          "Name": "Cranston, Kennan James",
+          "ID": "31613564",
+          "Rating": 471,
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "1",
+          "Results": [
+            "~;7;W;48;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 22,
+          "Name": "Zalavadiya, Riya",
+          "ID": "32063892",
+          "Rating": 464,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;8;B;49;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 23,
+          "Name": "Orendorff, Stephen",
+          "ID": "31436802",
+          "Rating": 461,
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "1",
+          "Results": [
+            "~;9;W;50;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 24,
+          "Name": "Thompson, Roger",
+          "ID": "32345310",
+          "Rating": 452,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;10;B;51;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 25,
+          "Name": "Vats, Aarav",
+          "ID": "32268632",
+          "Rating": 431,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;11;W;52;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 26,
+          "Name": "Massoud, Yusef",
+          "ID": "32305132",
+          "Rating": 414,
+          "Club": "OR",
+          "Reserved byes": "1 2",
+          "Current result": "0",
+          "Results": [
+            "H;-1;-;0;0;0;0.5"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        },
+        {
+          "Pair number": 27,
+          "Name": "Muddagowda, Trimbakesh",
+          "ID": "31981590",
+          "Rating": 405,
+          "Club": "OR",
+          "Team": "Muddagowda",
+          "Current result": "0",
+          "Results": [
+            "~;12;B;53;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 28,
+          "Name": "Dokania, Ishaan",
+          "ID": "32443261",
+          "Rating": 404,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;13;W;54;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 29,
+          "Name": "Gordon, Elise Petra",
+          "ID": "31872029",
+          "Rating": 366,
+          "Club": "WA",
+          "Current result": "1",
+          "Results": [
+            "~;14;B;55;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 30,
+          "Name": "Abbasi, Mohammadsadra",
+          "ID": "32577437",
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "B;-1;-;0;0;0;1"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        }
+      ],
+      "Teams": [],
+      "Prizes": {
+        "Place prizes": [],
+        "Class prizes": []
+      },
+      "Ladder": {}
+    },
+    {
+      "Section name": "Under_400",
+      "Type": 0,
+      "Section title": "Under 400",
+      "Section time control": "G/25;\u002B5",
+      "Number of players": 40,
+      "Number of teams": 0,
+      "Rounds paired": 1,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 3,
+      "Need search options": false,
+      "First board": 58,
+      "Upper rating limit": 399,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 22,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Saha, Nora",
+          "ID": "32198222",
+          "Rating": 376,
+          "Club": "OR",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 \u0026 2; Game pnts",
+          "Results": [
+            "~;22;B;57;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Burbank, Daniel",
+          "ID": "32049663",
+          "Rating": 376,
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "0",
+          "Results": [
+            "~;7;W;58;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Holliday, Colton",
+          "ID": "32036823",
+          "Rating": 370,
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "1",
+          "Results": [
+            "~;24;B;59;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Khandwe, Ansh",
+          "ID": "32557436",
+          "Rating": 367,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;25;W;60;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Burnett, Arian",
+          "ID": "32037459",
+          "Rating": 353,
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "0",
+          "Results": [
+            "~;26;B;61;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Sharma, Vardaan V",
+          "ID": "31999609",
+          "Rating": 345,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;27;W;62;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Robinson, Amelia",
+          "ID": "31903723",
+          "Rating": 314,
+          "Club": "OR",
+          "Current result": "\u00BD",
+          "Results": [
+            "~;2;B;58;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Nasarpuri, Tvisha",
+          "ID": "32367494",
+          "Rating": 310,
+          "Club": "OR",
+          "Current result": "\u00BD",
+          "Results": [
+            "~;33;W;64;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Park, Dylan Dowon",
+          "ID": "31596274",
+          "Rating": 292,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;30;B;65;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Malcolm, Trapper",
+          "ID": "31436792",
+          "Rating": 291,
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "1",
+          "Results": [
+            "~;31;W;66;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Tharun, Moumitha Aarushi Aarushi",
+          "ID": "31835043",
+          "Rating": 284,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;34;B;69;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Ingram, Roper Wade",
+          "ID": "32048445",
+          "Rating": 269,
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "0",
+          "Results": [
+            "~;29;W;68;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Moore, Zane",
+          "ID": "31787319",
+          "Rating": 264,
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "1",
+          "Results": [
+            "~;32;B;67;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Thompson, Olivia",
+          "ID": "32305755",
+          "Rating": 236,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;35;W;70;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Li, Sophia",
+          "ID": "31357384",
+          "Rating": 231,
+          "Club": "OR",
+          "Reserved byes": "1 2",
+          "Current result": "0",
+          "Results": [
+            "H;-1;-;0;0;0;0.5"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        },
+        {
+          "Pair number": 16,
+          "Name": "Baxter, Pranav",
+          "ID": "32549974",
+          "Rating": 224,
+          "Club": "OR",
+          "Reserved byes": "1",
+          "Current result": "1",
+          "Results": [
+            "H;-1;-;0;0;0;0.5"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        },
+        {
+          "Pair number": 17,
+          "Name": "Farris, Oliad",
+          "ID": "32463105",
+          "Rating": 224,
+          "Club": "WA",
+          "Current result": "0",
+          "Results": [
+            "~;36;B;71;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Jadhav, Adhiraj",
+          "ID": "32083825",
+          "Rating": 213,
+          "Club": "OR",
+          "Reserved byes": "4",
+          "Current result": "\u00BD",
+          "Results": [
+            "~;37;W;72;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        },
+        {
+          "Pair number": 19,
+          "Name": "Dokania, Vihaan",
+          "ID": "32443289",
+          "Rating": 196,
+          "Club": "OR",
+          "Current result": "\u00BD",
+          "Results": [
+            "~;38;B;73;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 20,
+          "Name": "Kasina, Shanvi",
+          "ID": "32435175",
+          "Rating": 194,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;39;W;74;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 21,
+          "Name": "Earl, Micah",
+          "ID": "32272240",
+          "Rating": 189,
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "1",
+          "Results": [
+            "~;40;B;75;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 22,
+          "Name": "Burbank, Simon",
+          "ID": "31613750",
+          "Rating": 168,
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "1",
+          "Results": [
+            "~;1;W;57;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 23,
+          "Name": "Susi, Mark",
+          "ID": "32036962",
+          "Rating": 161,
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "1",
+          "Results": [
+            "~;28;B;63;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 24,
+          "Name": "Calugaru, Anatoli Leo",
+          "ID": "32469913",
+          "Rating": 146,
+          "Club": "OR",
+          "Team": "Stafford Primary",
+          "Current result": "1",
+          "Results": [
+            "~;3;W;59;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 25,
+          "Name": "Lofthouse, Trysten",
+          "ID": "32036933",
+          "Rating": 135,
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "1",
+          "Results": [
+            "~;4;B;60;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 26,
+          "Name": "Patel, Ruhi",
+          "ID": "32256582",
+          "Rating": 129,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;5;W;61;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 27,
+          "Name": "Holliday, Luke",
+          "ID": "32036729",
+          "Rating": 124,
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "1",
+          "Results": [
+            "~;6;B;62;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 28,
+          "Name": "Kasina, Viansh",
+          "ID": "32419483",
+          "Rating": 123,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;23;W;63;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 29,
+          "Name": "Basil, Neil",
+          "ID": "32368763",
+          "Rating": 105,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;12;B;68;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 30,
+          "Name": "Stuart, Mark Timothy Sedley",
+          "ID": "32046081",
+          "Rating": 104,
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "0",
+          "Results": [
+            "~;9;W;65;0;0;0"
+          ],
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 31,
+          "Name": "Talanki, Tejesh",
+          "ID": "32417964",
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;10;B;66;0;0;0"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 32,
+          "Name": "Murthy, Atharv",
+          "ID": "32501164",
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;13;W;67;0;0;0"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 33,
+          "Name": "Walker, Lilly",
+          "ID": "32546958",
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "1",
+          "Results": [
+            "~;8;B;64;0;0;0"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 34,
+          "Name": "Devlaeminck, Aiden",
+          "ID": "32553336",
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "0",
+          "Results": [
+            "~;11;W;69;0;0;0"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 35,
+          "Name": "Gudavarthy, Myra",
+          "ID": "32565127",
+          "Club": "OR",
+          "Reserved byes": "3 4",
+          "Current result": "\u00BD",
+          "Results": [
+            "~;14;B;70;0;0;0"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        },
+        {
+          "Pair number": 36,
+          "Name": "Moore, Clyde",
+          "ID": "32546179",
+          "Club": "OR",
+          "Team": "Sherman",
+          "Current result": "0",
+          "Results": [
+            "~;17;W;71;0;0;0"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 37,
+          "Name": "Freitas Zanoni, Raul",
+          "ID": "32545486",
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;18;B;72;0;0;0"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 38,
+          "Name": "Chandramohan, Dhivyan",
+          "ID": "32621303",
+          "Club": "OR",
+          "Current result": "\u00BD",
+          "Results": [
+            "~;19;W;73;0;0;0"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 39,
+          "Name": "Dash, Anya",
+          "ID": "32582494",
+          "Club": "OR",
+          "Reserved byes": "",
+          "Current result": "0",
+          "Results": [
+            "~;20;B;74;0;0;0"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Exp1": null,
+          "State": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        },
+        {
+          "Pair number": 40,
+          "Name": "Suresh Babu, Jeya Shree",
+          "ID": "32606676",
+          "Exp1": "10/31/2026",
+          "State": "OR",
+          "Reserved byes": "",
+          "Current result": "1",
+          "Results": [
+            "~;21;W;75;0;0;0"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Club": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        }
+      ],
+      "Teams": [],
+      "Prizes": {
+        "Place prizes": [],
+        "Class prizes": []
+      },
+      "Ladder": {}
+    },
+    {
+      "Section name": "Extra game",
+      "Type": 0,
+      "Section title": "Extra game",
+      "Section time control": "G/25;\u002B5",
+      "Number of players": 8,
+      "Number of teams": 0,
+      "Rounds paired": 1,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 3,
+      "Need search options": false,
+      "First board": 26,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 7,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Rahul, Vihaan",
+          "ID": "32163892",
+          "Rating": 932,
+          "Rating2": 955,
+          "Exp1": "11/30/2025",
+          "State": "OR",
+          "Reserved byes": "",
+          "Current result": "0",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 \u0026 2; Game pnts",
+          "Results": [
+            "~;5;B;77;0;0;0"
+          ],
+          "Club": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        },
+        {
+          "Pair number": 2,
+          "Name": "Dasari, Laxit",
+          "ID": "32232076",
+          "Rating": 861,
+          "Rating2": 855,
+          "Exp1": "01/31/2026",
+          "State": "OR",
+          "Current result": "1",
+          "Results": [
+            "~;6;W;78;0;0;0"
+          ],
+          "Club": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Tare, Sameer",
+          "ID": "31702408",
+          "Rating": 763,
+          "Rating2": 868,
+          "Exp1": "03/31/2026",
+          "State": "OR",
+          "Reserved byes": "",
+          "Current result": "0",
+          "Results": [
+            "~;7;B;79;0;0;0"
+          ],
+          "Club": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        },
+        {
+          "Pair number": 4,
+          "Name": "Stuart, Kevin Edward",
+          "ID": "31620834",
+          "Rating": 601,
+          "Rating2": 555,
+          "Exp1": "12/31/2026",
+          "State": "OR",
+          "Reserved byes": "",
+          "Current result": "0",
+          "Results": [
+            "~;8;W;80;0;0;0"
+          ],
+          "Club": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        },
+        {
+          "Pair number": 5,
+          "Name": "Valler, Nicholas",
+          "ID": "32489281",
+          "Exp1": "06/30/2027",
+          "State": "OR",
+          "Reserved byes": "",
+          "Current result": "0",
+          "Results": [
+            "~;1;W;77;0;0;0"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Club": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        },
+        {
+          "Pair number": 6,
+          "Name": "Walker, Lilly",
+          "ID": "32546958",
+          "Exp1": "08/31/2026",
+          "State": "OR",
+          "Current result": "0",
+          "Results": [
+            "~;2;B;78;0;0;0"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Club": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null,
+          "Reserved byes": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Sureshkumar, Subram",
+          "ID": "32584703",
+          "Exp1": "09/30/2026",
+          "State": "OR",
+          "Reserved byes": "",
+          "Current result": "0",
+          "Results": [
+            "~;3;W;79;0;0;0"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Club": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        },
+        {
+          "Pair number": 8,
+          "Name": "Suresh Babu, Jeya Shree",
+          "ID": "32606676",
+          "Exp1": "10/31/2026",
+          "State": "OR",
+          "Reserved byes": "",
+          "Current result": "0",
+          "Results": [
+            "~;4;B;80;0;0;0"
+          ],
+          "Rating": 0,
+          "Rating2": null,
+          "Club": null,
+          "Team": null,
+          "Email": null,
+          "Phone": null
+        }
+      ],
+      "Teams": [],
+      "Prizes": {
+        "Place prizes": [],
+        "Class prizes": []
+      },
+      "Ladder": {}
+    }
+  ]
+}

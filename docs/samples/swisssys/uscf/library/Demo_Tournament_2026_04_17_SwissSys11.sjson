@@ -1,0 +1,525 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.34,
+    "Tournament title": "Chess A2Z May Open 2026",
+    "Tournament time controls": "G/45;d5",
+    "Starting date": "2026-05-16",
+    "Ending date": "2026-05-16",
+    "NACH event ID": "0a9e8aa0-88e3-48fd-9fdf-2bff8850a7b9",
+    "NACH passcode": "fb4177b5-c7e3-4095-8a49-dd83f3317825",
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Section title": "Open",
+      "Section time control": "G/45;d5",
+      "Number of players": 9,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 3,
+      "Lower rating limit": 900,
+      "Upper rating limit": 9999,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Tare, Eevie",
+          "ID": "31610593",
+          "Rating": 1389,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Balasubramanian, Prakrithi",
+          "ID": "31649217",
+          "Rating": 1305,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Balasubramanian, Pranav",
+          "ID": "31685074",
+          "Rating": 1160,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Laughlin-Koch, Beowulf",
+          "ID": "30536547",
+          "Rating": 1140,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Le, Alicia",
+          "ID": "31184129",
+          "Rating": 1105,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Jamil, Matisse Aaryan",
+          "ID": "30890124",
+          "Rating": 1076,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Khan, Beatrix",
+          "ID": "30507316",
+          "Rating": 1020,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Hu, Tim",
+          "ID": "32234172",
+          "Rating": 1012,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Xie, Vincent",
+          "ID": "31210338",
+          "Rating": 976,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        }
+      ],
+      "Teams": [],
+      "Prizes": {
+        "Place prizes": [
+          {
+            "Value": 150,
+            "Description": ""
+          }
+        ]
+      }
+    },
+    {
+      "Section name": "Under_1000",
+      "Type": 0,
+      "Section title": "Under 1000",
+      "Section time control": "G/25;+5",
+      "Number of players": 6,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 999,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Das, Rajvi",
+          "ID": "31316627",
+          "Rating": 969,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Pingale, Sharanya",
+          "ID": "31180471",
+          "Rating": 949,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Hao, Tristan",
+          "ID": "31871866",
+          "Rating": 898,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Murthy, Atharv",
+          "ID": "32501164",
+          "Rating": 849,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Burbank, Olivia",
+          "ID": "31613734",
+          "Rating": 745,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Burbank, Isaiah",
+          "ID": "31469754",
+          "Rating": 606,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Under_700",
+      "Type": 0,
+      "Section title": "Under 700",
+      "Section time control": "G/25;+5",
+      "Number of players": 13,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 699,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Saha, Nora",
+          "ID": "32198222",
+          "Rating": 700,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Gordon, Elise Petra",
+          "ID": "31872029",
+          "Rating": 632,
+          "Club": "WA",
+          "State": "WA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Earl, Micah",
+          "ID": "32272240",
+          "Rating": 615,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Cattone, Jocelyn",
+          "ID": "30460759",
+          "Rating": 611,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Malcolm, Trapper",
+          "ID": "31436792",
+          "Rating": 594,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Burbank, Sebastian",
+          "ID": "31469738",
+          "Rating": 524,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Burnett, Arian",
+          "ID": "32037459",
+          "Rating": 517,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Nguyen, Janelle",
+          "ID": "31784942",
+          "Rating": 478,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Mody, Jacksen",
+          "ID": "32416745",
+          "Rating": 452,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Burbank, Simon",
+          "ID": "31613750",
+          "Rating": 439,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Babian, Logan",
+          "ID": "31617042",
+          "Rating": 436,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Burbank, Daniel",
+          "ID": "32049663",
+          "Rating": 427,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Sharma, Vardaan V",
+          "ID": "31999609",
+          "Rating": 409,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Under_400",
+      "Type": 0,
+      "Section title": "Under 400",
+      "Section time control": "G/25;+5",
+      "Number of players": 14,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 399,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Rajesh, Reva",
+          "ID": "32759720",
+          "Rating": 396,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Orendorff, Joyce",
+          "ID": "31787376",
+          "Rating": 376,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Wells, Drake",
+          "ID": "32563466",
+          "Rating": 320,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Hall, Brooklyn",
+          "ID": "32606385",
+          "Rating": 313,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Francis, Aiden",
+          "ID": "31469762",
+          "Rating": 310,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Phelps, William",
+          "ID": "32444591",
+          "Rating": 288,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Lancaster, Evan",
+          "ID": "32036958",
+          "Rating": 285,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Rajesh, Riya",
+          "ID": "32705768",
+          "Rating": 203,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": "",
+          "Reserved byes": "1 2 "
+        },
+        {
+          "Pair number": 9,
+          "Name": "Thompson, Olivia",
+          "ID": "32305755",
+          "Rating": 198,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Spadt, Xander",
+          "ID": "32072979",
+          "Rating": 193,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Burbank, Vivian",
+          "ID": "32606429",
+          "Rating": 106,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Liddell, William",
+          "ID": "32785349",
+          "Rating": 0,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Reed, Aurora",
+          "ID": "32049472",
+          "Rating": 0,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Burnett, Harley",
+          "ID": "32606403",
+          "Rating": 0,
+          "Club": "OR",
+          "State": "OR",
+          "Team": "Sherman County",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    }
+  ]
+}

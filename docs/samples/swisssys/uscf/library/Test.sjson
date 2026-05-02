@@ -1,0 +1,53 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.34,
+    "Tournament title": "Test",
+    "Starting date": "2026-02-03",
+    "Ending date": "2026-02-04",
+    "NACH event ID": "4b337091-3d99-4e2a-bba5-832ec754c79f",
+    "NACH passcode": "d8fe41b9-80b2-40d0-89eb-f1d7ebc28e99",
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Section title": "Open",
+      "Number of players": 2,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 0,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "He, Anthony B",
+          "ID": "14729222",
+          "Rating": 2555,
+          "Club": "WA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "He, Xuhao",
+          "ID": "16756156",
+          "Rating": 1405,
+          "Club": "WA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    }
+  ]
+}

@@ -24,6 +24,26 @@ internal static class TestPaths
     public static string SwissSysSample(string fileName) =>
         Path.Combine(RepoRoot, "docs", "samples", "swisssys", fileName);
 
+    /// <summary>
+    /// Absolute path to the USCF verification corpus root,
+    /// <c>docs/samples/swisssys/uscf/</c>. Used by
+    /// <see cref="Uscf.Harness.UscfRound1HarnessTests"/> to discover real
+    /// SwissSys-produced tournaments to verify our pairer against.
+    /// </summary>
+    public static string UscfSampleRoot =>
+        Path.Combine(RepoRoot, "docs", "samples", "swisssys", "uscf");
+
+    /// <summary>
+    /// Absolute path to a file inside the USCF verification corpus.
+    /// </summary>
+    public static string UscfSample(params string[] subPath)
+    {
+        var parts = new string[subPath.Length + 1];
+        parts[0] = UscfSampleRoot;
+        Array.Copy(subPath, 0, parts, 1, subPath.Length);
+        return Path.Combine(parts);
+    }
+
     private static string FindRepoRoot()
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

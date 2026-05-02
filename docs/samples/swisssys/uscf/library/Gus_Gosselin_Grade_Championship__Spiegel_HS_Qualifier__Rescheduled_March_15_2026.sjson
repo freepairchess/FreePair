@@ -1,0 +1,1116 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.34,
+    "Tournament title": "Gus Gosselin Grade Championship / Spiegel HS Qualifier! (Rescheduled: March 15, 2026)",
+    "Starting date": "2026-03-15",
+    "Ending date": "2026-03-15",
+    "NACH event ID": "8f01ec65-e4b3-4e3e-8274-61b757245ffa",
+    "NACH passcode": "8a25da58-e6b2-47c1-a363-da1ca6bdc036",
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Grades_9__12",
+      "Type": 0,
+      "Section title": "Grades 9 - 12",
+      "Section time control": "G/60; d5",
+      "Number of players": 22,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Golosovker, Alexander",
+          "ID": "17055851",
+          "Rating": 2130,
+          "Club": "NY",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Feng, Victor",
+          "ID": "15560438",
+          "Rating": 2124,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Wang, Bohan",
+          "ID": "16880573",
+          "Rating": 2118,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Zoffer, Oskar",
+          "ID": "16471866",
+          "Rating": 2087,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Riaz, Rayhan",
+          "ID": "16543002",
+          "Rating": 2027,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Klempf, Nathan",
+          "ID": "16715512",
+          "Rating": 1907,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Feng, Steven Ziang",
+          "ID": "16388220",
+          "Rating": 1898,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Klempf, Maxim",
+          "ID": "16715527",
+          "Rating": 1877,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Mosaliganti, Shouri Rao",
+          "ID": "16646805",
+          "Rating": 1787,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Zhang, Kayla",
+          "ID": "16771070",
+          "Rating": 1685,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Niu, Mengyuan",
+          "ID": "16836668",
+          "Rating": 1593,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Wholey, Nathaniel",
+          "ID": "31427785",
+          "Rating": 1524,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Smits, Kaiya Bridgit Ng",
+          "ID": "16486827",
+          "Rating": 1472,
+          "Club": "MA",
+          "Team": "Funky Owls Chess",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Nguyen, Amy",
+          "ID": "16151483",
+          "Rating": 1459,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Rajan, Dhruv Charan",
+          "ID": "30187678",
+          "Rating": 1407,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Shteyman, Jacob Benjamin",
+          "ID": "17196801",
+          "Rating": 1320,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Heine, Winston",
+          "ID": "31189937",
+          "Rating": 1288,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Strelchenko, Pavel",
+          "ID": "30624899",
+          "Rating": 1270,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 19,
+          "Name": "Yu, Johnathon",
+          "ID": "31877153",
+          "Rating": 1166,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 20,
+          "Name": "Nair, Arjun",
+          "ID": "15875325",
+          "Rating": 1137,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 21,
+          "Name": "Major, Joshua John",
+          "ID": "31484222",
+          "Rating": 1127,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 22,
+          "Name": "Moran-Olmsted, Seamus Gibson",
+          "ID": "32847543",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Grade_8",
+      "Type": 0,
+      "Section title": "Grade 8",
+      "Section time control": "G/60; d5",
+      "Number of players": 5,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Ganguly, Maitreya",
+          "ID": "30716324",
+          "Rating": 1908,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Rastogi, Viraj",
+          "ID": "30038645",
+          "Rating": 1689,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Dimmick, Dylan",
+          "ID": "30617237",
+          "Rating": 1245,
+          "Club": "MA",
+          "Team": "Funky Owls Chess Club",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Mariottini, Francesco",
+          "ID": "31464987",
+          "Rating": 894,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Patel, Vihaan",
+          "ID": "30295114",
+          "Rating": 707,
+          "Club": "MA",
+          "Team": "Funky Owl Chess club",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Grade_7",
+      "Type": 0,
+      "Section title": "Grade 7",
+      "Section time control": "G/60; d5",
+      "Number of players": 7,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Nguyen, Christine",
+          "ID": "16634247",
+          "Rating": 1876,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Zanozin, Sergei",
+          "ID": "30151528",
+          "Rating": 1647,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Hasti, Moksha Varma",
+          "ID": "17146415",
+          "Rating": 1411,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Jafarov, Mika",
+          "ID": "30787540",
+          "Rating": 1254,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Conrad, Thomas",
+          "ID": "17103418",
+          "Rating": 1198,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Krause, Hunter Benjamin",
+          "ID": "32536779",
+          "Rating": 935,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Delaney, Luke",
+          "ID": "30351251",
+          "Rating": 828,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Grade_6",
+      "Type": 0,
+      "Section title": "Grade 6",
+      "Section time control": "G/60; d5",
+      "Number of players": 12,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Singh, Karanbir",
+          "ID": "31286868",
+          "Rating": 1714,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Godkar, Yash",
+          "ID": "31393958",
+          "Rating": 1627,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Tichkule, Aanya Ritesh",
+          "ID": "30911026",
+          "Rating": 1103,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Kosaraju, Nirav",
+          "ID": "31972433",
+          "Rating": 1076,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Veeramanikandan, Vriishabh",
+          "ID": "32009918",
+          "Rating": 1044,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Kantamneni, Adhvik",
+          "ID": "30290151",
+          "Rating": 846,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Deych, Adrian",
+          "ID": "30995408",
+          "Rating": 762,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Mekala, Harshith Verna",
+          "ID": "31431941",
+          "Rating": 685,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Carroll, Brennan",
+          "ID": "32557824",
+          "Rating": 487,
+          "Club": "MA",
+          "Team": "Funky Owls",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Saxena, Aarav",
+          "ID": "31430219",
+          "Rating": 440,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Kota, Vihaan",
+          "ID": "32282656",
+          "Rating": 415,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Carroll, Declan",
+          "ID": "32557830",
+          "Rating": 242,
+          "Club": "MA",
+          "Team": "Funky Owls",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Grade_5",
+      "Type": 0,
+      "Section title": "Grade 5",
+      "Section time control": "G/45; d5",
+      "Number of players": 17,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Coletta, Devie Anthony",
+          "ID": "31810666",
+          "Rating": 1423,
+          "Club": "RI",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Wang, Aaron",
+          "ID": "31011711",
+          "Rating": 1419,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Chen, Benjamin",
+          "ID": "30749441",
+          "Rating": 1321,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Guo, Jasper",
+          "ID": "30689208",
+          "Rating": 1306,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Mekalampatta, Adharv",
+          "ID": "32386723",
+          "Rating": 1162,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Sanghishetty, Sudheeksha Mohan",
+          "ID": "30992211",
+          "Rating": 1104,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Chaudhary, Saksham",
+          "ID": "31580612",
+          "Rating": 1049,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Guidon, Matthias C",
+          "ID": "32269862",
+          "Rating": 1028,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Panse, Vihaan",
+          "ID": "31909054",
+          "Rating": 1001,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Anzivino, Brady Xu",
+          "ID": "32084097",
+          "Rating": 970,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Kolhe, Vyom P",
+          "ID": "30143814",
+          "Rating": 800,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Sivaraman, Sanjeev",
+          "ID": "31667598",
+          "Rating": 745,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Nathenson Steier, Morrice",
+          "ID": "30807525",
+          "Rating": 549,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "He, Linru",
+          "ID": "32496910",
+          "Rating": 513,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Boothpur, Akshaj",
+          "ID": "32485540",
+          "Rating": 362,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Yu, Xiaozhou",
+          "ID": "31875134",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Gupta, Ishaan",
+          "ID": "32919457",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Grade_4",
+      "Type": 0,
+      "Section title": "Grade 4",
+      "Section time control": "G/45; d5",
+      "Number of players": 11,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Yuan, Skye Yan",
+          "ID": "30538170",
+          "Rating": 1350,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Chakraborty, Sanav Chandra",
+          "ID": "30818027",
+          "Rating": 1329,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Rastogi, Yashmit",
+          "ID": "31346886",
+          "Rating": 1309,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Sardana, Krish",
+          "ID": "31405719",
+          "Rating": 1171,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Vasudevan, Rishi Varun",
+          "ID": "31285295",
+          "Rating": 910,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Zhou, Haolin Vincent",
+          "ID": "31436505",
+          "Rating": 821,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Leppert, Emmett",
+          "ID": "31668590",
+          "Rating": 730,
+          "Club": "CO",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Zhou, Yunbo",
+          "ID": "31763396",
+          "Rating": 589,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Chen, Jack",
+          "ID": "31964706",
+          "Rating": 512,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Wang, Charles",
+          "ID": "31780429",
+          "Rating": 438,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Kuang, William",
+          "ID": "30326860",
+          "Rating": 300,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Grade_3",
+      "Type": 0,
+      "Section title": "Grade 3",
+      "Section time control": "G/45; d5",
+      "Number of players": 13,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Mishuris, Jacob",
+          "ID": "30932623",
+          "Rating": 1495,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Palaparthi, Aaryash",
+          "ID": "31784635",
+          "Rating": 1160,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Li, Gaochunxi",
+          "ID": "31369771",
+          "Rating": 916,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Sherman, Xander",
+          "ID": "31713013",
+          "Rating": 794,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Boppana, Nitheesh",
+          "ID": "32225261",
+          "Rating": 619,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Chaudhary, Ruhaan",
+          "ID": "31722363",
+          "Rating": 567,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Kroell, Julia",
+          "ID": "32278849",
+          "Rating": 517,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Yang, Nolan",
+          "ID": "31672499",
+          "Rating": 350,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Zantye-Maitra, Ilina",
+          "ID": "32151805",
+          "Rating": 344,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Hemberg Mierau, Miriam",
+          "ID": "32259087",
+          "Rating": 186,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Corthell, Ryan Kirwan",
+          "ID": "32922112",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Heyman, Rory Drew",
+          "ID": "32557845",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "Funky Owls",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Panchal, Shloke",
+          "ID": "32380780",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Grade_2",
+      "Type": 0,
+      "Section title": "Grade 2",
+      "Section time control": "G/45; d5",
+      "Number of players": 11,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Prem Kumar, Dhanvanth",
+          "ID": "31816882",
+          "Rating": 1358,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Shen, Chloe",
+          "ID": "32119295",
+          "Rating": 1002,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Sun, Lucas",
+          "ID": "31081747",
+          "Rating": 893,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Wu, Rendi",
+          "ID": "32116702",
+          "Rating": 626,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Gutmanovich, Felix",
+          "ID": "32492189",
+          "Rating": 575,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Chaudhary, Samarth",
+          "ID": "32267961",
+          "Rating": 528,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Kalashnikov, Roman",
+          "ID": "32391619",
+          "Rating": 519,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Anzivino, Cameron Yang",
+          "ID": "32620284",
+          "Rating": 331,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Iokhvid, Maksim",
+          "ID": "32399529",
+          "Rating": 308,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Singh, Vikram",
+          "ID": "32646422",
+          "Rating": 229,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Shah, Reyan",
+          "ID": "32463944",
+          "Rating": 148,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Kindergarden_and_Grade_1",
+      "Type": 0,
+      "Section title": "Kindergarden and Grade 1 ",
+      "Section time control": "G/45; d5",
+      "Number of players": 12,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Negi, Rishaan",
+          "ID": "32444942",
+          "Rating": 1119,
+          "Club": "CT",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Shringarpure, Rushank",
+          "ID": "32779401",
+          "Rating": 484,
+          "Club": "NH",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Lantsman, Eli Alexander",
+          "ID": "32459584",
+          "Rating": 372,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Patel, Ronit",
+          "ID": "32620461",
+          "Rating": 275,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Bogdanov, Kyrill",
+          "ID": "32264966",
+          "Rating": 267,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Hemberg Mierau, Benji",
+          "ID": "32259058",
+          "Rating": 220,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Nathenson Steier, Fredrik",
+          "ID": "32664599",
+          "Rating": 105,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Karmakar, Ankana",
+          "ID": "32917416",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Shenoy, Namit",
+          "ID": "32826901",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Kaufman, Zev Ezra",
+          "ID": "32786925",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Li, Omid",
+          "ID": "32918451",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Feng, Bowei",
+          "ID": "32919782",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    }
+  ]
+}

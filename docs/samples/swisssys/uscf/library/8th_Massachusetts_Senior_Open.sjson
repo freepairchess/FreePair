@@ -1,0 +1,355 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.34,
+    "Tournament title": "8th Massachusetts Senior Open",
+    "Tournament time controls": "40/90. SD/30; d5",
+    "Starting date": "2025-04-26",
+    "Ending date": "2025-04-27",
+    "NACH event ID": "8435ae92-0c59-474e-bae9-3a79fffaeb40",
+    "NACH passcode": "6bfec6d4-e981-4e82-9f8f-237c16e65464",
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Section title": "Open",
+      "Number of players": 19,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Foygel, Igor",
+          "ID": "12563122",
+          "Rating": 2463,
+          "Club": "MA",
+          "Player title": "IM"
+        },
+        {
+          "Pair number": 2,
+          "Name": "Ivanov, Alexander",
+          "ID": "12513936",
+          "Rating": 2450,
+          "Club": "MA",
+          "Player title": "GM"
+        },
+        {
+          "Pair number": 3,
+          "Name": "Castaneda, Nelson",
+          "ID": "12564228",
+          "Rating": 2313,
+          "Club": "CT",
+          "Player title": "FM"
+        },
+        {
+          "Pair number": 4,
+          "Name": "Terrie, Henry L, Iii",
+          "ID": "10025265",
+          "Rating": 2200,
+          "Club": "NH",
+          "Player title": "LM"
+        },
+        {
+          "Pair number": 5,
+          "Name": "Barnakov, Yury Anatolievich",
+          "ID": "12964843",
+          "Rating": 2160,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Botta, Alejandro Felix",
+          "ID": "12740272",
+          "Rating": 2155,
+          "Club": "MA",
+          "Player title": "NM"
+        },
+        {
+          "Pair number": 7,
+          "Name": "Slive, Alex",
+          "ID": "10014522",
+          "Rating": 2013,
+          "Club": "MA",
+          "Player title": "NM"
+        },
+        {
+          "Pair number": 8,
+          "Name": "Carey, Michael P",
+          "ID": "10120560",
+          "Rating": 2010,
+          "Club": "RI",
+          "Player title": "NM"
+        },
+        {
+          "Pair number": 9,
+          "Name": "Russell, Hanon",
+          "ID": "10036917",
+          "Rating": 2000,
+          "Club": "NH",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Frieden, Ken",
+          "ID": "10088259",
+          "Rating": 1954,
+          "Club": "NY",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Secino, Robert T",
+          "ID": "10005434",
+          "Rating": 1916,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Pearson, Frederick Kemp",
+          "ID": "12223060",
+          "Rating": 1904,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Urbonas, Michael",
+          "ID": "11015328",
+          "Rating": 1891,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Dame, Erin",
+          "ID": "12533685",
+          "Rating": 1885,
+          "Club": "NH",
+          "Player title": "",
+          "Reserved byes": "4 "
+        },
+        {
+          "Pair number": 15,
+          "Name": "Gradijan, Stephen",
+          "ID": "12454998",
+          "Rating": 1864,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Carnevale, Christopher",
+          "ID": "12608782",
+          "Rating": 1864,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Tsakiris, Todd",
+          "ID": "12523634",
+          "Rating": 1834,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Smith, Stephen E",
+          "ID": "12451370",
+          "Rating": 1778,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 19,
+          "Name": "Francis, Joseph A",
+          "ID": "12433459",
+          "Rating": 1712,
+          "Club": "GA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Under_1810",
+      "Type": 0,
+      "Section title": "Under 1810",
+      "Section time control": "G/90. SD/30; d5",
+      "Number of players": 17,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 1809,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Messenger, Robert D",
+          "ID": "12418118",
+          "Rating": 1800,
+          "Club": "NH",
+          "Player title": "",
+          "Reserved byes": "4 "
+        },
+        {
+          "Pair number": 2,
+          "Name": "Bird, D. G.",
+          "ID": "14902922",
+          "Rating": 1759,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Moore, Michael O D",
+          "ID": "12538350",
+          "Rating": 1724,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Donahue, James E",
+          "ID": "12633241",
+          "Rating": 1667,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Duval, George Wilfred",
+          "ID": "12471987",
+          "Rating": 1604,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Martin, David W",
+          "ID": "12877246",
+          "Rating": 1600,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Shea, Stephen Michal",
+          "ID": "12202620",
+          "Rating": 1600,
+          "Club": "MA",
+          "Player title": "",
+          "Reserved byes": "4 "
+        },
+        {
+          "Pair number": 8,
+          "Name": "Christensen, Brandon",
+          "ID": "12947698",
+          "Rating": 1533,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Gadomski, Thadeus A",
+          "ID": "30135710",
+          "Rating": 1508,
+          "Club": "NH",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Garcia, Jesus A",
+          "ID": "15783883",
+          "Rating": 1488,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Alzuhairi, Riadh",
+          "ID": "16917268",
+          "Rating": 1460,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Appelmans, Jack",
+          "ID": "12672022",
+          "Rating": 1277,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Ragucci, John A",
+          "ID": "10016894",
+          "Rating": 1276,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Lafosse, Laurent",
+          "ID": "12431094",
+          "Rating": 1244,
+          "Club": "CT",
+          "Player title": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Recchia, Charles",
+          "ID": "31701471",
+          "Rating": 1233,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Murphy, Marielle",
+          "ID": "12876703",
+          "Rating": 993,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Ranganathan, Stephen Santhosh Kum",
+          "ID": "32412342",
+          "Rating": 0,
+          "Club": "NH",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    }
+  ]
+}

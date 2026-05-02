@@ -1,0 +1,203 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.79,
+    "VersionString": "11.79.3",
+    "Tournament title": "Vortex_CC_2026-03-07",
+    "Tournament time controls": "G/30; d5",
+    "Starting date": "2026-03-07",
+    "Ending date": "2026-03-07",
+    "NACH event ID": "b74a1bbb-6515-40a5-90e1-1b3a72cc6e2c",
+    "NACH passcode": "84b5d30e-29bb-4e81-9edf-4cacca579abb",
+    "ChessRoster auto sync enabled": true,
+    "ChessRoster sync interval minutes": 30,
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Number of players": 5,
+      "Number of teams": 0,
+      "Rounds paired": 5,
+      "Rounds played": 5,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 4,
+      "Need search options": false,
+      "First board": 9,
+      "Final round": 6,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 3,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Gueler, Sebastian",
+          "ID": "12808565",
+          "Rating": 1971,
+          "Club": "MA",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;3;B;9;3;3;0",
+            "=;2;W;9;2;2;0",
+            "+;4;B;9;2;4;0",
+            "+;5;W;9;3;5;0",
+            "B;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Schenk, Patric",
+          "ID": "16085782",
+          "Rating": 1927,
+          "Club": "MA",
+          "Current result": "0",
+          "Results": [
+            "+;4;W;10;4;4;0",
+            "=;1;B;9;1;1;0",
+            "+;5;W;10;1;5;0",
+            "B;-1;-;0;-1;-1;0",
+            "-;3;W;9;3;3;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Holmgren, Robert",
+          "ID": "11291635",
+          "Rating": 1705,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "-;1;W;9;1;1;0",
+            "+;5;B;10;5;5;0",
+            "B;-1;-;0;-1;-1;0",
+            "-;4;W;10;1;4;0",
+            "+;2;B;9;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Kaprielian, Mark",
+          "ID": "10007763",
+          "Rating": 1700,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "-;2;B;10;2;2;0",
+            "B;-1;-;0;-1;-1;0",
+            "-;1;W;9;5;1;0",
+            "+;3;B;10;5;3;0",
+            "+;5;B;10;5;5;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Chornoboy, Edward S.",
+          "ID": "12520269",
+          "Rating": 1500,
+          "Club": "MA",
+          "Current result": "0",
+          "Results": [
+            "B;-1;-;0;-1;-1;0",
+            "-;3;W;10;3;3;0",
+            "-;2;B;10;4;2;0",
+            "-;1;B;9;4;1;0",
+            "-;4;W;10;4;4;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "Side Games",
+      "Type": 0,
+      "Number of players": 4,
+      "Number of teams": 0,
+      "Rounds paired": 1,
+      "Rounds played": 1,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 0,
+      "Need search options": false,
+      "Coin toss": 1,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 2,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Gueler, Sebastian",
+          "ID": "12808565",
+          "Rating": 1971,
+          "Club": "MA",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;4;B;2;3;3;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Schenk, Patric",
+          "ID": "16085782",
+          "Rating": 1927,
+          "Club": "MA",
+          "Current result": "½",
+          "Results": [
+            "=;3;B;1;4;4;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Kaprielian, Mark",
+          "ID": "10007763",
+          "Rating": 1700,
+          "Club": "MA",
+          "Current result": "½",
+          "Results": [
+            "=;2;W;1;1;1;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Chornoboy, Edward S.",
+          "ID": "12520269",
+          "Rating": 1500,
+          "Club": "MA",
+          "Current result": "0",
+          "Results": [
+            "-;1;W;2;2;2;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    }
+  ]
+}

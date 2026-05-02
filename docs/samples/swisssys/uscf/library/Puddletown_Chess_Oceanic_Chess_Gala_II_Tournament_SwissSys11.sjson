@@ -1,0 +1,1538 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.6,
+    "Tournament title": "Puddletown Chess Oceanic Chess Gala II Tournament",
+    "Tournament time controls": "G/45;d5",
+    "Starting date": "2025-04-12",
+    "Ending date": "2025-04-12",
+    "NACH event ID": "c3615115-89f7-4bf5-a38c-b44a8de0f700",
+    "NACH passcode": "7140d1b7-ef97-4114-ae08-d552da5565a9",
+    "Trace": "3.7.3.7.1.3.7.1.3.7."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Section title": "Open",
+      "Section time control": "G/45;d5",
+      "Number of players": 20,
+      "Number of teams": 0,
+      "Rounds paired": 3,
+      "Rounds played": 3,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 2,
+      "Need search options": false,
+      "Lower rating limit": 800,
+      "Final round": 3,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 10,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Hart, John F",
+          "ID": "10021723",
+          "Rating": 1500,
+          "Club": "OR",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;11;B;1;11;11;0",
+            "=;6;W;1;6;6;0",
+            "+;5;B;3;6;5;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Wise, Ezra",
+          "ID": "30681842",
+          "Rating": 1331,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;12;W;2;12;12;0",
+            "+;8;B;2;8;8;0",
+            "-;4;W;1;4;4;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Zhao, Raymond",
+          "ID": "31956702",
+          "Rating": 1321,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;13;B;3;13;13;0",
+            "+;17;W;3;17;17;0",
+            "-;20;B;2;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Cheng, Tyler",
+          "ID": "32037910",
+          "Rating": 1321,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;14;W;4;14;14;0",
+            "+;19;B;4;19;19;0",
+            "+;2;B;1;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Shukla, Weg",
+          "ID": "30853222",
+          "Rating": 1302,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;15;B;5;15;15;0",
+            "-;20;W;5;20;20;0",
+            "-;1;W;3;11;1;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "Sabet, Sohrab",
+          "ID": "31668031",
+          "Rating": 1255,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;16;W;6;16;16;0",
+            "=;1;B;1;1;1;0",
+            "+;7;W;4;1;7;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Patel, Krish",
+          "ID": "30309543",
+          "Rating": 1165,
+          "Club": "UM",
+          "Current result": "0",
+          "Results": [
+            "-;17;B;7;17;17;0",
+            "+;13;W;6;13;13;0",
+            "-;6;B;4;12;6;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Salinas, Liam Walker",
+          "ID": "32123978",
+          "Rating": 1100,
+          "Club": "OR",
+          "Current result": "½",
+          "Results": [
+            "+;18;W;8;18;18;0",
+            "-;2;W;2;2;2;0",
+            "=;12;B;5;17;12;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "Randall, Dylan",
+          "ID": "31475872",
+          "Rating": 1083,
+          "Club": "OR",
+          "Team": "Randall",
+          "Current result": "0",
+          "Results": [
+            "-;20;B;9;19;20;0",
+            "+;14;W;7;14;14;0",
+            "-;17;B;6;19;17;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Maokhampio, Olivia",
+          "ID": "31368540",
+          "Rating": 1042,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "-;19;W;10;20;19;0",
+            "=;16;B;8;15;15;0",
+            "+;13;W;8;16;13;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "Le, Alicia",
+          "ID": "31184129",
+          "Rating": 1022,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "-;1;W;1;1;1;0",
+            "+;18;B;9;16;16;0",
+            "+;19;W;7;5;19;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "Samson, Dallas Andrew",
+          "ID": "31505635",
+          "Rating": 1022,
+          "Club": "OR",
+          "Current result": "½",
+          "Results": [
+            "-;2;B;2;2;2;0",
+            "+;15;W;10;18;18;0",
+            "=;8;W;5;7;8;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "Fomin, Mikhail",
+          "ID": "32176276",
+          "Rating": 1018,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;3;W;3;3;3;0",
+            "-;7;B;6;7;7;0",
+            "-;10;B;8;15;10;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "Balasubramanian, Prakrithi",
+          "ID": "31649217",
+          "Rating": 952,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "-;4;B;4;4;4;0",
+            "-;9;B;7;9;9;0",
+            "+;16;W;9;18;16;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "Jamil, Matisse",
+          "ID": "30890124",
+          "Rating": 916,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;5;W;5;5;5;0",
+            "-;12;B;10;10;10;0",
+            "-;18;W;10;13;18;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "Chen, Ivy",
+          "ID": "31264633",
+          "Rating": 906,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;6;B;6;6;6;0",
+            "=;10;W;8;11;11;0",
+            "-;14;B;9;10;14;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "Arunkumar, Pragit",
+          "ID": "30562931",
+          "Rating": 893,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;7;W;7;7;7;0",
+            "-;3;B;3;3;3;0",
+            "+;9;W;6;8;9;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "Balasubramanian, Pranav",
+          "ID": "31685074",
+          "Rating": 876,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "-;8;B;8;8;8;0",
+            "-;11;W;9;12;12;0",
+            "+;15;B;10;14;15;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "Randall, Simon",
+          "ID": "31514415",
+          "Rating": 846,
+          "Club": "OR",
+          "Team": "Randall",
+          "Current result": "0",
+          "Results": [
+            "+;10;B;10;9;10;0",
+            "-;4;W;4;4;4;0",
+            "-;11;B;7;9;11;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "Chappell, Robert Isaac",
+          "ID": "32365114",
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;9;W;9;10;9;0",
+            "+;5;B;5;5;5;0",
+            "+;3;W;2;3;3;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+          {
+            "Value": 70,
+            "Description": ""
+          },
+          {
+            "Value": 50,
+            "Description": ""
+          },
+          {
+            "Value": 30,
+            "Description": ""
+          }
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "Under_1000",
+      "Type": 0,
+      "Section title": "Under 1000",
+      "Section time control": "G/25;+5",
+      "Number of players": 22,
+      "Number of teams": 0,
+      "Rounds paired": 4,
+      "Rounds played": 4,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 3,
+      "Need search options": false,
+      "First board": 13,
+      "Upper rating limit": 999,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 11,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Vikaskiran, Namish",
+          "ID": "31075394",
+          "Rating": 986,
+          "Club": "OR",
+          "Current result": "0",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "=;12;B;13;12;12;0",
+            "=;14;W;18;12;13;0",
+            "+;10;B;16;10;10;0",
+            "-;7;B;15;12;7;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Martin, Arlo",
+          "ID": "31916311",
+          "Rating": 983,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;13;W;14;13;13;0",
+            "-;7;B;13;7;7;0",
+            "-;15;W;17;15;15;0",
+            "-;17;B;19;15;17;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Tare, Eevie",
+          "ID": "31610593",
+          "Rating": 981,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;14;B;15;14;14;0",
+            "+;8;W;14;8;8;0",
+            "=;5;B;13;5;5;0",
+            "+;12;W;13;5;12;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Paul, Riana",
+          "ID": "31701754",
+          "Rating": 926,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;15;W;16;15;15;0",
+            "+;9;B;15;9;9;0",
+            "=;7;W;14;7;7;0",
+            "+;5;W;14;7;5;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Bogle, Jack",
+          "ID": "31536887",
+          "Rating": 921,
+          "Rating2": 915,
+          "Exp1": "01/31/2026",
+          "State": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;16;B;17;16;16;0",
+            "+;10;W;16;10;10;0",
+            "=;3;W;13;3;3;0",
+            "-;4;B;14;3;4;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "Fidel, Gabriel",
+          "ID": "31786298",
+          "Rating": 889,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;17;W;18;17;17;0",
+            "-;11;B;17;11;11;0",
+            "+;19;W;18;19;19;0",
+            "+;9;B;16;9;9;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Laughlin-Koch, Beowulf",
+          "ID": "30536547",
+          "Rating": 871,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;18;B;19;18;18;0",
+            "+;2;W;13;2;2;0",
+            "=;4;B;14;4;4;0",
+            "+;1;W;15;4;1;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Khanolkar, Aabha Aditya",
+          "ID": "31380748",
+          "Rating": 868,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;19;W;20;19;19;0",
+            "-;3;B;14;3;3;0",
+            "+;21;W;19;21;21;0",
+            "-;11;B;17;11;11;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "Larsen, Heath",
+          "ID": "32067377",
+          "Rating": 858,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;20;B;21;20;20;0",
+            "-;4;W;15;4;4;0",
+            "+;22;B;20;22;22;0",
+            "-;6;W;16;6;6;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Paul, Raina",
+          "ID": "31814860",
+          "Rating": 843,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;21;W;22;21;21;0",
+            "-;5;B;16;5;5;0",
+            "-;1;W;16;1;1;0",
+            "+;15;B;18;17;15;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "Xie, Vincent",
+          "ID": "31210338",
+          "Rating": 840,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;22;B;23;22;22;0",
+            "+;6;W;17;6;6;0",
+            "-;12;B;15;12;12;0",
+            "+;8;W;17;8;8;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "Astekar, Nikhil",
+          "ID": "31882354",
+          "Rating": 839,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "=;1;W;13;1;1;0",
+            "+;13;B;19;1;14;0",
+            "+;11;W;15;11;11;0",
+            "-;3;B;13;1;3;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "Kadali, Amartya Benegal",
+          "ID": "31711477",
+          "Rating": 820,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "-;2;B;14;2;2;0",
+            "-;12;W;19;18;1;0",
+            "+;14;B;21;14;14;0",
+            "+;22;W;20;19;19;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "Vutukuri, Yuvan Sai",
+          "ID": "31713858",
+          "Rating": 797,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "-;3;W;15;3;3;0",
+            "=;1;B;18;19;12;0",
+            "-;13;W;21;13;13;0",
+            "+;19;B;22;22;21;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "Vemprala, Lasya Sri",
+          "ID": "30569123",
+          "Rating": 781,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;4;B;16;4;4;0",
+            "+;20;W;20;20;19;0",
+            "+;2;B;17;2;2;0",
+            "-;10;W;18;2;10;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "Jupudi, Vijval Sai",
+          "ID": "30494577",
+          "Rating": 731,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "-;5;W;17;5;5;0",
+            "-;19;B;21;21;20;0",
+            "+;18;W;22;18;18;0",
+            "+;21;B;21;21;22;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "Smith, Emilia",
+          "ID": "31563000",
+          "Rating": 712,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "-;6;B;18;6;6;0",
+            "-;22;W;22;22;21;0",
+            "+;20;B;23;20;20;0",
+            "+;2;W;19;10;2;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "Okamoto, Miles",
+          "ID": "30923516",
+          "Rating": 703,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "-;7;W;19;7;7;0",
+            "-;21;B;23;13;22;0",
+            "-;16;B;22;16;16;0",
+            "+;20;W;23;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "Tran, Long",
+          "ID": "31184080",
+          "Rating": 700,
+          "Club": "OR",
+          "Team": "Roseway Heights Middle School",
+          "Current result": "0",
+          "Results": [
+            "-;8;B;20;8;8;0",
+            "+;16;W;21;14;15;0",
+            "-;6;B;18;6;6;0",
+            "-;14;W;22;13;13;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "Katira, Neil",
+          "ID": "31240259",
+          "Rating": 695,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;9;W;21;9;9;0",
+            "-;15;B;20;15;16;0",
+            "-;17;W;23;17;17;0",
+            "-;18;B;23;18;18;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "Ranjit, Nimay",
+          "ID": "30292365",
+          "Rating": 686,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;10;B;22;10;10;0",
+            "+;18;W;23;16;17;0",
+            "-;8;B;19;8;8;0",
+            "-;16;W;21;16;14;0"
+          ]
+        },
+        {
+          "Pair number": 22,
+          "Name": "Thompson, Benjamin",
+          "ID": "32379030",
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;11;W;23;11;11;0",
+            "+;17;B;22;17;18;0",
+            "-;9;W;20;9;9;0",
+            "-;13;B;20;14;16;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "Under_700",
+      "Type": 0,
+      "Section title": "Under 700",
+      "Section time control": "G/25;+5",
+      "Number of players": 32,
+      "Number of teams": 0,
+      "Rounds paired": 4,
+      "Rounds played": 4,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 3,
+      "Need search options": false,
+      "First board": 24,
+      "Upper rating limit": 699,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 16,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Kadali, Aadya Benegal",
+          "ID": "31715178",
+          "Rating": 722,
+          "Club": "OR",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;17;B;24;17;17;0",
+            "-;18;W;24;18;18;0",
+            "+;23;B;28;23;23;0",
+            "+;21;W;27;18;11;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Alappat, Matthew",
+          "ID": "30287035",
+          "Rating": 695,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;18;W;25;18;18;0",
+            "+;20;B;33;32;23;0",
+            "=;24;W;29;24;24;0",
+            "-;32;W;31;24;32;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Lu, Nathan",
+          "ID": "31373332",
+          "Rating": 687,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;19;B;26;19;19;0",
+            "-;17;W;34;17;17;0",
+            "=;25;B;37;32;25;0",
+            "-;10;W;38;31;26;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Das, Rajvi",
+          "ID": "31316627",
+          "Rating": 673,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "=;20;W;27;20;20;0",
+            "+;26;B;30;30;26;0",
+            "=;7;W;27;7;7;0",
+            "+;11;B;25;21;28;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Cattone, Jocelyn",
+          "ID": "30460759",
+          "Rating": 660,
+          "Club": "OR",
+          "Current result": "½",
+          "Results": [
+            "-;21;B;28;21;21;0",
+            "=;25;W;35;22;22;0",
+            "-;32;B;35;20;32;0",
+            "=;12;W;39;10;10;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "To, Andrew",
+          "ID": "31184066",
+          "Rating": 632,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;22;W;29;22;22;0",
+            "+;24;B;25;19;19;0",
+            "-;15;W;24;15;15;0",
+            "-;28;B;26;27;21;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Shah, Saanvi",
+          "ID": "30330469",
+          "Rating": 585,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "=;23;B;30;23;23;0",
+            "+;16;W;31;20;32;0",
+            "=;4;B;27;4;4;0",
+            "+;27;W;28;29;27;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Smith, Isabel",
+          "ID": "31563013",
+          "Rating": 567,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;24;W;31;24;24;0",
+            "+;22;B;36;25;25;0",
+            "+;26;W;30;26;26;0",
+            "-;30;B;29;30;29;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "Khetan, Shaarav",
+          "ID": "31686856",
+          "Rating": 549,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;25;B;32;25;25;0",
+            "+;19;W;26;21;21;0",
+            "+;18;B;25;18;18;0",
+            "-;15;W;24;15;15;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Hegde, Aarna",
+          "ID": "31830550",
+          "Rating": 537,
+          "Club": "OR",
+          "Team": "Hegde",
+          "Current result": "1",
+          "Results": [
+            "-;26;W;33;26;26;0",
+            "-;27;B;37;27;27;0",
+            "=;14;W;38;14;14;0",
+            "+;3;B;38;5;5;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "Han, Boshen",
+          "ID": "30590743",
+          "Rating": 537,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;27;B;34;27;27;0",
+            "+;21;W;27;24;24;0",
+            "=;28;B;26;28;28;0",
+            "-;4;W;25;28;1;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "Muppalla, Dhruvan",
+          "ID": "31853822",
+          "Rating": 532,
+          "Club": "OR",
+          "Current result": "½",
+          "Results": [
+            "-;28;W;35;28;28;0",
+            "-;29;B;38;29;29;0",
+            "-;22;W;39;22;22;0",
+            "=;5;B;39;14;14;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "Kaimalangara Sujesh, Aarush",
+          "ID": "31626272",
+          "Rating": 519,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;29;B;36;29;29;0",
+            "-;28;W;28;26;28;0",
+            "-;30;B;31;27;27;0",
+            "-;31;W;33;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "Edwards, Colton",
+          "ID": "32111303",
+          "Rating": 517,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;30;W;37;30;30;0",
+            "-;31;B;39;31;31;0",
+            "=;10;B;38;10;10;0",
+            "-;25;W;37;12;12;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "Ganesh, Pranesh Raghav",
+          "ID": "31609436",
+          "Rating": 510,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;31;B;38;31;31;0",
+            "+;30;W;29;28;30;0",
+            "+;6;B;24;6;6;0",
+            "+;9;B;24;9;9;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "Gong, Ethan Hanwen",
+          "ID": "31587908",
+          "Rating": 505,
+          "Club": "OR",
+          "Current result": "½",
+          "Results": [
+            "=;32;W;39;32;32;0",
+            "-;7;B;31;23;20;0",
+            "=;20;W;36;25;20;0",
+            "=;22;B;34;22;22;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "Patnam, Dev",
+          "ID": "32063156",
+          "Rating": 503,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "-;1;W;24;1;1;0",
+            "+;3;B;34;3;3;0",
+            "-;27;W;32;29;29;0",
+            "+;20;B;35;25;25;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "Nguyen, Sophia",
+          "ID": "31784908",
+          "Rating": 502,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;2;B;25;2;2;0",
+            "+;1;B;24;1;1;0",
+            "-;9;W;25;9;9;0",
+            "+;29;W;30;1;30;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "Vemprala, Pragnya Sri",
+          "ID": "31385872",
+          "Rating": 494,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;3;W;26;3;3;0",
+            "-;9;B;26;6;6;0",
+            "-;29;W;33;30;30;0",
+            "-;26;B;36;26;31;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "Katayama, Shokei",
+          "ID": "30587053",
+          "Rating": 485,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "=;4;B;27;4;4;0",
+            "-;2;W;33;7;16;0",
+            "=;16;B;36;5;16;0",
+            "-;17;W;35;13;13;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "Fomin, Aleksei",
+          "ID": "32305100",
+          "Rating": 483,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;5;W;28;5;5;0",
+            "-;11;B;27;9;9;0",
+            "+;31;W;34;31;31;0",
+            "-;1;B;27;4;6;0"
+          ]
+        },
+        {
+          "Pair number": 22,
+          "Name": "Yeh, Evangeline",
+          "ID": "32187073",
+          "Rating": 466,
+          "Club": "OR",
+          "Current result": "½",
+          "Results": [
+            "-;6;B;29;6;6;0",
+            "-;8;W;36;5;5;0",
+            "+;12;B;39;12;12;0",
+            "=;16;W;34;16;16;0"
+          ]
+        },
+        {
+          "Pair number": 23,
+          "Name": "Patlola, Alokk",
+          "ID": "32071711",
+          "Rating": 462,
+          "Provisional": true,
+          "Rating2": 461,
+          "Exp1": "10/31/2025",
+          "State": "OR",
+          "Current result": "1",
+          "Results": [
+            "=;7;W;30;7;7;0",
+            "+;32;B;32;16;2;0",
+            "-;1;W;28;1;1;0",
+            "+;24;B;32;32;24;0"
+          ]
+        },
+        {
+          "Pair number": 24,
+          "Name": "Tran, Jacksam",
+          "ID": "31784954",
+          "Rating": 445,
+          "Club": "OR",
+          "Team": "Rose City Park Elementary School ",
+          "Current result": "0",
+          "Results": [
+            "+;8;B;31;8;8;0",
+            "-;6;W;25;11;11;0",
+            "=;2;B;29;2;2;0",
+            "-;23;W;32;2;23;0"
+          ]
+        },
+        {
+          "Pair number": 25,
+          "Name": "Hegde, Aarav",
+          "ID": "31839437",
+          "Rating": 437,
+          "Club": "OR",
+          "Team": "Hegde",
+          "Current result": "1",
+          "Results": [
+            "-;9;W;32;9;9;0",
+            "=;5;B;35;8;8;0",
+            "=;3;W;37;16;3;0",
+            "+;14;B;37;17;17;0"
+          ]
+        },
+        {
+          "Pair number": 26,
+          "Name": "Annamareddy, Akshara",
+          "ID": "31809241",
+          "Rating": 437,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;10;B;33;10;10;0",
+            "-;4;W;30;13;4;0",
+            "-;8;B;30;8;8;0",
+            "+;19;W;36;19;3;0"
+          ]
+        },
+        {
+          "Pair number": 27,
+          "Name": "Manda, Ishaan Karthikeya",
+          "ID": "31888744",
+          "Rating": 220,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;11;W;34;11;11;0",
+            "+;10;W;37;10;10;0",
+            "+;17;B;32;13;13;0",
+            "-;7;B;28;6;7;0"
+          ]
+        },
+        {
+          "Pair number": 28,
+          "Name": "Kimberly, Colin",
+          "ID": "32406354",
+          "Team": "Newport High",
+          "Current result": "1",
+          "Results": [
+            "+;12;B;35;12;12;0",
+            "+;13;B;28;15;13;0",
+            "=;11;W;26;11;11;0",
+            "+;6;W;26;11;4;0"
+          ]
+        },
+        {
+          "Pair number": 29,
+          "Name": "Saju, Angel Leann",
+          "ID": "32270837",
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;13;W;36;13;13;0",
+            "+;12;W;38;12;12;0",
+            "+;19;B;33;17;17;0",
+            "-;18;B;30;7;8;0"
+          ]
+        },
+        {
+          "Pair number": 30,
+          "Name": "Sacket, Kagan",
+          "ID": "32406365",
+          "Team": "Newport High",
+          "Current result": "1",
+          "Results": [
+            "+;14;B;37;14;14;0",
+            "-;15;B;29;4;15;0",
+            "+;13;W;31;19;19;0",
+            "+;8;W;29;8;18;0"
+          ]
+        },
+        {
+          "Pair number": 31,
+          "Name": "Leal-Martinez, Alexander",
+          "ID": "32406339",
+          "Team": "Newport Hign",
+          "Current result": "1",
+          "Results": [
+            "-;15;W;38;15;15;0",
+            "+;14;W;39;14;14;0",
+            "-;21;B;34;21;21;0",
+            "+;13;B;33;3;19;0"
+          ]
+        },
+        {
+          "Pair number": 32,
+          "Name": "Miller, Reed",
+          "ID": "32406340",
+          "Team": "Newport High",
+          "Current result": "1",
+          "Results": [
+            "=;16;B;39;16;16;0",
+            "-;23;W;32;2;7;0",
+            "+;5;W;35;3;5;0",
+            "+;2;B;31;23;2;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "Under_400",
+      "Type": 0,
+      "Section title": "Under 400",
+      "Section time control": "G/25;+5",
+      "Number of players": 25,
+      "Number of teams": 0,
+      "Rounds paired": 4,
+      "Rounds played": 4,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 3,
+      "Need search options": false,
+      "First board": 40,
+      "Upper rating limit": 399,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 13,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Berkey, Siddhartha",
+          "ID": "31992077",
+          "Rating": 368,
+          "Club": "WA",
+          "Current result": "0",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "-;13;B;40;13;13;0",
+            "+;15;W;46;14;14;0",
+            "+;11;B;43;11;11;0",
+            "-;8;W;41;24;8;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Robinson, Oliver",
+          "ID": "31903836",
+          "Rating": 364,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;14;W;41;14;14;0",
+            "+;13;B;40;13;13;0",
+            "-;19;W;40;19;19;0",
+            "+;23;B;42;10;10;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Katayama, Jayden",
+          "ID": "31444673",
+          "Rating": 331,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;15;B;42;15;15;0",
+            "+;18;W;41;18;18;0",
+            "-;24;B;41;23;23;0",
+            "+;10;W;43;12;12;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Kanadhibhotla, Varenya",
+          "ID": "31784897",
+          "Rating": 320,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;17;W;43;17;17;0",
+            "-;19;B;42;19;19;0",
+            "-;13;W;44;12;12;0",
+            "-;18;W;46;23;18;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Nguyen, Benjamin",
+          "ID": "32222443",
+          "Rating": 292,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "-;18;B;44;18;18;0",
+            "+;16;W;47;15;15;0",
+            "-;12;B;45;13;13;0",
+            "+;17;W;47;17;17;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "Tare, Reya",
+          "ID": "31993103",
+          "Rating": 270,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "-;19;W;45;19;19;0",
+            "-;14;B;50;16;16;0",
+            "-;18;B;49;20;18;0",
+            "+;16;W;51;21;21;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Sharma, Vardaan V",
+          "ID": "31999609",
+          "Rating": 258,
+          "Club": "OR",
+          "Current result": "½",
+          "Results": [
+            "-;20;B;46;20;20;0",
+            "+;22;W;48;21;21;0",
+            "+;14;B;46;14;14;0",
+            "=;12;W;44;13;13;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Xiao, Yunhan",
+          "ID": "32242427",
+          "Rating": 248,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;21;W;47;21;21;0",
+            "+;20;B;43;20;20;0",
+            "+;23;W;42;24;24;0",
+            "+;1;B;41;19;1;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "Borochkin, Eduard",
+          "ID": "31523209",
+          "Rating": 245,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;22;B;48;22;22;0",
+            "-;24;W;44;23;23;0",
+            "+;17;B;47;17;17;0",
+            "+;13;W;45;18;23;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Saha, Nora",
+          "ID": "32198222",
+          "Rating": 202,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;23;W;49;23;23;0",
+            "+;21;B;49;22;22;0",
+            "+;20;W;48;18;20;0",
+            "-;3;B;43;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "Vu, Kim",
+          "ID": "31784926",
+          "Rating": 195,
+          "Club": "OR",
+          "Current result": "½",
+          "Results": [
+            "-;24;B;50;24;24;0",
+            "+;25;W;51;25;25;0",
+            "-;1;W;43;1;1;0",
+            "=;22;B;48;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "Bestha, Vinisha",
+          "ID": "31873687",
+          "Rating": 141,
+          "Club": "OR",
+          "Current result": "½",
+          "Results": [
+            "+;25;W;51;25;25;0",
+            "-;23;B;45;24;24;0",
+            "+;5;W;45;4;4;0",
+            "=;7;B;44;3;3;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "Vu, Krystal",
+          "ID": "32350007",
+          "Rating": 135,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;1;W;40;1;1;0",
+            "-;2;W;40;2;2;0",
+            "+;4;B;44;5;5;0",
+            "-;9;B;45;7;7;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "Turner, Winter Blake",
+          "ID": "31572182",
+          "Rating": 115,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "-;2;B;41;2;2;0",
+            "+;6;W;50;1;1;0",
+            "-;7;W;46;7;7;0",
+            "+;25;B;49;22;22;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "Nguyen, Ivy",
+          "ID": "32222457",
+          "Rating": 111,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;3;W;42;3;3;0",
+            "-;1;B;46;5;5;0",
+            "B;-1;-;0;22;22;0",
+            "-;20;W;50;25;25;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "Singh, Rushika",
+          "ID": "31822778",
+          "Rating": 109,
+          "Club": "OR",
+          "Reserved byes": "1z ",
+          "Current result": "0",
+          "Results": [
+            "U;-1;-;0;-1;-1;0",
+            "-;5;B;47;6;6;0",
+            "-;22;W;50;-1;-1;0",
+            "-;6;B;51;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "Patel, Ruhi",
+          "ID": "32256582",
+          "Rating": 107,
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;4;B;43;4;4;0",
+            "B;-1;-;0;-1;-1;0",
+            "-;9;W;47;9;9;0",
+            "-;5;B;47;5;5;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "James, Mark",
+          "ID": "31578975",
+          "Rating": 106,
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;5;W;44;5;5;0",
+            "-;3;B;41;3;3;0",
+            "+;6;W;49;10;6;0",
+            "+;4;B;46;9;4;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "Chen, Naomi",
+          "ID": "32384102",
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;6;B;45;6;6;0",
+            "+;4;W;42;4;4;0",
+            "+;2;B;40;2;2;0",
+            "+;24;W;40;8;24;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "Vats, Aarav",
+          "ID": "32268632",
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "+;7;W;46;7;7;0",
+            "-;8;W;43;8;8;0",
+            "-;10;B;48;6;10;0",
+            "+;15;B;50;11;11;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "Thompson, Roger",
+          "ID": "32345310",
+          "Club": "OR",
+          "Current result": "1",
+          "Results": [
+            "-;8;B;47;8;8;0",
+            "-;10;W;49;7;7;0",
+            "-;25;B;51;25;25;0",
+            "B;-1;-;0;6;6;0"
+          ]
+        },
+        {
+          "Pair number": 22,
+          "Name": "Ballamudi, Saharsh",
+          "ID": "32353099",
+          "Club": "OR",
+          "Current result": "½",
+          "Results": [
+            "-;9;W;48;9;9;0",
+            "-;7;B;48;10;10;0",
+            "+;16;B;50;15;15;0",
+            "=;11;W;48;14;14;0"
+          ]
+        },
+        {
+          "Pair number": 23,
+          "Name": "Saju, Kester Anton",
+          "ID": "32317435",
+          "Club": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;10;B;49;10;10;0",
+            "+;12;W;45;9;9;0",
+            "-;8;B;42;3;3;0",
+            "-;2;W;42;4;9;0"
+          ]
+        },
+        {
+          "Pair number": 24,
+          "Name": "Robinson, Josiah",
+          "ID": "32406377",
+          "Current result": "0",
+          "Results": [
+            "+;11;W;50;11;11;0",
+            "+;9;B;44;12;12;0",
+            "+;3;W;41;8;8;0",
+            "-;19;B;40;1;19;0"
+          ]
+        },
+        {
+          "Pair number": 25,
+          "Name": "Robinson, Amelia",
+          "ID": "31903723",
+          "Club": "OR",
+          "Team": "Robinson",
+          "Current result": "0",
+          "Results": [
+            "-;12;B;51;12;12;0",
+            "-;11;B;51;11;11;0",
+            "+;21;W;51;21;21;0",
+            "-;14;W;49;15;15;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    }
+  ]
+}

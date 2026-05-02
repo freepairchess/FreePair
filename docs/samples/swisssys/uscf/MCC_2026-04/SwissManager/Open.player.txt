@@ -1,0 +1,22 @@
+No;Name;Title;ID no;Rating nat;Rating int;Birth; Fed;Sex;Type;Gr;Clubno;Club;FIDE-No;surname;first name;atitle
+1;Robert Holmgren;;11291635;1716;0;;USA;;;;;;30997330;Holmgren;Robert;
+2;Dan Lang;;12812523;1661;0;;USA;;;;;;00000000;Lang;Dan;
+3;Paul K Swartz;;12679328;1497;0;;USA;;;;;;00000000;Swartz;Paul K;
+4;D. G. Bird;;14902922;1728;1699;;USA;;;;;;30935326;Bird;D. G.;
+5;Karanbir Singh;;31286868;1689;1631;;USA;;;;;;39980715;Singh;Karanbir;
+6;Neil Cousin;;12065210;1854;1917;;USA;;;;;;30910153;Cousin;Neil;
+7;Yuriy Zhaurov;;14256202;1852;0;;USA;;;;;;2083280;Zhaurov;Yuriy;
+8;Michael Barry;;12584196;1723;0;;USA;;;;;;00000000;Barry;Michael;
+9;Vasu Balakrishnan;;13691684;1483;0;;USA;;;;;;00000000;Balakrishnan;Vasu;
+10;Sherwin Hu;;32639905;1405;0;;USA;;;;;;00000000;Hu;Sherwin;
+11;Gautham Kirubakaran;;31971144;1611;1531;;USA;;;;;;39996719;Kirubakaran;Gautham;
+12;Stephen Gradijan;;12454998;1821;1614;;USA;;;;;;30969352;Gradijan;Stephen;
+13;Samuel Barros;;30671662;1865;0;;USA;;;;;;00000000;Barros;Samuel;
+14;Frederick Kemp Pearson;;12223060;1937;1839;;USA;;;;;;2097320;Pearson;Frederick Kemp;
+15;Brandon Christensen;;12947698;1478;0;;USA;;;;;;00000000;Christensen;Brandon;
+16;Ames Abbot;;12522524;1787;0;;USA;;;;;;2083299;Abbot;Ames;
+17;George Wilfred Duval;;12471987;1602;1641;;USA;;;;;;39909387;Duval;George Wilfred;
+18;Douglas Sheldon Reynolds;;12427040;1792;0;;USA;;;;;;39975789;Reynolds;Douglas Sheldon;
+19;Ethan D. Thompson;;12650009;1855;0;;USA;;;;;;00000000;Thompson;Ethan D.;
+20;Mark Kaprielian;;10007763;1736;1676;;USA;;;;;;30973970;Kaprielian;Mark;
+21;Robby Watts;;31274069;1596;0;;USA;;;;;;00000000;Watts;Robby;

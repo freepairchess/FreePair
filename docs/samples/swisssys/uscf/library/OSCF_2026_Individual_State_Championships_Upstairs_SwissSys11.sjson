@@ -1,0 +1,3445 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.79,
+    "VersionString": "11.79.7",
+    "Tournament title": "2026 OSCF State Championship",
+    "Starting date": "4/17/2026",
+    "Ending date": "4/18/2026",
+    "NACH event ID": "d6fa38d9-59a9-48c5-b326-2cf3cb29d571",
+    "NACH passcode": "d69fb381-579b-49d4-877f-0cdb33b24665",
+    "ChessRoster tournament ID": "cmnwf63m1000004l4fsda3l0h",
+    "ChessRoster last sync": "2026-04-18T23:37:51Z",
+    "ChessRoster client sync time": "2026-04-18T16:37:51",
+    "ChessRoster auto sync enabled": false,
+    "ChessRoster sync interval minutes": 30,
+    "Trace": "3.7.3.7.3.7.1.3.7.3."
+  },
+  "Sections": [
+    {
+      "Section name": "High School Platinum",
+      "Type": 0,
+      "Section time control": "G/85;+5",
+      "Number of players": 19,
+      "Number of teams": 0,
+      "Rounds paired": 5,
+      "Rounds played": 5,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Need search options": false,
+      "First board": 101,
+      "Final round": 5,
+      "Coin toss": 1,
+      "Team cut": 3,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 10,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "TANG, AUSTIN",
+          "ID": "16097497",
+          "Rating": 2220,
+          "Exp1": "08/31/2026",
+          "Current result": "½",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;10;W;101;10;10;0",
+            "+;6;B;101;6;6;0",
+            "=;2;W;101;3;3;0",
+            "+;4;B;102;3;3;0",
+            "=;3;W;101;2;3;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "LIM, HAYUL",
+          "ID": "30151794",
+          "Rating": 2064,
+          "Exp1": "03/31/2027",
+          "Current result": "1",
+          "Results": [
+            "+;11;B;102;11;11;0",
+            "+;7;W;102;7;7;0",
+            "=;1;B;101;17;17;0",
+            "+;3;W;101;4;4;0",
+            "+;9;W;102;1;9;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "NOBLES, WILLIAM",
+          "ID": "15753375",
+          "Rating": 2026,
+          "Exp1": "03/31/2027",
+          "Current result": "½",
+          "Results": [
+            "+;12;W;103;12;12;0",
+            "+;9;B;103;9;9;0",
+            "+;17;W;102;1;1;0",
+            "-;2;B;101;1;1;0",
+            "=;1;B;101;9;1;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "BIMOD, KARTHIK",
+          "ID": "31093354",
+          "Rating": 2017,
+          "Exp1": "03/31/2027",
+          "Reserved byes": "5z ",
+          "Current result": "0",
+          "Results": [
+            "=;13;B;104;13;13;0",
+            "+;19;W;105;19;19;0",
+            "=;5;B;103;5;5;0",
+            "-;1;W;102;2;2;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "LEWIS, KAI",
+          "ID": "15929867",
+          "Rating": 1907,
+          "Exp1": "08/31/2026",
+          "Current result": "1",
+          "Results": [
+            "+;14;W;105;14;14;0",
+            "-;17;B;104;17;17;0",
+            "=;4;W;103;4;4;0",
+            "+;6;B;106;17;6;0",
+            "+;8;W;103;10;8;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "MARX, JADEN",
+          "ID": "17141231",
+          "Rating": 1904,
+          "Exp1": "04/30/2027",
+          "Current result": "½",
+          "Results": [
+            "+;15;B;106;15;15;0",
+            "-;1;W;101;1;1;0",
+            "-;10;B;104;10;10;0",
+            "-;5;W;106;16;5;0",
+            "=;13;B;108;19;19;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "ADEBOLU, ADEMIDUN",
+          "ID": "16694048",
+          "Rating": 1839,
+          "Exp1": "08/31/2026",
+          "Current result": "1",
+          "Results": [
+            "+;16;W;107;16;16;0",
+            "-;2;B;102;2;2;0",
+            "+;12;W;105;12;12;0",
+            "-;9;B;103;9;9;0",
+            "+;14;W;106;12;13;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "PLAUNTY, JIRO",
+          "ID": "30961265",
+          "Rating": 1797,
+          "Exp1": "04/30/2027",
+          "Current result": "0",
+          "Results": [
+            "-;17;B;108;17;17;0",
+            "+;13;W;106;13;13;0",
+            "+;18;B;106;16;16;0",
+            "=;10;W;104;10;10;0",
+            "-;5;B;103;17;5;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "LIN, YIAN",
+          "ID": "30511191",
+          "Rating": 1796,
+          "Exp1": "04/30/2026",
+          "Current result": "0",
+          "Results": [
+            "+;18;W;109;18;18;0",
+            "-;3;W;103;3;3;0",
+            "+;19;B;107;18;19;0",
+            "+;7;W;103;7;7;0",
+            "-;2;B;102;3;2;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "WISE, EZRA",
+          "ID": "30681842",
+          "Rating": 1713,
+          "Exp1": "10/31/2027",
+          "Current result": "1",
+          "Results": [
+            "-;1;B;101;1;1;0",
+            "+;14;W;107;14;14;0",
+            "+;6;W;104;6;6;0",
+            "=;8;B;104;8;8;0",
+            "+;17;B;104;5;17;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "DASSOW, MISHA VON",
+          "ID": "31207040",
+          "Rating": 1623,
+          "Exp1": "08/31/2026",
+          "Current result": "1",
+          "Results": [
+            "-;2;W;102;2;2;0",
+            "-;16;B;108;15;15;0",
+            "-;14;B;109;14;14;0",
+            "B;-1;-;0;-1;-1;0",
+            "+;18;W;109;18;18;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "III, CESAREO TONGCO",
+          "ID": "30688335",
+          "Rating": 1613,
+          "Exp1": "02/28/2027",
+          "Current result": "1",
+          "Results": [
+            "-;3;B;103;3;3;0",
+            "+;15;W;109;16;16;0",
+            "-;7;B;105;7;7;0",
+            "+;18;W;107;15;18;0",
+            "+;16;B;105;7;16;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "BRIER, DASH",
+          "ID": "31211465",
+          "Rating": 1598,
+          "Exp1": "09/30/2026",
+          "Current result": "½",
+          "Results": [
+            "=;4;W;104;4;4;0",
+            "-;8;B;106;8;8;0",
+            "=;16;W;108;19;18;0",
+            "=;15;B;108;18;15;0",
+            "=;6;W;108;16;7;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "KAYSER, ELLIOTT",
+          "ID": "31809225",
+          "Rating": 1558,
+          "Exp1": "04/30/2027",
+          "Current result": "0",
+          "Results": [
+            "-;5;B;105;5;5;0",
+            "-;10;B;107;10;10;0",
+            "+;11;W;109;11;11;0",
+            "=;19;W;109;19;19;0",
+            "-;7;B;106;15;15;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "YAN, JESSE",
+          "ID": "31445808",
+          "Rating": 1481,
+          "Exp1": "02/28/2027",
+          "Current result": "0",
+          "Results": [
+            "-;6;W;106;6;6;0",
+            "-;12;B;109;11;11;0",
+            "B;-1;-;0;-1;-1;0",
+            "=;13;W;108;12;13;0",
+            "-;19;B;107;14;14;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "JUNEJA, EESHA",
+          "ID": "30018825",
+          "Rating": 1477,
+          "Exp1": "05/31/2027",
+          "Current result": "0",
+          "Results": [
+            "-;7;B;107;7;7;0",
+            "+;11;W;108;12;12;0",
+            "=;13;B;108;8;8;0",
+            "=;17;W;105;6;17;0",
+            "-;12;W;105;13;12;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "MAMCHIK, DANNY",
+          "ID": "16671746",
+          "Rating": 1414,
+          "Exp1": "12/31/2026",
+          "Current result": "0",
+          "Results": [
+            "+;8;W;108;8;8;0",
+            "+;5;W;104;5;5;0",
+            "-;3;B;102;2;2;0",
+            "=;16;B;105;5;16;0",
+            "-;10;W;104;8;10;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "CHANG, CONRAD",
+          "ID": "16791670",
+          "Rating": 1412,
+          "Exp1": "01/31/2027",
+          "Current result": "0",
+          "Results": [
+            "-;9;B;109;9;9;0",
+            "B;-1;-;0;-1;-1;0",
+            "-;8;W;106;9;13;0",
+            "-;12;B;107;13;12;0",
+            "-;11;B;109;11;11;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "LYNN, CASSADY",
+          "ID": "31273463",
+          "Rating": 1386,
+          "Exp1": "06/30/2026",
+          "Current result": "1",
+          "Results": [
+            "B;-1;-;0;-1;-1;0",
+            "-;4;B;105;4;4;0",
+            "-;9;W;107;13;9;0",
+            "=;14;B;109;14;14;0",
+            "+;15;W;107;6;6;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "High School Silver",
+      "Type": 0,
+      "Section time control": "G/40;+5",
+      "Number of players": 20,
+      "Number of teams": 1,
+      "Rounds paired": 5,
+      "Rounds played": 5,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Need search options": false,
+      "First board": 121,
+      "Final round": 5,
+      "Coin toss": 1,
+      "Team cut": 3,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 10,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "JANDER, ARIN",
+          "ID": "30365563",
+          "Rating": 1330,
+          "Exp1": "12/31/2026",
+          "Current result": "0",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "-;10;W;121;10;10;0",
+            "+;20;B;126;20;20;0",
+            "+;7;B;123;6;7;0",
+            "+;19;W;122;5;5;0",
+            "-;4;B;121;4;4;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "SHORE, LAKSHMI",
+          "ID": "30146127",
+          "Rating": 1303,
+          "Exp1": "09/30/2026",
+          "Current result": "0",
+          "Results": [
+            "+;11;B;122;11;11;0",
+            "+;8;W;121;8;8;0",
+            "-;13;B;121;13;13;0",
+            "=;5;B;123;10;10;0",
+            "-;15;W;123;15;15;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "SAMSON, DALLAS",
+          "ID": "31505635",
+          "Rating": 1288,
+          "Exp1": "12/31/2026",
+          "Current result": "1",
+          "Results": [
+            "-;13;W;123;13;13;0",
+            "+;14;B;127;14;14;0",
+            "+;15;W;124;8;15;0",
+            "-;10;B;124;19;19;0",
+            "+;9;W;125;9;9;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "WOOD, ROGER",
+          "ID": "30389798",
+          "Rating": 1285,
+          "Exp1": "04/30/2026",
+          "Current result": "1",
+          "Results": [
+            "+;14;B;124;14;14;0",
+            "+;10;W;122;10;10;0",
+            "+;19;W;122;19;19;0",
+            "+;13;B;121;13;13;0",
+            "+;1;W;121;1;1;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "PURUMANDLA, SHREYANS",
+          "ID": "31203085",
+          "Rating": 1253,
+          "Exp1": "07/31/2027",
+          "Current result": "1",
+          "Results": [
+            "-;15;W;125;15;15;0",
+            "+;16;B;129;16;16;0",
+            "+;8;B;125;10;8;0",
+            "=;2;W;123;1;1;0",
+            "+;18;W;124;18;18;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "GUPTA, DIVYANSH",
+          "ID": "32213181",
+          "Rating": 1247,
+          "Exp1": "01/31/2028",
+          "Current result": "0",
+          "Results": [
+            "+;16;B;126;16;16;0",
+            "-;13;W;123;13;13;0",
+            "-;10;B;126;1;10;0",
+            "=;14;W;127;9;9;0",
+            "-;11;B;127;11;11;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "BARATT, JOSEPH",
+          "ID": "30468235",
+          "Rating": 1228,
+          "Exp1": "06/30/2026",
+          "Current result": "1",
+          "Results": [
+            "+;17;W;127;17;17;0",
+            "=;15;B;124;15;15;0",
+            "-;1;W;123;15;1;0",
+            "-;18;B;125;15;18;0",
+            "+;14;B;128;14;14;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "ZHANG, CHLOE",
+          "ID": "17098533",
+          "Rating": 1222,
+          "Exp1": "12/31/2026",
+          "Current result": "1",
+          "Results": [
+            "+;18;B;128;18;18;0",
+            "-;2;B;121;2;2;0",
+            "-;5;W;125;3;5;0",
+            "+;16;W;128;14;14;0",
+            "+;19;B;126;19;19;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "YENDURI, DAIVIK",
+          "ID": "32517889",
+          "Rating": 1202,
+          "Exp1": "07/31/2026",
+          "Current result": "0",
+          "Results": [
+            "=;20;W;129;20;20;0",
+            "-;19;B;125;19;19;0",
+            "=;18;W;127;18;18;0",
+            "+;17;W;129;6;6;0",
+            "-;3;B;125;3;3;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "OSTROVSKY, VALERIE",
+          "ID": "30472022",
+          "Rating": 1200,
+          "Exp1": "03/31/2027",
+          "Team": "OSTROVSKY",
+          "Current result": "½",
+          "Results": [
+            "+;1;B;121;1;1;0",
+            "-;4;B;122;4;4;0",
+            "+;6;W;126;5;6;0",
+            "+;3;W;124;2;2;0",
+            "=;13;B;122;13;13;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "PATEL, KRISH",
+          "ID": "30309543",
+          "Rating": 1174,
+          "Exp1": "01/31/2028",
+          "Current result": "1",
+          "Results": [
+            "-;2;W;122;2;2;0",
+            "=;17;B;128;17;17;0",
+            "+;20;W;128;17;20;0",
+            "-;15;B;126;18;15;0",
+            "+;6;W;127;6;6;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "SIMPSON, GAGE",
+          "ID": "30741834",
+          "Rating": 1146,
+          "Exp1": "10/31/2026",
+          "Reserved byes": "1z 2z 3z 4z 5z ",
+          "Withdrew": true,
+          "Current result": "0",
+          "Results": [
+            "U;-1;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0",
+            "U;0;-;0;0;0;0",
+            "U;0;-;0;0;0;0",
+            "U;0;-;0;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "FORKNER, ANDREW",
+          "ID": "32161626",
+          "Rating": 1116,
+          "Exp1": "12/31/2026",
+          "Current result": "½",
+          "Results": [
+            "+;3;B;123;3;3;0",
+            "+;6;B;123;6;6;0",
+            "+;2;W;121;2;2;0",
+            "-;4;W;121;4;4;0",
+            "=;10;W;122;10;10;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "YADA, VEDANTH",
+          "ID": "31563708",
+          "Rating": 1085,
+          "Exp1": "01/31/2027",
+          "Current result": "0",
+          "Results": [
+            "-;4;W;124;4;4;0",
+            "-;3;W;127;3;3;0",
+            "+;17;B;129;20;17;0",
+            "=;6;B;127;8;8;0",
+            "-;7;W;128;7;7;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "THOMPSON, JEREMIAH",
+          "ID": "31023877",
+          "Rating": 1073,
+          "Exp1": "03/31/2027",
+          "Current result": "1",
+          "Results": [
+            "+;5;B;125;5;5;0",
+            "=;7;W;124;7;7;0",
+            "-;3;B;124;7;3;0",
+            "+;11;W;126;7;11;0",
+            "+;2;B;123;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "ALBERTI, RYAN",
+          "ID": "31046244",
+          "Rating": 1058,
+          "Exp1": "04/30/2027",
+          "Current result": "½",
+          "Results": [
+            "-;6;W;126;6;6;0",
+            "-;5;W;129;5;5;0",
+            "B;-1;-;0;-1;-1;0",
+            "-;8;B;128;17;17;0",
+            "=;20;B;129;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "SURAVAJJALA, ABHI RAM",
+          "ID": "32061388",
+          "Rating": 1048,
+          "Exp1": "11/30/2026",
+          "Current result": "1",
+          "Results": [
+            "-;7;B;127;7;7;0",
+            "=;11;W;128;11;11;0",
+            "-;14;W;129;11;14;0",
+            "-;9;B;129;16;16;0",
+            "B;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "OSTROVSKY, SARAH",
+          "ID": "30472031",
+          "Rating": 1047,
+          "Exp1": "05/31/2027",
+          "Team": "OSTROVSKY",
+          "Current result": "0",
+          "Results": [
+            "-;8;W;128;8;8;0",
+            "B;-1;-;0;-1;-1;0",
+            "=;9;B;127;9;9;0",
+            "+;7;W;125;11;7;0",
+            "-;5;B;124;5;5;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "EDWARDS, NICHOLAS",
+          "ID": "31379648",
+          "Rating": 1028,
+          "Exp1": "12/31/2026",
+          "Reserved byes": "1z ",
+          "Current result": "0",
+          "Results": [
+            "B;-1;-;0;-1;-1;0",
+            "+;9;W;125;9;9;0",
+            "-;4;B;122;4;4;0",
+            "-;1;B;122;3;3;0",
+            "-;8;W;126;8;8;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "STRID, HENRY",
+          "ID": "31670707",
+          "Rating": 1024,
+          "Exp1": "03/31/2027",
+          "Current result": "½",
+          "Results": [
+            "=;9;B;129;9;9;0",
+            "-;1;W;126;1;1;0",
+            "-;11;B;128;14;11;0",
+            "B;-1;-;0;-1;-1;0",
+            "=;16;W;129;16;16;0"
+          ]
+        }
+      ],
+      "Teams": [
+        {
+          "Pair number": 1,
+          "Full name": "OSTROVSKY",
+          "Team code": "OSTROVSKY",
+          "Rating": 0,
+          "Results": [
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0"
+          ]
+        }
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "High School Copper",
+      "Type": 0,
+      "Section time control": "G/40;+5",
+      "Number of players": 17,
+      "Number of teams": 0,
+      "Rounds paired": 5,
+      "Rounds played": 5,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Need search options": false,
+      "First board": 141,
+      "Final round": 5,
+      "Coin toss": 1,
+      "Team cut": 3,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 9,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "WHITE-ROSS, SKYLER",
+          "ID": "31608084",
+          "Rating": 1015,
+          "Exp1": "12/31/2026",
+          "Current result": "0",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "-;9;W;141;9;9;0",
+            "+;11;B;146;10;3;0",
+            "-;13;W;144;3;3;0",
+            "-;10;B;146;8;8;0",
+            "-;17;B;148;11;17;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "BALAMURUGAN, NAVILAN",
+          "ID": "32288477",
+          "Rating": 1013,
+          "Exp1": "02/29/2028",
+          "Current result": "1",
+          "Results": [
+            "+;10;B;142;10;10;0",
+            "-;14;W;141;9;9;0",
+            "-;3;B;143;12;12;0",
+            "+;8;W;147;10;17;0",
+            "+;12;W;144;12;12;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "RAMESH, HARISH",
+          "ID": "31893284",
+          "Rating": 1009,
+          "Exp1": "05/31/2026",
+          "Current result": "½",
+          "Results": [
+            "=;11;W;143;11;11;0",
+            "+;6;B;145;11;1;0",
+            "+;2;W;143;1;1;0",
+            "-;16;B;142;5;16;0",
+            "=;7;W;143;7;7;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "BAPANAPALLI, SURYA",
+          "ID": "30471585",
+          "Rating": 1001,
+          "Exp1": "02/28/2027",
+          "Current result": "½",
+          "Results": [
+            "+;12;B;144;12;12;0",
+            "-;16;W;142;14;14;0",
+            "-;15;B;145;13;13;0",
+            "+;17;W;148;17;10;0",
+            "=;10;W;145;10;10;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "BOGLE, JACK",
+          "ID": "31536887",
+          "Rating": 1000,
+          "Exp1": "03/31/2027",
+          "Current result": "0",
+          "Results": [
+            "+;13;W;145;13;13;0",
+            "+;9;B;143;16;16;0",
+            "+;14;W;141;14;14;0",
+            "+;7;B;141;3;7;0",
+            "-;16;W;141;16;16;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "VEMPRALA, LASYA SRI",
+          "ID": "30569123",
+          "Rating": 999,
+          "Exp1": "09/30/2026",
+          "Current result": "1",
+          "Results": [
+            "-;14;B;146;14;14;0",
+            "-;3;W;145;12;11;0",
+            "-;8;B;148;8;8;0",
+            "B;-1;-;0;-1;-1;0",
+            "+;11;W;147;17;11;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "BRUNT, SANDOVAL VAN",
+          "ID": "31382861",
+          "Rating": 989,
+          "Exp1": "12/31/2026",
+          "Current result": "½",
+          "Results": [
+            "+;15;W;147;15;15;0",
+            "+;17;B;144;17;17;0",
+            "=;16;W;142;16;16;0",
+            "-;5;W;141;16;5;0",
+            "=;3;B;143;3;3;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "DAVIS, MARCELLUS",
+          "ID": "32699187",
+          "Rating": 956,
+          "Exp1": "11/30/2026",
+          "Current result": "1",
+          "Results": [
+            "-;16;B;148;16;16;0",
+            "-;12;W;147;13;12;0",
+            "+;6;W;148;6;6;0",
+            "-;2;B;147;1;1;0",
+            "B;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "KIMBERLY, COLIN",
+          "ID": "32406354",
+          "Rating": 955,
+          "Exp1": "04/30/2026",
+          "Current result": "1",
+          "Results": [
+            "+;1;B;141;1;1;0",
+            "-;5;W;143;2;2;0",
+            "=;12;B;146;15;15;0",
+            "-;15;W;144;15;15;0",
+            "+;13;B;146;13;13;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "MAI, HENRY",
+          "ID": "17269663",
+          "Rating": 954,
+          "Exp1": "06/30/2026",
+          "Current result": "½",
+          "Results": [
+            "-;2;W;142;2;2;0",
+            "-;13;B;148;1;13;0",
+            "B;-1;-;0;-1;-1;0",
+            "+;1;W;146;2;4;0",
+            "=;4;B;145;4;4;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "BONDHEY, SRIJAN",
+          "ID": "32094994",
+          "Rating": 934,
+          "Exp1": "10/31/2027",
+          "Current result": "0",
+          "Results": [
+            "=;3;B;143;3;3;0",
+            "-;1;W;146;3;6;0",
+            "+;17;W;147;17;17;0",
+            "-;12;B;145;12;12;0",
+            "-;6;B;147;1;6;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "ALVAREZ-GARIBAY, SANTIAGO",
+          "ID": "30672957",
+          "Rating": 929,
+          "Exp1": "12/31/2026",
+          "Current result": "0",
+          "Results": [
+            "-;4;W;144;4;4;0",
+            "+;8;B;147;6;8;0",
+            "=;9;W;146;2;2;0",
+            "+;11;W;145;11;11;0",
+            "-;2;B;144;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "ROCHA, ADRIAN",
+          "ID": "32434379",
+          "Rating": 921,
+          "Exp1": "04/30/2027",
+          "Current result": "0",
+          "Results": [
+            "-;5;B;145;5;5;0",
+            "+;10;W;148;8;10;0",
+            "+;1;B;144;4;4;0",
+            "-;14;B;143;14;14;0",
+            "-;9;W;146;9;9;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "BAHN, GAWOON",
+          "ID": "32385848",
+          "Rating": 907,
+          "Exp1": "02/28/2027",
+          "Current result": "1",
+          "Results": [
+            "+;6;W;146;6;6;0",
+            "+;2;B;141;4;4;0",
+            "-;5;B;141;5;5;0",
+            "+;13;W;143;13;13;0",
+            "+;15;B;142;15;15;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "MCCARTNEY, BRENT",
+          "ID": "31489856",
+          "Rating": 884,
+          "Exp1": "12/31/2026",
+          "Current result": "0",
+          "Results": [
+            "-;7;B;147;7;7;0",
+            "B;-1;-;0;-1;-1;0",
+            "+;4;W;145;9;9;0",
+            "+;9;B;144;9;9;0",
+            "-;14;W;142;14;14;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "CHANDRAMOHAN, DHIVYAN",
+          "ID": "32621303",
+          "Rating": 878,
+          "Exp1": "10/31/2026",
+          "Current result": "1",
+          "Results": [
+            "+;8;W;148;8;8;0",
+            "+;4;B;142;5;5;0",
+            "=;7;B;142;7;7;0",
+            "+;3;W;142;7;3;0",
+            "+;5;B;141;5;5;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "BASIL, JOSHUA",
+          "ID": "30688451",
+          "Rating": 876,
+          "Exp1": "09/30/2026",
+          "Current result": "1",
+          "Results": [
+            "B;-1;-;0;-1;-1;0",
+            "-;7;W;144;7;7;0",
+            "-;11;B;147;11;11;0",
+            "-;4;B;148;4;2;0",
+            "+;1;W;148;6;1;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "High School Zinc",
+      "Type": 0,
+      "Section time control": "G/40;+5",
+      "Number of players": 21,
+      "Number of teams": 1,
+      "Rounds paired": 5,
+      "Rounds played": 5,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 0,
+      "Need search options": false,
+      "First board": 161,
+      "Final round": 5,
+      "Coin toss": 1,
+      "Team cut": 3,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 10,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "ALPERT, KAYDEN",
+          "ID": "30148007",
+          "Rating": 845,
+          "Exp1": "03/31/2027",
+          "Current result": "½",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "=;11;W;161;11;11;0",
+            "=;9;B;165;11;18;0",
+            "+;10;W;164;10;10;0",
+            "+;19;B;163;7;7;0",
+            "=;8;W;162;8;8;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "BADRI, ANKITA",
+          "ID": "30469853",
+          "Rating": 790,
+          "Exp1": "03/31/2027",
+          "Current result": "1",
+          "Results": [
+            "+;12;B;162;12;12;0",
+            "=;7;W;161;7;7;0",
+            "-;8;W;162;8;8;0",
+            "-;17;B;165;11;17;0",
+            "+;19;W;167;19;19;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "VIPIN, SREEBHADRA",
+          "ID": "30702429",
+          "Rating": 770,
+          "Exp1": "10/31/2026",
+          "Current result": "½",
+          "Results": [
+            "+;13;W;163;13;13;0",
+            "-;8;B;162;8;8;0",
+            "=;17;W;165;13;15;0",
+            "-;11;B;166;17;11;0",
+            "=;10;W;168;10;10;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "LEAL-MARTINEZ, ALEXANDER",
+          "ID": "32406339",
+          "Rating": 764,
+          "Exp1": "04/30/2026",
+          "Current result": "1",
+          "Results": [
+            "+;14;B;164;14;14;0",
+            "+;15;W;163;15;15;0",
+            "-;6;B;161;6;6;0",
+            "-;7;W;162;9;9;0",
+            "+;17;W;164;17;17;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "PAUL, RAINA",
+          "ID": "31814860",
+          "Rating": 748,
+          "Exp1": "04/30/2026",
+          "Current result": "0",
+          "Results": [
+            "-;15;W;165;15;15;0",
+            "+;14;B;167;14;14;0",
+            "+;13;W;166;15;13;0",
+            "+;9;B;164;19;19;0",
+            "-;11;W;163;11;11;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "MUDDAGOWDA, BHUVANESH",
+          "ID": "31981601",
+          "Rating": 745,
+          "Exp1": "10/31/2026",
+          "Current result": "½",
+          "Results": [
+            "+;16;B;166;16;16;0",
+            "+;19;W;164;19;19;0",
+            "+;4;W;161;4;4;0",
+            "=;8;B;161;8;8;0",
+            "=;7;B;161;7;7;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "MCCARTNEY, BAILEY",
+          "ID": "31982583",
+          "Rating": 743,
+          "Exp1": "09/30/2026",
+          "Current result": "½",
+          "Results": [
+            "+;17;W;167;17;17;0",
+            "=;2;B;161;2;2;0",
+            "+;11;W;163;11;11;0",
+            "+;4;B;162;1;1;0",
+            "=;6;W;161;6;6;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "ORENDORFF, STEPHEN",
+          "ID": "31436802",
+          "Rating": 728,
+          "Exp1": "09/30/2026",
+          "Current result": "½",
+          "Results": [
+            "+;20;B;170;18;18;0",
+            "+;3;W;162;3;3;0",
+            "+;2;B;162;2;2;0",
+            "=;6;W;161;6;6;0",
+            "=;1;B;162;1;1;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "MILLER, REED",
+          "ID": "32406340",
+          "Rating": 714,
+          "Exp1": "04/30/2026",
+          "Current result": "0",
+          "Results": [
+            "=;18;B;168;19;19;0",
+            "=;1;W;165;18;11;0",
+            "+;15;B;167;17;17;0",
+            "-;5;W;164;4;4;0",
+            "-;14;B;165;14;14;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "KAKKAR, DHUN",
+          "ID": "32270811",
+          "Rating": 708,
+          "Exp1": "01/31/2027",
+          "Current result": "½",
+          "Results": [
+            "-;19;W;169;20;20;0",
+            "+;16;B;168;16;16;0",
+            "-;1;B;164;1;1;0",
+            "-;14;W;167;14;14;0",
+            "=;3;B;168;3;3;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "SACKET, KAGAN",
+          "ID": "32406365",
+          "Rating": 694,
+          "Exp1": "04/30/2026",
+          "Current result": "1",
+          "Results": [
+            "=;1;B;161;1;1;0",
+            "+;18;W;166;1;9;0",
+            "-;7;B;163;7;7;0",
+            "+;3;W;166;2;3;0",
+            "+;5;B;163;5;5;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "ANAND, AGAMYA",
+          "ID": "31828036",
+          "Rating": 688,
+          "Exp1": "04/30/2027",
+          "Current result": "0",
+          "Results": [
+            "-;2;W;162;2;2;0",
+            "-;17;B;169;17;17;0",
+            "-;16;W;169;16;16;0",
+            "+;20;B;170;20;20;0",
+            "-;15;B;169;15;15;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "AJAY, ADVAIT",
+          "ID": "30469403",
+          "Rating": 660,
+          "Exp1": "01/31/2027",
+          "Current result": "1",
+          "Results": [
+            "-;3;B;163;3;3;0",
+            "+;20;W;170;20;20;0",
+            "-;5;B;166;3;5;0",
+            "+;15;W;168;15;15;0",
+            "+;16;B;166;16;16;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "BURBANK, ISAIAH",
+          "ID": "31469754",
+          "Rating": 606,
+          "Exp1": "10/31/2026",
+          "Team": "BURBANK",
+          "Current result": "1",
+          "Results": [
+            "-;4;W;164;4;4;0",
+            "-;5;W;167;5;5;0",
+            "+;20;B;170;20;20;0",
+            "+;10;B;167;10;10;0",
+            "+;9;W;165;9;9;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "HENDERSON, URIJAH",
+          "ID": "32876384",
+          "Rating": 592,
+          "Exp1": "02/28/2027",
+          "Current result": "1",
+          "Results": [
+            "+;5;B;165;5;5;0",
+            "-;4;B;163;4;4;0",
+            "-;9;W;167;5;3;0",
+            "-;13;B;168;13;13;0",
+            "+;12;W;169;12;12;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "HOLLIDAY, COLTON",
+          "ID": "32036823",
+          "Rating": 584,
+          "Exp1": "09/30/2026",
+          "Current result": "0",
+          "Results": [
+            "-;6;W;166;6;6;0",
+            "-;10;W;168;10;10;0",
+            "+;12;B;169;12;12;0",
+            "+;18;B;169;18;18;0",
+            "-;13;W;166;13;13;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "BURBANK, SEBASTIAN",
+          "ID": "31469738",
+          "Rating": 524,
+          "Exp1": "10/31/2026",
+          "Team": "BURBANK",
+          "Current result": "0",
+          "Results": [
+            "-;7;B;167;7;7;0",
+            "+;12;W;169;12;12;0",
+            "=;3;B;165;9;9;0",
+            "+;2;W;165;3;2;0",
+            "-;4;B;164;4;4;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "Muppalla, Yuvanraju",
+          "ID": "31219486",
+          "Rating": 512,
+          "Rating2": 511,
+          "Exp1": "12/31/2026",
+          "State": "OR",
+          "Current result": "1",
+          "Results": [
+            "=;9;W;168;8;8;0",
+            "-;11;B;166;9;1;0",
+            "-;19;B;168;19;19;0",
+            "-;16;W;169;16;16;0",
+            "+;20;W;170;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "INGRAM, ROPER",
+          "ID": "32048445",
+          "Rating": 508,
+          "Exp1": "09/30/2026",
+          "Current result": "0",
+          "Results": [
+            "+;10;B;169;9;9;0",
+            "-;6;B;164;6;6;0",
+            "+;18;W;168;18;18;0",
+            "-;1;W;163;5;5;0",
+            "-;2;B;167;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "MURUGAN, SHIVANI",
+          "ID": "31471736",
+          "Rating": 405,
+          "Exp1": "11/30/2026",
+          "Current result": "0",
+          "Results": [
+            "-;8;W;170;10;10;0",
+            "-;13;B;170;13;13;0",
+            "-;14;W;170;14;14;0",
+            "-;12;W;170;12;12;0",
+            "-;18;B;170;18;18;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "SUSI, MARK",
+          "ID": "32036962",
+          "Rating": 224,
+          "Exp1": "09/30/2026",
+          "Reserved byes": "1z ",
+          "Withdrew": true,
+          "Current result": "0",
+          "Results": [
+            "U;0;-;0;0;0;0",
+            "U;0;-;0;0;0;0",
+            "U;0;-;0;0;0;0",
+            "U;0;-;0;0;0;0",
+            "U;0;-;0;0;0;0"
+          ]
+        }
+      ],
+      "Teams": [
+        {
+          "Pair number": 1,
+          "Full name": "BURBANK",
+          "Team code": "BURBANK",
+          "Rating": 565,
+          "Current result": " ",
+          "Results": [
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0"
+          ]
+        }
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "Middle School Platinum",
+      "Type": 0,
+      "Section time control": "G/85;+5",
+      "Number of players": 22,
+      "Number of teams": 1,
+      "Rounds paired": 5,
+      "Rounds played": 5,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Need search options": false,
+      "First board": 201,
+      "Final round": 5,
+      "Coin toss": 0,
+      "Team cut": 3,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 11,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "IYENGAR, VARUN",
+          "ID": "17039741",
+          "Rating": 2022,
+          "Exp1": "04/30/2026",
+          "Current result": "0",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;12;B;201;12;12;0",
+            "+;14;W;201;13;13;0",
+            "=;8;B;201;8;8;0",
+            "+;10;W;201;8;10;0",
+            "-;2;B;201;8;2;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "MAOKHAMPIO, LUCAS",
+          "ID": "31368597",
+          "Rating": 1951,
+          "Exp1": "08/31/2026",
+          "Team": "MAOKHAMPIO",
+          "Current result": "1",
+          "Results": [
+            "-;13;W;202;13;13;0",
+            "+;9;B;206;12;9;0",
+            "+;4;B;203;12;4;0",
+            "+;12;W;203;12;12;0",
+            "+;1;W;201;13;1;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "SLIWINSKI, LIAM",
+          "ID": "31530017",
+          "Rating": 1805,
+          "Exp1": "07/31/2026",
+          "Current result": "½",
+          "Results": [
+            "-;14;B;203;14;14;0",
+            "+;20;W;207;15;20;0",
+            "=;13;W;204;14;13;0",
+            "+;16;B;205;16;16;0",
+            "=;7;W;203;7;7;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "BADRI, SRIRAM",
+          "ID": "30469864",
+          "Rating": 1690,
+          "Exp1": "02/29/2028",
+          "Current result": "½",
+          "Results": [
+            "+;15;W;204;15;15;0",
+            "=;13;B;202;14;14;0",
+            "-;2;W;203;13;2;0",
+            "+;9;B;206;6;6;0",
+            "=;10;W;204;10;10;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "BARISH, ELIJAH",
+          "ID": "30681390",
+          "Rating": 1670,
+          "Exp1": "08/31/2027",
+          "Current result": "1",
+          "Results": [
+            "-;16;B;205;16;16;0",
+            "+;15;W;208;18;15;0",
+            "+;14;B;205;16;14;0",
+            "-;13;W;204;13;13;0",
+            "+;22;B;205;14;22;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "ARUNKUMAR, PRAGIT",
+          "ID": "30562931",
+          "Rating": 1627,
+          "Exp1": "05/31/2027",
+          "Current result": "1",
+          "Results": [
+            "-;17;W;206;17;17;0",
+            "=;19;B;209;19;18;0",
+            "+;22;W;208;22;22;0",
+            "=;11;B;207;4;4;0",
+            "+;15;W;206;15;14;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "KUHL, LEO",
+          "ID": "30387624",
+          "Rating": 1579,
+          "Exp1": "01/31/2028",
+          "Current result": "½",
+          "Results": [
+            "+;18;B;207;18;18;0",
+            "+;16;W;203;16;16;0",
+            "=;10;B;202;10;10;0",
+            "-;8;W;202;10;8;0",
+            "=;3;B;203;3;3;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "CHENG, TYLER",
+          "ID": "32037910",
+          "Rating": 1571,
+          "Exp1": "09/30/2027",
+          "Current result": "1",
+          "Results": [
+            "+;19;W;208;19;19;0",
+            "+;17;B;204;17;17;0",
+            "=;1;W;201;1;1;0",
+            "+;7;B;202;1;7;0",
+            "+;13;B;202;1;13;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "LIU, MERRICK",
+          "ID": "31956683",
+          "Rating": 1562,
+          "Exp1": "07/31/2027",
+          "Current result": "½",
+          "Results": [
+            "=;20;B;209;20;20;0",
+            "-;2;W;206;20;2;0",
+            "+;19;B;209;19;19;0",
+            "-;4;W;206;11;11;0",
+            "=;14;B;208;22;16;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "LANKA, LAASYA",
+          "ID": "30103198",
+          "Rating": 1528,
+          "Exp1": "03/31/2027",
+          "Current result": "½",
+          "Results": [
+            "+;21;W;210;21;21;0",
+            "+;22;B;205;22;22;0",
+            "=;7;W;202;7;7;0",
+            "-;1;B;201;7;1;0",
+            "=;4;B;204;4;4;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "SINGHAL, AKSH",
+          "ID": "30774912",
+          "Rating": 1517,
+          "Exp1": "10/31/2026",
+          "Current result": "1",
+          "Results": [
+            "-;22;B;211;22;22;0",
+            "+;18;W;210;21;19;0",
+            "-;16;B;206;17;16;0",
+            "=;6;W;207;9;9;0",
+            "+;19;B;209;17;17;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "KESAVAN, VIHAAN",
+          "ID": "31471845",
+          "Rating": 1514,
+          "Exp1": "12/31/2027",
+          "Current result": "1",
+          "Results": [
+            "-;1;W;201;1;1;0",
+            "+;21;B;211;2;21;0",
+            "+;17;W;207;2;17;0",
+            "-;2;B;203;2;2;0",
+            "+;16;W;207;16;15;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "RANDALL, DYLAN",
+          "ID": "31475872",
+          "Rating": 1467,
+          "Exp1": "12/31/2026",
+          "Current result": "0",
+          "Results": [
+            "+;2;B;202;2;2;0",
+            "=;4;W;202;1;1;0",
+            "=;3;B;204;4;3;0",
+            "+;5;B;204;5;5;0",
+            "-;8;W;202;2;8;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "HO, WILLIAM",
+          "ID": "30691336",
+          "Rating": 1400,
+          "Exp1": "08/31/2026",
+          "Current result": "½",
+          "Results": [
+            "+;3;W;203;3;3;0",
+            "-;1;B;201;4;4;0",
+            "-;5;W;205;3;5;0",
+            "+;17;B;208;17;17;0",
+            "=;9;W;208;5;6;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "NOLL, SHEA",
+          "ID": "32430905",
+          "Rating": 1398,
+          "Exp1": "04/30/2026",
+          "Current result": "0",
+          "Results": [
+            "-;4;B;204;4;4;0",
+            "-;5;B;208;3;5;0",
+            "+;20;W;210;20;20;0",
+            "+;18;W;209;18;18;0",
+            "-;6;B;206;6;12;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "TARE, EEVIE",
+          "ID": "31610593",
+          "Rating": 1344,
+          "Exp1": "12/31/2026",
+          "Current result": "0",
+          "Results": [
+            "+;5;W;205;5;5;0",
+            "-;7;B;203;7;7;0",
+            "+;11;W;206;5;11;0",
+            "-;3;W;205;3;3;0",
+            "-;12;B;207;12;9;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "YU, JAYDEN",
+          "ID": "30824048",
+          "Rating": 1338,
+          "Exp1": "01/31/2027",
+          "Current result": "0",
+          "Results": [
+            "+;6;B;206;6;6;0",
+            "-;8;W;204;8;8;0",
+            "-;12;B;207;11;12;0",
+            "-;14;W;208;14;14;0",
+            "-;18;B;210;11;11;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "MAOKHAMPIO, OLIVIA",
+          "ID": "31368540",
+          "Rating": 1336,
+          "Exp1": "08/31/2026",
+          "Team": "MAOKHAMPIO",
+          "Current result": "1",
+          "Results": [
+            "-;7;W;207;7;7;0",
+            "-;11;B;210;5;6;0",
+            "+;21;W;211;21;21;0",
+            "-;15;B;209;15;15;0",
+            "+;17;W;210;19;19;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "Aravind, Eshan",
+          "ID": "30389746",
+          "Rating": 1310,
+          "Rating2": 1279,
+          "State": "OR",
+          "Current result": "0",
+          "Results": [
+            "-;8;B;208;8;8;0",
+            "=;6;W;209;6;11;0",
+            "-;9;W;209;9;9;0",
+            "=;21;B;211;22;22;0",
+            "-;11;W;209;18;18;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "BALASUBRAMANIAN, PRAKRITHI",
+          "ID": "31649217",
+          "Rating": 1305,
+          "Exp1": "01/31/2031",
+          "Current result": "½",
+          "Results": [
+            "=;9;W;209;9;9;0",
+            "-;3;B;207;9;3;0",
+            "-;15;B;210;15;15;0",
+            "-;22;W;210;21;21;0",
+            "=;21;W;211;21;21;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "RANJIT, NIMAY",
+          "ID": "30292365",
+          "Rating": 1296,
+          "Exp1": "01/31/2027",
+          "Current result": "½",
+          "Results": [
+            "-;10;B;210;10;10;0",
+            "-;12;W;211;11;12;0",
+            "-;18;B;211;18;18;0",
+            "=;19;W;211;20;20;0",
+            "=;20;B;211;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 22,
+          "Name": "FATTAL, ISAIAH",
+          "ID": "31014044",
+          "Rating": 1292,
+          "Exp1": "04/30/2026",
+          "Current result": "0",
+          "Results": [
+            "+;11;W;211;11;11;0",
+            "-;10;W;205;10;10;0",
+            "-;6;B;208;6;6;0",
+            "+;20;B;210;19;19;0",
+            "-;5;W;205;9;5;0"
+          ]
+        }
+      ],
+      "Teams": [
+        {
+          "Pair number": 1,
+          "Full name": "MAOKHAMPIO",
+          "Team code": "MAOKHAMPIO",
+          "Rating": 0,
+          "Results": [
+            "U;0;-;0;0;0;0",
+            "U;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0"
+          ]
+        }
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "Middle School Silver",
+      "Type": 0,
+      "Section time control": "G/40;+5",
+      "Number of players": 25,
+      "Number of teams": 1,
+      "Rounds paired": 5,
+      "Rounds played": 5,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Need search options": false,
+      "First board": 221,
+      "Final round": 5,
+      "Coin toss": 1,
+      "Team cut": 3,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 13,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "NAIR, PRANAV JIBESH",
+          "ID": "30702707",
+          "Rating": 1266,
+          "Exp1": "09/30/2026",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;13;W;221;13;13;0",
+            "+;12;B;221;12;12;0",
+            "=;4;W;221;4;4;0",
+            "=;6;B;221;3;3;0",
+            "+;23;W;221;4;23;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "KUMAR, RAMSWARUP PRASANNA",
+          "ID": "30899404",
+          "Rating": 1250,
+          "Exp1": "12/31/2026",
+          "Current result": "1",
+          "Results": [
+            "=;14;B;222;14;14;0",
+            "+;25;W;226;25;25;0",
+            "+;10;W;223;10;10;0",
+            "=;4;B;222;4;4;0",
+            "+;6;W;222;6;6;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "CHEUNG, JOSIAH",
+          "ID": "32211029",
+          "Rating": 1249,
+          "Exp1": "12/31/2026",
+          "Current result": "1",
+          "Results": [
+            "+;15;W;223;15;15;0",
+            "+;17;B;222;17;17;0",
+            "=;6;W;222;6;6;0",
+            "=;10;B;223;1;1;0",
+            "+;4;W;223;12;4;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "SALAPATI, SRITEJA",
+          "ID": "17117424",
+          "Rating": 1249,
+          "Exp1": "03/31/2027",
+          "Current result": "0",
+          "Results": [
+            "+;16;B;224;16;16;0",
+            "+;20;W;223;20;20;0",
+            "=;1;B;221;1;1;0",
+            "=;2;W;222;2;2;0",
+            "-;3;B;223;1;3;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "DAAS, ARITRA",
+          "ID": "31805079",
+          "Rating": 1180,
+          "Exp1": "03/31/2028",
+          "Current result": "1",
+          "Results": [
+            "-;17;W;225;17;17;0",
+            "=;19;B;228;19;19;0",
+            "+;9;W;230;9;9;0",
+            "+;11;B;227;11;11;0",
+            "+;12;W;224;23;12;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "DHAR, KAVISH",
+          "ID": "30569498",
+          "Rating": 1172,
+          "Exp1": "06/30/2026",
+          "Team": "DHAR",
+          "Current result": "0",
+          "Results": [
+            "+;18;B;226;18;18;0",
+            "+;21;W;224;21;21;0",
+            "=;3;B;222;3;3;0",
+            "=;1;W;221;10;10;0",
+            "-;2;B;222;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "DIAN, SHASHIN",
+          "ID": "32175890",
+          "Rating": 1133,
+          "Exp1": "11/30/2027",
+          "Current result": "½",
+          "Results": [
+            "=;19;W;227;19;19;0",
+            "-;14;B;227;14;14;0",
+            "=;15;W;231;15;15;0",
+            "=;17;B;228;17;17;0",
+            "=;18;W;229;21;21;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "PAUL, RIANA",
+          "ID": "31701754",
+          "Rating": 1127,
+          "Exp1": "02/28/2027",
+          "Current result": "1",
+          "Results": [
+            "-;20;B;228;20;20;0",
+            "-;16;W;229;15;15;0",
+            "=;18;W;232;18;18;0",
+            "=;9;B;232;9;9;0",
+            "+;25;B;232;20;25;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "SATHAYE, ANAY",
+          "ID": "31357139",
+          "Rating": 1119,
+          "Exp1": "07/31/2027",
+          "Current result": "1",
+          "Results": [
+            "-;21;W;229;21;21;0",
+            "=;15;B;230;16;16;0",
+            "-;5;B;230;5;5;0",
+            "=;8;W;232;8;8;0",
+            "+;20;B;231;25;20;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Miller, Kingston",
+          "ID": "31248830",
+          "Rating": 1117,
+          "Rating2": 1097,
+          "Exp1": "02/28/2027",
+          "State": "OR",
+          "Current result": "½",
+          "Results": [
+            "+;22;B;230;22;22;0",
+            "+;23;W;225;23;23;0",
+            "-;2;B;223;2;2;0",
+            "=;3;W;223;6;6;0",
+            "=;24;B;225;19;19;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "LE, ALICIA",
+          "ID": "31184129",
+          "Rating": 1105,
+          "Exp1": "11/30/2026",
+          "Current result": "1",
+          "Results": [
+            "-;23;W;231;23;23;0",
+            "+;18;B;231;18;18;0",
+            "=;14;W;224;14;14;0",
+            "-;5;W;227;5;5;0",
+            "+;21;B;228;17;17;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "DASARI, VASISHTA SAI",
+          "ID": "32072740",
+          "Rating": 1102,
+          "Exp1": "10/31/2027",
+          "Current result": "0",
+          "Results": [
+            "+;24;B;232;24;24;0",
+            "-;1;W;221;1;1;0",
+            "+;20;B;225;20;20;0",
+            "+;21;W;224;21;21;0",
+            "-;5;B;224;3;5;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "DEHARIA, RIAAN",
+          "ID": "30621032",
+          "Rating": 1099,
+          "Exp1": "07/31/2026",
+          "Current result": "½",
+          "Results": [
+            "-;1;B;221;1;1;0",
+            "+;22;W;232;22;22;0",
+            "-;21;B;226;21;21;0",
+            "=;20;W;229;20;20;0",
+            "=;17;B;230;18;18;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "DHAR, AARNA",
+          "ID": "30614574",
+          "Rating": 1082,
+          "Exp1": "07/31/2026",
+          "Team": "DHAR",
+          "Current result": "0",
+          "Results": [
+            "=;2;W;222;2;2;0",
+            "+;7;W;227;7;7;0",
+            "=;11;B;224;11;11;0",
+            "-;23;B;225;23;23;0",
+            "-;19;W;226;24;24;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "SINGH, JASKARAN",
+          "ID": "30698870",
+          "Rating": 1061,
+          "Exp1": "08/31/2027",
+          "Current result": "1",
+          "Results": [
+            "-;3;B;223;3;3;0",
+            "=;9;W;230;8;8;0",
+            "=;7;B;231;7;7;0",
+            "+;25;W;230;22;22;0",
+            "+;16;B;227;16;16;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "SAJU, ANGEL LEANN",
+          "ID": "32270837",
+          "Rating": 1034,
+          "Exp1": "01/31/2027",
+          "Current result": "0",
+          "Results": [
+            "-;4;W;224;4;4;0",
+            "+;8;B;229;9;9;0",
+            "-;24;W;227;23;23;0",
+            "+;22;B;231;25;25;0",
+            "-;15;W;227;15;15;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "PRAVEEN, PRANAV",
+          "ID": "30695258",
+          "Rating": 1034,
+          "Exp1": "08/31/2028",
+          "Current result": "½",
+          "Results": [
+            "+;5;B;225;5;5;0",
+            "-;3;W;222;3;3;0",
+            "-;23;B;228;24;24;0",
+            "=;7;W;228;7;7;0",
+            "=;13;W;230;11;11;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "TEOH, LUCAS",
+          "ID": "30027249",
+          "Rating": 1033,
+          "Exp1": "04/30/2026",
+          "Current result": "½",
+          "Results": [
+            "-;6;W;226;6;6;0",
+            "-;11;W;231;11;11;0",
+            "=;8;B;232;8;8;0",
+            "B;-1;-;0;-1;-1;0",
+            "=;7;B;229;13;13;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "KHAN, BEATRIX",
+          "ID": "30507316",
+          "Rating": 1020,
+          "Exp1": "05/31/2026",
+          "Current result": "1",
+          "Results": [
+            "=;7;B;227;7;7;0",
+            "=;5;W;228;5;5;0",
+            "+;25;B;229;25;25;0",
+            "=;24;W;226;24;24;0",
+            "+;14;B;226;10;10;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "HU, TIM",
+          "ID": "32234172",
+          "Rating": 1012,
+          "Exp1": "01/31/2027",
+          "Current result": "0",
+          "Results": [
+            "+;8;W;228;8;8;0",
+            "-;4;B;223;4;4;0",
+            "-;12;W;225;12;12;0",
+            "=;13;B;229;13;13;0",
+            "-;9;W;231;8;9;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "JAMES, RYAN",
+          "ID": "31878257",
+          "Rating": 1003,
+          "Exp1": "06/30/2026",
+          "Current result": "0",
+          "Results": [
+            "+;9;B;229;9;9;0",
+            "-;6;B;224;6;6;0",
+            "+;13;W;226;13;13;0",
+            "-;12;B;224;12;12;0",
+            "-;11;W;228;7;7;0"
+          ]
+        },
+        {
+          "Pair number": 22,
+          "Name": "TRAN, LONG",
+          "ID": "31184080",
+          "Rating": 991,
+          "Exp1": "01/31/2027",
+          "Reserved byes": "5z ",
+          "Current result": "0",
+          "Results": [
+            "-;10;W;230;10;10;0",
+            "-;13;B;232;13;13;0",
+            "B;-1;-;0;-1;-1;0",
+            "-;16;W;231;15;15;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 23,
+          "Name": "YEDUPATI, SRIHAN",
+          "ID": "32454027",
+          "Rating": 989,
+          "Exp1": "05/31/2026",
+          "Current result": "0",
+          "Results": [
+            "+;11;B;231;11;11;0",
+            "-;10;B;225;10;10;0",
+            "+;17;W;228;16;16;0",
+            "+;14;W;225;14;14;0",
+            "-;1;B;221;5;1;0"
+          ]
+        },
+        {
+          "Pair number": 24,
+          "Name": "ISAACS, RAHUL",
+          "ID": "17148537",
+          "Rating": 949,
+          "Exp1": "10/31/2026",
+          "Current result": "½",
+          "Results": [
+            "-;12;W;232;12;12;0",
+            "B;-1;-;0;-1;-1;0",
+            "+;16;B;227;17;17;0",
+            "=;19;B;226;19;19;0",
+            "=;10;W;225;14;14;0"
+          ]
+        },
+        {
+          "Pair number": 25,
+          "Name": "POOTHULLIL, ALEX",
+          "ID": "32584859",
+          "Rating": 934,
+          "Exp1": "09/30/2026",
+          "Current result": "0",
+          "Results": [
+            "B;-1;-;0;-1;-1;0",
+            "-;2;B;226;2;2;0",
+            "-;19;W;229;19;19;0",
+            "-;15;B;230;16;16;0",
+            "-;8;W;232;9;8;0"
+          ]
+        }
+      ],
+      "Teams": [
+        {
+          "Pair number": 1,
+          "Full name": "DHAR",
+          "Team code": "DHAR",
+          "Rating": 0,
+          "Results": [
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0"
+          ]
+        }
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "Middle School Copper",
+      "Type": 0,
+      "Section time control": "G40;+5",
+      "Number of players": 27,
+      "Number of teams": 0,
+      "Rounds paired": 5,
+      "Rounds played": 5,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 0,
+      "Need search options": false,
+      "First board": 241,
+      "Final round": 5,
+      "Coin toss": 1,
+      "Team cut": 3,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 14,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "BALAJI, ACHYUT",
+          "ID": "30183345",
+          "Rating": 933,
+          "Exp1": "08/31/2026",
+          "Current result": "0",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;14;W;241;14;14;0",
+            "=;15;B;241;15;15;0",
+            "+;21;W;243;15;21;0",
+            "-;5;W;241;5;5;0",
+            "-;4;B;244;4;4;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "LAWRENCE, TEDDY",
+          "ID": "32519869",
+          "Rating": 927,
+          "Exp1": "07/31/2026",
+          "Current result": "½",
+          "Results": [
+            "-;15;B;242;15;15;0",
+            "+;14;W;249;14;14;0",
+            "+;11;B;246;11;11;0",
+            "-;19;W;243;19;19;0",
+            "=;13;B;246;8;8;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "RAVI, TARUN",
+          "ID": "32110315",
+          "Rating": 915,
+          "Exp1": "01/31/2027",
+          "Current result": "0",
+          "Results": [
+            "+;16;W;243;16;16;0",
+            "-;19;B;242;19;19;0",
+            "-;22;W;247;12;12;0",
+            "+;14;B;249;14;14;0",
+            "-;8;W;245;13;13;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "PRAVEEN, NAVNEETH",
+          "ID": "30982611",
+          "Rating": 913,
+          "Exp1": "02/29/2028",
+          "Current result": "1",
+          "Results": [
+            "+;17;B;244;17;17;0",
+            "+;23;W;243;22;22;0",
+            "=;19;W;241;19;19;0",
+            "-;15;B;242;15;15;0",
+            "+;1;W;244;1;1;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "SURESHKUMAR, SUBRAM",
+          "ID": "32584703",
+          "Rating": 907,
+          "Exp1": "09/30/2026",
+          "Current result": "1",
+          "Results": [
+            "+;18;W;245;18;18;0",
+            "+;22;B;244;23;23;0",
+            "+;25;W;242;25;25;0",
+            "+;1;B;241;1;1;0",
+            "+;15;W;241;15;15;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "BURRA, SURYA MANIDHAR",
+          "ID": "32363747",
+          "Rating": 898,
+          "Exp1": "03/31/2028",
+          "Current result": "0",
+          "Results": [
+            "-;19;B;246;19;19;0",
+            "+;16;W;250;16;16;0",
+            "+;23;B;248;22;22;0",
+            "+;25;W;244;22;22;0",
+            "-;26;B;243;19;26;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "SINGHAL, AVYUKT",
+          "ID": "32543381",
+          "Rating": 888,
+          "Exp1": "08/31/2026",
+          "Current result": "0",
+          "Results": [
+            "=;20;W;247;20;20;0",
+            "+;8;B;247;20;21;0",
+            "=;27;W;244;21;27;0",
+            "-;22;B;245;25;25;0",
+            "-;16;W;247;16;16;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "KADALI, AMARTYA",
+          "ID": "31711477",
+          "Rating": 875,
+          "Exp1": "03/31/2027",
+          "Current result": "1",
+          "Results": [
+            "=;21;B;248;21;21;0",
+            "-;7;W;247;21;20;0",
+            "+;20;B;251;20;20;0",
+            "+;27;W;247;27;27;0",
+            "+;3;B;245;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "ALAPPAT, MATTHEW",
+          "ID": "30287035",
+          "Rating": 858,
+          "Exp1": "04/30/2027",
+          "Current result": "1",
+          "Results": [
+            "-;22;W;249;22;22;0",
+            "+;18;B;251;17;17;0",
+            "-;12;W;249;23;23;0",
+            "-;16;B;250;16;16;0",
+            "+;23;W;252;18;23;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "SEGU, ADITH",
+          "ID": "30709237",
+          "Rating": 857,
+          "Exp1": "03/31/2028",
+          "Current result": "1",
+          "Results": [
+            "-;23;B;250;23;23;0",
+            "+;17;W;252;18;18;0",
+            "-;26;B;250;26;26;0",
+            "=;24;B;251;23;24;0",
+            "+;20;W;251;27;25;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "RUDRARAJU, ABHIRAM",
+          "ID": "32049782",
+          "Rating": 847,
+          "Exp1": "09/30/2027",
+          "Current result": "1",
+          "Results": [
+            "+;24;W;251;24;24;0",
+            "-;25;B;245;25;25;0",
+            "-;2;W;246;2;2;0",
+            "+;23;B;252;24;23;0",
+            "+;21;W;248;21;21;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "SHAH, AARUSH",
+          "ID": "31305151",
+          "Rating": 847,
+          "Exp1": "02/28/2027",
+          "Current result": "½",
+          "Results": [
+            "-;25;B;252;25;25;0",
+            "+;24;W;253;24;24;0",
+            "+;9;B;249;3;3;0",
+            "-;26;W;246;26;26;0",
+            "=;27;B;249;25;27;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "ASTEKAR, NIKHIL",
+          "ID": "31882354",
+          "Rating": 834,
+          "Exp1": "06/30/2027",
+          "Current result": "½",
+          "Results": [
+            "+;26;W;253;26;26;0",
+            "=;27;B;246;27;27;0",
+            "-;15;W;245;27;15;0",
+            "=;21;B;248;21;21;0",
+            "=;2;W;246;3;3;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "DASSOW, NADIA VON",
+          "ID": "31271253",
+          "Rating": 832,
+          "Exp1": "05/31/2026",
+          "Current result": "1",
+          "Results": [
+            "-;1;B;241;1;1;0",
+            "-;2;B;249;2;2;0",
+            "+;17;W;253;17;17;0",
+            "-;3;W;249;3;3;0",
+            "+;18;B;253;23;18;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "JAVALI, SUHAS",
+          "ID": "32187099",
+          "Rating": 825,
+          "Exp1": "01/31/2027",
+          "Current result": "0",
+          "Results": [
+            "+;2;W;242;2;2;0",
+            "=;1;W;241;1;1;0",
+            "+;13;B;245;1;13;0",
+            "+;4;W;242;4;4;0",
+            "-;5;B;241;5;5;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "ZALAVADIYA, OM",
+          "ID": "32063877",
+          "Rating": 815,
+          "Exp1": "09/30/2027",
+          "Current result": "1",
+          "Results": [
+            "-;3;B;243;3;3;0",
+            "-;6;B;250;6;6;0",
+            "+;18;W;252;18;18;0",
+            "+;9;W;250;9;9;0",
+            "+;7;B;247;7;7;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "PULIGUNDLA, BHOOMI",
+          "ID": "32059092",
+          "Rating": 810,
+          "Exp1": "09/30/2026",
+          "Current result": "1",
+          "Results": [
+            "-;4;W;244;4;4;0",
+            "-;10;B;252;9;9;0",
+            "-;14;B;253;14;14;0",
+            "-;20;W;253;20;20;0",
+            "B;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "KHAN, AUGUST",
+          "ID": "31210300",
+          "Rating": 801,
+          "Exp1": "05/31/2026",
+          "Current result": "0",
+          "Results": [
+            "-;5;B;245;5;5;0",
+            "-;9;W;251;10;10;0",
+            "-;16;B;252;16;16;0",
+            "B;-1;-;0;-1;-1;0",
+            "-;14;W;253;9;14;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "RAMESH, ABHIRAM",
+          "ID": "32197328",
+          "Rating": 799,
+          "Exp1": "01/31/2027",
+          "Current result": "1",
+          "Results": [
+            "+;6;W;246;6;6;0",
+            "+;3;W;242;3;3;0",
+            "=;4;B;241;4;4;0",
+            "+;2;B;243;2;2;0",
+            "+;22;W;242;6;22;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "VIKASKIRAN, NAMISH",
+          "ID": "31075394",
+          "Rating": 798,
+          "Exp1": "04/30/2026",
+          "Current result": "0",
+          "Results": [
+            "=;7;B;247;7;7;0",
+            "-;21;W;248;7;8;0",
+            "-;8;W;251;8;8;0",
+            "+;17;B;253;17;17;0",
+            "-;10;B;251;24;24;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "ANUMULA, KARTIKEYA",
+          "ID": "32173920",
+          "Rating": 796,
+          "Exp1": "12/31/2026",
+          "Current result": "0",
+          "Results": [
+            "=;8;W;248;8;8;0",
+            "+;20;B;248;8;7;0",
+            "-;1;B;243;7;1;0",
+            "=;13;W;248;13;13;0",
+            "-;11;B;248;11;11;0"
+          ]
+        },
+        {
+          "Pair number": 22,
+          "Name": "Konda, Krounchdhar",
+          "ID": "32633254",
+          "Rating": 793,
+          "Provisional": true,
+          "Rating2": 791,
+          "Exp1": "10/31/2026",
+          "State": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;9;B;249;9;9;0",
+            "-;5;W;244;4;4;0",
+            "+;3;B;247;6;6;0",
+            "+;7;W;245;6;6;0",
+            "-;19;B;242;26;19;0"
+          ]
+        },
+        {
+          "Pair number": 23,
+          "Name": "ESS, DECLAN VAN",
+          "ID": "31785825",
+          "Rating": 778,
+          "Exp1": "04/30/2026",
+          "Current result": "0",
+          "Results": [
+            "+;10;W;250;10;10;0",
+            "-;4;B;243;5;5;0",
+            "-;6;W;248;9;9;0",
+            "-;11;W;252;10;11;0",
+            "-;9;B;252;14;9;0"
+          ]
+        },
+        {
+          "Pair number": 24,
+          "Name": "YADAV, GAUTAM",
+          "ID": "32067436",
+          "Rating": 772,
+          "Exp1": "12/31/2026",
+          "Current result": "0",
+          "Results": [
+            "-;11;B;251;11;11;0",
+            "-;12;B;253;12;12;0",
+            "B;-1;-;0;-1;-1;0",
+            "=;10;W;251;11;10;0",
+            "-;25;W;250;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 25,
+          "Name": "STINE, CROW",
+          "ID": "33006428",
+          "Rating": 765,
+          "Exp1": "03/31/2027",
+          "Current result": "1",
+          "Results": [
+            "+;12;W;252;12;12;0",
+            "+;11;W;245;11;11;0",
+            "-;5;B;242;5;5;0",
+            "-;6;B;244;7;7;0",
+            "+;24;B;250;12;10;0"
+          ]
+        },
+        {
+          "Pair number": 26,
+          "Name": "REEDER, JAMES",
+          "ID": "31480306",
+          "Rating": 755,
+          "Exp1": "03/31/2027",
+          "Current result": "1",
+          "Results": [
+            "-;13;B;253;13;13;0",
+            "B;-1;-;0;-1;-1;0",
+            "+;10;W;250;10;10;0",
+            "+;12;B;246;12;12;0",
+            "+;6;W;243;22;6;0"
+          ]
+        },
+        {
+          "Pair number": 27,
+          "Name": "SARKAR, AADRITO",
+          "ID": "31923134",
+          "Rating": 754,
+          "Exp1": "06/30/2026",
+          "Current result": "½",
+          "Results": [
+            "B;-1;-;0;-1;-1;0",
+            "=;13;W;246;13;13;0",
+            "=;7;B;244;13;7;0",
+            "-;8;B;247;8;8;0",
+            "=;12;W;249;10;12;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "Primary School Platinum",
+      "Type": 0,
+      "Section time control": "G/40;+5",
+      "Number of players": 8,
+      "Number of teams": 1,
+      "Rounds paired": 5,
+      "Rounds played": 5,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Need search options": false,
+      "First board": 401,
+      "Final round": 5,
+      "Coin toss": 0,
+      "Team cut": 3,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 4,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "RAHUL, RIHAAN",
+          "ID": "31619668",
+          "Rating": 1483,
+          "Exp1": "12/31/2026",
+          "Team": "RAHUL",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;5;B;401;5;5;0",
+            "=;2;W;401;2;2;0",
+            "=;3;B;402;2;3;0",
+            "+;8;W;402;2;8;0",
+            "+;4;B;402;2;4;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "MALLAPU, MOKSHITH KUMAR",
+          "ID": "32069722",
+          "Rating": 1437,
+          "Exp1": "10/31/2026",
+          "Current result": "½",
+          "Results": [
+            "+;6;W;402;6;6;0",
+            "=;1;B;401;1;1;0",
+            "+;4;W;401;1;4;0",
+            "+;3;W;401;1;3;0",
+            "=;5;B;401;1;5;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "KESAVAN, SUHAAN",
+          "ID": "31471881",
+          "Rating": 1411,
+          "Exp1": "12/31/2027",
+          "Current result": "1",
+          "Results": [
+            "=;7;B;403;7;7;0",
+            "=;8;W;402;7;8;0",
+            "=;1;W;402;4;1;0",
+            "-;2;B;401;5;2;0",
+            "+;6;W;404;8;6;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "RAHUL, VIHAAN",
+          "ID": "32163892",
+          "Rating": 1224,
+          "Exp1": "11/30/2027",
+          "Team": "RAHUL",
+          "Current result": "0",
+          "Results": [
+            "=;8;W;404;8;8;0",
+            "+;7;B;403;8;7;0",
+            "-;2;B;401;3;2;0",
+            "+;6;W;404;8;6;0",
+            "-;1;W;402;5;1;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "CHEN, STEPHEN",
+          "ID": "31444699",
+          "Rating": 1035,
+          "Exp1": "09/30/2026",
+          "Current result": "½",
+          "Results": [
+            "-;1;W;401;1;1;0",
+            "+;6;B;404;6;6;0",
+            "=;8;B;403;8;8;0",
+            "+;7;W;403;3;7;0",
+            "=;2;W;401;4;2;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "MAZARI, ADVIK",
+          "ID": "32635058",
+          "Rating": 978,
+          "Exp1": "10/31/2026",
+          "Current result": "0",
+          "Results": [
+            "-;2;B;402;2;2;0",
+            "-;5;W;404;5;5;0",
+            "=;7;W;404;7;7;0",
+            "-;4;B;404;7;4;0",
+            "-;3;B;404;7;3;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "KHANOLKAR, AABHA",
+          "ID": "31380748",
+          "Rating": 974,
+          "Exp1": "08/31/2026",
+          "Current result": "0",
+          "Results": [
+            "=;3;W;403;3;3;0",
+            "-;4;W;403;3;4;0",
+            "=;6;B;404;6;6;0",
+            "-;5;B;403;6;5;0",
+            "-;8;B;403;6;8;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "PINGALE, SHARANYA",
+          "ID": "31180471",
+          "Rating": 949,
+          "Exp1": "09/30/2026",
+          "Current result": "1",
+          "Results": [
+            "=;4;B;404;4;4;0",
+            "=;3;B;402;4;3;0",
+            "=;5;W;403;5;5;0",
+            "-;1;B;402;4;1;0",
+            "+;7;W;403;3;7;0"
+          ]
+        }
+      ],
+      "Teams": [
+        {
+          "Pair number": 1,
+          "Full name": "RAHUL",
+          "Team code": "RAHUL",
+          "Rating": 0,
+          "Current result": " ",
+          "Results": [
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0"
+          ]
+        }
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "Elementary School Platinum",
+      "Type": 0,
+      "Section time control": "G/85;+5",
+      "Number of players": 8,
+      "Number of teams": 0,
+      "Rounds paired": 5,
+      "Rounds played": 5,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 3,
+      "Need search options": false,
+      "First board": 301,
+      "Final round": 5,
+      "Coin toss": 0,
+      "Team cut": 3,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 4,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "SARDAR, EKAM",
+          "ID": "31390134",
+          "Rating": 1711,
+          "Exp1": "08/31/2026",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;5;B;301;5;5;0",
+            "-;4;W;301;4;4;0",
+            "-;6;B;302;6;6;0",
+            "+;7;W;304;5;8;0",
+            "+;3;W;301;6;3;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "SHUKLA, WEG",
+          "ID": "30853222",
+          "Rating": 1631,
+          "Exp1": "12/31/2026",
+          "Current result": "0",
+          "Results": [
+            "-;6;W;302;6;6;0",
+            "+;7;B;303;7;7;0",
+            "+;8;W;303;8;8;0",
+            "-;3;B;301;6;3;0",
+            "-;5;W;303;5;5;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "ZHAO, RAYMOND",
+          "ID": "31956702",
+          "Rating": 1622,
+          "Exp1": "07/31/2027",
+          "Current result": "0",
+          "Results": [
+            "+;7;B;303;7;7;0",
+            "+;6;W;302;6;6;0",
+            "=;4;B;301;4;4;0",
+            "+;2;W;301;4;2;0",
+            "-;1;B;301;4;1;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "ARUN, AXL",
+          "ID": "31884150",
+          "Rating": 1598,
+          "Exp1": "05/31/2026",
+          "Current result": "½",
+          "Results": [
+            "+;8;W;304;8;8;0",
+            "+;1;B;301;1;1;0",
+            "=;3;W;301;3;3;0",
+            "-;5;B;302;3;5;0",
+            "=;6;W;302;3;6;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "LI, BOHAN",
+          "ID": "30458814",
+          "Rating": 1549,
+          "Exp1": "03/31/2028",
+          "Current result": "1",
+          "Results": [
+            "-;1;W;301;1;1;0",
+            "-;8;B;304;8;8;0",
+            "+;7;W;304;7;7;0",
+            "+;4;W;302;1;4;0",
+            "+;2;B;303;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "SARIPALLI, PRAHLADA",
+          "ID": "30709775",
+          "Rating": 1541,
+          "Exp1": "11/30/2027",
+          "Current result": "½",
+          "Results": [
+            "+;2;B;302;2;2;0",
+            "-;3;B;302;3;3;0",
+            "+;1;W;302;1;1;0",
+            "=;8;W;303;2;7;0",
+            "=;4;B;302;1;4;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "PEDDIREDDY, BBHUVAN",
+          "ID": "31188143",
+          "Rating": 1205,
+          "Exp1": "04/30/2028",
+          "Current result": "½",
+          "Results": [
+            "-;3;W;303;3;3;0",
+            "-;2;W;303;2;2;0",
+            "-;5;B;304;5;5;0",
+            "-;1;B;304;8;6;0",
+            "=;8;B;304;8;8;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "BALASUBRAMANIAN, PRANAV",
+          "ID": "31685074",
+          "Rating": 1160,
+          "Exp1": "02/28/2031",
+          "Current result": "½",
+          "Results": [
+            "-;4;B;304;4;4;0",
+            "+;5;W;304;5;5;0",
+            "-;2;B;303;2;2;0",
+            "=;6;B;303;7;1;0",
+            "=;7;W;304;7;7;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "Elementary School Silver",
+      "Type": 0,
+      "Section time control": "G40;+5",
+      "Number of players": 20,
+      "Number of teams": 0,
+      "Rounds paired": 5,
+      "Rounds played": 5,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Need search options": false,
+      "First board": 321,
+      "Final round": 5,
+      "Coin toss": 0,
+      "Team cut": 3,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 10,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "ZHANG, IAN",
+          "ID": "30794681",
+          "Rating": 1185,
+          "Exp1": "12/31/2026",
+          "Current result": "0",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;11;B;321;11;11;0",
+            "=;8;W;321;8;8;0",
+            "+;2;B;322;3;3;0",
+            "+;4;W;321;4;4;0",
+            "-;6;B;321;4;5;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "MADHAN, RUTHWIKKSAI",
+          "ID": "32205634",
+          "Rating": 1156,
+          "Exp1": "01/31/2027",
+          "Current result": "0",
+          "Results": [
+            "+;12;W;322;12;12;0",
+            "=;15;B;322;15;15;0",
+            "-;1;W;322;8;8;0",
+            "+;13;B;325;13;13;0",
+            "-;20;W;323;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "DAAS, ADRITO",
+          "ID": "31805118",
+          "Rating": 1153,
+          "Exp1": "03/31/2028",
+          "Current result": "0",
+          "Results": [
+            "=;13;B;323;13;13;0",
+            "+;19;W;325;20;20;0",
+            "-;8;B;323;1;1;0",
+            "=;15;W;326;15;15;0",
+            "-;17;B;325;8;17;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "YANG, KYLE",
+          "ID": "31362591",
+          "Rating": 1140,
+          "Exp1": "08/31/2026",
+          "Current result": "½",
+          "Results": [
+            "+;14;W;324;14;14;0",
+            "+;17;B;323;17;17;0",
+            "+;20;W;321;20;20;0",
+            "-;1;B;321;1;1;0",
+            "=;5;W;322;1;6;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "KALLAM, KARTHIK RAM REDDY",
+          "ID": "32454451",
+          "Rating": 1092,
+          "Exp1": "05/31/2026",
+          "Current result": "½",
+          "Results": [
+            "-;15;B;325;15;15;0",
+            "+;13;W;326;13;13;0",
+            "+;9;B;325;15;9;0",
+            "+;8;W;322;8;8;0",
+            "=;4;B;322;6;1;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "JAMIL, MATISSE",
+          "ID": "30890124",
+          "Rating": 1092,
+          "Exp1": "01/31/2027",
+          "Current result": "1",
+          "Results": [
+            "+;16;W;326;16;16;0",
+            "-;20;B;324;19;19;0",
+            "+;15;W;324;9;15;0",
+            "+;7;B;323;17;17;0",
+            "+;1;W;321;5;4;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "DUFEK, PETER",
+          "ID": "31471149",
+          "Rating": 1082,
+          "Exp1": "12/31/2026",
+          "Current result": "½",
+          "Results": [
+            "-;17;B;327;17;17;0",
+            "+;12;W;327;12;12;0",
+            "+;19;B;326;17;19;0",
+            "-;6;W;323;20;20;0",
+            "=;8;B;324;15;8;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "DOKANIA, VIHAAN",
+          "ID": "32443289",
+          "Rating": 1080,
+          "Exp1": "05/31/2026",
+          "Current result": "½",
+          "Results": [
+            "+;18;W;328;18;18;0",
+            "=;1;B;321;1;1;0",
+            "+;3;W;323;2;2;0",
+            "-;5;B;322;5;5;0",
+            "=;7;W;324;3;7;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "KHETAN, SHAARAV",
+          "ID": "31686856",
+          "Rating": 1053,
+          "Exp1": "01/31/2027",
+          "Current result": "1",
+          "Results": [
+            "-;19;B;329;19;19;0",
+            "+;14;W;328;14;14;0",
+            "-;5;W;325;6;5;0",
+            "=;16;B;327;14;16;0",
+            "+;11;B;327;17;15;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "WALWADKAR, SHIVAM",
+          "ID": "32096907",
+          "Rating": 1020,
+          "Exp1": "11/30/2026",
+          "Current result": "1",
+          "Results": [
+            "-;20;W;330;20;20;0",
+            "=;16;B;329;16;16;0",
+            "-;17;W;327;19;17;0",
+            "=;12;B;330;19;19;0",
+            "+;19;W;330;18;18;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "DAS, RAJVI",
+          "ID": "31316627",
+          "Rating": 992,
+          "Exp1": "08/31/2027",
+          "Current result": "0",
+          "Results": [
+            "-;1;W;321;1;1;0",
+            "=;18;B;330;18;18;0",
+            "=;16;W;328;16;16;0",
+            "=;14;B;328;16;14;0",
+            "-;9;W;327;14;13;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "YU, JENSEN",
+          "ID": "30462128",
+          "Rating": 989,
+          "Exp1": "05/31/2026",
+          "Current result": "1",
+          "Results": [
+            "-;2;B;322;2;2;0",
+            "-;7;B;327;7;7;0",
+            "-;14;W;330;14;14;0",
+            "=;10;W;330;18;18;0",
+            "+;16;B;329;19;19;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "PETRISHAK, NATHANIEL",
+          "ID": "32289115",
+          "Rating": 989,
+          "Exp1": "02/28/2027",
+          "Current result": "1",
+          "Results": [
+            "=;3;W;323;3;3;0",
+            "-;5;B;326;5;5;0",
+            "+;18;W;329;18;18;0",
+            "-;2;W;325;2;2;0",
+            "+;15;B;326;16;11;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "POWELL, EMANUEL",
+          "ID": "31530695",
+          "Rating": 985,
+          "Exp1": "12/31/2026",
+          "Current result": "0",
+          "Results": [
+            "-;4;B;324;4;4;0",
+            "-;9;B;328;9;9;0",
+            "+;12;B;330;12;12;0",
+            "=;11;W;328;9;11;0",
+            "-;18;W;328;11;16;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "SALVI, EKANSH",
+          "ID": "31907972",
+          "Rating": 970,
+          "Exp1": "06/30/2027",
+          "Current result": "0",
+          "Results": [
+            "+;5;W;325;5;5;0",
+            "=;2;W;322;2;2;0",
+            "-;6;B;324;5;6;0",
+            "=;3;B;326;3;3;0",
+            "-;13;W;326;7;9;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "JUNEJA, PARTH",
+          "ID": "30794725",
+          "Rating": 966,
+          "Exp1": "10/31/2026",
+          "Current result": "0",
+          "Results": [
+            "-;6;B;326;6;6;0",
+            "=;10;W;329;10;10;0",
+            "=;11;B;328;11;11;0",
+            "=;9;W;327;11;9;0",
+            "-;12;W;329;13;14;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "SCHARF, OSCAR",
+          "ID": "31609525",
+          "Rating": 965,
+          "Exp1": "02/28/2027",
+          "Current result": "1",
+          "Results": [
+            "+;7;W;327;7;7;0",
+            "-;4;W;323;4;4;0",
+            "+;10;B;327;7;10;0",
+            "-;20;B;324;6;6;0",
+            "+;3;W;325;9;3;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "MADSEN, LEVI",
+          "ID": "30794691",
+          "Rating": 960,
+          "Exp1": "07/31/2026",
+          "Current result": "1",
+          "Results": [
+            "-;8;B;328;8;8;0",
+            "=;11;W;330;11;11;0",
+            "-;13;B;329;13;13;0",
+            "+;19;W;329;12;12;0",
+            "+;14;B;328;10;10;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "MAOKHAMPIO, CORINA",
+          "ID": "31368613",
+          "Rating": 951,
+          "Exp1": "08/31/2026",
+          "Current result": "0",
+          "Results": [
+            "+;9;W;329;9;9;0",
+            "-;3;B;325;6;6;0",
+            "-;7;W;326;10;7;0",
+            "-;18;B;329;10;10;0",
+            "-;10;B;330;12;12;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "BKOUR, YOUSEF",
+          "ID": "30807972",
+          "Rating": 948,
+          "Exp1": "01/31/2027",
+          "Current result": "1",
+          "Results": [
+            "+;10;B;330;10;10;0",
+            "+;6;W;324;3;3;0",
+            "-;4;B;321;4;4;0",
+            "+;17;W;324;7;7;0",
+            "+;2;B;323;2;2;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "Extra games",
+      "Type": 0,
+      "Number of players": 11,
+      "Number of teams": 1,
+      "Rounds paired": 2,
+      "Rounds played": 2,
+      "Rating to use": 0,
+      "Exclude from batch": true,
+      "Exclude from ChessRoster sync": true,
+      "Engine": 4,
+      "Need search options": false,
+      "First board": 901,
+      "Final round": 5,
+      "Coin toss": 1,
+      "Team cut": 3,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 6,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "May, Todd B",
+          "ID": "12788240",
+          "Rating": 1487,
+          "Rating2": 1373,
+          "Exp1": "04/30/2026",
+          "State": "WA",
+          "Current result": "0",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "=;3;B;901;2;2;0",
+            "-;2;W;901;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "CHANG, CONRAD",
+          "ID": "16791670",
+          "Rating": 1412,
+          "Exp1": "01/31/2027",
+          "Current result": "1",
+          "Results": [
+            "U;0;-;0;0;0;0",
+            "+;1;B;901;1;1;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "LYNN, CASSADY",
+          "ID": "31273463",
+          "Rating": 1386,
+          "Exp1": "06/30/2026",
+          "Reserved byes": "2z 3z 4z 5z ",
+          "Deleted from pair table": true,
+          "Current result": "0",
+          "Results": [
+            "=;1;W;901;1;1;0",
+            "U;0;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "ALBERTI, RYAN",
+          "ID": "31046244",
+          "Rating": 1058,
+          "Exp1": "04/30/2027",
+          "Current result": "0",
+          "Results": [
+            "U;0;-;0;0;0;0",
+            "-;8;W;903;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "OSTROVSKY, SARAH",
+          "ID": "30472031",
+          "Rating": 1047,
+          "Exp1": "05/31/2027",
+          "Team": "OSTROVSKY",
+          "Current result": "½",
+          "Results": [
+            "U;0;-;0;0;0;0",
+            "=;9;B;902;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "VEMPRALA, LASYA SRI",
+          "ID": "30569123",
+          "Rating": 999,
+          "Exp1": "09/30/2026",
+          "Current result": "0",
+          "Results": [
+            "U;0;-;0;0;0;0",
+            "-;11;W;904;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "DAVIS, MARCELLUS",
+          "ID": "32699187",
+          "Rating": 956,
+          "Exp1": "11/30/2026",
+          "Current result": "0",
+          "Results": [
+            "U;0;-;0;0;0;0",
+            "-;10;B;905;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "MAI, HENRY",
+          "ID": "17269663",
+          "Rating": 954,
+          "Exp1": "06/30/2026",
+          "Current result": "1",
+          "Results": [
+            "U;0;-;0;0;0;0",
+            "+;4;B;903;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "MCCARTNEY, BRENT",
+          "ID": "31489856",
+          "Rating": 884,
+          "Exp1": "12/31/2026",
+          "Current result": "½",
+          "Results": [
+            "U;0;-;0;0;0;0",
+            "=;5;W;902;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "PULIGUNDLA, BHOOMI",
+          "ID": "32059092",
+          "Rating": 810,
+          "Exp1": "09/30/2026",
+          "Current result": "1",
+          "Results": [
+            "U;0;-;0;0;0;0",
+            "+;7;W;905;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "Stuart, Kevin Edward",
+          "ID": "31620834",
+          "Rating": 713,
+          "Provisional": true,
+          "Rating2": 703,
+          "Exp1": "12/31/2026",
+          "State": "OR",
+          "Current result": "1",
+          "Results": [
+            "U;0;-;0;0;0;0",
+            "+;6;B;904;0;0;0"
+          ]
+        }
+      ],
+      "Teams": [
+        {
+          "Pair number": 1,
+          "Full name": "OSTROVSKY",
+          "Team code": "OSTROVSKY",
+          "Rating": 1047,
+          "Results": [
+            "U;0;-;0;0;0;0",
+            "U;0;-;0;0;0;0"
+          ]
+        }
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    }
+  ]
+}

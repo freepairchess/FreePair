@@ -1,0 +1,308 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.79,
+    "VersionString": "11.79.7",
+    "Tournament title": "PNWCC IM Norm RR - Apr 2025",
+    "Tournament time controls": "90+30",
+    "Starting date": "2025-04-01",
+    "Ending date": "2025-04-05",
+    "NACH event ID": "81135394-1596-469f-ad3e-ec4bde9b6d7c",
+    "NACH passcode": "3d-4d36-bc80-1ea3a2209dbb",
+    "ChessRoster auto sync enabled": true,
+    "ChessRoster sync interval minutes": 30,
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Organizer",
+      "Type": 3,
+      "Section title": "Organizer",
+      "Section time control": "90+30",
+      "Number of players": 1,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": 0,
+      "Last unrestricted round": 0,
+      "Need search options": false,
+      "Final round": 9,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Table set": false,
+      "Berger": false,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Pair table items": 1,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Sankaran, Vijay",
+          "ID": "30991137",
+          "ID2": "16741860",
+          "Rating2": 425,
+          "Club": "USA",
+          "Sex": "M",
+          "State": "WA",
+          "Birth date": "1972",
+          "Current result": " ",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "Arbiter",
+      "Type": 3,
+      "Section title": "Arbiter",
+      "Section time control": "G/90;+30",
+      "Number of players": 1,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": 0,
+      "Last unrestricted round": 0,
+      "Need search options": false,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Table set": false,
+      "Berger": false,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Atikankhotchasee, Manunthon",
+          "ID": "6203191",
+          "Rating": 1680,
+          "ID2": "31658118",
+          "Rating2": 1598,
+          "Club": "THA",
+          "Player title": "WFM",
+          "Sex": "F",
+          "Birth date": "1991",
+          "Current result": " ",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "IM_Norm_RR_7_9_IM_Norm",
+      "Type": 3,
+      "Section title": "IM Norm RR 7/9 IM Norm",
+      "Section time control": "90+30",
+      "Number of players": 10,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": 0,
+      "Last unrestricted round": 0,
+      "Need search options": false,
+      "Lower rating limit": 2200,
+      "Final round": 9,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Table set": false,
+      "Berger": false,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Nagy, Gabor",
+          "ID": "737119",
+          "Rating": 2443,
+          "ID2": "30405739",
+          "Rating2": 2537,
+          "Club": "HUN",
+          "Player title": "GM",
+          "Sex": "M",
+          "Birth date": "1994",
+          "Current result": " ",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Cruz Sanchez, Cristhian Arnaldo",
+          "ID": "3801969",
+          "Rating": 2441,
+          "ID2": "15574203",
+          "Rating2": 2520,
+          "Club": "PER",
+          "Player title": "GM",
+          "Sex": "M",
+          "Birth date": "1992",
+          "Current result": " ",
+          "Results": [
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Georgiev, Vladimir",
+          "ID": "2903024",
+          "Rating": 2350,
+          "ID2": "12735967",
+          "Rating2": 2402,
+          "Club": "MKD",
+          "Player title": "GM",
+          "State": "FL",
+          "Current result": " ",
+          "Results": [
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Atwell, Rose",
+          "ID": "30951011",
+          "Rating": 2337,
+          "ID2": "16303021",
+          "Rating2": 2392,
+          "Club": "USA",
+          "Player title": "FM",
+          "Sex": "F",
+          "State": "CA",
+          "Birth date": "2009",
+          "Current result": " ",
+          "Results": [
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Tang, Dylan",
+          "ID": "30972531",
+          "Rating": 2326,
+          "ID2": "16551237",
+          "Rating2": 2350,
+          "Club": "USA",
+          "Player title": "FM",
+          "Sex": "M",
+          "State": "CA",
+          "Birth date": "2010",
+          "Current result": " ",
+          "Results": [
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "Degenbaev, Aziz",
+          "ID": "13802640",
+          "Rating": 2291,
+          "ID2": "31649245",
+          "Rating2": 2390,
+          "Club": "KGZ",
+          "Player title": "FM",
+          "Sex": "M",
+          "State": "WA",
+          "Birth date": "2005",
+          "Current result": " ",
+          "Results": [
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Willy, Stephen John",
+          "ID": "30981468",
+          "Rating": 2232,
+          "ID2": "17088783",
+          "Rating2": 2285,
+          "Club": "USA",
+          "Player title": "FM",
+          "Sex": "M",
+          "State": "WA",
+          "Birth date": "2010",
+          "Current result": " ",
+          "Results": [
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Lee, Megan",
+          "ID": "2029618",
+          "Rating": 2230,
+          "ID2": "12902833",
+          "Rating2": 2306,
+          "Club": "USA",
+          "Player title": "FM",
+          "State": "WA",
+          "Current result": " ",
+          "Results": [
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "Vijayakumar, Advaith",
+          "ID": "30933196",
+          "Rating": 2188,
+          "ID2": "15563114",
+          "Rating2": 2248,
+          "Club": "USA",
+          "Sex": "M",
+          "State": "WA",
+          "Birth date": "2006",
+          "Current result": " ",
+          "Results": [
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Vemparala, Nikash",
+          "ID": "30960967",
+          "Rating": 2163,
+          "ID2": "16438800",
+          "Rating2": 2280,
+          "Club": "USA",
+          "Player title": "CM",
+          "Sex": "M",
+          "State": "WA",
+          "Birth date": "2010",
+          "Current result": " ",
+          "Results": [
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    }
+  ]
+}

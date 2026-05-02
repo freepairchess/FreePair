@@ -1,0 +1,841 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.75,
+    "VersionString": "11.75",
+    "Tournament title": "MCC - 2025-09",
+    "Tournament time controls": "G/90; d5",
+    "Starting date": "2025-09-03",
+    "Ending date": "2025-09-24",
+    "NACH event ID": "38a358f6-4755-48fa-b65d-6aa60451ccce",
+    "NACH passcode": "753ae817-9412-4fbf-a00d-4fdcf08f0047",
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Section title": "Open",
+      "Section time control": "G/90; d5",
+      "Number of players": 25,
+      "Number of teams": 0,
+      "Rounds paired": 4,
+      "Rounds played": 4,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 0,
+      "Need search options": false,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Use team pairings": true,
+      "Got logic": true,
+      "Pair table items": 14,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Davis, Peter",
+          "ID": "15949766",
+          "Rating": 2044,
+          "Club": "MA",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;14;B;1;14;14;0",
+            "+;8;W;1;7;7;0",
+            "=;5;B;1;5;5;0",
+            "+;9;W;1;6;6;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Chisam, Edward",
+          "ID": "12413547",
+          "Rating": 2035,
+          "Club": "MA",
+          "Reserved byes": "2 4 ",
+          "Current result": "Â",
+          "Results": [
+            "+;15;W;2;15;15;0",
+            "H;0;-;0;-1;-1;0",
+            "-;11;B;3;11;11;0",
+            "H;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Pearson, Frederick Kemp",
+          "ID": "12223060",
+          "Rating": 1960,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "+;16;B;3;16;16;0",
+            "+;10;W;2;8;8;0",
+            "=;9;B;2;9;9;0",
+            "+;11;W;2;9;11;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Reynolds, Douglas Sheldon",
+          "ID": "12427040",
+          "Rating": 1873,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "=;17;W;4;17;17;0",
+            "-;9;B;5;12;12;0",
+            "+;25;B;7;25;25;0",
+            "+;10;W;5;14;14;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Liu, Andrew X",
+          "ID": "16340541",
+          "Rating": 1870,
+          "Club": "MA",
+          "Team": "Team Liu",
+          "Current result": "Â",
+          "Results": [
+            "+;18;B;5;18;18;0",
+            "+;12;W;3;9;9;0",
+            "=;1;W;1;1;1;0",
+            "=;6;B;3;11;9;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "Cousin, Neil",
+          "ID": "12065210",
+          "Rating": 1858,
+          "Club": "MA",
+          "Current result": "Â",
+          "Results": [
+            "+;19;W;6;19;19;0",
+            "=;7;B;4;10;10;0",
+            "+;24;W;4;24;24;0",
+            "=;5;W;3;1;1;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Zhaurov, Yuriy",
+          "ID": "14256202",
+          "Rating": 1850,
+          "Club": "MA",
+          "Reserved byes": "3 ",
+          "Current result": "0",
+          "Results": [
+            "+;20;B;7;20;20;0",
+            "=;6;W;4;1;1;0",
+            "H;-1;-;0;-1;-1;0",
+            "-;14;B;4;10;10;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Abbot, Ames",
+          "ID": "12522524",
+          "Rating": 1804,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "+;21;W;8;21;21;0",
+            "-;1;B;1;3;3;0",
+            "-;14;W;5;14;14;0",
+            "+;24;B;8;24;24;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "Gradijan, Stephen",
+          "ID": "12454998",
+          "Rating": 1801,
+          "Club": "MA",
+          "Current result": "0",
+          "Results": [
+            "+;22;B;9;22;22;0",
+            "+;4;W;5;5;5;0",
+            "=;3;W;2;3;3;0",
+            "-;1;B;1;3;5;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Thompson, Ethan D.",
+          "ID": "12650009",
+          "Rating": 1779,
+          "Club": "MA",
+          "Current result": "0",
+          "Results": [
+            "+;23;W;10;23;23;0",
+            "-;3;B;2;6;6;0",
+            "+;16;W;6;16;16;0",
+            "-;4;B;5;7;7;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "Bird, D. G.",
+          "ID": "14902922",
+          "Rating": 1759,
+          "Club": "MA",
+          "Current result": "0",
+          "Results": [
+            "=;24;B;11;24;24;0",
+            "+;13;W;6;17;17;0",
+            "+;2;W;3;2;2;0",
+            "-;3;B;2;5;3;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "Barros, Samuel",
+          "ID": "30671662",
+          "Rating": 1747,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "+;25;W;12;25;25;0",
+            "-;5;B;3;4;4;0",
+            "=;20;W;8;20;20;0",
+            "+;17;B;6;18;18;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "Barry, Michael",
+          "ID": "12584196",
+          "Rating": 1734,
+          "Club": "MA",
+          "Reserved byes": "1 ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "-;11;B;6;24;24;0",
+            "-;17;W;9;17;17;0",
+            "-;15;B;11;15;15;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "Narayanan, Krishna",
+          "ID": "16842787",
+          "Rating": 1733,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "-;1;W;1;1;1;0",
+            "+;19;B;8;19;19;0",
+            "+;8;B;5;8;8;0",
+            "+;7;W;4;4;4;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "Mcneilage, Ralph",
+          "ID": "16062155",
+          "Rating": 1730,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "-;2;B;2;2;2;0",
+            "-;20;W;9;20;20;0",
+            "-;21;B;10;21;21;0",
+            "+;13;W;11;13;13;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "Hori, Calvin",
+          "ID": "12864842",
+          "Rating": 1718,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "-;3;W;3;3;3;0",
+            "+;21;B;10;21;21;0",
+            "-;10;B;6;10;10;0",
+            "+;22;W;9;22;22;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "Kaprielian, Mark",
+          "ID": "10007763",
+          "Rating": 1700,
+          "Club": "MA",
+          "Current result": "0",
+          "Results": [
+            "=;4;B;4;4;4;0",
+            "-;24;W;7;11;11;0",
+            "+;13;B;9;13;13;0",
+            "-;12;W;6;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "Singh, Karanbir",
+          "ID": "31286868",
+          "Rating": 1686,
+          "Club": "MA",
+          "Reserved byes": "3 ",
+          "Current result": "0",
+          "Results": [
+            "-;5;W;5;5;5;0",
+            "+;22;B;11;22;22;0",
+            "H;-1;-;0;-1;-1;0",
+            "-;20;B;7;12;12;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "Liu, Connor Xiang",
+          "ID": "30071216",
+          "Rating": 1675,
+          "Club": "MA",
+          "Team": "Team Liu",
+          "Current result": "1",
+          "Results": [
+            "-;6;B;6;6;6;0",
+            "-;14;W;8;14;14;0",
+            "-;22;W;11;22;22;0",
+            "B;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "Duval, George Wilfred",
+          "ID": "12471987",
+          "Rating": 1645,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "-;7;W;7;7;7;0",
+            "+;15;B;9;15;15;0",
+            "=;12;B;8;12;12;0",
+            "+;18;W;7;17;17;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "Menon, Mannatt Sukumar",
+          "ID": "14216906",
+          "Rating": 1617,
+          "Club": "MA",
+          "Current result": "Â",
+          "Results": [
+            "-;8;B;8;8;8;0",
+            "-;16;W;10;16;16;0",
+            "+;15;W;10;15;15;0",
+            "=;25;B;10;25;25;0"
+          ]
+        },
+        {
+          "Pair number": 22,
+          "Name": "Sullivan, Patrick",
+          "ID": "14856208",
+          "Rating": 1506,
+          "Club": "MA",
+          "Current result": "0",
+          "Results": [
+            "-;9;W;9;9;9;0",
+            "-;18;W;11;18;18;0",
+            "+;19;B;11;19;19;0",
+            "-;16;B;9;16;16;0"
+          ]
+        },
+        {
+          "Pair number": 23,
+          "Name": "Santhosh Kumar, Krishna Chaitanya",
+          "ID": "31261246",
+          "Rating": 1504,
+          "Club": "MA",
+          "Reserved byes": "2 3 4 ",
+          "Current result": "Â",
+          "Results": [
+            "-;10;B;10;10;10;0",
+            "H;0;-;0;-1;-1;0",
+            "H;-1;-;0;-1;-1;0",
+            "H;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 24,
+          "Name": "Balakrishnan, Vasu",
+          "ID": "13691684",
+          "Rating": 1489,
+          "Club": "MA",
+          "Current result": "0",
+          "Results": [
+            "=;11;W;11;11;11;0",
+            "+;17;B;7;13;13;0",
+            "-;6;B;4;6;6;0",
+            "-;8;W;8;8;8;0"
+          ]
+        },
+        {
+          "Pair number": 25,
+          "Name": "Kirubakaran, Gautham",
+          "ID": "31971144",
+          "Rating": 1433,
+          "Club": "MA",
+          "Current result": "Â",
+          "Results": [
+            "-;12;B;12;12;12;0",
+            "B;0;-;0;-1;-1;0",
+            "-;4;W;7;4;4;0",
+            "=;21;W;10;21;21;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "U1700",
+      "Type": 0,
+      "Section title": "U1700",
+      "Section time control": "G/90; d5",
+      "Number of players": 27,
+      "Number of teams": 0,
+      "Rounds paired": 4,
+      "Rounds played": 4,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 3,
+      "Need search options": false,
+      "First board": 13,
+      "Upper rating limit": 1699,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 16,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Lang, Dan",
+          "ID": "12812523",
+          "Rating": 1694,
+          "Club": "MA",
+          "Reserved byes": "2 3 ",
+          "Current result": "0",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;13;B;13;13;13;0",
+            "H;-1;-;0;-1;-1;0",
+            "H;-1;-;0;-1;-1;0",
+            "-;19;W;14;25;19;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Martin, David W",
+          "ID": "12877246",
+          "Rating": 1632,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "=;15;W;14;15;15;0",
+            "+;24;B;17;25;24;0",
+            "=;8;B;14;8;8;0",
+            "+;14;W;15;14;14;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Garcia, Jesus A",
+          "ID": "15783883",
+          "Rating": 1611,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "+;16;B;15;16;16;0",
+            "-;8;W;13;8;8;0",
+            "-;18;W;16;18;18;0",
+            "+;20;B;20;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Manikandan, Arrya",
+          "ID": "32503280",
+          "Rating": 1515,
+          "Club": "MA",
+          "Current result": "0",
+          "Results": [
+            "+;17;W;16;17;17;0",
+            "+;11;B;14;11;11;0",
+            "-;6;W;13;6;6;0",
+            "-;15;B;16;15;15;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Thompson, Douglas",
+          "ID": "12668393",
+          "Rating": 1500,
+          "Club": "MA",
+          "Current result": "Â",
+          "Results": [
+            "-;18;B;17;18;18;0",
+            "=;22;W;20;21;21;0",
+            "=;10;B;20;10;10;0",
+            "=;17;W;21;17;17;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "Smith, Warner",
+          "ID": "12480740",
+          "Rating": 1496,
+          "Club": "MA",
+          "Reserved byes": "4 ",
+          "Current result": "Â",
+          "Results": [
+            "+;21;W;18;21;21;0",
+            "+;18;B;15;18;18;0",
+            "+;4;B;13;4;4;0",
+            "H;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Gassler, Richard",
+          "ID": "12517433",
+          "Rating": 1418,
+          "Club": "MA",
+          "Reserved byes": "3 ",
+          "Current result": "0",
+          "Results": [
+            "+;22;B;19;22;22;0",
+            "-;25;W;16;24;25;0",
+            "H;-1;-;0;-1;-1;0",
+            "-;12;B;18;11;11;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Nicewicz, Lars",
+          "ID": "31651988",
+          "Rating": 1418,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "+;23;W;20;23;23;0",
+            "+;3;B;13;3;3;0",
+            "=;2;W;14;2;2;0",
+            "+;25;B;13;19;25;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "Dorfman, John Roger",
+          "ID": "10338786",
+          "Rating": 1400,
+          "Club": "MA",
+          "Reserved byes": "1 ",
+          "Current result": "0",
+          "Results": [
+            "H;-1;-;0;-1;-1;0",
+            "-;19;W;18;19;19;0",
+            "+;22;B;21;22;22;0",
+            "-;11;W;19;12;12;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Lynch, Liam Cornelius",
+          "ID": "31886475",
+          "Rating": 1368,
+          "Club": "MA",
+          "Reserved byes": "2 ",
+          "Current result": "0",
+          "Results": [
+            "-;25;B;21;25;25;0",
+            "H;-1;-;0;-1;-1;0",
+            "=;5;W;20;5;5;0",
+            "F;23;*;22;23;23;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "Krishnamurthy, Venkat",
+          "ID": "14927661",
+          "Rating": 1361,
+          "Club": "MA",
+          "Reserved byes": "3 ",
+          "Current result": "1",
+          "Results": [
+            "+;26;W;22;26;26;0",
+            "-;4;W;14;4;4;0",
+            "H;-1;-;0;-1;-1;0",
+            "+;9;B;19;7;7;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "Swartz, Paul K",
+          "ID": "12679328",
+          "Rating": 1356,
+          "Club": "MA",
+          "Reserved byes": "2 ",
+          "Current result": "1",
+          "Results": [
+            "+;27;B;23;27;27;0",
+            "H;-1;-;0;-1;-1;0",
+            "-;19;B;15;19;19;0",
+            "+;7;W;18;9;9;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "Fallon, James Joseph, Iv",
+          "ID": "32006413",
+          "Rating": 1329,
+          "Club": "MA",
+          "Current result": "0",
+          "Results": [
+            "-;1;W;13;1;1;0",
+            "+;21;B;21;22;22;0",
+            "+;24;W;19;23;23;0",
+            "-;18;B;17;18;18;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "Weast, Gordon J",
+          "ID": "13711281",
+          "Rating": 1300,
+          "Rating2": 1222,
+          "Exp1": "5/31/2026",
+          "State": "MA",
+          "Reserved byes": "1 2 ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;0;0;0",
+            "H;0;-;0;0;0;0",
+            "+;26;W;17;24;24;0",
+            "-;2;B;15;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "Prabhugee, Adhirit",
+          "ID": "16228992",
+          "Rating": 1227,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "=;2;B;14;2;2;0",
+            "=;20;W;19;20;20;0",
+            "+;23;B;18;26;26;0",
+            "+;4;W;16;4;4;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "Newbern, Jeff",
+          "ID": "31286665",
+          "Rating": 1200,
+          "Club": "MA",
+          "Reserved byes": "3 ",
+          "Current result": "Â",
+          "Results": [
+            "-;3;W;15;3;3;0",
+            "-;26;B;22;26;26;0",
+            "H;-1;-;0;-1;-1;0",
+            "=;21;W;23;21;21;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "Matthews, Robert J",
+          "ID": "12910717",
+          "Rating": 1145,
+          "Club": "MA",
+          "Current result": "Â",
+          "Results": [
+            "-;4;B;16;4;4;0",
+            "-;27;W;23;27;27;0",
+            "B;-1;-;0;-1;-1;0",
+            "=;5;B;21;5;5;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "Lamare, Matthew Marc",
+          "ID": "32113596",
+          "Rating": 1009,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "+;5;W;17;5;5;0",
+            "-;6;W;15;6;6;0",
+            "+;3;B;16;3;3;0",
+            "+;13;W;17;13;13;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "Watts, Robby",
+          "ID": "31274069",
+          "Rating": 969,
+          "Provisional": true,
+          "Rating2": 831,
+          "Exp1": "2027-08-31",
+          "State": "MA",
+          "Reserved byes": "1 ",
+          "Current result": "1",
+          "Results": [
+            "H;0;-;0;0;0;0",
+            "+;9;B;18;9;9;0",
+            "+;12;W;15;12;12;0",
+            "+;1;B;14;8;1;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "Senne, Steven R",
+          "ID": "32072558",
+          "Rating": 969,
+          "Club": "MA",
+          "Reserved byes": "1 3 ",
+          "Current result": "0",
+          "Results": [
+            "H;-1;-;0;-1;-1;0",
+            "=;15;B;19;15;15;0",
+            "H;-1;-;0;-1;-1;0",
+            "-;3;W;20;3;3;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "Chandak, Aarav",
+          "ID": "30690866",
+          "Rating": 839,
+          "Club": "MA",
+          "Reserved byes": "3 ",
+          "Current result": "Â",
+          "Results": [
+            "-;6;B;18;6;6;0",
+            "-;13;W;21;5;5;0",
+            "H;-1;-;0;-1;-1;0",
+            "=;16;B;23;16;16;0"
+          ]
+        },
+        {
+          "Pair number": 22,
+          "Name": "Butler, Robert M",
+          "ID": "31288308",
+          "Rating": 722,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "-;7;W;19;7;7;0",
+            "=;5;B;20;13;13;0",
+            "-;9;W;21;9;9;0",
+            "B;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 23,
+          "Name": "Venkatesan, Hamsini",
+          "ID": "30227516",
+          "Rating": 538,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "-;8;B;20;8;8;0",
+            "B;-1;-;0;-1;-1;0",
+            "-;15;W;18;13;13;0",
+            "X;10;-;22;10;10;0"
+          ]
+        },
+        {
+          "Pair number": 24,
+          "Name": "Michaels, Walter P.",
+          "ID": "30670037",
+          "Rating": 351,
+          "Club": "MA",
+          "Reserved byes": "4 ",
+          "Current result": "Â",
+          "Results": [
+            "B;-1;-;0;-1;-1;0",
+            "-;2;W;17;7;2;0",
+            "-;13;B;19;14;14;0",
+            "H;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 25,
+          "Name": "Walker, Jacob",
+          "ID": "30984259",
+          "Club": "MA",
+          "Reserved byes": "3 ",
+          "Current result": "0",
+          "Results": [
+            "+;10;W;21;10;10;0",
+            "+;7;B;16;2;7;0",
+            "H;-1;-;0;-1;-1;0",
+            "-;8;W;13;1;8;0"
+          ]
+        },
+        {
+          "Pair number": 26,
+          "Name": "Mittleman, Jacob",
+          "ID": "32553120",
+          "Reserved byes": "4 ",
+          "Current result": "Â",
+          "Results": [
+            "-;11;B;22;11;11;0",
+            "+;16;W;22;16;16;0",
+            "-;14;B;17;15;15;0",
+            "H;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 27,
+          "Name": "Keswani, Saahil",
+          "ID": "32551639",
+          "Club": "MA",
+          "Reserved byes": "3 4 ",
+          "Current result": "Â",
+          "Results": [
+            "-;12;W;23;12;12;0",
+            "+;17;B;23;17;17;0",
+            "H;-1;-;0;-1;-1;0",
+            "H;-1;-;0;-1;-1;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    }
+  ]
+}

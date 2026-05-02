@@ -1,0 +1,125 @@
+NAME = Pearson, Frederick Kemp
+ID# = 12223060
+RATING = 1937
+Title = 
+CLUB = MA
+
+NAME = Barros, Samuel
+ID# = 30671662
+RATING = 1865
+Title = 
+CLUB = MA
+
+NAME = Thompson, Ethan D.
+ID# = 12650009
+RATING = 1855
+Title = 
+CLUB = MA
+
+NAME = Cousin, Neil
+ID# = 12065210
+RATING = 1854
+Title = 
+CLUB = MA
+
+NAME = Zhaurov, Yuriy
+ID# = 14256202
+RATING = 1852
+Title = 
+CLUB = MA
+
+NAME = Gradijan, Stephen
+ID# = 12454998
+RATING = 1821
+Title = 
+CLUB = MA
+
+NAME = Reynolds, Douglas Sheldon
+ID# = 12427040
+RATING = 1792
+Title = 
+CLUB = MA
+
+NAME = Abbot, Ames
+ID# = 12522524
+RATING = 1787
+Title = 
+CLUB = MA
+
+NAME = Kaprielian, Mark
+ID# = 10007763
+RATING = 1736
+Title = 
+CLUB = MA
+
+NAME = Bird, D. G.
+ID# = 14902922
+RATING = 1728
+Title = 
+CLUB = MA
+
+NAME = Barry, Michael
+ID# = 12584196
+RATING = 1723
+Title = 
+CLUB = MA
+
+NAME = Holmgren, Robert
+ID# = 11291635
+RATING = 1716
+Title = 
+CLUB = MA
+
+NAME = Singh, Karanbir
+ID# = 31286868
+RATING = 1689
+Title = 
+CLUB = MA
+
+NAME = Lang, Dan
+ID# = 12812523
+RATING = 1661
+Title = 
+CLUB = MA
+
+NAME = Kirubakaran, Gautham
+ID# = 31971144
+RATING = 1611
+Title = 
+CLUB = MA
+
+NAME = Duval, George Wilfred
+ID# = 12471987
+RATING = 1602
+Title = 
+CLUB = MA
+
+NAME = Watts, Robby
+ID# = 31274069
+RATING = 1596
+Title = 
+CLUB = MA
+
+NAME = Swartz, Paul K
+ID# = 12679328
+RATING = 1497
+Title = 
+CLUB = MA
+
+NAME = Balakrishnan, Vasu
+ID# = 13691684
+RATING = 1483
+Title = 
+CLUB = MA
+
+NAME = Christensen, Brandon
+ID# = 12947698
+RATING = 1478
+Title = 
+CLUB = MA
+
+NAME = Hu, Sherwin
+ID# = 32639905
+RATING = 1405
+Title = 
+CLUB = MA

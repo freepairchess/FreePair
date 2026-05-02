@@ -1,0 +1,643 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.58,
+    "Tournament title": "Billerica August Swiss",
+    "Tournament time controls": "G/90; d5",
+    "Starting date": "2025-08-08",
+    "Ending date": "2025-08-29",
+    "NACH event ID": "6b3869d4-9392-4a83-8a9a-b007d386d6c3",
+    "NACH passcode": "94bee275-084c-41b1-ab00-7f19fdb1ea8d",
+    "Trace": "3.7.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Number of players": 37,
+      "Number of teams": 0,
+      "Rounds paired": 4,
+      "Rounds played": 4,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 3,
+      "Need search options": false,
+      "Coin toss": 0,
+      "Team cut": 999,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 25,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Vaughan, John P",
+          "ID": "12481292",
+          "Rating": 2034,
+          "Rating2": 1900,
+          "Exp1": "12/31/2099",
+          "State": "MA",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;18;B;1;18;18;0",
+            "+;9;W;1;9;9;0",
+            "-;10;B;1;10;10;0",
+            "+;15;W;3;15;15;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Nugent, Arthur P",
+          "ID": "10011191",
+          "Rating": 2000,
+          "Rating2": 1845,
+          "Exp1": "12/31/2099",
+          "State": "MA",
+          "Reserved byes": "3 ",
+          "Current result": "½",
+          "Results": [
+            "=;20;W;2;20;20;0",
+            "=;16;B;5;16;16;0",
+            "H;-1;-;0;-1;-1;0",
+            "=;30;B;5;30;30;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Baginski, Paul A",
+          "ID": "12376240",
+          "Rating": 1922,
+          "Rating2": 1430,
+          "Exp1": "3/31/2027",
+          "State": "MA",
+          "Reserved byes": "4z ",
+          "Current result": "0",
+          "Results": [
+            "+;21;B;3;21;21;0",
+            "-;10;W;2;10;10;0",
+            "+;25;B;5;24;24;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Shea, Christopher",
+          "ID": "12489615",
+          "Rating": 1916,
+          "Exp1": "6/30/2026",
+          "State": "MA",
+          "Current result": "½",
+          "Results": [
+            "+;22;W;4;22;22;0",
+            "-;13;B;3;13;13;0",
+            "=;24;W;6;25;25;0",
+            "=;11;B;7;11;11;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Pearson, Frederick",
+          "ID": "12223060",
+          "Rating": 1905,
+          "Rating2": 1891,
+          "Exp1": "9/30/2025",
+          "State": "MA",
+          "Reserved byes": "2 ",
+          "Current result": "0",
+          "Results": [
+            "+;23;B;5;23;23;0",
+            "H;-1;-;0;-1;-1;0",
+            "-;14;W;2;14;14;0",
+            "-;12;B;6;12;12;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "Reynolds, Douglas",
+          "ID": "12427040",
+          "Rating": 1895,
+          "Exp1": "11/30/2025",
+          "State": "MA",
+          "Reserved byes": "2 3 4z ",
+          "Current result": "0",
+          "Results": [
+            "+;24;W;6;24;24;0",
+            "H;-1;-;0;-1;-1;0",
+            "H;-1;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Paulson, Raymond",
+          "ID": "12401616",
+          "Rating": 1891,
+          "Rating2": 1863,
+          "Exp1": "10/31/2025",
+          "Current result": "1",
+          "Results": [
+            "+;25;B;7;25;25;0",
+            "-;14;W;4;14;14;0",
+            "+;26;B;7;26;26;0",
+            "+;22;W;4;22;22;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Eldridge, Ross",
+          "ID": "12399747",
+          "Rating": 1882,
+          "Rating2": 1725,
+          "Exp1": "10/31/2025",
+          "State": "MA",
+          "Reserved byes": "2 3 4z ",
+          "Current result": "0",
+          "Results": [
+            "+;26;W;8;26;26;0",
+            "H;-1;-;0;-1;-1;0",
+            "H;-1;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "Urbonas, Michael",
+          "ID": "11015328",
+          "Rating": 1841,
+          "Rating2": 1693,
+          "Exp1": "3/31/2028",
+          "State": "MA",
+          "Reserved byes": "3 4z ",
+          "Current result": "0",
+          "Results": [
+            "+;28;B;9;28;28;0",
+            "-;1;B;1;1;1;0",
+            "H;-1;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Gradijan, Stephen",
+          "ID": "12454998",
+          "Rating": 1818,
+          "Rating2": 1849,
+          "Exp1": "4/30/2027",
+          "State": "MA",
+          "Current result": "1",
+          "Results": [
+            "+;29;W;10;29;29;0",
+            "+;3;B;2;3;3;0",
+            "+;1;W;1;1;1;0",
+            "+;14;B;1;14;14;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "Barry, Michael",
+          "ID": "12584196",
+          "Rating": 1713,
+          "Rating2": 1757,
+          "Exp1": "6/30/2027",
+          "State": "MA",
+          "Reserved byes": "2 ",
+          "Current result": "½",
+          "Results": [
+            "+;31;B;11;31;31;0",
+            "H;-1;-;0;-1;-1;0",
+            "-;27;W;3;16;16;0",
+            "=;4;W;7;4;4;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "Kaprielian, Mark",
+          "ID": "10007763",
+          "Rating": 1700,
+          "Rating2": 1717,
+          "Exp1": "12/31/2099",
+          "State": "MA",
+          "Reserved byes": "2 ",
+          "Current result": "1",
+          "Results": [
+            "+;32;W;12;32;32;0",
+            "H;-1;-;0;-1;-1;0",
+            "-;16;B;4;27;27;0",
+            "+;5;W;6;5;5;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "Mahesh, Vishak",
+          "ID": "15841391",
+          "Rating": 1693,
+          "Rating2": 864,
+          "Exp1": "3/31/2026",
+          "State": "MA",
+          "Reserved byes": "3 4z ",
+          "Current result": "0",
+          "Results": [
+            "+;34;B;13;34;34;0",
+            "+;4;W;3;4;4;0",
+            "H;-1;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "Snyder, Jason",
+          "ID": "32325348",
+          "Rating": 1690,
+          "Exp1": "2/28/2026",
+          "State": "MA",
+          "Current result": "0",
+          "Results": [
+            "+;36;W;14;36;36;0",
+            "+;7;B;4;7;7;0",
+            "+;5;B;2;5;5;0",
+            "-;10;W;1;10;10;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "Martin, David W",
+          "ID": "12877246",
+          "Rating": 1636,
+          "Rating2": 1728,
+          "Exp1": "1/31/2026",
+          "State": "MA",
+          "Reserved byes": "1 3 ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;0;0;0",
+            "+;19;W;6;19;19;0",
+            "H;-1;-;0;-1;-1;0",
+            "-;1;B;3;1;1;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "Brown, Leah Taylor",
+          "ID": "30512104",
+          "Rating": 1634,
+          "Exp1": "4/30/2026",
+          "State": "MA",
+          "Current result": "1",
+          "Results": [
+            "+;37;B;15;37;37;0",
+            "=;2;W;5;2;2;0",
+            "+;12;W;4;11;11;0",
+            "+;27;B;2;27;27;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "Viyani, Kenisro Pr",
+          "ID": "30304394",
+          "Rating": 1590,
+          "Rating2": 1220,
+          "Exp1": "10/31/2025",
+          "State": "MA",
+          "Reserved byes": "4z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;0;0;0",
+            "H;0;-;0;0;0;0",
+            "+;28;B;8;28;28;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "Whitmore, Walter",
+          "ID": "12503048",
+          "Rating": 1512,
+          "Rating2": 1570,
+          "Exp1": "12/31/2099",
+          "State": "MA",
+          "Current result": "1",
+          "Results": [
+            "-;1;W;1;1;1;0",
+            "-;27;B;7;27;27;0",
+            "-;32;W;12;32;32;0",
+            "+;34;B;12;34;34;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "Billmers, Meyer A",
+          "ID": "10018307",
+          "Rating": 1501,
+          "Rating2": 1544,
+          "Exp1": "12/31/2099",
+          "State": "MA",
+          "Reserved byes": "1 3 4z ",
+          "Current result": "0",
+          "Results": [
+            "H;-1;-;0;-1;-1;0",
+            "-;15;B;6;15;15;0",
+            "H;-1;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "Gadomski, Thadeus",
+          "ID": "30135710",
+          "Rating": 1438,
+          "Exp1": "3/31/2027",
+          "State": "NH",
+          "Reserved byes": "2 ",
+          "Current result": "1",
+          "Results": [
+            "=;2;B;2;2;2;0",
+            "H;-1;-;0;-1;-1;0",
+            "-;30;W;9;30;30;0",
+            "+;35;W;8;35;35;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "Minalga-Rheault, R",
+          "ID": "16957835",
+          "Rating": 1437,
+          "Rating2": 963,
+          "Exp1": "6/30/2026",
+          "State": "NH",
+          "Reserved byes": "2 ",
+          "Current result": "½",
+          "Results": [
+            "-;3;W;3;3;3;0",
+            "H;-1;-;0;-1;-1;0",
+            "=;35;B;11;35;35;0",
+            "=;26;W;9;26;26;0"
+          ]
+        },
+        {
+          "Pair number": 22,
+          "Name": "Savage, Stephen W",
+          "ID": "11393012",
+          "Rating": 1412,
+          "Exp1": "4/30/2027",
+          "State": "MA",
+          "Current result": "0",
+          "Results": [
+            "-;4;B;4;4;4;0",
+            "+;31;W;8;29;29;0",
+            "+;33;B;10;33;33;0",
+            "-;7;B;4;7;7;0"
+          ]
+        },
+        {
+          "Pair number": 23,
+          "Name": "Kuhlmann, Steve",
+          "ID": "15457580",
+          "Rating": 1389,
+          "Exp1": "1/31/2026",
+          "State": "NH",
+          "Reserved byes": "3 4 ",
+          "Current result": "½",
+          "Results": [
+            "-;5;W;5;5;5;0",
+            "+;29;B;9;31;31;0",
+            "H;-1;-;0;-1;-1;0",
+            "H;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 24,
+          "Name": "Appelmans, Jack",
+          "ID": "12672022",
+          "Rating": 1342,
+          "Exp1": "4/30/2026",
+          "State": "MA",
+          "Reserved byes": "4z ",
+          "Current result": "0",
+          "Results": [
+            "-;6;B;6;6;6;0",
+            "+;34;W;10;32;32;0",
+            "=;4;B;6;3;3;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 25,
+          "Name": "Ragucci, John A",
+          "ID": "10016894",
+          "Rating": 1323,
+          "Exp1": "6/30/2027",
+          "State": "MA",
+          "Current result": "1",
+          "Results": [
+            "-;7;W;7;7;7;0",
+            "+;32;B;11;34;34;0",
+            "-;3;W;5;4;4;0",
+            "+;28;B;10;28;28;0"
+          ]
+        },
+        {
+          "Pair number": 26,
+          "Name": "Prem Kumar, Dhanva",
+          "ID": "31816882",
+          "Rating": 1116,
+          "Exp1": "4/30/2026",
+          "State": "MA",
+          "Current result": "½",
+          "Results": [
+            "-;8;B;8;8;8;0",
+            "+;37;W;12;36;36;0",
+            "-;7;W;7;7;7;0",
+            "=;21;B;9;21;21;0"
+          ]
+        },
+        {
+          "Pair number": 27,
+          "Name": "Natti, Nagendranat",
+          "ID": "15481128",
+          "Rating": 1059,
+          "Rating2": 1118,
+          "Exp1": "11/30/2026",
+          "State": "MA",
+          "Reserved byes": "1 ",
+          "Current result": "0",
+          "Results": [
+            "H;-1;-;0;-1;-1;0",
+            "+;18;W;7;18;18;0",
+            "+;11;B;3;12;12;0",
+            "-;16;W;2;16;16;0"
+          ]
+        },
+        {
+          "Pair number": 28,
+          "Name": "Godlewski, Peter",
+          "ID": "17071447",
+          "Rating": 979,
+          "Exp1": "10/31/2025",
+          "State": "MA",
+          "Current result": "0",
+          "Results": [
+            "-;9;W;9;9;9;0",
+            "+;36;B;13;37;37;0",
+            "-;17;W;8;17;17;0",
+            "-;25;W;10;25;25;0"
+          ]
+        },
+        {
+          "Pair number": 29,
+          "Name": "Chaudhary , Saksha",
+          "ID": "31580612",
+          "Rating": 938,
+          "Rating2": 927,
+          "Exp1": "12/31/2026",
+          "State": "MA",
+          "Reserved byes": "4z ",
+          "Current result": "0",
+          "Results": [
+            "-;10;B;10;10;10;0",
+            "-;23;W;9;22;22;0",
+            "+;34;B;13;34;34;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 30,
+          "Name": "Palaparthi, Aaryas",
+          "ID": "31784635",
+          "Rating": 814,
+          "Rating2": 794,
+          "Exp1": "3/31/2026",
+          "State": "MA",
+          "Current result": "½",
+          "Results": [
+            "H;0;-;0;0;0;0",
+            "H;0;-;0;0;0;0",
+            "+;20;B;9;20;20;0",
+            "=;2;W;5;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 31,
+          "Name": "Veeramanikandan, Vriishabh",
+          "ID": "32009918",
+          "Rating": 614,
+          "Exp1": "8/31/2025",
+          "State": "MA",
+          "Current result": "½",
+          "Results": [
+            "-;11;W;11;11;11;0",
+            "-;22;B;8;23;23;0",
+            "+;36;W;14;36;36;0",
+            "=;37;B;11;37;37;0"
+          ]
+        },
+        {
+          "Pair number": 32,
+          "Name": "Naluvala, Maedha",
+          "ID": "31426091",
+          "Rating": 511,
+          "Rating2": 508,
+          "Exp1": "3/31/2026",
+          "State": "MA",
+          "Reserved byes": "4z ",
+          "Current result": "0",
+          "Results": [
+            "-;12;B;12;12;12;0",
+            "-;25;W;11;24;24;0",
+            "+;18;B;12;18;18;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 33,
+          "Name": "Soltysiak, Paul",
+          "ID": "31571134",
+          "Rating": 379,
+          "Rating2": 237,
+          "Exp1": "11/30/2025",
+          "State": "NH",
+          "Reserved byes": "4z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;0;0;0",
+            "H;0;-;0;0;0;0",
+            "-;22;W;10;22;22;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 34,
+          "Name": "Michaels, Walter P",
+          "ID": "30670037",
+          "Rating": 353,
+          "Exp1": "8/31/2025",
+          "State": "MA",
+          "Current result": "0",
+          "Results": [
+            "-;13;W;13;13;13;0",
+            "-;24;B;10;25;25;0",
+            "-;29;W;13;29;29;0",
+            "-;18;W;12;18;18;0"
+          ]
+        },
+        {
+          "Pair number": 35,
+          "Name": "Chaudhary, Ruhaan",
+          "ID": "31722363",
+          "Rating": 343,
+          "Rating2": 337,
+          "Exp1": "2/28/2026",
+          "State": "MA",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;0;0;0",
+            "H;0;-;0;0;0;0",
+            "=;21;W;11;21;21;0",
+            "-;20;B;8;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 36,
+          "Name": "Eberiel, Nancy Mil",
+          "ID": "30642163",
+          "Rating": 266,
+          "Rating2": 101,
+          "Exp1": "7/31/2025",
+          "State": "MA",
+          "Reserved byes": "4z ",
+          "Current result": "0",
+          "Results": [
+            "-;14;B;14;14;14;0",
+            "-;28;W;13;26;26;0",
+            "-;31;B;14;31;31;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 37,
+          "Name": "Robinson, Reginald",
+          "ID": "32520909",
+          "Reserved byes": "3 ",
+          "Current result": "½",
+          "Results": [
+            "-;16;W;15;16;16;0",
+            "-;26;B;12;28;28;0",
+            "H;-1;-;0;-1;-1;0",
+            "=;31;W;11;31;31;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    }
+  ]
+}

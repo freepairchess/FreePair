@@ -1,0 +1,1105 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.58,
+    "Tournament title": "Billerica Chess Club February 2026",
+    "Tournament time controls": "G 90; d5",
+    "Starting date": "6-Feb-2026",
+    "Ending date": "27-feb-2026",
+    "NACH event ID": "c4fcdd75-326e-46fe-a505-0c3365c40c46",
+    "NACH passcode": "7a3d26fd-5f7a-494a-8d11-33b78a5ff46f",
+    "Trace": "3.7.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Section title": "Open",
+      "Section time control": "G 90; d5",
+      "Number of players": 38,
+      "Number of teams": 0,
+      "Rounds paired": 4,
+      "Rounds played": 4,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 0,
+      "Need search options": false,
+      "Coin toss": 1,
+      "Team cut": 999,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Use team pairings": true,
+      "Got logic": true,
+      "Pair table items": 24,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "VAUGHAN,JOHN P",
+          "ID": "12481292",
+          "Rating": 2056,
+          "Rating2": 1896,
+          "Exp1": "12/31/2099",
+          "State": "MA",
+          "Reserved byes": "3 ",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;16;W;1;16;16;0",
+            "-;11;B;1;10;10;0",
+            "H;0;-;0;-1;-1;0",
+            "+;17;W;5;16;17;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "NUGENT,ARTHUR P",
+          "ID": "10011191",
+          "Rating": 2000,
+          "Rating2": 1843,
+          "Exp1": "12/31/2099",
+          "State": "MA",
+          "Reserved byes": "4z ",
+          "Current result": "0",
+          "Results": [
+            "=;17;B;2;17;17;0",
+            "+;36;W;7;22;22;0",
+            "=;8;B;2;8;8;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "ZSITTNIK,CARTER J",
+          "ID": "30644252",
+          "Rating": 1956,
+          "Rating2": 2109,
+          "Exp1": "7/31/2026",
+          "State": "MA",
+          "Reserved byes": "3 ",
+          "Current result": "1",
+          "Results": [
+            "+;19;W;3;18;18;0",
+            "+;12;B;2;11;11;0",
+            "H;0;-;0;-1;-1;0",
+            "+;4;B;1;4;4;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "SKRCHESKI,DEJAN",
+          "ID": "30299274",
+          "Rating": 1931,
+          "Rating2": 1992,
+          "Exp1": "11/30/2026",
+          "State": "MA",
+          "Current result": "0",
+          "Results": [
+            "+;20;B;4;19;19;0",
+            "+;13;W;3;12;12;0",
+            "+;10;B;1;10;10;0",
+            "-;3;W;1;3;3;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "PEARSON,FREDERICK",
+          "ID": "12223060",
+          "Rating": 1903,
+          "Rating2": 1889,
+          "Exp1": "9/30/2026",
+          "State": "MA",
+          "Reserved byes": "3 4z ",
+          "Current result": "0",
+          "Results": [
+            "+;21;W;5;20;20;0",
+            "+;14;B;4;13;13;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "SHEA,CHRISTOPHER",
+          "ID": "12489615",
+          "Rating": 1870,
+          "Exp1": "6/30/2026",
+          "State": "MA",
+          "Current result": "1",
+          "Results": [
+            "-;23;B;6;22;22;0",
+            "+;26;W;11;25;25;0",
+            "=;27;B;3;26;26;0",
+            "+;16;W;6;17;16;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "REYNOLDS,DOUGLAS",
+          "ID": "12427040",
+          "Rating": 1836,
+          "Exp1": "11/30/2027",
+          "State": "MA",
+          "Reserved byes": "3 ",
+          "Current result": "½",
+          "Results": [
+            "+;24;W;7;23;23;0",
+            "+;37;B;5;14;14;0",
+            "H;0;-;0;-1;-1;0",
+            "=;11;W;2;11;11;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "VIYANI,KENISRO PR",
+          "ID": "30304394",
+          "Rating": 1826,
+          "Rating2": 1711,
+          "Exp1": "10/31/2026",
+          "State": "MA",
+          "Current result": "1",
+          "Results": [
+            "=;27;B;8;25;25;0",
+            "+;29;W;9;30;30;0",
+            "=;2;W;2;2;2;0",
+            "+;19;B;3;19;19;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "GRADIJAN,STEPHEN",
+          "ID": "12454998",
+          "Rating": 1800,
+          "Rating2": 1848,
+          "Exp1": "4/30/2027",
+          "State": "MA",
+          "Reserved byes": "2 3 ",
+          "Current result": "1",
+          "Results": [
+            "+;30;W;9;26;26;0",
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "+;27;W;4;27;27;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "SNYDER,JASON",
+          "ID": "32325348",
+          "Rating": 1796,
+          "Provisional": true,
+          "Exp1": "2/28/2026",
+          "State": "MA",
+          "Reserved byes": "4z ",
+          "Current result": "0",
+          "Results": [
+            "+;31;B;10;28;28;0",
+            "+;23;W;6;1;1;0",
+            "-;4;W;1;4;4;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "BAGINSKI,PAUL A",
+          "ID": "12376240",
+          "Rating": 1793,
+          "Rating2": 1428,
+          "Exp1": "3/31/2027",
+          "State": "MA",
+          "Reserved byes": "3 ",
+          "Current result": "½",
+          "Results": [
+            "+;33;W;11;29;29;0",
+            "+;1;W;1;3;3;0",
+            "H;0;-;0;-1;-1;0",
+            "=;7;B;2;7;7;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "SMITH,STEPHEN E",
+          "ID": "12451370",
+          "Rating": 1744,
+          "Rating2": 1668,
+          "Exp1": "10/31/2026",
+          "State": "MA",
+          "Reserved byes": "3 ",
+          "Current result": "1",
+          "Results": [
+            "+;34;B;12;31;31;0",
+            "-;3;W;2;4;4;0",
+            "H;0;-;0;-1;-1;0",
+            "+;37;B;7;21;37;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "KAPRIELIAN,MARK",
+          "ID": "10007763",
+          "Rating": 1715,
+          "Rating2": 1716,
+          "Exp1": "12/31/2099",
+          "State": "MA",
+          "Reserved byes": "3 4z ",
+          "Current result": "0",
+          "Results": [
+            "+;35;W;13;32;32;0",
+            "-;4;B;3;5;5;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "LIANG,RYAN",
+          "ID": "31092762",
+          "Rating": 1709,
+          "Exp1": "4/30/2027",
+          "State": "MA",
+          "Reserved byes": "4z ",
+          "Current result": "0",
+          "Results": [
+            "+;26;B;14;33;33;0",
+            "-;5;W;4;7;7;0",
+            "+;20;B;4;18;18;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "BROWN,LEAH TAYLOR",
+          "ID": "30512104",
+          "Rating": 1685,
+          "Exp1": "4/30/2026",
+          "State": "MA",
+          "Reserved byes": "1 2 ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "-;19;W;5;19;19;0",
+            "-;21;B;8;37;21;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "DAVID,MICHAEL SCO",
+          "ID": "16636306",
+          "Rating": 1674,
+          "Rating2": 1500,
+          "Exp1": "4/30/2027",
+          "State": "MA",
+          "Reserved byes": "3 ",
+          "Current result": "0",
+          "Results": [
+            "-;1;B;1;1;1;0",
+            "+;30;W;12;28;28;0",
+            "H;0;-;0;-1;-1;0",
+            "-;6;B;6;1;6;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "MINALGA-RHEAULT,R",
+          "ID": "16957835",
+          "Rating": 1515,
+          "Rating2": 963,
+          "Exp1": "6/30/2026",
+          "State": "NH",
+          "Reserved byes": "2 3 ",
+          "Current result": "0",
+          "Results": [
+            "=;2;W;2;2;2;0",
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "-;1;B;5;6;1;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "BILLMERS,MEYER A",
+          "ID": "10018307",
+          "Rating": 1506,
+          "Rating2": 1544,
+          "Exp1": "12/31/2099",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "1",
+          "Results": [
+            "H;0;-;0;0;0;0",
+            "H;0;-;0;0;0;0",
+            "U;0;-;0;0;0;0",
+            "+;29;W;9;28;28;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "PREM KUMAR,DHANVA",
+          "ID": "31816882",
+          "Rating": 1431,
+          "Rating2": 1543,
+          "Exp1": "4/30/2026",
+          "State": "MA",
+          "Current result": "0",
+          "Results": [
+            "-;3;B;3;3;3;0",
+            "+;31;W;13;29;29;0",
+            "+;15;B;5;14;14;0",
+            "-;8;W;3;8;8;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "RAGUCCI,JOHN A",
+          "ID": "10016894",
+          "Rating": 1423,
+          "Exp1": "6/30/2027",
+          "State": "MA",
+          "Current result": "1",
+          "Results": [
+            "-;4;W;4;4;4;0",
+            "+;33;B;14;31;31;0",
+            "-;14;W;4;15;15;0",
+            "+;28;B;10;29;29;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "NATTI,NAGENDRANAT",
+          "ID": "15481128",
+          "Rating": 1390,
+          "Rating2": 1323,
+          "Exp1": "11/30/2026",
+          "State": "MA",
+          "Reserved byes": "3 ",
+          "Current result": "1",
+          "Results": [
+            "-;5;B;5;5;5;0",
+            "+;34;W;15;32;32;0",
+            "H;0;-;0;-1;-1;0",
+            "+;15;W;8;12;15;0"
+          ]
+        },
+        {
+          "Pair number": 22,
+          "Name": "Mui, Calvin",
+          "ID": "12727765",
+          "Rating": 1323,
+          "Exp1": "9/30/2020",
+          "State": "MA",
+          "Reserved byes": "1 2 ",
+          "Current result": "½",
+          "Results": [
+            "H;0;-;0;0;0;0",
+            "H;0;-;0;0;0;0",
+            "U;0;-;0;0;0;0",
+            "=;32;W;11;32;32;0"
+          ]
+        },
+        {
+          "Pair number": 23,
+          "Name": "Lamare, Matthew Ma",
+          "ID": "32113596",
+          "Rating": 1249,
+          "Exp1": "11/30/2027",
+          "State": "MA",
+          "Reserved byes": "4z ",
+          "Current result": "0",
+          "Results": [
+            "+;6;W;6;6;6;0",
+            "-;10;B;6;2;2;0",
+            "=;29;B;6;27;27;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 24,
+          "Name": "CARLAN,JULY",
+          "ID": "32416205",
+          "Rating": 1204,
+          "Rating2": 1119,
+          "Exp1": "04/30/2026",
+          "State": "MA",
+          "Reserved byes": "3 4z ",
+          "Current result": "0",
+          "Results": [
+            "-;7;B;7;7;7;0",
+            "+;35;W;16;33;33;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 25,
+          "Name": "CHAUDHARY,SAKSHAM",
+          "ID": "31580612",
+          "Rating": 1094,
+          "Rating2": 955,
+          "Exp1": "12/31/2026",
+          "State": "MA",
+          "Reserved byes": "1 3 4z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "+;32;B;10;34;34;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 26,
+          "Name": "RUSH,DEMETRES B",
+          "ID": "12862843",
+          "Rating": 1091,
+          "Exp1": "11/30/2026",
+          "State": "MA",
+          "Current result": "1",
+          "Results": [
+            "-;14;W;14;8;8;0",
+            "-;6;B;11;6;6;0",
+            "+;33;W;8;31;31;0",
+            "+;36;B;12;36;36;0"
+          ]
+        },
+        {
+          "Pair number": 27,
+          "Name": "Nair, Arjun",
+          "ID": "15875325",
+          "Rating": 1089,
+          "Rating2": 1372,
+          "Exp1": "12/31/2026",
+          "State": "MA",
+          "Current result": "0",
+          "Results": [
+            "=;8;W;8;9;9;0",
+            "+;38;B;8;35;35;0",
+            "=;6;W;3;6;6;0",
+            "-;9;B;4;9;9;0"
+          ]
+        },
+        {
+          "Pair number": 28,
+          "Name": "Sanghishetty, Sudh",
+          "ID": "30992211",
+          "Rating": 1068,
+          "Exp1": "5/31/2026",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;0;0;0",
+            "H;0;-;0;0;0;0",
+            "U;0;-;0;0;0;0",
+            "-;20;W;10;18;18;0"
+          ]
+        },
+        {
+          "Pair number": 29,
+          "Name": "BARKER,KERRY",
+          "ID": "32273255",
+          "Rating": 1065,
+          "Provisional": true,
+          "Exp1": "2/29/2028",
+          "State": "MA",
+          "Reserved byes": "1 ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "-;8;B;9;36;36;0",
+            "=;23;W;6;22;22;0",
+            "-;18;B;9;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 30,
+          "Name": "GODLEWSKI,PETER",
+          "ID": "17071447",
+          "Rating": 957,
+          "Exp1": "10/31/2027",
+          "State": "MA",
+          "Current result": "1",
+          "Results": [
+            "-;9;B;9;10;10;0",
+            "-;16;B;12;16;16;0",
+            "=;34;W;9;32;32;0",
+            "+;38;W;13;34;38;0"
+          ]
+        },
+        {
+          "Pair number": 31,
+          "Name": "SOUHRADA,ERNIE",
+          "ID": "32455608",
+          "Rating": 928,
+          "Provisional": true,
+          "Exp1": "5/31/2026",
+          "State": "CO",
+          "Reserved byes": "3 4z ",
+          "Current result": "0",
+          "Results": [
+            "-;10;W;10;11;11;0",
+            "-;19;B;13;18;18;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 32,
+          "Name": "VEERAMANIKANDAN,V",
+          "ID": "32009918",
+          "Rating": 882,
+          "Exp1": "8/31/2026",
+          "State": "MA",
+          "Reserved byes": "1 3 ",
+          "Current result": "½",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "-;25;W;10;8;8;0",
+            "H;0;-;0;-1;-1;0",
+            "=;22;B;11;22;22;0"
+          ]
+        },
+        {
+          "Pair number": 33,
+          "Name": "Srinivasan, Ashwat",
+          "ID": "30347185",
+          "Rating": 780,
+          "Exp1": "12/31/2027",
+          "State": "MA",
+          "Current result": "0",
+          "Results": [
+            "-;11;B;11;12;12;0",
+            "-;20;W;14;19;19;0",
+            "-;26;B;8;25;25;0",
+            "-;34;B;14;38;34;0"
+          ]
+        },
+        {
+          "Pair number": 34,
+          "Name": "THIRUKKONDA,DANVI",
+          "ID": "32324960",
+          "Rating": 690,
+          "Rating2": 492,
+          "Exp1": "2/28/2026",
+          "State": "MA",
+          "Current result": "1",
+          "Results": [
+            "-;12;W;12;13;13;0",
+            "-;21;B;15;20;20;0",
+            "=;30;B;9;28;28;0",
+            "+;33;W;14;30;33;0"
+          ]
+        },
+        {
+          "Pair number": 35,
+          "Name": "NALUVALA,MAEDHA",
+          "ID": "31426091",
+          "Rating": 643,
+          "Exp1": "3/31/2026",
+          "State": "MA",
+          "Reserved byes": "3 4z ",
+          "Current result": "0",
+          "Results": [
+            "-;13;B;13;14;14;0",
+            "-;24;B;16;23;23;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 36,
+          "Name": "Karthikeyan, Aarav",
+          "ID": "32649303",
+          "Rating": 397,
+          "Provisional": true,
+          "Exp1": "10/31/2026",
+          "State": "MA",
+          "Reserved byes": "1 3 ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "-;2;B;7;24;24;0",
+            "H;0;-;0;-1;-1;0",
+            "-;26;W;12;26;26;0"
+          ]
+        },
+        {
+          "Pair number": 37,
+          "Name": "McDermott, Tom",
+          "ID": "32855453",
+          "Reserved byes": "1 ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "-;7;W;5;26;26;0",
+            "+;38;B;7;36;36;0",
+            "-;12;W;7;15;12;0"
+          ]
+        },
+        {
+          "Pair number": 38,
+          "Name": "McNally, Tyler Jam",
+          "ID": "32597833",
+          "Exp1": "10/31/2027",
+          "State": "MA",
+          "Reserved byes": "1 ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "-;27;W;8;27;27;0",
+            "-;37;W;7;35;35;0",
+            "-;30;B;13;33;30;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "Not yet registered",
+      "Type": 0,
+      "Section title": "Not registered",
+      "Number of players": 26,
+      "Number of teams": 0,
+      "Rounds paired": 3,
+      "Rounds played": 3,
+      "Rating to use": 0,
+      "Exclude from batch": true,
+      "Exclude from ratings": true,
+      "Engine": 4,
+      "Last unrestricted round": 0,
+      "Need search options": false,
+      "Coin toss": 1,
+      "Team cut": 999,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Use team pairings": true,
+      "Pair table items": 28,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "ELDRIDGE,ROSS",
+          "ID": "12399747",
+          "Rating": 1953,
+          "Rating2": 1724,
+          "Exp1": "12/31/2026",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "PAULSON,RAYMOND",
+          "ID": "12401616",
+          "Rating": 1886,
+          "Rating2": 1862,
+          "Exp1": "10/31/2025",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "URBONAS,MICHAEL",
+          "ID": "11015328",
+          "Rating": 1816,
+          "Rating2": 1693,
+          "Exp1": "3/31/2028",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "JIN,JIM",
+          "ID": "30855444",
+          "Rating": 1787,
+          "Rating2": 1718,
+          "Exp1": "1/31/2027",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "TROTTER,ROWAN",
+          "ID": "32083346",
+          "Rating": 1785,
+          "Exp1": "10/31/2026",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "BARRY,MICHAEL",
+          "ID": "12584196",
+          "Rating": 1752,
+          "Exp1": "6/30/2027",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "SARAVANAN,ANISH",
+          "ID": "16732165",
+          "Rating": 1749,
+          "Rating2": 1560,
+          "Exp1": "8/31/2027",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "BIRD,D. G.",
+          "ID": "14902922",
+          "Rating": 1746,
+          "Exp1": "5/31/2027",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "MOORE,MICHAEL O D",
+          "ID": "12538350",
+          "Rating": 1700,
+          "Exp1": "12/31/2026",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "MARTIN,DAVID W",
+          "ID": "12877246",
+          "Rating": 1632,
+          "Rating2": 1697,
+          "Exp1": "1/31/2027",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "NORMAN,GEORGE",
+          "ID": "12376330",
+          "Rating": 1584,
+          "Exp1": "4/30/2026",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "GADOMSKI,THADEUS",
+          "ID": "30135710",
+          "Rating": 1572,
+          "Exp1": "3/31/2027",
+          "State": "NH",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "WHITMORE,WALTER",
+          "ID": "12503048",
+          "Rating": 1500,
+          "Rating2": 1569,
+          "Exp1": "12/31/2099",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "NAGARAJ,AVNI GAUR",
+          "ID": "16037722",
+          "Rating": 1496,
+          "Rating2": 1128,
+          "Exp1": "7/31/2027",
+          "State": "NH",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "NICEWICZ,LARS",
+          "ID": "31651988",
+          "Rating": 1494,
+          "Exp1": "1/31/2027",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "APPELMANS,JACK",
+          "ID": "12672022",
+          "Rating": 1444,
+          "Exp1": "4/30/2026",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "KUHLMANN,STEVE",
+          "ID": "15457580",
+          "Rating": 1371,
+          "Rating2": 1168,
+          "Exp1": "1/31/2026",
+          "State": "NH",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "PENSAMENTO,AMILTO",
+          "ID": "30661108",
+          "Rating": 1267,
+          "Provisional": true,
+          "Rating2": 1340,
+          "Exp1": "5/31/2026",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "YADAV,ANSH",
+          "ID": "31448197",
+          "Rating": 1132,
+          "Exp1": "9/30/2026",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "PALAPARTHI,AARYAS",
+          "ID": "31784635",
+          "Rating": 1127,
+          "Rating2": 1234,
+          "Exp1": "3/31/2026",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "STEER,JONATHAN",
+          "ID": "31557945",
+          "Rating": 1098,
+          "Exp1": "11/30/2026",
+          "State": "NH",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 22,
+          "Name": "ROBINSON,REGINALD",
+          "ID": "32520909",
+          "Rating": 753,
+          "Provisional": true,
+          "Exp1": "7/31/2026",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 23,
+          "Name": "CHAUDHARY,RUHAAN",
+          "ID": "31722363",
+          "Rating": 531,
+          "Exp1": "2/28/2026",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 24,
+          "Name": "CHAUDHARY,SAMARTH",
+          "ID": "32267961",
+          "Rating": 508,
+          "Exp1": "1/31/2027",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;-1;-1;0",
+            "H;0;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 25,
+          "Name": "EBERIEL,NANCY MIL",
+          "ID": "30642163",
+          "Rating": 309,
+          "Rating2": 101,
+          "Exp1": "8/31/2027",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "H;0;-;0;0;0;0",
+            "H;0;-;0;0;0;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 26,
+          "Name": "RUSSELL,ELIJIAH",
+          "ID": "32806392",
+          "Exp1": "1/31/2027",
+          "State": "MA",
+          "Reserved byes": "1 2 3z ",
+          "Current result": "0",
+          "Results": [
+            "U;0;-;0;0;0;0",
+            "U;0;-;0;0;0;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    }
+  ]
+}

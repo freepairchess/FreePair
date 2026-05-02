@@ -1,0 +1,285 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.59,
+    "Tournament title": "�� PNWCC G60 Online - Mar 16",
+    "Tournament time controls": "G/60;+5",
+    "Starting date": "2025-03-16",
+    "Ending date": "2025-03-16",
+    "NACH event ID": "4f7e5159-0f0c-4e18-ac65-de2181e441c9",
+    "NACH passcode": "31a00574-f9b8-48a5-a9db-6ac6612c8807",
+    "Trace": "3.7.3.7.1.3.7.1.3.7."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Section title": "Open",
+      "Section time control": "G/60;+5",
+      "Number of players": 13,
+      "Number of teams": 2,
+      "Rounds paired": 4,
+      "Rounds played": 4,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 0,
+      "Need search options": false,
+      "Upper rating limit": 2900,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Use team pairings": true,
+      "Got logic": true,
+      "Pair table items": 8,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Delchev [GMAlex1971], Aleksander",
+          "ID": "30215991",
+          "Rating": 2519,
+          "Club": "SRB",
+          "Team": "MASTER",
+          "Player title": "GM",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "-;7;B;1;7;7;0",
+            "+;9;W;5;9;9;0",
+            "+;6;B;3;6;6;0",
+            "+;3;W;2;4;3;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Harshavardhan [legendinunknown], G B",
+          "ID": "30105133",
+          "Rating": 2469,
+          "Club": "IND",
+          "Player title": "IM",
+          "Current result": "½",
+          "Results": [
+            "+;8;W;2;8;8;0",
+            "+;4;B;1;4;4;0",
+            "+;3;W;1;3;3;0",
+            "=;5;W;1;5;5;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Deng [HDIchess1], Henry",
+          "ID": "16681298",
+          "Rating": 2367,
+          "Club": "USA",
+          "Player title": "FM",
+          "Current result": "0",
+          "Results": [
+            "+;9;B;3;9;9;0",
+            "+;6;W;2;6;6;0",
+            "-;2;B;1;2;2;0",
+            "-;1;B;2;7;1;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Estrada Nieto [dosto07], Julian",
+          "ID": "12489784",
+          "Rating": 2348,
+          "Club": "MEX",
+          "Team": "MASTER",
+          "Player title": "IM",
+          "Current result": "1",
+          "Results": [
+            "+;10;W;4;10;10;0",
+            "-;2;W;1;2;2;0",
+            "+;13;B;4;13;13;0",
+            "+;7;B;3;1;7;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Liu [ailopatricaliy], Austin",
+          "ID": "16679915",
+          "Rating": 2203,
+          "Club": "USA",
+          "Player title": "NM",
+          "Current result": "½",
+          "Results": [
+            "=;12;B;5;12;12;0",
+            "+;11;W;3;7;7;0",
+            "+;7;W;2;7;7;0",
+            "=;2;B;1;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "Zhang [AmazingSteamBun], Brian",
+          "ID": "30085042",
+          "Rating": 1950,
+          "Club": "CAN",
+          "Team": "ZHANG",
+          "Reserved byes": "4 ",
+          "Current result": "½",
+          "Results": [
+            "+;13;W;6;13;13;0",
+            "-;3;B;2;3;3;0",
+            "-;1;W;3;1;1;0",
+            "H;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Lin [FightingWarrioir123], Mich",
+          "ID": "17281737",
+          "Rating": 1898,
+          "Club": "USA",
+          "Current result": "0",
+          "Results": [
+            "+;1;W;1;1;1;0",
+            "+;12;W;4;5;5;0",
+            "-;5;B;2;5;5;0",
+            "-;4;W;3;3;4;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Verma [Dabdude125], Darsh",
+          "ID": "16885668",
+          "Rating": 1893,
+          "Club": "USA",
+          "Reserved byes": "3 ",
+          "Current result": "½",
+          "Results": [
+            "-;2;B;2;2;2;0",
+            "+;10;W;6;10;10;0",
+            "H;-1;-;0;-1;-1;0",
+            "=;9;B;4;9;9;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "Bimod [KBforChess], Karthik",
+          "ID": "31093354",
+          "Rating": 1892,
+          "Club": "IND",
+          "Current result": "½",
+          "Results": [
+            "-;3;W;3;3;3;0",
+            "-;1;B;5;1;1;0",
+            "+;10;B;5;10;10;0",
+            "=;8;W;4;8;8;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Han [Oshi_No_Ko_Chess], Shuyi",
+          "ID": "17101695",
+          "Rating": 1877,
+          "Club": "USA",
+          "Current result": "0",
+          "Results": [
+            "-;4;B;4;4;4;0",
+            "-;8;B;6;8;8;0",
+            "-;9;W;5;9;9;0",
+            "-;12;W;5;12;12;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "Zhang [FluffyRedPandaChess], Michelle",
+          "ID": "30085051",
+          "Rating": 1817,
+          "Club": "CAN",
+          "Team": "ZHANG",
+          "Player title": "WCM",
+          "Reserved byes": "1 3z 4z ",
+          "Current result": "0",
+          "Results": [
+            "H;-1;-;0;-1;-1;0",
+            "-;5;B;3;12;12;0",
+            "U;-1;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "Zhou [yzchess9667_zZz], Yuchen",
+          "ID": "30171464",
+          "Rating": 1734,
+          "Club": "USA",
+          "Reserved byes": "3 ",
+          "Current result": "1",
+          "Results": [
+            "=;5;W;5;5;5;0",
+            "-;7;B;4;11;11;0",
+            "H;-1;-;0;-1;-1;0",
+            "+;10;B;5;10;10;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "Dominguez Alvarez [BlasDomingo], Blas",
+          "ID": "32240605",
+          "Rating": 1601,
+          "Club": "MEX",
+          "Reserved byes": "4 ",
+          "Current result": "½",
+          "Results": [
+            "-;6;B;6;6;6;0",
+            "B;-1;-;0;-1;-1;0",
+            "-;4;W;4;4;4;0",
+            "H;-1;-;0;-1;-1;0"
+          ]
+        }
+      ],
+      "Teams": [
+        {
+          "Pair number": 1,
+          "Full name": "MASTER",
+          "Team code": "MASTER",
+          "Rating": 0,
+          "Results": [
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Full name": "ZHANG",
+          "Team code": "ZHANG",
+          "Rating": 0,
+          "Results": [
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0"
+          ]
+        }
+      ],
+      "Prizes": {
+        "Place prizes": [
+          {
+            "Value": 100,
+            "Description": ""
+          },
+          {
+            "Value": 70,
+            "Description": ""
+          },
+          {
+            "Value": 30,
+            "Description": ""
+          }
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    }
+  ]
+}

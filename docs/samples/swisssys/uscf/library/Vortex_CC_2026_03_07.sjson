@@ -1,0 +1,207 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.34,
+    "Tournament title": "Vortex_CC_2026-03-07",
+    "Tournament time controls": "G/30; d5",
+    "Starting date": "2026-03-07",
+    "Ending date": "2026-03-07",
+    "NACH event ID": "b74a1bbb-6515-40a5-90e1-1b3a72cc6e2c",
+    "NACH passcode": "84b5d30e-29bb-4e81-9edf-4cacca579abb",
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Playing",
+      "Type": 0,
+      "Section title": "Playing",
+      "Section time control": "G/30; d5",
+      "Number of players": 6,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 6,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Gueler, Sebastian",
+          "ID": "12808565",
+          "Rating": 1971,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Schenk, Patric",
+          "ID": "16085782",
+          "Rating": 1927,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Mcneilage, Ralph",
+          "ID": "16062155",
+          "Rating": 1775,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Holmgren, Robert",
+          "ID": "11291635",
+          "Rating": 1705,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Kaprielian, Mark",
+          "ID": "10007763",
+          "Rating": 1700,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Chornoboy, Edward S.",
+          "ID": "12520269",
+          "Rating": 1500,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "WTP__Willing_to_Play",
+      "Type": 0,
+      "Section title": "WTP - Willing to Play",
+      "Section time control": "G/30; d5",
+      "Number of players": 1,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 6,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Thompson, Douglas",
+          "ID": "12668393",
+          "Rating": 1502,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Not_Playing",
+      "Type": 0,
+      "Section title": "Not Playing",
+      "Section time control": "G/30; d5",
+      "Number of players": 8,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 6,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Pearson, Frederick Kemp",
+          "ID": "12223060",
+          "Rating": 1919,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Thompson, Ethan D.",
+          "ID": "12650009",
+          "Rating": 1903,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Barry, Michael",
+          "ID": "12584196",
+          "Rating": 1734,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Hori, Calvin",
+          "ID": "12864842",
+          "Rating": 1724,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Martin, David W",
+          "ID": "12877246",
+          "Rating": 1657,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Duval, George Wilfred",
+          "ID": "12471987",
+          "Rating": 1625,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Savage, Stephen W",
+          "ID": "11393012",
+          "Rating": 1446,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Senne, Steven R",
+          "ID": "32072558",
+          "Rating": 1105,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    }
+  ]
+}

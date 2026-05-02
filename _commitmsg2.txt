@@ -1,0 +1,92 @@
+uscf-engine: phase 0 skeleton + verification harnesses (P5a + P5b)
+
+FreePair's home-grown USCF Swiss pairing engine, packaged as a drop-in
+binary replacement for `bbpPairings.exe`. A TD swaps engines by
+changing only `Settings.PairingEngineBinaryPath`; nothing else in the
+app needs to know which pairer is running.
+
+## What is in this commit
+
+### P0 -- engine skeleton (round-1 only)
+- `src/FreePair.Core/Uscf/`
+  - `Trf/TrfReader.cs` + `TrfDocument`/`TrfPlayer`/`TrfRoundCell` --
+    tolerant column-based parser for the FIDE TRF dialect FreePair's
+    `TrfWriter` emits (012, 042, 052, XXR, XXC, 001).
+  - `BbpFormatWriter.cs` -- emits `{count}\n{w} {b}\n...` so FreePair's
+    existing `BbpPairingsParser` consumes USCF output unchanged.
+  - `UscfPairer.cs` -- round-1 algorithm per USCF 28C: sort by rating
+    desc -> ties by pair number asc -> bottom seed gets the bye on odd
+    fields -> top half plays bottom half -> colours alternate from
+    XXC. Throws `NotImplementedException` for round 2+ as a deliberate
+    fail-loud guardrail.
+- `src/FreePair.UscfEngine/` -- console exe wrapping `UscfPairer`. CLI
+  mirrors bbpPairings (`--dutch | --uscf | --baku <input.trf> -p <out>`).
+- Unit tests: `TrfReaderTests` (with two pre-existing compile-error
+  fixes -- `SectionKind.Open` -> `SectionKind.Swiss`, parameterless
+  `Prizes()` -> `Prizes.Empty`), `BbpFormatWriterTests`,
+  `UscfPairerRound1Tests`.
+
+### P5a -- round-1 verification harness
+`UscfRound1HarnessTests` walks `docs/samples/swisssys/uscf/`, loads
+each `.sjson`, and runs `UscfPairer.Pair` against every section's
+pre-round-1 state. Compares to actual round-1 pairings.
+
+Key design:
+
+- **Pool inference from actuals.** Round-1 roster is the union of
+  {paired in round 1} U {bye'd in round 1}, NOT `Section.Players` --
+  eliminates spurious phantom-player mismatches when TDs withdrew /
+  late-added before round 1.
+- **Initial-colour inference.** SwissSys's XXC convention is not
+  surfaced in the .sjson, so the harness runs the pairer with both
+  `w` and `b` and picks whichever matches better.
+- **Pinned-counts contract.** Real tournaments contain divergences
+  from pure 28C (TD manual colour swaps, small-section conventions,
+  rating-tie tiebreaks) that aren't bugs in our P0. The harness
+  tracks `MinExpectedMatches` / `MaxExpectedHardMismatches` /
+  `MaxExpectedColorOnlyDiffs` and fails only when those numbers
+  regress. Bump the constants upward as the engine improves.
+
+Baseline across ~110 events / 360 sections:
+  matched     : 112
+  colour-only :   6
+  mismatch    :  27
+  skipped     : 215
+
+### P5b -- round-2+ verification harness
+`UscfMultiRoundHarnessTests` synthesises a `TrfDocument` for every
+(section, round R>=2) where the round was played, populating per-
+round TRF cells from `Player.History[0..R-2]`. Runs `UscfPairer.Pair`,
+catches `NotImplementedException` as a soft `unimplemented` outcome,
+hard-fails on any other exception or actual pair-set / bye mismatch.
+
+Today every R>=2 case lands in `unimplemented` (412 of them). As P1
+(score-group pairing), P2 (transpositions), P3 (29D colour
+allocation), and P4 (byes) land, each one flips to matched or
+surfaces a real diff to investigate. The harness is therefore a
+~412-case TDD net pre-positioned for the next four phases.
+
+### Sample corpus
+`docs/samples/swisssys/uscf/` -- donated USCF-rated tournaments
+(private repo posture; see `RELEASING.md`):
+
+- Per-event folders for complete SwissSys working dirs: `Apr_2026/`,
+  `Jan_2026/`, `Mar_2026/`, `MCC_2026-04/` (with ~30 `Backups/*.BK`
+  round snapshots for future P5c), `Oct_2025/`. Each carries
+  TDEXPORT/THEXPORT/TSEXPORT DBFs alongside the .sjson.
+- `library/` -- flat collection of ~100 .sjson files. Many events
+  appear twice as `<Event>.sjson` (modern) + `<Event>_SwissSys11.sjson`
+  (legacy) -- keeping both proves both formats import identically.
+
+`tests/FreePair.Core.Tests/TestPaths.cs` adds `UscfSampleRoot` and
+`UscfSample(...)` helpers. `UscfSampleDiscovery` walks the tree.
+
+### Docs and solution
+- `docs/USCF_ENGINE.md` -- phase roadmap, baselines, CLI cheat sheet,
+  rationale for separate-binary architecture.
+- `FreePair.slnx` -- registers the new `FreePair.UscfEngine` project.
+
+## Tests
+
+  Full suite: 485 / 485 green (was 440, +45 new). Both harnesses run
+  in ~3s combined against the full corpus.
