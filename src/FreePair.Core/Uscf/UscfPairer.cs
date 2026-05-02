@@ -235,37 +235,34 @@ public static class UscfPairer
         var half = pairableCount / 2;
         var board = startBoard;
 
-        // Take the top and bottom halves. We mutate `bot` in place to
-        // resolve rematches via single-swap transpositions (USCF 28L1
-        // calls these "transpositions of the bottom half").
+        // Take the top and bottom halves. Then run a backtracking
+        // matcher (USCF 28L1-L2 deeper transpositions) that searches
+        // for an assignment of bot[*] to top[*] avoiding rematches,
+        // preferring the natural rating order whenever feasible. The
+        // search visits bot[i]'s natural counterpart first, then the
+        // closest non-natural choices in widening rings, so when no
+        // rematches exist we get the same output the simple zip would
+        // produce; when one or two rematches exist we transpose only
+        // as much as needed; and when many rematches exist we still
+        // find a non-rematch matching as long as one is mathematically
+        // possible (single-swap couldn't, full backtracking can).
         var top = pool.Take(half).ToList();
         var bot = pool.Skip(half).Take(half).ToList();
+        var assignment = new TrfPlayer[half];
+
+        if (!TryFindNonRematchMatching(top, bot, assignment))
+        {
+            // No non-rematch arrangement exists in this pool —
+            // commit the natural pairing as a least-bad fallback.
+            // Future work (P2-deeper-still) could try interchanges
+            // across half-boundaries (USCF 28L3) to escape this case.
+            for (var i = 0; i < half; i++) assignment[i] = bot[i];
+        }
 
         for (var i = 0; i < half; i++)
         {
-            // If the natural pair (top[i], bot[i]) is a rematch, try to
-            // swap bot[i] with some bot[j] (j > i) such that:
-            //   - top[i] hasn't played the new bot[i]
-            //   - top[j] hasn't played the displaced bot[j] (was bot[i])
-            // Prefer the smallest j (closest to natural rating order).
-            // If no such j exists, keep the natural pairing — at least
-            // it's a USCF-shaped pair, even if it's a rematch the engine
-            // can't avoid with a simple single swap (P2-future: deeper
-            // backtracking / interchanges per 28L2-L3).
-            if (HasPlayed(top[i], bot[i]))
-            {
-                for (var j = i + 1; j < half; j++)
-                {
-                    if (!HasPlayed(top[i], bot[j]) && !HasPlayed(top[j], bot[i]))
-                    {
-                        (bot[i], bot[j]) = (bot[j], bot[i]);
-                        break;
-                    }
-                }
-            }
-
             var topPlayer = top[i];
-            var bottomPlayer = bot[i];
+            var bottomPlayer = assignment[i];
             var topGetsWhite = TopGetsWhite(topPlayer, bottomPlayer, initialColor, board);
             var (white, black) = topGetsWhite ? (topPlayer, bottomPlayer) : (bottomPlayer, topPlayer);
             pairings.Add(new UscfPairing(white.PairNumber, black.PairNumber, Board: board));
@@ -273,6 +270,58 @@ public static class UscfPairer
         }
 
         return board;
+    }
+
+    /// <summary>
+    /// Backtracking bipartite matcher for the score-group's top vs
+    /// bottom halves. Tries to assign each <c>top[i]</c> a partner
+    /// from <paramref name="bot"/> such that no pair is a rematch.
+    /// Search order at each level prefers natural rating-order pairs
+    /// (j == i) first, then walks outward in widening rings, so an
+    /// arrangement with the fewest disturbances vs the natural pairing
+    /// is found first.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c> on success, with <paramref name="assignment"/>
+    /// filled in (parallel to <paramref name="top"/>); <c>false</c>
+    /// when no rematch-free matching exists. Callers should fall
+    /// back to the natural pairing on <c>false</c>.
+    /// </returns>
+    private static bool TryFindNonRematchMatching(
+        IList<TrfPlayer> top, IList<TrfPlayer> bot, TrfPlayer[] assignment)
+    {
+        var n = top.Count;
+        var used = new bool[n];
+        return Recurse(0);
+
+        bool Recurse(int i)
+        {
+            if (i >= n) return true;
+            foreach (var j in NaturalOrder(i, n))
+            {
+                if (used[j]) continue;
+                if (HasPlayed(top[i], bot[j])) continue;
+                used[j] = true;
+                assignment[i] = bot[j];
+                if (Recurse(i + 1)) return true;
+                used[j] = false;
+            }
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Yields the indices <c>0..count-1</c> in the order
+    /// <c>i, i+1, i+2, …, count-1, i-1, i-2, …, 0</c> — natural
+    /// counterpart first, then forward neighbours (smallest-j-first
+    /// per USCF 28L1's preference for the least-disturbing
+    /// transposition), then backward neighbours as a last resort.
+    /// </summary>
+    private static IEnumerable<int> NaturalOrder(int i, int count)
+    {
+        if (i >= 0 && i < count) yield return i;
+        for (var j = i + 1; j < count; j++) yield return j;
+        for (var j = i - 1; j >= 0; j--) yield return j;
     }
 
     /// <summary>
