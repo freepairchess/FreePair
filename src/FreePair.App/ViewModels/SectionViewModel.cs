@@ -187,6 +187,7 @@ public sealed record RoundOption(int Number, string Label)
 public partial class SectionViewModel : ViewModelBase
 {
     private readonly IReadOnlyDictionary<int, Player> _byPair;
+    private bool _suppressEngineChangeCallback;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentRoundPairings))]
@@ -223,6 +224,17 @@ public partial class SectionViewModel : ViewModelBase
     /// confirmation prompt + mutation.
     /// </summary>
     public event Func<SectionViewModel, Task>? DeleteLastRoundRequested;
+
+    /// <summary>
+    /// Fired when the TD picks a new value in the section's
+    /// pairing-engine combobox. The host applies
+    /// <see cref="TournamentMutations.SetSectionPairingEngine"/>.
+    /// Wrapped in an event so the existing parent-vm dispatch
+    /// pattern (one event per intent, host attaches in
+    /// <c>AttachSectionEvents</c>) stays uniform.
+    /// </summary>
+    public event Func<SectionViewModel, FreePair.Core.Tournaments.Enums.PairingEngineKind?, Task>?
+        PairingEngineChangeRequested;
 
     public SectionViewModel(Section section)
         : this(section, new ScoreFormatter())
@@ -271,6 +283,17 @@ public partial class SectionViewModel : ViewModelBase
             .ToArray();
 
         SelectedRound = AvailableRounds.LastOrDefault();
+
+        // Seed the pairing-engine combobox to the section's current
+        // override (or the "inherit" sentinel when null). We suppress
+        // the change-callback during the initial seed so we don't
+        // round-trip through PairingEngineChangeRequested for a value
+        // that isn't actually changing.
+        _suppressEngineChangeCallback = true;
+        SelectedEngineChoice = PairingEngineChoice.SectionChoices.FirstOrDefault(
+            c => c.Value == section.PairingEngine)
+            ?? PairingEngineChoice.SectionChoices[0];
+        _suppressEngineChangeCallback = false;
     }
 
     /// <summary>Underlying domain section.</summary>
@@ -617,6 +640,70 @@ public partial class SectionViewModel : ViewModelBase
     /// tab template show a " [deleted]" hint.
     /// </summary>
     public string TabLabelSuffix => IsSoftDeleted ? " [deleted]" : "";
+
+    // =================================================================
+    //  Pairing engine selection (per-section override)
+    // =================================================================
+
+    /// <summary>
+    /// Choices shown in the pairing-engine combobox on the section
+    /// header — same three items every section sees (inherit / BBP /
+    /// USCF).
+    /// </summary>
+    public IReadOnlyList<PairingEngineChoice> AvailableEngineChoices =>
+        PairingEngineChoice.SectionChoices;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(EffectivePairingEngineDisplay))]
+    private PairingEngineChoice? _selectedEngineChoice;
+
+    partial void OnSelectedEngineChoiceChanged(PairingEngineChoice? value)
+    {
+        if (_suppressEngineChangeCallback) return;
+        if (value is null) return;
+        // Fire-and-forget — the host's handler does the mutation and
+        // a possibly-async save. Errors flow through ErrorMessage on
+        // the parent VM.
+        var handler = PairingEngineChangeRequested;
+        if (handler is not null)
+        {
+            _ = handler(this, value.Value);
+        }
+    }
+
+    /// <summary>
+    /// True when the section's engine override can still be edited:
+    /// the section is live (not soft-deleted) AND it hasn't paired any
+    /// rounds yet. Once round 1 lands, swapping engines mid-event
+    /// would compromise rating-report reproducibility, so the
+    /// combobox goes read-only (the underlying mutation also throws).
+    /// </summary>
+    public bool CanChangePairingEngine =>
+        !IsSoftDeleted && Section.RoundsPaired == 0;
+
+    /// <summary>
+    /// Human-readable label for the section's <em>resolved</em>
+    /// pairing engine after the inherit / default cascade — e.g.
+    /// "USCF Swiss" or "BBP (FIDE Dutch)". Used as a small read-only
+    /// badge next to the combobox so the TD always knows which engine
+    /// will actually run for this section.
+    /// </summary>
+    public string EffectivePairingEngineDisplay
+    {
+        get
+        {
+            var t = ParentTournamentVm?.Tournament;
+            // Pre-attach (constructor → AttachSectionEvents) and in
+            // tests the parent VM may be null. Fall back to a
+            // section-only resolution that ignores tournament-level
+            // overrides — still useful for the UI to show *something*.
+            var effective = t is null
+                ? (Section.PairingEngine
+                   ?? FreePair.Core.Tournaments.Enums.PairingEngineKind.Bbp)
+                : FreePair.Core.Tournaments.PairingEngineDefaults.Resolve(t, Section);
+            return PairingEngineChoice.DisplayFor(effective);
+        }
+    }
 
     /// <summary>
     /// Raised when the TD clicks "🗑 Delete section…" on the Pairings

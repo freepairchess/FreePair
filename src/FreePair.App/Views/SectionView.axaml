@@ -42,6 +42,31 @@
                 <Run Text="{Binding RoundsPaired}"/>
                 <Run Text=" rounds"/>
             </TextBlock>
+
+            <!-- Pairing engine selector (per-section override).
+                 Editable until the section pairs round 1; after that
+                 the combobox goes read-only — switching engines
+                 mid-event would compromise rating-report
+                 reproducibility. The "→" badge always shows the
+                 effective resolved engine after the inherit cascade. -->
+            <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,4,0,0">
+                <TextBlock Text="Pairing engine:" Foreground="Gray" FontSize="11"
+                           VerticalAlignment="Center"/>
+                <ComboBox ItemsSource="{Binding AvailableEngineChoices}"
+                          SelectedItem="{Binding SelectedEngineChoice}"
+                          IsEnabled="{Binding CanChangePairingEngine}"
+                          MinWidth="170"
+                          FontSize="11"
+                          Padding="6,2"
+                          ToolTip.Tip="The pairing engine for this section. 'Inherit from event' uses the tournament-level setting (which itself defaults from the rating type). Locked once round 1 is paired."/>
+                <TextBlock Text="→" Foreground="Gray" FontSize="11"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding EffectivePairingEngineDisplay}"
+                           Foreground="Gray" FontSize="11"
+                           FontStyle="Italic"
+                           VerticalAlignment="Center"
+                           ToolTip.Tip="Effective engine after inherit / default cascade — this is what FreePair will run."/>
+            </StackPanel>
         </StackPanel>
 
         <!-- Soft-deleted banner. Visible only when the section has

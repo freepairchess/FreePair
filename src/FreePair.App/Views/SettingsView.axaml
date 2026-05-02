@@ -12,30 +12,48 @@
     </Design.DataContext>
 
     <StackPanel Margin="16" Spacing="8">
-        <TextBlock Text="Pairing engine binary" FontWeight="SemiBold"/>
+        <TextBlock Text="Pairing engines" FontWeight="SemiBold"/>
         <TextBlock TextWrapping="Wrap" Foreground="Gray">
-            <Run Text="FreePair drives all Swiss pairings through the"/>
-            <Run Text="BBP Pairings" FontWeight="SemiBold"/>
-            <Run Text="engine (FIDE Dutch System) — the only pairing engine FreePair supports. Released installers bundle bbpPairings.exe next to FreePair.App.exe; this field only matters when running from a manual build that didn't include the binary."/>
+            <Run Text="FreePair ships with two pairing engines side-by-side, neither replaces the other. Each tournament defaults to one based on its rating type, and each section can override the choice (until round 1 is paired)."/>
             <LineBreak/>
-            <Run Text="Pairings are bit-for-bit FIDE-compliant for FIDE-rated events. USCF accepts the resulting crosstable for rating submission, but the pairings themselves follow FIDE Rule C.04 (Dutch System), not USCF Rule 27 — most weekend Swisses pair identically; edge cases (color repeats, last-round prize protection) may differ from a strict-USCF tool like SwissSys." FontSize="11"/>
+            <Run Text="• " FontWeight="SemiBold"/><Run Text="BBP (FIDE Dutch System)" FontWeight="SemiBold"/>
+            <Run Text=" — drives bbpPairings.exe. Default for FIDE-rated events. Bit-for-bit FIDE-compliant per Rule C.04."/>
+            <LineBreak/>
+            <Run Text="• " FontWeight="SemiBold"/><Run Text="USCF Swiss" FontWeight="SemiBold"/>
+            <Run Text=" — FreePair's home-grown USCF engine (FreePair.UscfEngine.exe). Default for purely USCF-rated events and other non-FIDE federations. See docs/USCF_ENGINE.md for the algorithm phasing."/>
+            <LineBreak/>
+            <Run Text="Released installers bundle both binaries next to FreePair.App.exe — these path fields only matter when running from a manual build that didn't include them." FontSize="11"/>
         </TextBlock>
         <Button Content="Show pairing-engine notice again..."
                 Click="OnShowPairingEngineNotice"
                 HorizontalAlignment="Left"
-                ToolTip.Tip="Re-open the first-run BBP / FIDE Dutch disclosure dialog. Use this to read it again, or to un-suppress it (uncheck 'Don't show this again' on close)."/>
+                ToolTip.Tip="Re-open the first-run pairing-engine disclosure dialog. Use this to read it again, or to un-suppress it (uncheck 'Don't show this again' on close)."/>
+
+        <TextBlock Text="BBP (FIDE Dutch) binary" FontWeight="SemiBold" Margin="0,4,0,0"/>
         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
             <TextBox Grid.Column="0"
                      Text="{Binding PairingEngineBinaryPath}"
-                     Watermark="Select the pairing engine binary..."/>
+                     Watermark="Select the BBP pairing engine binary..."/>
             <Button Grid.Column="1"
                     Content="Browse..."
                     Command="{Binding BrowsePairingEngineCommand}"/>
         </Grid>
-
         <TextBlock Text="Selected file was not found on disk."
                    Foreground="OrangeRed"
                    IsVisible="{Binding PairingEngineBinaryMissing}"/>
+
+        <TextBlock Text="USCF engine binary" FontWeight="SemiBold" Margin="0,4,0,0"/>
+        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+            <TextBox Grid.Column="0"
+                     Text="{Binding UscfEngineBinaryPath}"
+                     Watermark="Select FreePair.UscfEngine.exe..."/>
+            <Button Grid.Column="1"
+                    Content="Browse..."
+                    Command="{Binding BrowseUscfEngineCommand}"/>
+        </Grid>
+        <TextBlock Text="Selected file was not found on disk."
+                   Foreground="OrangeRed"
+                   IsVisible="{Binding UscfEngineBinaryMissing}"/>
 
         <Separator Margin="0,8"/>
 

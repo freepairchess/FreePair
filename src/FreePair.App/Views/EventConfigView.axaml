@@ -92,6 +92,35 @@
                 </Grid>
             </Border>
 
+            <!-- ============ Pairing engine ============ -->
+            <TextBlock Text="Pairing engine" FontWeight="SemiBold" Margin="0,6,0,0"/>
+            <Border Background="#F6F6F6" BorderBrush="LightGray" BorderThickness="1" CornerRadius="4" Padding="16">
+                <StackPanel Spacing="6">
+                    <TextBlock TextWrapping="Wrap" Foreground="Gray" FontSize="11">
+                        <Run Text="Tournament-wide engine override. Sections inherit this value unless they pin their own engine. "/>
+                        <Run Text="Default for rating type" FontWeight="SemiBold"/>
+                        <Run Text=" picks BBP for FIDE-rated events and FreePair's USCF engine for everything else. Locked once any section pairs a round."/>
+                    </TextBlock>
+                    <Grid ColumnDefinitions="160,*,Auto" RowDefinitions="Auto">
+                        <TextBlock Grid.Column="0" Text="Engine" VerticalAlignment="Center"
+                                   FontWeight="SemiBold" Margin="0,0,12,0"/>
+                        <ComboBox  Grid.Column="1"
+                                   ItemsSource="{Binding AvailableEngineChoices}"
+                                   SelectedItem="{Binding SelectedEngineChoice}"
+                                   IsEnabled="{Binding CanChangePairingEngine}"/>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6"
+                                    Margin="12,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="→" Foreground="Gray" FontSize="11"/>
+                            <TextBlock Text="{Binding EffectivePairingEngineDisplay}"
+                                       Foreground="Gray" FontSize="11" FontStyle="Italic"/>
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock Foreground="OrangeRed" FontSize="11" TextWrapping="Wrap"
+                               IsVisible="{Binding !CanChangePairingEngine}"
+                               Text="Engine selection is locked because at least one section has already paired a round. Mid-event engine swaps would compromise rating-report reproducibility."/>
+                </StackPanel>
+            </Border>
+
             <!-- ============ Scheduling ============ -->
             <TextBlock Text="Scheduling" FontWeight="SemiBold" Margin="0,6,0,0"/>
             <Border Background="#F6F6F6" BorderBrush="LightGray" BorderThickness="1" CornerRadius="4" Padding="16">

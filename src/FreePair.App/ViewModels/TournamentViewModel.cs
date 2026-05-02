@@ -1257,6 +1257,7 @@ public partial class TournamentViewModel : ViewModelBase
         vm.PlayerAddRequested        += OnPlayerAddAsync;
         vm.PlayerImportRequested     += OnPlayerImportAsync;
         vm.MoveRequested             += OnSectionMoveAsync;
+        vm.PairingEngineChangeRequested += OnSectionPairingEngineChangeAsync;
     }
 
     private void DetachSectionEvents()
@@ -1280,7 +1281,35 @@ public partial class TournamentViewModel : ViewModelBase
             vm.PlayerAddRequested -= OnPlayerAddAsync;
             vm.PlayerImportRequested -= OnPlayerImportAsync;
             vm.MoveRequested -= OnSectionMoveAsync;
+            vm.PairingEngineChangeRequested -= OnSectionPairingEngineChangeAsync;
         }
+    }
+
+    private async Task OnSectionPairingEngineChangeAsync(
+        SectionViewModel section,
+        FreePair.Core.Tournaments.Enums.PairingEngineKind? engine)
+    {
+        if (Tournament is null) return;
+        // No-op when the section already has the requested override;
+        // the combobox seeds itself on rebuild and we don't want to
+        // round-trip the writer for a no-change.
+        var current = Tournament.Sections.FirstOrDefault(s => s.Name == section.Name);
+        if (current is null) return;
+        if (current.PairingEngine == engine) return;
+
+        try
+        {
+            Tournament = TournamentMutations.SetSectionPairingEngine(
+                Tournament, section.Name, engine);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to change pairing engine for '{section.Name}': {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
     }
 
     private async void OnSectionResultChanged(
