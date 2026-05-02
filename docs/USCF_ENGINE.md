@@ -40,12 +40,12 @@ app keeps working.
 | Phase | Scope | Status |
 |---|---|---|
 | **P0** | Project skeleton, `TrfReader`, `BbpFormatWriter`, **round-1 pairing** (USCF 28C top-half-vs-bottom-half by rating, alternating colours starting from `XXC`). | ✅ |
-| P1 | Round 2+: score-group pairing within rating order. | TODO |
+| **P1** | **Round 2+: score-group pairing** (USCF 28D / 28L). Score groups (highest first), top-half-vs-bottom-half within each group, lowest-rated of odd groups floats down to the next group, last-group leftover gets the round's bye. Simple "fewer whites gets white" colour rule as a P3 placeholder. | ✅ |
 | P2 | Repeat-pairing avoidance via transpositions inside score groups (USCF 28L1–L3). | TODO |
 | P3 | Colour allocation per USCF 29D (absolute / strong / mild preference); cross-score-group drop-downs. | TODO |
 | P4 | Half-point bye / withdrawal / forced-pairing parity with `BbpPairingEngine`. | TODO |
 | **P5a** | **Round-1 verification harness**: replays round 1 of every USCF-rated `.sjson` under `docs/samples/swisssys/uscf/`, compares against SwissSys actuals. Pinned to baseline counts (matched ≥ N, hard-fail ≤ M); fails on regression in either direction. | ✅ |
-| **P5b** | **Round-2+ verification harness**: synthesises per-round TRF state from `Player.History` and runs the engine. Catches `NotImplementedException` as a soft "engine doesn't yet handle this round" outcome — every section-round shifts from `⤬ unimplemented` to `✓ matched` as P1+ land, giving us a 400+ case TDD net. | ✅ |
+| **P5b** | **Round-2+ verification harness**: synthesises per-round TRF state from `Player.History` and runs the engine. Pinned-counts contract; was 100% `⤬ unimplemented` until P1 landed. | ✅ |
 | P5c (later) | Adopt the `Backups/*.BK` snapshots from `MCC_2026-04/` as a finer per-mid-round oracle (verifies the engine against the *actual* SwissSys state at each TD action, not just end-of-round). | TODO |
 | P6 | App wiring: settings UI radio (BBP / USCF), bundle the new exe in the Velopack installer. | TODO |
 
@@ -77,25 +77,22 @@ previously-unaccounted error appears.
 `tests/FreePair.Core.Tests/Uscf/Harness/UscfMultiRoundHarnessTests.cs`
 synthesises a `TrfDocument` for every (section, round) where the round
 was actually played and round ≥ 2, then runs `UscfPairer.Pair` against
-it. Today the engine throws `NotImplementedException` for any
-history-bearing document (deliberate guardrail — see `UscfPairer.cs`),
-which the harness catches and logs as the soft outcome `⤬ unimplemented`.
+it. Same pinned-counts contract as P5a.
 
-Current baseline (across the 110-event corpus):
+Current baseline (immediately after P1 landed):
 
 | Outcome | Count | Meaning |
 |---|---|---|
-| ✓ matched | **0** | Engine doesn't pair round 2+ yet — that's P1's job. |
-| ⤬ unimplemented | **412** | The deliberate `NotImplementedException` from `UscfPairer.Pair`. Each one of these is a TDD-ready test case waiting for P1+ to start producing real output to compare against SwissSys. |
-| ⤼ skipped | 235 | Sections with `RoundsPlayed < 2` (single-round events, not-yet-started events) plus pre-flagged byes. |
-| ✗ mismatch | 0 / ! error | 0 | Both fatal categories are at zero — the engine fails loudly (`NotImplementedException`) where it can't pair, never silently produces wrong output. |
+| ✓ matched | **19** | Pairings + bye + colours all agree with SwissSys, purely from naive top-half-vs-bottom-half within score groups (no transpositions, no 29D). |
+| ◐ colour-only diff | **11** | Matching is correct; colour allocation differs. P3 (29D) work. |
+| ✗ mismatch | **382** | Pair-set disagrees, almost always because SwissSys transposed within a score group to avoid pairing two players who already met. P2 (transpositions) will reduce this. |
+| ⤬ unimplemented | 0 | Was 412 before P1; the engine no longer throws for round 2+. |
+| ⤼ section / round skip | 235 | Single-round / not-yet-started events + pre-flagged byes. |
+| ! error | 0 | No unexpected exceptions. |
 
-As P1 (score-group matching) lands, those 412 `⤬ unimplemented` outcomes
-start shifting to `✓ matched`, `◐ colour-only`, or `✗ mismatch`. Each
-flip is provable forward motion. The harness fails on any **hard
-mismatch** or **non-`NotImplementedException` error**, so when P1 starts
-producing pairings, every regression / oversight surfaces immediately
-on the next test run.
+Each P2 / P3 / P4 commit can ratchet the pinned counts in the good
+direction (matches up, mismatches down) and the harness will hold the
+new floor as a regression net.
 
 ## CLI compatibility cheat-sheet
 

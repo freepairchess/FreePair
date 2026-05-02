@@ -143,26 +143,4 @@ public class UscfPairerRound1Tests
         Assert.Empty(result.Pairings);
         Assert.Null(result.ByePair);
     }
-
-    [Fact]
-    public void Round_2_pairing_throws_NotImplemented_for_now()
-    {
-        // Document with one round of history → engine must refuse with a
-        // clear message instead of silently producing wrong pairings.
-        var docWithHistory = new TrfDocument(
-            TournamentName: "Test",
-            StartDate: string.Empty,
-            EndDate: string.Empty,
-            TotalRounds: 5,
-            InitialColor: 'w',
-            Players:
-            [
-                new TrfPlayer(1, "A", 2000, "", 1m,
-                    [ new TrfRoundCell(Opponent: 2, Color: 'w', Result: '1') ]),
-                new TrfPlayer(2, "B", 1900, "", 0m,
-                    [ new TrfRoundCell(Opponent: 1, Color: 'b', Result: '0') ]),
-            ]);
-
-        Assert.Throws<NotImplementedException>(() => UscfPairer.Pair(docWithHistory));
-    }
 }

@@ -55,6 +55,29 @@ namespace FreePair.Core.Tests.Uscf.Harness;
 /// </remarks>
 public class UscfMultiRoundHarnessTests
 {
+    /// <summary>
+    /// Pinned baseline counts captured at P1 landing time. The test fails
+    /// when:
+    /// <list type="bullet">
+    ///   <item><c>matched</c> drops below <see cref="MinExpectedMatches"/>
+    ///         — a (section, round) that used to match doesn't any more
+    ///         (algorithm regression);</item>
+    ///   <item><c>hard mismatch</c> exceeds <see cref="MaxExpectedHardMismatches"/>
+    ///         — same diagnosis on the bad-direction axis;</item>
+    ///   <item><c>colour-only diff</c> exceeds <see cref="MaxExpectedColorOnlyDiffs"/>;</item>
+    ///   <item>any case threw a non-<see cref="NotImplementedException"/>
+    ///         exception.</item>
+    /// </list>
+    /// As P2 (transposition-based repeat avoidance) and P3 (29D colour
+    /// allocation) land, hard mismatches and colour-only diffs should
+    /// shrink while matches grow. Ratchet these constants downward (for
+    /// the bad numbers) and upward (for matches) when the engine
+    /// improves.
+    /// </summary>
+    private const int MinExpectedMatches         = 19;
+    private const int MaxExpectedHardMismatches  = 382;
+    private const int MaxExpectedColorOnlyDiffs  = 11;
+
     private readonly ITestOutputHelper _output;
 
     public UscfMultiRoundHarnessTests(ITestOutputHelper output)
@@ -98,11 +121,34 @@ public class UscfMultiRoundHarnessTests
 
         _output.WriteLine(report.Render());
 
-        if (report.HardFailures > 0)
+        var problems = new List<string>();
+
+        if (report.MatchedCount < MinExpectedMatches)
+        {
+            problems.Add($"matched count regressed: {report.MatchedCount} < expected ≥ {MinExpectedMatches}. " +
+                         "A (section, round) that used to match SwissSys now doesn't — investigate before merging.");
+        }
+        if (report.HardFailures > MaxExpectedHardMismatches)
+        {
+            problems.Add($"hard mismatches grew: {report.HardFailures} > expected ≤ {MaxExpectedHardMismatches}. " +
+                         "Either a new sample exposes a divergence (bump the constant), " +
+                         "or a previously-matching case started failing (fix the regression).");
+        }
+        if (report.ColorOnlyDiffs > MaxExpectedColorOnlyDiffs)
+        {
+            problems.Add($"colour-only diffs grew: {report.ColorOnlyDiffs} > expected ≤ {MaxExpectedColorOnlyDiffs}.");
+        }
+        if (report.ErrorCount > 0)
+        {
+            problems.Add($"the engine threw {report.ErrorCount} unexpected exception(s) — see report.");
+        }
+
+        if (problems.Count > 0)
         {
             throw new Xunit.Sdk.XunitException(
-                $"USCF multi-round harness: {report.HardFailures} (section, round) case(s) " +
-                "did not match SwissSys (see test output for the full diff).");
+                "USCF multi-round harness regression(s) detected:" + Environment.NewLine +
+                "  - " + string.Join(Environment.NewLine + "  - ", problems) +
+                Environment.NewLine + "(see test output for the full breakdown)");
         }
     }
 
@@ -113,8 +159,10 @@ public class UscfMultiRoundHarnessTests
         private readonly List<RoundOutcome> _outcomes = new();
         private readonly List<string> _loadFailures = new();
 
-        public int HardFailures => _outcomes.Count(o =>
-            o.Kind == OutcomeKind.Mismatch || o.Kind == OutcomeKind.Error);
+        public int HardFailures => _outcomes.Count(o => o.Kind == OutcomeKind.Mismatch);
+        public int MatchedCount => _outcomes.Count(o => o.Kind == OutcomeKind.Pass);
+        public int ColorOnlyDiffs => _outcomes.Count(o => o.Kind == OutcomeKind.ColorDiff);
+        public int ErrorCount => _outcomes.Count(o => o.Kind == OutcomeKind.Error);
 
         public void RecordLoadFailure(string file, Exception ex) =>
             _loadFailures.Add($"{Rel(file)}: {ex.GetType().Name}: {ex.Message}");
