@@ -44,16 +44,135 @@ public class UscfNachPlayedStateComparisonTests
         _output = output;
     }
 
+    /// <summary>
+    /// Aggregate sweep across the entire NACH played-state corpus.
+    /// Walks every <c>docs/samples/nach/*.json</c>, runs the engine on
+    /// every section's rounds 2..N, and prints a per-tournament + grand-
+    /// total summary table to the test output. Purely informational —
+    /// never fails. The aggregate gives a single number to track as
+    /// the engine improves; the per-tournament rows surface which
+    /// tournaments / sections drag the average down so the next
+    /// algorithmic investigation can target them.
+    /// </summary>
+    [Fact]
+    public void All_NACH_tournaments_aggregate_pair_set_comparison()
+    {
+        var nachDir = Path.Combine(TestPaths.RepoRoot, "docs", "samples", "nach");
+        if (!Directory.Exists(nachDir))
+        {
+            _output.WriteLine($"(no NACH corpus at {nachDir} — diagnostic is a no-op)");
+            return;
+        }
+
+        var files = Directory.EnumerateFiles(nachDir, "*.json")
+            .OrderBy(f => f, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+        if (files.Count == 0)
+        {
+            _output.WriteLine($"(NACH corpus at {nachDir} is empty)");
+            return;
+        }
+
+        var sb = new StringBuilder();
+        sb.AppendLine();
+        sb.AppendLine($"===== NACH played-state aggregate ({files.Count} tournaments) =====");
+        sb.AppendLine();
+        sb.AppendLine("                                                           rounds        individual pairs");
+        sb.AppendLine("tournament                                                match  total    match  total   pct");
+        sb.AppendLine(new string('-', 100));
+
+        var totalRounds = 0;
+        var matchedRounds = 0;
+        var totalPairs = 0;
+        var matchedPairs = 0;
+        var loadFailures = 0;
+
+        foreach (var file in files)
+        {
+            var (rounds, matchedR, pairs, matchedP, loaded) = ScanFile(file);
+            if (!loaded) { loadFailures++; continue; }
+
+            var label = Path.GetFileNameWithoutExtension(file);
+            if (label.Length > 56) label = label.Substring(0, 53) + "...";
+            sb.AppendLine($"  {label,-56}  {matchedR,4} / {rounds,4}    {matchedP,4} / {pairs,4}   {Pct(matchedP, pairs),5}");
+
+            totalRounds += rounds;
+            matchedRounds += matchedR;
+            totalPairs += pairs;
+            matchedPairs += matchedP;
+        }
+
+        sb.AppendLine(new string('-', 100));
+        sb.AppendLine($"  {"TOTALS",-56}  {matchedRounds,4} / {totalRounds,4}    {matchedPairs,4} / {totalPairs,4}   {Pct(matchedPairs, totalPairs),5}");
+        if (loadFailures > 0) sb.AppendLine($"  load failures: {loadFailures}");
+
+        _output.WriteLine(sb.ToString());
+    }
+
+    /// <summary>Detailed per-round dump for a specific tournament.</summary>
     [Fact]
     public void Greater_Boston_Open_90th_round_by_round_pair_set_comparison()
     {
         RunComparison("90th_Greater_Boston_Open.json");
     }
 
+    /// <summary>Detailed per-round dump for a specific tournament.</summary>
     [Fact]
     public void Massachusetts_Senior_Open_9th_round_by_round_pair_set_comparison()
     {
         RunComparison("9th_Massachusetts_Senior_Open.json");
+    }
+
+    /// <summary>
+    /// Lightweight pass over a single NACH file used by the aggregate
+    /// sweep — same logic as <see cref="RunComparison"/> but doesn't
+    /// emit per-round detail and short-circuits on file errors.
+    /// </summary>
+    private static (int rounds, int matchedRounds, int pairs, int matchedPairs, bool loaded)
+        ScanFile(string path)
+    {
+        try
+        {
+            using var doc = JsonDocument.Parse(File.ReadAllText(path));
+            var root = doc.RootElement;
+            var tournamentName = root.GetProperty("tournament").GetString() ?? "";
+            var date = root.TryGetProperty("date", out var dp) ? dp.GetString() ?? "" : "";
+
+            var rounds = 0; var matchedRounds = 0; var pairs = 0; var matchedPairs = 0;
+
+            foreach (var sectionElem in root.GetProperty("sections").EnumerateArray())
+            {
+                var roundsPlayed = sectionElem.TryGetProperty("rounds_played", out var rp)
+                    && rp.ValueKind == JsonValueKind.Number ? rp.GetInt32() : 0;
+                if (roundsPlayed < 2) continue;
+
+                var players = new List<NachPlayer>();
+                var pairNo = 1;
+                foreach (var pe in sectionElem.GetProperty("players").EnumerateArray())
+                {
+                    players.Add(NachPlayer.From(pe, pairNo));
+                    pairNo++;
+                }
+
+                var sink = new StringBuilder();   // throwaway -- aggregate doesn't print details
+                for (var round = 2; round <= roundsPlayed; round++)
+                {
+                    var (caseSeen, matched, actualCount, matchedCount) =
+                        CompareRound(sink, players, round, tournamentName, date);
+                    if (!caseSeen) continue;
+                    rounds++;
+                    if (matched) matchedRounds++;
+                    pairs += actualCount;
+                    matchedPairs += matchedCount;
+                }
+            }
+
+            return (rounds, matchedRounds, pairs, matchedPairs, true);
+        }
+        catch
+        {
+            return (0, 0, 0, 0, false);
+        }
     }
 
     /// <summary>

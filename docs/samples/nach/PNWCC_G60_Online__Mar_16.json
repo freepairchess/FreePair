@@ -1,0 +1,673 @@
+{
+  "NACHEventID": 14403,
+  "NACHEventPasscode": "DUQVNWSP",
+  "tournament": "�� PNWCC G60 Online - Mar 16",
+  "date": "2025/3/16",
+  "city": "Redmond",
+  "state": "WA",
+  "country": "USA",
+  "td": "He",
+  "bye_message": "BYE",
+  "sections": [
+    {
+      "section": "Open",
+      "rounds_paired": 4,
+      "rounds_played": 4,
+      "time_stamp": "3/16/2025 - 17:56",
+      "standings": [
+        2,
+        1,
+        4,
+        5,
+        3,
+        7,
+        8,
+        12,
+        6,
+        9,
+        13,
+        11,
+        10
+      ],
+      "place": [
+        "1",
+        "2-4",
+        "2-4",
+        "2-4",
+        "5-8",
+        "5-8",
+        "5-8",
+        "5-8",
+        "9-11",
+        "9-11",
+        "9-11",
+        "12",
+        "13"
+      ],
+      "tiebreaks": [
+      ],
+      "rounds": [
+        {
+          "pairings": [
+            {
+              "white": 7,
+              "black": 1,
+              "board": 1,
+              "result": "(1-0)"
+            },
+            {
+              "white": 2,
+              "black": 8,
+              "board": 2,
+              "result": "(1-0)"
+            },
+            {
+              "white": 9,
+              "black": 3,
+              "board": 3,
+              "result": "(0-1)"
+            },
+            {
+              "white": 4,
+              "black": 10,
+              "board": 4,
+              "result": "(1-0)"
+            },
+            {
+              "white": 12,
+              "black": 5,
+              "board": 5,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 6,
+              "black": 13,
+              "board": 6,
+              "result": "(1-0)"
+            },
+            {
+              "white": 11,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            }
+          ]
+        },
+        {
+          "pairings": [
+            {
+              "white": 4,
+              "black": 2,
+              "board": 1,
+              "result": "(0-1)"
+            },
+            {
+              "white": 3,
+              "black": 6,
+              "board": 2,
+              "result": "(1-0)"
+            },
+            {
+              "white": 5,
+              "black": 11,
+              "board": 3,
+              "result": "(1-0)"
+            },
+            {
+              "white": 7,
+              "black": 12,
+              "board": 4,
+              "result": "(1-0)"
+            },
+            {
+              "white": 1,
+              "black": 9,
+              "board": 5,
+              "result": "(1-0)"
+            },
+            {
+              "white": 8,
+              "black": 10,
+              "board": 6,
+              "result": "(1-0)"
+            },
+            {
+              "white": 13,
+              "black": 0,
+              "board": 0,
+              "result": "(1)"
+            }
+          ]
+        },
+        {
+          "pairings": [
+            {
+              "white": 2,
+              "black": 3,
+              "board": 1,
+              "result": "(1-0)"
+            },
+            {
+              "white": 5,
+              "black": 7,
+              "board": 2,
+              "result": "(1-0)"
+            },
+            {
+              "white": 6,
+              "black": 1,
+              "board": 3,
+              "result": "(0-1)"
+            },
+            {
+              "white": 13,
+              "black": 4,
+              "board": 4,
+              "result": "(0-1)"
+            },
+            {
+              "white": 10,
+              "black": 9,
+              "board": 5,
+              "result": "(0-1)"
+            },
+            {
+              "white": 8,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 12,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 11,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            }
+          ]
+        },
+        {
+          "pairings": [
+            {
+              "white": 2,
+              "black": 5,
+              "board": 1,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 1,
+              "black": 3,
+              "board": 2,
+              "result": "(1-0)"
+            },
+            {
+              "white": 7,
+              "black": 4,
+              "board": 3,
+              "result": "(0-1)"
+            },
+            {
+              "white": 9,
+              "black": 8,
+              "board": 4,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 10,
+              "black": 12,
+              "board": 5,
+              "result": "(0-1)"
+            },
+            {
+              "white": 6,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 13,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 11,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            }
+          ]
+        }
+      ],
+      "players": [
+        {
+          "name": "Delchev [GMAlex1971], Aleksander",
+          "player_title": "GM",
+          "id1": "30215991",
+          "rating": 2519,
+          "rating2": 0,
+          "team": "MASTER",
+          "club": "SRB",
+          "results": [
+            "L",
+            "W",
+            "W",
+            "W"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            7,
+            9,
+            6,
+            3
+          ],
+          "boards": [
+            1,
+            5,
+            3,
+            2
+          ],
+          "prize": "33.33"
+        },
+        {
+          "name": "Harshavardhan [legendinunknown], G B",
+          "player_title": "IM",
+          "id1": "30105133",
+          "rating": 2469,
+          "rating2": 0,
+          "club": "IND",
+          "results": [
+            "W",
+            "W",
+            "W",
+            "D"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W",
+            "W"
+          ],
+          "ops": [
+            8,
+            4,
+            3,
+            5
+          ],
+          "boards": [
+            2,
+            1,
+            1,
+            1
+          ],
+          "prize": "100.00"
+        },
+        {
+          "name": "Deng [HDIchess1], Henry",
+          "player_title": "FM",
+          "id1": "16681298",
+          "rating": 2367,
+          "rating2": 0,
+          "club": "USA",
+          "results": [
+            "W",
+            "W",
+            "L",
+            "L"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B",
+            "B"
+          ],
+          "ops": [
+            9,
+            6,
+            2,
+            1
+          ],
+          "boards": [
+            3,
+            2,
+            1,
+            2
+          ]
+        },
+        {
+          "name": "Estrada Nieto [dosto07], Julian",
+          "player_title": "IM",
+          "id1": "12489784",
+          "rating": 2348,
+          "rating2": 0,
+          "team": "MASTER",
+          "club": "MEX",
+          "results": [
+            "W",
+            "L",
+            "W",
+            "W"
+          ],
+          "colors": [
+            "W",
+            "W",
+            "B",
+            "B"
+          ],
+          "ops": [
+            10,
+            2,
+            13,
+            7
+          ],
+          "boards": [
+            4,
+            1,
+            4,
+            3
+          ],
+          "prize": "33.33"
+        },
+        {
+          "name": "Liu [ailopatricaliy], Austin",
+          "player_title": "NM",
+          "id1": "16679915",
+          "rating": 2203,
+          "rating2": 0,
+          "club": "USA",
+          "results": [
+            "D",
+            "W",
+            "W",
+            "D"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "W",
+            "B"
+          ],
+          "ops": [
+            12,
+            11,
+            7,
+            2
+          ],
+          "boards": [
+            5,
+            3,
+            2,
+            1
+          ],
+          "prize": "33.33"
+        },
+        {
+          "name": "Zhang [AmazingSteamBun], Brian",
+          "id1": "30085042",
+          "rating": 1950,
+          "rating2": 0,
+          "team": "ZHANG",
+          "club": "CAN",
+          "byes": "4",
+          "results": [
+            "W",
+            "L",
+            "L",
+            "H"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W",
+            "-"
+          ],
+          "ops": [
+            13,
+            3,
+            1,
+            0
+          ],
+          "boards": [
+            6,
+            2,
+            3,
+            0
+          ]
+        },
+        {
+          "name": "Lin [FightingWarrioir123], Mich",
+          "id1": "17281737",
+          "rating": 1898,
+          "rating2": 0,
+          "club": "USA",
+          "results": [
+            "W",
+            "W",
+            "L",
+            "L"
+          ],
+          "colors": [
+            "W",
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            1,
+            12,
+            5,
+            4
+          ],
+          "boards": [
+            1,
+            4,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "Verma [Dabdude125], Darsh",
+          "id1": "16885668",
+          "rating": 1893,
+          "rating2": 0,
+          "club": "USA",
+          "byes": "3",
+          "results": [
+            "L",
+            "W",
+            "H",
+            "D"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "-",
+            "B"
+          ],
+          "ops": [
+            2,
+            10,
+            0,
+            9
+          ],
+          "boards": [
+            2,
+            6,
+            0,
+            4
+          ]
+        },
+        {
+          "name": "Bimod [KBforChess], Karthik",
+          "id1": "31093354",
+          "rating": 1892,
+          "rating2": 0,
+          "club": "IND",
+          "results": [
+            "L",
+            "L",
+            "W",
+            "D"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "B",
+            "W"
+          ],
+          "ops": [
+            3,
+            1,
+            10,
+            8
+          ],
+          "boards": [
+            3,
+            5,
+            5,
+            4
+          ]
+        },
+        {
+          "name": "Han [Oshi_No_Ko_Chess], Shuyi",
+          "id1": "17101695",
+          "rating": 1877,
+          "rating2": 0,
+          "club": "USA",
+          "results": [
+            "L",
+            "L",
+            "L",
+            "L"
+          ],
+          "colors": [
+            "B",
+            "B",
+            "W",
+            "W"
+          ],
+          "ops": [
+            4,
+            8,
+            9,
+            12
+          ],
+          "boards": [
+            4,
+            6,
+            5,
+            5
+          ]
+        },
+        {
+          "name": "Zhang [FluffyRedPandaChess], Michelle",
+          "player_title": "WCM",
+          "id1": "30085051",
+          "rating": 1817,
+          "rating2": 0,
+          "team": "ZHANG",
+          "club": "CAN",
+          "byes": "1,3z,4z",
+          "results": [
+            "H",
+            "L",
+            "U",
+            "U"
+          ],
+          "colors": [
+            "-",
+            "B",
+            "-",
+            "-"
+          ],
+          "ops": [
+            0,
+            5,
+            0,
+            0
+          ],
+          "boards": [
+            0,
+            3,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "Zhou [yzchess9667_zZz], Yuchen",
+          "id1": "30171464",
+          "rating": 1734,
+          "rating2": 0,
+          "club": "USA",
+          "byes": "3",
+          "results": [
+            "D",
+            "L",
+            "H",
+            "W"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "-",
+            "B"
+          ],
+          "ops": [
+            5,
+            7,
+            0,
+            10
+          ],
+          "boards": [
+            5,
+            4,
+            0,
+            5
+          ]
+        },
+        {
+          "name": "Dominguez Alvarez [BlasDomingo], Blas",
+          "id1": "32240605",
+          "rating": 1601,
+          "rating2": 0,
+          "club": "MEX",
+          "byes": "4",
+          "results": [
+            "L",
+            "B",
+            "L",
+            "H"
+          ],
+          "colors": [
+            "B",
+            "-",
+            "W",
+            "-"
+          ],
+          "ops": [
+            6,
+            0,
+            4,
+            0
+          ],
+          "boards": [
+            6,
+            0,
+            4,
+            0
+          ]
+        }
+      ]
+    }
+  ]
+}

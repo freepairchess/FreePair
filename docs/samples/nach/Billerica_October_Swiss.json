@@ -1,0 +1,1592 @@
+{
+  "NACHEventID": 14403,
+  "NACHEventPasscode": "DUQVNWSP",
+  "tournament": "Billerica Chess Club February 2026",
+  "date": "2026/2/6",
+  "city": "Billerica",
+  "state": "MA",
+  "country": "USA",
+  "td": "Pearson",
+  "sections": [
+    {
+      "section": "Open",
+      "rounds_paired": 1,
+      "rounds_played": 1,
+      "time_stamp": "2/6/2026 - 23:37",
+      "standings": [
+        1,
+        3,
+        5,
+        6,
+        8,
+        11,
+        12,
+        13,
+        15,
+        16,
+        17,
+        24,
+        2,
+        4,
+        9,
+        10,
+        14,
+        18,
+        20,
+        26,
+        27,
+        28,
+        31,
+        35,
+        37,
+        7,
+        19,
+        21,
+        22,
+        23,
+        25,
+        29,
+        30,
+        32,
+        33,
+        34,
+        36
+      ],
+      "place": [
+        "1-12",
+        "1-12",
+        "1-12",
+        "1-12",
+        "1-12",
+        "1-12",
+        "1-12",
+        "1-12",
+        "1-12",
+        "1-12",
+        "1-12",
+        "1-12",
+        "13-25",
+        "13-25",
+        "13-25",
+        "13-25",
+        "13-25",
+        "13-25",
+        "13-25",
+        "13-25",
+        "13-25",
+        "13-25",
+        "13-25",
+        "13-25",
+        "13-25",
+        "26-37",
+        "26-37",
+        "26-37",
+        "26-37",
+        "26-37",
+        "26-37",
+        "26-37",
+        "26-37",
+        "26-37",
+        "26-37",
+        "26-37",
+        "26-37"
+      ],
+      "tiebreaks": [],
+      "rounds": [
+        {
+          "pairings": [
+            {
+              "white": 1,
+              "black": 19,
+              "board": 1,
+              "result": "(1-0)"
+            },
+            {
+              "white": 20,
+              "black": 2,
+              "board": 2,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 3,
+              "black": 21,
+              "board": 3,
+              "result": "(1-0)"
+            },
+            {
+              "white": 22,
+              "black": 5,
+              "board": 4,
+              "result": "(0-1)"
+            },
+            {
+              "white": 6,
+              "black": 23,
+              "board": 5,
+              "result": "(1-0)"
+            },
+            {
+              "white": 24,
+              "black": 7,
+              "board": 6,
+              "result": "(1-0)"
+            },
+            {
+              "white": 8,
+              "black": 25,
+              "board": 7,
+              "result": "(1-0)"
+            },
+            {
+              "white": 26,
+              "black": 9,
+              "board": 8,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 11,
+              "black": 29,
+              "board": 9,
+              "result": "(1-0)"
+            },
+            {
+              "white": 30,
+              "black": 12,
+              "board": 10,
+              "result": "(0-1)"
+            },
+            {
+              "white": 13,
+              "black": 32,
+              "board": 11,
+              "result": "(1-0)"
+            },
+            {
+              "white": 33,
+              "black": 15,
+              "board": 12,
+              "result": "(0-1)"
+            },
+            {
+              "white": 16,
+              "black": 34,
+              "board": 13,
+              "result": "(1-0)"
+            },
+            {
+              "white": 36,
+              "black": 17,
+              "board": 14,
+              "result": "(0-1)"
+            },
+            {
+              "white": 4,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 10,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 14,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 18,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 27,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 28,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 31,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 35,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 37,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            }
+          ]
+        }
+      ],
+      "players": [
+        {
+          "name": "VAUGHAN,JOHN P",
+          "id1": "12481292",
+          "rating": 2056,
+          "rating2": 1896,
+          "exp1": "12/31/2099",
+          "state": "MA",
+          "results": [
+            "W"
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            19
+          ],
+          "boards": [
+            1
+          ]
+        },
+        {
+          "name": "NUGENT,ARTHUR P",
+          "id1": "10011191",
+          "rating": 2000,
+          "rating2": 1843,
+          "exp1": "12/31/2099",
+          "state": "MA",
+          "results": [
+            "D"
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            20
+          ],
+          "boards": [
+            2
+          ]
+        },
+        {
+          "name": "ZSITTNIK,CARTER J",
+          "id1": "30644252",
+          "rating": 1956,
+          "rating2": 2109,
+          "exp1": "7/31/2026",
+          "state": "MA",
+          "results": [
+            "W"
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            21
+          ],
+          "boards": [
+            3
+          ]
+        },
+        {
+          "name": "ELDRIDGE,ROSS",
+          "id1": "12399747",
+          "rating": 1953,
+          "rating2": 1724,
+          "exp1": "12/31/2026",
+          "state": "MA",
+          "byes": "1",
+          "results": [
+            "H"
+          ],
+          "colors": [
+            "-"
+          ],
+          "ops": [
+            0
+          ],
+          "boards": [
+            0
+          ]
+        },
+        {
+          "name": "SKRCHESKI,DEJAN",
+          "id1": "30299274",
+          "rating": 1931,
+          "rating2": 1992,
+          "exp1": "11/30/2026",
+          "state": "MA",
+          "results": [
+            "W"
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            22
+          ],
+          "boards": [
+            4
+          ]
+        },
+        {
+          "name": "PEARSON,FREDERICK",
+          "id1": "12223060",
+          "rating": 1903,
+          "rating2": 1889,
+          "exp1": "9/30/2026",
+          "state": "MA",
+          "results": [
+            "W"
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            23
+          ],
+          "boards": [
+            5
+          ]
+        },
+        {
+          "name": "SHEA,CHRISTOPHER",
+          "id1": "12489615",
+          "rating": 1870,
+          "rating2": 0,
+          "exp1": "6/30/2026",
+          "state": "MA",
+          "results": [
+            "L"
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            24
+          ],
+          "boards": [
+            6
+          ]
+        },
+        {
+          "name": "REYNOLDS,DOUGLAS",
+          "id1": "12427040",
+          "rating": 1836,
+          "rating2": 0,
+          "exp1": "11/30/2027",
+          "state": "MA",
+          "results": [
+            "W"
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            25
+          ],
+          "boards": [
+            7
+          ]
+        },
+        {
+          "name": "VIYANI,KENISRO PR",
+          "id1": "30304394",
+          "rating": 1826,
+          "rating2": 1711,
+          "exp1": "10/31/2026",
+          "state": "MA",
+          "results": [
+            "D"
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            26
+          ],
+          "boards": [
+            8
+          ]
+        },
+        {
+          "name": "URBONAS,MICHAEL",
+          "id1": "11015328",
+          "rating": 1816,
+          "rating2": 1693,
+          "exp1": "3/31/2028",
+          "state": "MA",
+          "byes": "1",
+          "results": [
+            "H"
+          ],
+          "colors": [
+            "-"
+          ],
+          "ops": [
+            0
+          ],
+          "boards": [
+            0
+          ]
+        },
+        {
+          "name": "GRADIJAN,STEPHEN",
+          "id1": "12454998",
+          "rating": 1800,
+          "rating2": 1848,
+          "exp1": "4/30/2027",
+          "state": "MA",
+          "byes": "2",
+          "results": [
+            "W"
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            29
+          ],
+          "boards": [
+            9
+          ]
+        },
+        {
+          "name": "SNYDER,JASON",
+          "id1": "32325348",
+          "rating": 1796,
+          "rating2": 0,
+          "exp1": "2/28/2026",
+          "state": "MA",
+          "results": [
+            "W"
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            30
+          ],
+          "boards": [
+            10
+          ]
+        },
+        {
+          "name": "BAGINSKI,PAUL A",
+          "id1": "12376240",
+          "rating": 1793,
+          "rating2": 1428,
+          "exp1": "3/31/2027",
+          "state": "MA",
+          "results": [
+            "W"
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            32
+          ],
+          "boards": [
+            11
+          ]
+        },
+        {
+          "name": "BIRD,D. G.",
+          "id1": "14902922",
+          "rating": 1746,
+          "rating2": 0,
+          "exp1": "5/31/2027",
+          "state": "MA",
+          "byes": "1",
+          "results": [
+            "H"
+          ],
+          "colors": [
+            "-"
+          ],
+          "ops": [
+            0
+          ],
+          "boards": [
+            0
+          ]
+        },
+        {
+          "name": "SMITH,STEPHEN E",
+          "id1": "12451370",
+          "rating": 1744,
+          "rating2": 1668,
+          "exp1": "10/31/2026",
+          "state": "MA",
+          "results": [
+            "W"
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            33
+          ],
+          "boards": [
+            12
+          ]
+        },
+        {
+          "name": "KAPRIELIAN,MARK",
+          "id1": "10007763",
+          "rating": 1715,
+          "rating2": 1716,
+          "exp1": "12/31/2099",
+          "state": "MA",
+          "results": [
+            "W"
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            34
+          ],
+          "boards": [
+            13
+          ]
+        },
+        {
+          "name": "LIANG,RYAN",
+          "id1": "31092762",
+          "rating": 1709,
+          "rating2": 0,
+          "exp1": "4/30/2027",
+          "state": "MA",
+          "results": [
+            "W"
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            36
+          ],
+          "boards": [
+            14
+          ]
+        },
+        {
+          "name": "BROWN,LEAH TAYLOR",
+          "id1": "30512104",
+          "rating": 1685,
+          "rating2": 0,
+          "exp1": "4/30/2026",
+          "state": "MA",
+          "byes": "1",
+          "results": [
+            "H"
+          ],
+          "colors": [
+            "-"
+          ],
+          "ops": [
+            0
+          ],
+          "boards": [
+            0
+          ]
+        },
+        {
+          "name": "DAVID,MICHAEL SCO",
+          "id1": "16636306",
+          "rating": 1674,
+          "rating2": 1500,
+          "exp1": "4/30/2027",
+          "state": "MA",
+          "results": [
+            "L"
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            1
+          ],
+          "boards": [
+            1
+          ]
+        },
+        {
+          "name": "MINALGA-RHEAULT,R",
+          "id1": "16957835",
+          "rating": 1515,
+          "rating2": 963,
+          "exp1": "6/30/2026",
+          "state": "NH",
+          "results": [
+            "D"
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            2
+          ],
+          "boards": [
+            2
+          ]
+        },
+        {
+          "name": "PREM KUMAR,DHANVA",
+          "id1": "31816882",
+          "rating": 1431,
+          "rating2": 1543,
+          "exp1": "4/30/2026",
+          "state": "MA",
+          "results": [
+            "L"
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            3
+          ],
+          "boards": [
+            3
+          ]
+        },
+        {
+          "name": "RAGUCCI,JOHN A",
+          "id1": "10016894",
+          "rating": 1423,
+          "rating2": 0,
+          "exp1": "6/30/2027",
+          "state": "MA",
+          "results": [
+            "L"
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            5
+          ],
+          "boards": [
+            4
+          ]
+        },
+        {
+          "name": "NATTI,NAGENDRANAT",
+          "id1": "15481128",
+          "rating": 1390,
+          "rating2": 1323,
+          "exp1": "11/30/2026",
+          "state": "MA",
+          "results": [
+            "L"
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            6
+          ],
+          "boards": [
+            5
+          ]
+        },
+        {
+          "name": "Lamare, Matthew Ma",
+          "id1": "32113596",
+          "rating": 1249,
+          "rating2": 0,
+          "exp1": "11/30/2027",
+          "state": "MA",
+          "results": [
+            "W"
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            7
+          ],
+          "boards": [
+            6
+          ]
+        },
+        {
+          "name": "CARLAN,JULY",
+          "id1": "32416205",
+          "rating": 1204,
+          "rating2": 1119,
+          "exp1": "04/30/2026",
+          "state": "MA",
+          "results": [
+            "L"
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            8
+          ],
+          "boards": [
+            7
+          ]
+        },
+        {
+          "name": "Nair, Arjun",
+          "id1": "15875325",
+          "rating": 1089,
+          "rating2": 1372,
+          "exp1": "12/31/2026",
+          "state": "MA",
+          "results": [
+            "D"
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            9
+          ],
+          "boards": [
+            8
+          ]
+        },
+        {
+          "name": "Sanghishetty, Sudh",
+          "id1": "30992211",
+          "rating": 1068,
+          "rating2": 0,
+          "exp1": "5/31/2026",
+          "state": "MA",
+          "byes": "1,2",
+          "results": [
+            "H"
+          ],
+          "colors": [
+            "-"
+          ],
+          "ops": [
+            0
+          ],
+          "boards": [
+            0
+          ]
+        },
+        {
+          "name": "BARKER,KERRY",
+          "id1": "32273255",
+          "rating": 1065,
+          "rating2": 0,
+          "exp1": "2/29/2028",
+          "state": "MA",
+          "byes": "1",
+          "results": [
+            "H"
+          ],
+          "colors": [
+            "-"
+          ],
+          "ops": [
+            0
+          ],
+          "boards": [
+            0
+          ]
+        },
+        {
+          "name": "GODLEWSKI,PETER",
+          "id1": "17071447",
+          "rating": 957,
+          "rating2": 0,
+          "exp1": "10/31/2027",
+          "state": "MA",
+          "results": [
+            "L"
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            11
+          ],
+          "boards": [
+            9
+          ]
+        },
+        {
+          "name": "SOUHRADA,ERNIE",
+          "id1": "32455608",
+          "rating": 928,
+          "rating2": 0,
+          "exp1": "5/31/2026",
+          "state": "CO",
+          "byes": "3",
+          "results": [
+            "L"
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            12
+          ],
+          "boards": [
+            10
+          ]
+        },
+        {
+          "name": "VEERAMANIKANDAN,V",
+          "id1": "32009918",
+          "rating": 882,
+          "rating2": 0,
+          "exp1": "8/31/2026",
+          "state": "MA",
+          "byes": "1",
+          "results": [
+            "H"
+          ],
+          "colors": [
+            "-"
+          ],
+          "ops": [
+            0
+          ],
+          "boards": [
+            0
+          ]
+        },
+        {
+          "name": "Srinivasan, Ashwat",
+          "id1": "30347185",
+          "rating": 780,
+          "rating2": 0,
+          "exp1": "12/31/2027",
+          "state": "MA",
+          "results": [
+            "L"
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            13
+          ],
+          "boards": [
+            11
+          ]
+        },
+        {
+          "name": "THIRUKKONDA,DANVI",
+          "id1": "32324960",
+          "rating": 690,
+          "rating2": 492,
+          "exp1": "2/28/2026",
+          "state": "MA",
+          "results": [
+            "L"
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            15
+          ],
+          "boards": [
+            12
+          ]
+        },
+        {
+          "name": "NALUVALA,MAEDHA",
+          "id1": "31426091",
+          "rating": 643,
+          "rating2": 0,
+          "exp1": "3/31/2026",
+          "state": "MA",
+          "results": [
+            "L"
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            16
+          ],
+          "boards": [
+            13
+          ]
+        },
+        {
+          "name": "EBERIEL,NANCY MIL",
+          "id1": "30642163",
+          "rating": 309,
+          "rating2": 101,
+          "exp1": "8/31/2027",
+          "state": "MA",
+          "byes": "1",
+          "results": [
+            "H"
+          ],
+          "colors": [
+            "-"
+          ],
+          "ops": [
+            0
+          ],
+          "boards": [
+            0
+          ]
+        },
+        {
+          "name": "Rush, Demetres",
+          "id1": "31186631",
+          "rating": 0,
+          "rating2": 0,
+          "state": "MA",
+          "results": [
+            "L"
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            17
+          ],
+          "boards": [
+            14
+          ]
+        },
+        {
+          "name": "RUSSELL,ELIJIAH",
+          "id1": "32806392",
+          "rating": 0,
+          "rating2": 0,
+          "exp1": "1/31/2027",
+          "state": "MA",
+          "byes": "1",
+          "results": [
+            "H"
+          ],
+          "colors": [
+            "-"
+          ],
+          "ops": [
+            0
+          ],
+          "boards": [
+            0
+          ]
+        }
+      ],
+      "latest_pairing_is_draft": false
+    },
+    {
+      "section": "Not yet registered",
+      "rounds_paired": 1,
+      "rounds_played": 0,
+      "time_stamp": "2/6/2026 - 23:37",
+      "standings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "place": [
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23",
+        "1-23"
+      ],
+      "tiebreaks": [],
+      "rounds": [
+        {
+          "pairings": [
+            {
+              "white": 1,
+              "black": 12,
+              "board": 1,
+              "result": "(?-?)"
+            },
+            {
+              "white": 13,
+              "black": 2,
+              "board": 2,
+              "result": "(?-?)"
+            },
+            {
+              "white": 3,
+              "black": 14,
+              "board": 3,
+              "result": "(?-?)"
+            },
+            {
+              "white": 15,
+              "black": 4,
+              "board": 4,
+              "result": "(?-?)"
+            },
+            {
+              "white": 5,
+              "black": 16,
+              "board": 5,
+              "result": "(?-?)"
+            },
+            {
+              "white": 17,
+              "black": 6,
+              "board": 6,
+              "result": "(?-?)"
+            },
+            {
+              "white": 7,
+              "black": 18,
+              "board": 7,
+              "result": "(?-?)"
+            },
+            {
+              "white": 19,
+              "black": 8,
+              "board": 8,
+              "result": "(?-?)"
+            },
+            {
+              "white": 9,
+              "black": 20,
+              "board": 9,
+              "result": "(?-?)"
+            },
+            {
+              "white": 21,
+              "black": 10,
+              "board": 10,
+              "result": "(?-?)"
+            },
+            {
+              "white": 11,
+              "black": 22,
+              "board": 11,
+              "result": "(?-?)"
+            },
+            {
+              "white": 23,
+              "black": 0,
+              "board": 0,
+              "result": "(1)"
+            }
+          ]
+        }
+      ],
+      "players": [
+        {
+          "name": "PAULSON,RAYMOND",
+          "id1": "12401616",
+          "rating": 1886,
+          "rating2": 1862,
+          "exp1": "10/31/2025",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            12
+          ],
+          "boards": [
+            1
+          ]
+        },
+        {
+          "name": "JIN,JIM",
+          "id1": "30855444",
+          "rating": 1787,
+          "rating2": 1718,
+          "exp1": "1/31/2027",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            13
+          ],
+          "boards": [
+            2
+          ]
+        },
+        {
+          "name": "TROTTER,ROWAN",
+          "id1": "32083346",
+          "rating": 1785,
+          "rating2": 0,
+          "exp1": "10/31/2026",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            14
+          ],
+          "boards": [
+            3
+          ]
+        },
+        {
+          "name": "BARRY,MICHAEL",
+          "id1": "12584196",
+          "rating": 1752,
+          "rating2": 0,
+          "exp1": "6/30/2027",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            15
+          ],
+          "boards": [
+            4
+          ]
+        },
+        {
+          "name": "SARAVANAN,ANISH",
+          "id1": "16732165",
+          "rating": 1749,
+          "rating2": 1560,
+          "exp1": "8/31/2027",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            16
+          ],
+          "boards": [
+            5
+          ]
+        },
+        {
+          "name": "MOORE,MICHAEL O D",
+          "id1": "12538350",
+          "rating": 1700,
+          "rating2": 0,
+          "exp1": "12/31/2026",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            17
+          ],
+          "boards": [
+            6
+          ]
+        },
+        {
+          "name": "MARTIN,DAVID W",
+          "id1": "12877246",
+          "rating": 1632,
+          "rating2": 1697,
+          "exp1": "1/31/2027",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            18
+          ],
+          "boards": [
+            7
+          ]
+        },
+        {
+          "name": "NORMAN,GEORGE",
+          "id1": "12376330",
+          "rating": 1584,
+          "rating2": 0,
+          "exp1": "4/30/2026",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            19
+          ],
+          "boards": [
+            8
+          ]
+        },
+        {
+          "name": "GADOMSKI,THADEUS",
+          "id1": "30135710",
+          "rating": 1572,
+          "rating2": 0,
+          "exp1": "3/31/2027",
+          "state": "NH",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            20
+          ],
+          "boards": [
+            9
+          ]
+        },
+        {
+          "name": "BILLMERS,MEYER A",
+          "id1": "10018307",
+          "rating": 1506,
+          "rating2": 1544,
+          "exp1": "12/31/2099",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            21
+          ],
+          "boards": [
+            10
+          ]
+        },
+        {
+          "name": "WHITMORE,WALTER",
+          "id1": "12503048",
+          "rating": 1500,
+          "rating2": 1569,
+          "exp1": "12/31/2099",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            22
+          ],
+          "boards": [
+            11
+          ]
+        },
+        {
+          "name": "NAGARAJ,AVNI GAUR",
+          "id1": "16037722",
+          "rating": 1496,
+          "rating2": 1128,
+          "exp1": "7/31/2027",
+          "state": "NH",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            1
+          ],
+          "boards": [
+            1
+          ]
+        },
+        {
+          "name": "NICEWICZ,LARS",
+          "id1": "31651988",
+          "rating": 1494,
+          "rating2": 0,
+          "exp1": "1/31/2027",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            2
+          ],
+          "boards": [
+            2
+          ]
+        },
+        {
+          "name": "APPELMANS,JACK",
+          "id1": "12672022",
+          "rating": 1444,
+          "rating2": 0,
+          "exp1": "4/30/2026",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            3
+          ],
+          "boards": [
+            3
+          ]
+        },
+        {
+          "name": "KUHLMANN,STEVE",
+          "id1": "15457580",
+          "rating": 1371,
+          "rating2": 1168,
+          "exp1": "1/31/2026",
+          "state": "NH",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            4
+          ],
+          "boards": [
+            4
+          ]
+        },
+        {
+          "name": "PENSAMENTO,AMILTO",
+          "id1": "30661108",
+          "rating": 1267,
+          "rating2": 1340,
+          "exp1": "5/31/2026",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            5
+          ],
+          "boards": [
+            5
+          ]
+        },
+        {
+          "name": "YADAV,ANSH",
+          "id1": "31448197",
+          "rating": 1132,
+          "rating2": 0,
+          "exp1": "9/30/2026",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            6
+          ],
+          "boards": [
+            6
+          ]
+        },
+        {
+          "name": "PALAPARTHI,AARYAS",
+          "id1": "31784635",
+          "rating": 1127,
+          "rating2": 1234,
+          "exp1": "3/31/2026",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            7
+          ],
+          "boards": [
+            7
+          ]
+        },
+        {
+          "name": "STEER,JONATHAN",
+          "id1": "31557945",
+          "rating": 1098,
+          "rating2": 0,
+          "exp1": "11/30/2026",
+          "state": "NH",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            8
+          ],
+          "boards": [
+            8
+          ]
+        },
+        {
+          "name": "CHAUDHARY,SAKSHAM",
+          "id1": "31580612",
+          "rating": 1094,
+          "rating2": 955,
+          "exp1": "12/31/2026",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            9
+          ],
+          "boards": [
+            9
+          ]
+        },
+        {
+          "name": "ROBINSON,REGINALD",
+          "id1": "32520909",
+          "rating": 753,
+          "rating2": 0,
+          "exp1": "7/31/2026",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            10
+          ],
+          "boards": [
+            10
+          ]
+        },
+        {
+          "name": "CHAUDHARY,RUHAAN",
+          "id1": "31722363",
+          "rating": 531,
+          "rating2": 0,
+          "exp1": "2/28/2026",
+          "state": "MA",
+          "results": [
+            " "
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            11
+          ],
+          "boards": [
+            11
+          ]
+        },
+        {
+          "name": "CHAUDHARY,SAMARTH",
+          "id1": "32267961",
+          "rating": 508,
+          "rating2": 0,
+          "exp1": "1/31/2027",
+          "state": "MA",
+          "results": [
+            "B"
+          ],
+          "colors": [
+            "-"
+          ],
+          "ops": [
+            0
+          ],
+          "boards": [
+            0
+          ]
+        }
+      ],
+      "latest_pairing_is_draft": true
+    }
+  ]
+}
