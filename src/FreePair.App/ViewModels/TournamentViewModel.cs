@@ -762,6 +762,25 @@ public partial class TournamentViewModel : ViewModelBase
             if (section.FirstBoard == newValue) continue;
             t = TournamentMutations.SetSectionFirstBoard(t, name, newValue);
         }
+
+        // Apply any per-section pairing-engine overrides the TD
+        // picked in the dashboard. Only R1-bound sections (rows
+        // where IsEngineEditable was true) are present in the
+        // dict — sections past round 1 are locked. The mutation
+        // throws if a row slipped through, so we wrap in try and
+        // skip locked sections silently.
+        var chosenEngines = result.SnapshotChosenPairingEngines();
+        foreach (var (name, engine) in chosenEngines)
+        {
+            var section = t.Sections.FirstOrDefault(s => s.Name == name);
+            if (section is null) continue;
+            if (section.PairingEngine == engine) continue;
+            try
+            {
+                t = TournamentMutations.SetSectionPairingEngine(t, name, engine);
+            }
+            catch (System.InvalidOperationException) { /* round-paired lock */ }
+        }
         if (!ReferenceEquals(t, Tournament))
         {
             Tournament = t;

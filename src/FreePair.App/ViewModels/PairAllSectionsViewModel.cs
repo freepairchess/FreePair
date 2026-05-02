@@ -32,6 +32,41 @@ public sealed partial class PairAllSectionRow : ObservableObject
     public SectionPairingStatus Status { get; }
 
     /// <summary>
+    /// True when the TD can change the section's pairing engine
+    /// from this dialog: the section hasn't paired any round yet
+    /// (i.e. the next pair will be round 1). Once round 1 lands,
+    /// the engine is fixed for the rest of the event — we only
+    /// show the current value as a read-only label.
+    /// </summary>
+    public bool IsEngineEditable { get; }
+
+    /// <summary>
+    /// Choices shown in the engine combobox when
+    /// <see cref="IsEngineEditable"/> is true. Same three items
+    /// as the section header combobox.
+    /// </summary>
+    public IReadOnlyList<PairingEngineChoice> AvailableEngineChoices =>
+        PairingEngineChoice.SectionChoices;
+
+    /// <summary>
+    /// Two-way-bindable selected choice for the engine combobox.
+    /// Seeded from the section's persisted override at
+    /// construction; the parent VM reads the final value via
+    /// <see cref="PairAllSectionsViewModel.SnapshotChosenPairingEngines"/>
+    /// when the TD clicks Pair.
+    /// </summary>
+    [ObservableProperty]
+    private PairingEngineChoice? _selectedEngineChoice;
+
+    /// <summary>
+    /// Read-only label showing the resolved (effective) engine
+    /// after the inherit/default cascade. Always populated; the
+    /// view shows EITHER the combobox (when editable) OR this
+    /// label, never both.
+    /// </summary>
+    public string EffectivePairingEngineDisplay { get; }
+
+    /// <summary>
     /// Editable starting board for this section. Bound to a
     /// NumericUpDown in the dialog; changes re-trigger conflict
     /// computation on the parent VM.
@@ -97,6 +132,17 @@ public sealed partial class PairAllSectionRow : ObservableObject
     };
 
     public PairAllSectionRow(Section section, int recommended)
+        : this(section, recommended, tournament: null)
+    {
+    }
+
+    /// <summary>
+    /// Full constructor used by the parent VM when it has a
+    /// <see cref="Tournament"/> reference for inherit/default
+    /// cascade resolution. Falls back to a section-only resolution
+    /// when <paramref name="tournament"/> is null.
+    /// </summary>
+    public PairAllSectionRow(Section section, int recommended, Tournament? tournament)
     {
         Name              = section.Name;
         ActivePlayers     = SectionPairingReadiness.ActivePlayerCount(section);
@@ -108,6 +154,24 @@ public sealed partial class PairAllSectionRow : ObservableObject
         CurrentFirstBoard = section.FirstBoard ?? 1;
         Status            = SectionPairingReadiness.Classify(section);
         _startingBoard    = CurrentFirstBoard;
+
+        // Engine editability: only when the next pair will be round 1.
+        IsEngineEditable = section.RoundsPaired == 0;
+
+        // Seed the combobox from the section's current override.
+        SelectedEngineChoice = PairingEngineChoice.SectionChoices.FirstOrDefault(
+            c => c.Value == section.PairingEngine)
+            ?? PairingEngineChoice.SectionChoices[0];
+
+        // Effective-engine label: resolve through the full cascade
+        // when we have the parent tournament; otherwise just show
+        // the section's own override (or "BBP" if none — matches
+        // SectionViewModel's pre-attach fallback).
+        var effective = tournament is null
+            ? (section.PairingEngine
+               ?? FreePair.Core.Tournaments.Enums.PairingEngineKind.Bbp)
+            : FreePair.Core.Tournaments.PairingEngineDefaults.Resolve(tournament, section);
+        EffectivePairingEngineDisplay = PairingEngineChoice.DisplayFor(effective);
     }
 }
 
@@ -152,7 +216,7 @@ public sealed partial class PairAllSectionsViewModel : ViewModelBase
             // a clean operational view.
             if (s.SoftDeleted) continue;
             var rec = recommended.TryGetValue(s.Name, out var r) ? r : 1;
-            var row = new PairAllSectionRow(s, rec);
+            var row = new PairAllSectionRow(s, rec, tournament);
             row.PropertyChanged += OnRowChanged;
             Rows.Add(row);
         }
@@ -242,6 +306,27 @@ public sealed partial class PairAllSectionsViewModel : ViewModelBase
     {
         var dict = new Dictionary<string, int>(StringComparer.Ordinal);
         foreach (var row in Rows) dict[row.Name] = row.StartingBoard;
+        return dict;
+    }
+
+    /// <summary>
+    /// Per-section pairing-engine overrides the TD picked, for
+    /// rows where <see cref="PairAllSectionRow.IsEngineEditable"/>
+    /// is true (R1-bound sections only). Caller applies via
+    /// <see cref="TournamentMutations.SetSectionPairingEngine"/>
+    /// before pairing. Sections past round 1 are NOT included in
+    /// the dict — their engine is locked.
+    /// </summary>
+    public IReadOnlyDictionary<string, FreePair.Core.Tournaments.Enums.PairingEngineKind?>
+        SnapshotChosenPairingEngines()
+    {
+        var dict = new Dictionary<string, FreePair.Core.Tournaments.Enums.PairingEngineKind?>(
+            StringComparer.Ordinal);
+        foreach (var row in Rows)
+        {
+            if (!row.IsEngineEditable) continue;
+            dict[row.Name] = row.SelectedEngineChoice?.Value;
+        }
         return dict;
     }
 }
