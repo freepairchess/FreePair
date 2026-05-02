@@ -95,14 +95,49 @@ What the publish step does:
    `release\github-repo.txt` → URL of the `github` git remote, in
    that order. Caches the resolved value to `github-repo.txt`
    (gitignored) on first run.
-3. **Tags the commit**: creates an annotated `v<Version>` tag if it
-   doesn't exist locally, then pushes it to the GitHub remote
-   (`github` if the remote exists, otherwise `origin`).
-4. **Creates the release**: calls `gh release create v<Version>`
+3. **Prepares a staging clone of the GitHub repo** at
+   `release\github-staging\<owner>-<repo>\` (gitignored). The
+   staging dir has its own git history, separate from the source
+   repo — see [the two-repo model](#source-isolation-the-two-repo-model)
+   below for why.
+4. **Writes a release-notes marker** to
+   `release-notes\v<Version>.md` in the staging clone, commits it
+   on the staging repo's `main` branch, and tags that commit
+   `v<Version>`. The tag points at the marker commit, NOT at any
+   FreePair source commit.
+5. **Pushes `main` + tag** to the GitHub repo via the staging
+   clone's `origin` remote. The source repo's working tree and its
+   Azure DevOps `origin` remote are never touched.
+6. **Creates the release**: calls `gh release create v<Version>`
    with the title, optional release-notes file, and every file in
    `release\output\<Version>\` as an attached asset.
-5. If the release already exists (re-cut of an existing version),
+7. If the release already exists (re-cut of an existing version),
    re-uploads assets via `gh release upload --clobber`.
+
+#### Source isolation: the two-repo model
+
+FreePair source lives **only** on Azure DevOps
+(`xuhaohe.visualstudio.com/FreePair`, private). The GitHub repo
+(`freepairchess/FreePair`, public) holds **only**:
+
+- `README.md` (one-line "FreePair binaries; source private")
+- `release-notes\v0.1.0.md`, `release-notes\v0.1.1.md`, … (per-release Markdown markers)
+- Tags `v0.1.0`, `v0.1.1`, … pointing at marker commits
+- GitHub Releases with the binary assets (Setup.exe, Portable.zip, nupkgs, manifests)
+
+Why a staging clone instead of pushing tags from the source repo:
+`git push <remote> v<Version>` pushes the tag **and every commit
+reachable from it**, which would drag the entire FreePair source
+history onto GitHub. The staging clone has its own minimal history
+(just the per-release markers), so even though the tag-push still
+includes everything reachable, "everything reachable" is only ever
+the markdown markers. Source can never leak.
+
+The staging clone is gitignored (`release\github-staging\` in
+`release\.gitignore`) so it doesn't pollute the source repo. First
+run clones the GitHub repo automatically; subsequent runs `git
+fetch` + reset to `origin/main` so the local state always matches
+GitHub before tagging.
 
 #### Credential management
 
