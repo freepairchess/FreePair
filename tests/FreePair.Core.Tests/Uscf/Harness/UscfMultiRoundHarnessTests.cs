@@ -495,7 +495,8 @@ public class UscfMultiRoundHarnessTests
                 Rating: p.Rating,
                 Id: p.UscfId ?? string.Empty,
                 Points: ScoreThroughRound(p, endedRound),
-                Rounds: BuildRoundCells(p, endedRound)))
+                Rounds: BuildRoundCells(p, endedRound),
+                Team: p.Team ?? string.Empty))
             .ToList();
 
         return new TrfDocument(

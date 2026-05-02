@@ -359,7 +359,7 @@ public static class UscfPairer
             foreach (var j in NaturalOrder(i, n))
             {
                 if (used[j]) continue;
-                if (HasPlayed(top[i], bot[j])) continue;
+                if (IsForbiddenPair(top[i], bot[j])) continue;
                 used[j] = true;
                 assignment[i] = bot[j];
                 if (Recurse(i + 1)) return true;
@@ -395,6 +395,34 @@ public static class UscfPairer
         }
         return false;
     }
+
+    /// <summary>
+    /// True when both players carry a non-empty <see cref="TrfPlayer.Team"/>
+    /// label and the labels match (case-insensitive). Used by the
+    /// matcher to avoid pairing siblings / teammates — Puddletown's
+    /// scholastic Swisses tag families this way and SwissSys honours
+    /// the constraint at the matching layer (it's effectively a
+    /// rematch from the player's point of view: "we're a household,
+    /// don't pair us"). Blank teams short-circuit to <c>false</c> so
+    /// non-team-tagged tournaments behave exactly as before.
+    /// </summary>
+    private static bool ShareTeam(TrfPlayer a, TrfPlayer b)
+    {
+        if (string.IsNullOrWhiteSpace(a.Team)) return false;
+        if (string.IsNullOrWhiteSpace(b.Team)) return false;
+        return string.Equals(a.Team, b.Team, StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// Returns true when the candidate pair (<paramref name="top"/>,
+    /// <paramref name="bot"/>) violates a <em>matching-time</em>
+    /// constraint — currently rematch avoidance and same-team
+    /// avoidance. The matcher rejects any candidate that returns true
+    /// before recursing, so the search only ever produces
+    /// constraint-clean assignments.
+    /// </summary>
+    private static bool IsForbiddenPair(TrfPlayer top, TrfPlayer bot) =>
+        HasPlayed(top, bot) || ShareTeam(top, bot);
 
     private static decimal ComputeScore(TrfPlayer p)
     {

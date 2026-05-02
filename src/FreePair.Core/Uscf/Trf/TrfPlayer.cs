@@ -20,10 +20,22 @@ namespace FreePair.Core.Uscf.Trf;
 /// played rounds; cells with kind <c>H</c>/<c>U</c>/<c>F</c> etc. carry
 /// the corresponding bye / forfeit.
 /// </param>
+/// <param name="Team">
+/// Optional team identifier — typically the family / sibling group label
+/// in scholastic Swisses (Puddletown's convention) or a school / club
+/// code. The pairer uses this to avoid pairing two players from the
+/// same team in any round (USCF C.04.4 same-team avoidance). Empty
+/// when the source TRF didn't carry team data; ignored by the matcher
+/// when blank. Not currently emitted by FreePair's TrfWriter — supplied
+/// directly by the in-process harness path. Tag <c>013</c> in the TRF
+/// spec is the team-membership directive but FreePair-USCF doesn't
+/// parse it yet.
+/// </param>
 public sealed record TrfPlayer(
     int PairNumber,
     string Name,
     int Rating,
     string Id,
     decimal Points,
-    IReadOnlyList<TrfRoundCell> Rounds);
+    IReadOnlyList<TrfRoundCell> Rounds,
+    string Team = "");
