@@ -160,6 +160,8 @@ public static class UscfPairer
             return new UscfPairingResult(Array.Empty<UscfPairing>(), null);
         }
 
+        var initialColor = document.InitialColor ?? 'w';
+
         // Group active players by score. We assume the caller has already
         // filtered out anyone who shouldn't be paired this round (withdrawn,
         // pre-flagged half-byes, etc.). Score groups go highest first.
@@ -195,7 +197,7 @@ public static class UscfPairer
                 pool.RemoveAt(pool.Count - 1);
             }
 
-            board = PairPool(pool, board, pairings);
+            board = PairPool(pool, board, pairings, initialColor);
 
             // If we're on the last group and it's still odd, the leftover
             // is the bye.
@@ -212,7 +214,7 @@ public static class UscfPairer
         {
             byePair = floatDown[^1].PairNumber;
             floatDown.RemoveAt(floatDown.Count - 1);
-            board = PairPool(floatDown, board, pairings);
+            board = PairPool(floatDown, board, pairings, initialColor);
         }
 
         return new UscfPairingResult(pairings, byePair);
@@ -227,7 +229,7 @@ public static class UscfPairer
     /// trailing element is left unpaired (caller's responsibility to
     /// either float it down or assign as bye).
     /// </summary>
-    private static int PairPool(IList<TrfPlayer> pool, int startBoard, List<UscfPairing> pairings)
+    private static int PairPool(IList<TrfPlayer> pool, int startBoard, List<UscfPairing> pairings, char initialColor)
     {
         var pairableCount = pool.Count - (pool.Count % 2);
         var half = pairableCount / 2;
@@ -264,7 +266,7 @@ public static class UscfPairer
 
             var topPlayer = top[i];
             var bottomPlayer = bot[i];
-            var topGetsWhite = TopGetsWhite(topPlayer, bottomPlayer);
+            var topGetsWhite = TopGetsWhite(topPlayer, bottomPlayer, initialColor, board);
             var (white, black) = topGetsWhite ? (topPlayer, bottomPlayer) : (bottomPlayer, topPlayer);
             pairings.Add(new UscfPairing(white.PairNumber, black.PairNumber, Board: board));
             board++;
@@ -297,36 +299,96 @@ public static class UscfPairer
     }
 
     /// <summary>
-    /// Placeholder colour allocation for P1: whoever has played fewer
-    /// whites so far gets white. Ties broken by giving the higher seed
-    /// the colour opposite to their last actual colour. P3 will replace
-    /// this with the full USCF 29D preference resolution (absolute /
-    /// strong / mild).
+    /// USCF 29D colour allocation. Decides which of the two players in
+    /// a pair receives white. The rule order matches USCF 29D1 → 29D2:
+    /// equalise first, then alternate, with a streak-absolute exception
+    /// at the top.
     /// </summary>
-    private static bool TopGetsWhite(TrfPlayer top, TrfPlayer bottom)
+    /// <remarks>
+    /// <para>Priority (top-to-bottom, first decisive answer wins):</para>
+    /// <list type="number">
+    ///   <item><b>Streak absolute (29D5).</b> A player who has played two
+    ///         actual games of the same colour in a row has an absolute
+    ///         claim on the opposite colour. If exactly one of the
+    ///         pair has such a streak, they are given the opposite
+    ///         colour; if both do (one each direction), satisfy both;
+    ///         if both want the same colour we fall through to
+    ///         equalisation.</item>
+    ///   <item><b>Equalisation (29D1).</b> Player with more whites
+    ///         (higher whites − blacks) gets black; the other gets
+    ///         white. Strict inequality only — ties fall through.</item>
+    ///   <item><b>Alternation (29D2).</b> Compare last actual-game
+    ///         colours. The player whose last game was white gets
+    ///         black this round; vice versa. Asymmetric histories
+    ///         (one has a colour on record, the other doesn't) follow
+    ///         the same rule against the implicit "no preference".</item>
+    ///   <item><b>Round-1 fallback.</b> Both players have identical
+    ///         (typically empty) histories. Pair behaves like a R1 pair
+    ///         on the given <paramref name="board"/>: the top seed gets
+    ///         the round-1 initial colour on odd boards, the opposite
+    ///         on even boards.</item>
+    /// </list>
+    /// </remarks>
+    private static bool TopGetsWhite(TrfPlayer top, TrfPlayer bottom, char initialColor, int board)
     {
-        var topWhites = CountColor(top, 'w');
-        var topBlacks = CountColor(top, 'b');
-        var bottomWhites = CountColor(bottom, 'w');
-        var bottomBlacks = CountColor(bottom, 'b');
+        // (1) Streak absolute: two same-colour games in a row → must
+        //     get the opposite colour. When both players have streaks
+        //     of opposite colours we satisfy both; same-direction
+        //     streaks fall through to equalisation as a tiebreaker.
+        var topStreak = StreakColor(top);   // colour the top has TOO MUCH OF
+        var botStreak = StreakColor(bottom);
+        if (topStreak == 'w' && botStreak != 'w') return false; // top must get black
+        if (topStreak == 'b' && botStreak != 'b') return true;  // top must get white
+        if (botStreak == 'w' && topStreak != 'w') return true;  // bottom must get black → top white
+        if (botStreak == 'b' && topStreak != 'b') return false; // bottom must get white → top black
 
-        // Difference (whites - blacks). The player with the more-negative
-        // diff (more blacks than whites) wants white.
-        var topDiff = topWhites - topBlacks;
-        var bottomDiff = bottomWhites - bottomBlacks;
+        // (2) Equalise: whoever has played more whites gets black.
+        var topDiff = CountColor(top, 'w') - CountColor(top, 'b');
+        var botDiff = CountColor(bottom, 'w') - CountColor(bottom, 'b');
+        if (topDiff < botDiff) return true;   // top has fewer whites
+        if (topDiff > botDiff) return false;  // top has more whites
 
-        if (topDiff < bottomDiff) return true;   // top has fewer whites → wants white
-        if (topDiff > bottomDiff) return false;  // bottom has fewer whites → top gets black
-
-        // Equal preference: give the higher-rated seed the colour opposite
-        // their last actual colour, falling back to "top gets white".
+        // (3) Alternate: last actual-game colour decides.
         var topLast = LastColor(top);
         return topLast switch
         {
             'w' => false,  // had white last → black this round
             'b' => true,   // had black last → white this round
-            _   => true,   // no prior colour (only byes?) → top gets white
+            _   => InitialColorOnBoard(initialColor, board), // (4) R1 fallback
         };
+    }
+
+    /// <summary>
+    /// Returns the colour the top seed gets on board <paramref name="board"/>
+    /// under the round-1 alternation pattern: top seed of board 1 gets
+    /// <paramref name="initialColor"/>; subsequent boards alternate. Used
+    /// as the final tiebreaker in <see cref="TopGetsWhite"/>.
+    /// </summary>
+    private static bool InitialColorOnBoard(char initialColor, int board)
+    {
+        var initialIsWhite = initialColor == 'w';
+        // board is 1-based; board 1 → top gets initial colour (no flip).
+        return initialIsWhite ^ (((board - 1) & 1) == 1);
+    }
+
+    /// <summary>
+    /// If the player's last two actual-game colours are the same,
+    /// returns that colour (the one they have "too much of" — they
+    /// must get the OPPOSITE next round). Otherwise returns '-'.
+    /// </summary>
+    private static char StreakColor(TrfPlayer p)
+    {
+        var last       = '-';
+        var secondLast = '-';
+        for (var i = p.Rounds.Count - 1; i >= 0; i--)
+        {
+            var c = p.Rounds[i].Color;
+            if (c is not ('w' or 'b')) continue;
+            if (last == '-') { last = c; continue; }
+            secondLast = c;
+            break;
+        }
+        return last != '-' && last == secondLast ? last : '-';
     }
 
     private static int CountColor(TrfPlayer p, char color)
