@@ -84,6 +84,24 @@
             <Run Text="{Binding EffectiveTournamentsRootFolder}" FontStyle="Italic"/>
         </TextBlock>
 
+        <Separator Margin="0,8"/>
+
+        <TextBlock Text="Auto-update" FontWeight="SemiBold"/>
+        <TextBlock Foreground="Gray" FontSize="11" TextWrapping="Wrap"
+                   Text="FreePair can poll the published GitHub Releases feed at startup and surface a banner when a newer version is available. The check is silent on the wire (single anonymous GitHub API call) and never blocks the UI. Leave off to opt out; you can still trigger an on-demand check below."/>
+        <CheckBox Content="Check for updates on startup"
+                  IsChecked="{Binding CheckForUpdatesOnStartup}"/>
+        <CheckBox Content="Include pre-release builds (beta channel)"
+                  IsChecked="{Binding UpdateIncludePreReleases}"
+                  ToolTip.Tip="Off by default — TDs on the stable channel won't be pulled into preview builds. Flip on to test new features early."/>
+        <Grid ColumnDefinitions="160,*" RowDefinitions="Auto">
+            <TextBlock Grid.Column="0" Text="Releases feed URL"
+                       VerticalAlignment="Center" FontWeight="SemiBold"
+                       Margin="0,0,12,0"/>
+            <TextBox   Grid.Column="1" Text="{Binding UpdateFeedRepoUrl}"
+                       Watermark="https://github.com/freepairchess/FreePair"/>
+        </Grid>
+
         <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
             <Button Content="Save" Command="{Binding SaveCommand}"/>
         </StackPanel>

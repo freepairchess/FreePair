@@ -22,6 +22,46 @@
                    FontWeight="SemiBold"
                    Margin="0,0,0,16"/>
 
+        <!-- Auto-update banner: surfaces in-app when the Velopack
+             check finds a newer release on GitHub. Hidden otherwise.
+             Click "Update now" to apply + restart; "Release notes"
+             tooltip shows the Markdown body. Save your tournament
+             before clicking Update — Velopack restarts FreePair. -->
+        <Border DockPanel.Dock="Top"
+                IsVisible="{Binding HasUpdateAvailable}"
+                Background="#FFF8E1"
+                BorderBrush="#E0B84A"
+                BorderThickness="1"
+                CornerRadius="4"
+                Padding="10,6"
+                Margin="0,0,0,12">
+            <Grid ColumnDefinitions="*,Auto,Auto">
+                <TextBlock Grid.Column="0"
+                           VerticalAlignment="Center"
+                           TextWrapping="Wrap">
+                    <Run Text="Update available:" FontWeight="SemiBold"/>
+                    <Run Text="FreePair v"/>
+                    <Run Text="{Binding AvailableUpdateVersion}"/>
+                    <Run Text=" — save your work first; FreePair restarts during update."/>
+                </TextBlock>
+                <Button Grid.Column="1"
+                        Content="View notes"
+                        Margin="8,0,0,0"
+                        Padding="8,2"
+                        FontSize="11"
+                        ToolTip.Tip="{Binding AvailableUpdateNotes}"
+                        ToolTip.ShowDelay="100"/>
+                <Button Grid.Column="2"
+                        Content="Update now"
+                        Command="{Binding ApplyUpdateCommand}"
+                        Margin="8,0,0,0"
+                        Padding="10,2"
+                        Background="#0E5DAA"
+                        Foreground="White"
+                        FontWeight="SemiBold"/>
+            </Grid>
+        </Border>
+
         <TabControl>
             <TabItem Header="Tournament">
                 <ContentControl Content="{Binding Tournament}"/>

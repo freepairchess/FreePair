@@ -224,8 +224,40 @@ the inner `FreePair.App.exe` and the outer `Setup.exe` automatically.
 ## Auto-update (already wired)
 
 `Program.cs` calls `VelopackApp.Build().Run()` before Avalonia spins up.
-That handles the install / uninstall / first-run hooks. To check for
-updates from inside a running FreePair instance you can later add a
-"Help → Check for updates" menu item that calls `UpdateManager.UpdateAndRestart()`
-against the GitHub Releases feed. Out of scope for Phase 1, but the
-plumbing is in place.
+That handles the install / uninstall / first-run hooks.
+
+**In-app update flow (TD-facing)**:
+
+- `MainWindow` constructs a `VelopackUpdateService` against the URL in
+  `AppSettings.UpdateFeedRepoUrl` (default
+  `https://github.com/freepairchess/FreePair`) and kicks off a
+  fire-and-forget `CheckForUpdatesAsync` when
+  `AppSettings.CheckForUpdatesOnStartup` is on (default).
+- When the check finds a newer release, the main window shows a
+  yellow banner: **"Update available: FreePair v0.2.0 — save your
+  work first"** with a **View notes** button (tooltips the Markdown
+  release body) and an **Update now** button (calls
+  `UpdateManager.DownloadUpdatesAsync` + `ApplyUpdatesAndRestart`,
+  exiting FreePair so Velopack's launcher can swap binaries).
+- Settings → Auto-update lets TDs disable the startup check, opt
+  into pre-release builds, or override the feed URL (forks).
+- TDs running outside an installed Velopack package (dev /
+  `dotnet run` / portable extract) never see the banner —
+  `VelopackUpdateService` returns `NotInstalled` and the VM
+  silently skips it.
+
+**What a TD on v0.1.0 sees when v0.2.0 is published with `--latest`**:
+
+1. They open FreePair as usual.
+2. Within ~2 seconds the yellow banner appears at the top of the
+   main window. (The check is anonymous against the GitHub API;
+   no rate-limit issues for the first ~60 launches/hour.)
+3. They click **Update now**.
+4. FreePair downloads the delta nupkg (~1–5 MB depending on what
+   changed), applies it, and restarts into v0.2.0.
+
+If they prefer not to auto-update, they can always download the
+fresh `Setup.exe` from the GitHub release page and run it — the
+installer detects the existing install at `%LocalAppData%\FreePair\`
+and upgrades in place. Settings, tournament files, and the `gh`
+cred store are untouched either way.
