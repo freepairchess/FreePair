@@ -305,6 +305,14 @@ public static class UscfPairer
         // as much as needed; and when many rematches exist we still
         // find a non-rematch matching as long as one is mathematically
         // possible (single-swap couldn't, full backtracking can).
+        //
+        // SLIDE vs FOLD: we use SLIDE — top[0] plays bot[0], top[1]
+        // plays bot[1], etc. (USCF 28D2(d), explicit). SwissSys
+        // matches us on most score groups but occasionally uses fold-
+        // shaped output; when it does, it's because of a downstream
+        // optimisation (colour balance at the GROUP level, downfloat
+        // reassignment, etc.) we haven't identified yet — see
+        // UscfMccDiagnosticTests for concrete divergence cases.
         var top = pool.Take(half).ToList();
         var bot = pool.Skip(half).Take(half).ToList();
         var assignment = new TrfPlayer[half];
