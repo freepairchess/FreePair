@@ -22,10 +22,21 @@ namespace FreePair.Core.Uscf.Trf;
 /// One entry per <c>001</c> line. Order matches file order; pair numbers
 /// are taken from the line itself, not from list position.
 /// </param>
+/// <param name="RequestedByes">
+/// Pre-flagged bye requests for the round being paired. Keys are pair
+/// numbers; values are the bye kind (<c>'H'</c> half-point, <c>'Z'</c>
+/// zero-point / unpaired). The pairer filters these players out of the
+/// pairing pool and forwards them to the result's
+/// <see cref="UscfPairingResult.RequestedByes"/> verbatim.
+/// Empty by default; the harness fills it from
+/// <c>Player.RequestedByeRounds</c> / <c>ZeroPointByeRoundsOrEmpty</c>
+/// for the upcoming round.
+/// </param>
 public sealed record TrfDocument(
     string TournamentName,
     string StartDate,
     string EndDate,
     int TotalRounds,
     char? InitialColor,
-    IReadOnlyList<TrfPlayer> Players);
+    IReadOnlyList<TrfPlayer> Players,
+    IReadOnlyDictionary<int, char>? RequestedByes = null);

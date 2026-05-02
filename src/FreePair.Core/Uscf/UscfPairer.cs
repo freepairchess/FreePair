@@ -76,16 +76,75 @@ public static class UscfPairer
     {
         ArgumentNullException.ThrowIfNull(document);
 
+        // Pre-flagged byes (P4): pull the players the TD has marked
+        // for half-point / zero-point byes for the upcoming round out
+        // of the pool BEFORE pairing. They flow through to the result
+        // as RequestedByes; the rest of the pipeline never sees them.
+        var requestedByes = ExtractRequestedByes(document, out var paired);
+
         // Determine how many rounds of history we have. A "real" round
         // cell is one where the player either has an opponent or a bye
         // result.
-        var maxPlayedRounds = document.Players.Count == 0
+        var maxPlayedRounds = paired.Count == 0
             ? 0
-            : document.Players.Max(CountPlayedRounds);
+            : paired.Max(CountPlayedRounds);
 
-        return maxPlayedRounds > 0
-            ? PairRoundN(document)
-            : PairRoundOne(document);
+        // Build a filtered TrfDocument whose Players collection excludes
+        // the pre-flagged bye recipients. Everything else (initial colour,
+        // total rounds, etc.) carries through unchanged.
+        var filteredDoc = paired.Count == document.Players.Count
+            ? document
+            : document with { Players = paired };
+
+        var inner = maxPlayedRounds > 0
+            ? PairRoundN(filteredDoc)
+            : PairRoundOne(filteredDoc);
+
+        // Splice the pre-flagged byes back into the result. The
+        // auto-assigned full-point bye (ByePair) remains separate
+        // because USCF treats it as a different concept (forced bye
+        // due to odd field, not a TD-requested skip).
+        return requestedByes.Count == 0
+            ? inner
+            : inner with { RequestedByes = requestedByes };
+    }
+
+    /// <summary>
+    /// Splits <paramref name="document"/>'s player list into:
+    ///   - the pairable subset (returned via <paramref name="pairable"/>),
+    ///   - the pre-flagged byes (returned as the function result, in
+    ///     pair-number order).
+    /// When the document has no <see cref="TrfDocument.RequestedByes"/>
+    /// dictionary, returns an empty bye list and the original players
+    /// list verbatim.
+    /// </summary>
+    private static IReadOnlyList<UscfRequestedBye> ExtractRequestedByes(
+        TrfDocument document, out IReadOnlyList<TrfPlayer> pairable)
+    {
+        if (document.RequestedByes is null || document.RequestedByes.Count == 0)
+        {
+            pairable = document.Players;
+            return Array.Empty<UscfRequestedBye>();
+        }
+
+        var byes = new List<UscfRequestedBye>();
+        var keep = new List<TrfPlayer>(document.Players.Count);
+        foreach (var p in document.Players)
+        {
+            if (document.RequestedByes.TryGetValue(p.PairNumber, out var kind)
+                && (kind == 'H' || kind == 'Z'))
+            {
+                byes.Add(new UscfRequestedBye(p.PairNumber, kind));
+            }
+            else
+            {
+                keep.Add(p);
+            }
+        }
+
+        byes.Sort((a, b) => a.PairNumber.CompareTo(b.PairNumber));
+        pairable = keep;
+        return byes;
     }
 
     private static int CountPlayedRounds(TrfPlayer p)

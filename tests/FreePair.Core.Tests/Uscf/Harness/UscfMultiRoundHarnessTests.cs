@@ -74,7 +74,7 @@ public class UscfMultiRoundHarnessTests
     /// the bad numbers) and upward (for matches) when the engine
     /// improves.
     /// </summary>
-    private const int MinExpectedMatches         = 26;
+    private const int MinExpectedMatches         = 31;
     private const int MaxExpectedHardMismatches  = 374;
     private const int MaxExpectedColorOnlyDiffs  = 12;
 
@@ -209,10 +209,10 @@ public class UscfMultiRoundHarnessTests
                 return;
             }
 
-            // Round-N pool: anyone paired or bye'd in round N. Players in
-            // section.Players who don't appear in this set were absent
-            // for this round (withdrew / late entry / TD-excluded) — they
-            // must NOT be in the pre-round-N TRF roster.
+            // Round-N pool: anyone paired or bye'd (any kind) in round N.
+            // Players in section.Players who don't appear in this set were
+            // absent for this round (withdrew / late entry / TD-excluded)
+            // — they must NOT be in the pre-round-N TRF roster.
             var actual = ExtractActuals(roundEntry);
             var roundPool = new HashSet<int>();
             foreach (var p in actual.Pairings)
@@ -221,6 +221,7 @@ public class UscfMultiRoundHarnessTests
                 roundPool.Add(p.BlackPair);
             }
             if (actual.ByePair is int byePair) roundPool.Add(byePair);
+            foreach (var rb in actual.RequestedByes) roundPool.Add(rb.PairNumber);
 
             var roster = section.Players
                 .Where(p => !p.SoftDeleted && roundPool.Contains(p.PairNumber))
@@ -243,22 +244,24 @@ public class UscfMultiRoundHarnessTests
                 return;
             }
 
-            // Pre-flagged half-/zero-point byes for this round are P4 territory.
-            var byeQuirks = roster
-                .Where(p => p.RequestedByeRounds.Contains(round) ||
-                            p.ZeroPointByeRoundsOrEmpty.Contains(round))
-                .ToArray();
-            if (byeQuirks.Length > 0)
+            // Pre-flagged half-/zero-point byes for this round (P4).
+            // Source: the actual round's recorded byes — once a bye is
+            // honoured the request usually gets cleared from
+            // Player.RequestedByeRounds, so we can't reconstruct the
+            // pre-pairing state from the player record alone. The
+            // round's Byes collection IS the ground-truth list of TD
+            // pre-flags the engine should have seen.
+            var requestedByesDict = new Dictionary<int, char>();
+            foreach (var rb in actual.RequestedByes)
             {
-                _outcomes.Add(RoundOutcome.Skip(ctx,
-                    $"round has {byeQuirks.Length} pre-flagged bye(s) — gated until P4"));
-                return;
+                requestedByesDict[rb.PairNumber] = rb.Kind;
             }
 
             UscfPairingResult produced;
             try
             {
-                var trf = BuildTrfDocAtEndOfRound(tournament, section, roster, endedRound: round - 1);
+                var trf = BuildTrfDocAtEndOfRound(tournament, section, roster, endedRound: round - 1)
+                    with { RequestedByes = requestedByesDict.Count == 0 ? null : requestedByesDict };
                 produced = UscfPairer.Pair(trf);
             }
             catch (NotImplementedException)
@@ -440,7 +443,10 @@ public class UscfMultiRoundHarnessTests
 
     // ------------------------------------------ history → TRF synthesis
 
-    private sealed record RoundActuals(IReadOnlyList<UscfPairing> Pairings, int? ByePair);
+    private sealed record RoundActuals(
+        IReadOnlyList<UscfPairing> Pairings,
+        int? ByePair,
+        IReadOnlyList<UscfRequestedBye> RequestedByes);
 
     private static RoundActuals ExtractActuals(Round round)
     {
@@ -448,7 +454,19 @@ public class UscfMultiRoundHarnessTests
             .Select(p => new UscfPairing(p.WhitePair, p.BlackPair, p.Board))
             .ToArray();
         var bye = round.Byes.FirstOrDefault(b => b.Kind == ByeKind.Full);
-        return new RoundActuals(pairings, bye?.PlayerPair);
+
+        // P4: half-point and zero-point (unpaired) byes flow as a list
+        // alongside the auto-assigned full-point bye. Map domain ByeKind
+        // to the engine's char-coded UscfRequestedBye representation.
+        var requestedByes = round.Byes
+            .Where(b => b.Kind == ByeKind.Half || b.Kind == ByeKind.Unpaired)
+            .Select(b => new UscfRequestedBye(
+                b.PlayerPair,
+                b.Kind == ByeKind.Half ? 'H' : 'Z'))
+            .OrderBy(b => b.PairNumber)
+            .ToArray();
+
+        return new RoundActuals(pairings, bye?.PlayerPair, requestedByes);
     }
 
     /// <summary>
@@ -551,7 +569,15 @@ public class UscfMultiRoundHarnessTests
             .Select(p => Normalize(p.WhitePair, p.BlackPair)));
         var pairsMatch = actualSet.SetEquals(producedSet);
 
-        var byesMatch = actual.ByePair == produced.ByePair;
+        // bye match = full-point bye AND requested-byes set both line up.
+        // Requested byes (half / zero) are compared as an unordered set
+        // of (pair, kind) tuples since their assignment order is
+        // irrelevant.
+        var fullByesMatch = actual.ByePair == produced.ByePair;
+        var actualReqSet   = new HashSet<(int, char)>(actual.RequestedByes.Select(b => (b.PairNumber, b.Kind)));
+        var producedReqSet = new HashSet<(int, char)>(produced.RequestedByesOrEmpty.Select(b => (b.PairNumber, b.Kind)));
+        var requestedByesMatch = actualReqSet.SetEquals(producedReqSet);
+        var byesMatch = fullByesMatch && requestedByesMatch;
 
         var actualByBoard = actual.Pairings.OrderBy(p => p.Board).ToArray();
         var producedByBoard = produced.Pairings.OrderBy(p => p.Board).ToArray();
