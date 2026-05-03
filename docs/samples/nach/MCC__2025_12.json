@@ -1,0 +1,1987 @@
+{
+  "NACHEventID": 14403,
+  "NACHEventPasscode": "DUQVNWSP",
+  "tournament": "MCC - 2025-12",
+  "date": "2025/12/3",
+  "city": "Framingham",
+  "state": "MA",
+  "country": "",
+  "td": "Kaprielian",
+  "bye_message": "See T.D.",
+  "sections": [
+    {
+      "section": "Open",
+      "rounds_paired": 3,
+      "rounds_played": 3,
+      "time_stamp": "12/17/2025 - 22:41",
+      "standings": [
+        1,
+        9,
+        3,
+        4,
+        5,
+        7,
+        8,
+        12,
+        15,
+        18,
+        2,
+        14,
+        19,
+        20,
+        6,
+        10,
+        11,
+        16,
+        17,
+        21,
+        23,
+        13,
+        22
+      ],
+      "place": [
+        "1-2",
+        "1-2",
+        "3-10",
+        "3-10",
+        "3-10",
+        "3-10",
+        "3-10",
+        "3-10",
+        "3-10",
+        "3-10",
+        "11-14",
+        "11-14",
+        "11-14",
+        "11-14",
+        "15-21",
+        "15-21",
+        "15-21",
+        "15-21",
+        "15-21",
+        "15-21",
+        "15-21",
+        "22-23",
+        "22-23"
+      ],
+      "tiebreaks": [],
+      "rounds": [
+        {
+          "pairings": [
+            {
+              "white": 10,
+              "black": 1,
+              "board": 1,
+              "result": "(0-1)"
+            },
+            {
+              "white": 2,
+              "black": 11,
+              "board": 2,
+              "result": "(1-0)"
+            },
+            {
+              "white": 13,
+              "black": 3,
+              "board": 3,
+              "result": "(0-1)"
+            },
+            {
+              "white": 4,
+              "black": 14,
+              "board": 4,
+              "result": "(1-0)"
+            },
+            {
+              "white": 15,
+              "black": 5,
+              "board": 5,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 6,
+              "black": 16,
+              "board": 6,
+              "result": "(1-0)"
+            },
+            {
+              "white": 17,
+              "black": 7,
+              "board": 7,
+              "result": "(0-1)"
+            },
+            {
+              "white": 8,
+              "black": 18,
+              "board": 8,
+              "result": "(1-0)"
+            },
+            {
+              "white": 19,
+              "black": 9,
+              "board": 9,
+              "result": "(0-1)"
+            },
+            {
+              "white": 21,
+              "black": 0,
+              "board": 0,
+              "result": "(1)"
+            },
+            {
+              "white": 12,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 20,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 22,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 23,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            }
+          ]
+        },
+        {
+          "pairings": [
+            {
+              "white": 1,
+              "black": 8,
+              "board": 1,
+              "result": "(1-0)"
+            },
+            {
+              "white": 3,
+              "black": 21,
+              "board": 2,
+              "result": "(1-0)"
+            },
+            {
+              "white": 7,
+              "black": 4,
+              "board": 3,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 9,
+              "black": 6,
+              "board": 4,
+              "result": "(1-0)"
+            },
+            {
+              "white": 5,
+              "black": 22,
+              "board": 5,
+              "result": "(1-0)"
+            },
+            {
+              "white": 12,
+              "black": 15,
+              "board": 6,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 14,
+              "black": 10,
+              "board": 7,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 11,
+              "black": 17,
+              "board": 8,
+              "result": "(1-0)"
+            },
+            {
+              "white": 16,
+              "black": 13,
+              "board": 9,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 18,
+              "black": 0,
+              "board": 0,
+              "result": "(1)"
+            },
+            {
+              "white": 2,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 19,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 20,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 23,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            }
+          ]
+        },
+        {
+          "pairings": [
+            {
+              "white": 3,
+              "black": 1,
+              "board": 1,
+              "result": "(0-1)"
+            },
+            {
+              "white": 9,
+              "black": 2,
+              "board": 2,
+              "result": "(1-0)"
+            },
+            {
+              "white": 4,
+              "black": 5,
+              "board": 3,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 6,
+              "black": 12,
+              "board": 4,
+              "result": "(0-1)"
+            },
+            {
+              "white": 21,
+              "black": 8,
+              "board": 5,
+              "result": "(0-1)"
+            },
+            {
+              "white": 18,
+              "black": 11,
+              "board": 6,
+              "result": "(1-0)"
+            },
+            {
+              "white": 15,
+              "black": 23,
+              "board": 7,
+              "result": "(1-0)"
+            },
+            {
+              "white": 10,
+              "black": 16,
+              "board": 8,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 13,
+              "black": 19,
+              "board": 9,
+              "result": "(0-1)"
+            },
+            {
+              "white": 22,
+              "black": 14,
+              "board": 10,
+              "result": "(0-1)"
+            },
+            {
+              "white": 17,
+              "black": 0,
+              "board": 0,
+              "result": "(1)"
+            },
+            {
+              "white": 7,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 20,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            }
+          ]
+        }
+      ],
+      "players": [
+        {
+          "name": "Padmanabhan, Akshay",
+          "id1": "14297271",
+          "rating": 2067,
+          "rating2": 0,
+          "post": 2087,
+          "club": "MA",
+          "results": [
+            "W",
+            "W",
+            "W"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B"
+          ],
+          "ops": [
+            10,
+            8,
+            3
+          ],
+          "boards": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "name": "Davis, Peter",
+          "id1": "15949766",
+          "rating": 2057,
+          "rating2": 0,
+          "post": 2043,
+          "club": "MA",
+          "byes": "2",
+          "results": [
+            "W",
+            "H",
+            "L"
+          ],
+          "colors": [
+            "W",
+            "-",
+            "B"
+          ],
+          "ops": [
+            11,
+            0,
+            9
+          ],
+          "boards": [
+            2,
+            0,
+            2
+          ]
+        },
+        {
+          "name": "Pearson, Frederick",
+          "id1": "12223060",
+          "rating": 1926,
+          "rating2": 0,
+          "post": 1927,
+          "club": "MA",
+          "results": [
+            "W",
+            "W",
+            "L"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "W"
+          ],
+          "ops": [
+            13,
+            21,
+            1
+          ],
+          "boards": [
+            3,
+            2,
+            1
+          ]
+        },
+        {
+          "name": "Malinin, Sergey",
+          "id1": "30302734",
+          "rating": 1898,
+          "rating2": 0,
+          "post": 1904,
+          "club": "MA",
+          "results": [
+            "W",
+            "D",
+            "D"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            14,
+            7,
+            5
+          ],
+          "boards": [
+            4,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "Liu, Andrew",
+          "id1": "16340541",
+          "rating": 1876,
+          "rating2": 0,
+          "post": 1875,
+          "team": "Team Liu",
+          "club": "MA",
+          "results": [
+            "D",
+            "W",
+            "D"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B"
+          ],
+          "ops": [
+            15,
+            22,
+            4
+          ],
+          "boards": [
+            5,
+            5,
+            3
+          ]
+        },
+        {
+          "name": "Gradijan, Stephen",
+          "id1": "12454998",
+          "rating": 1871,
+          "rating2": 0,
+          "post": 1845,
+          "club": "MA",
+          "results": [
+            "W",
+            "L",
+            "L"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            16,
+            9,
+            12
+          ],
+          "boards": [
+            6,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "Cousin, Neil",
+          "id1": "12065210",
+          "rating": 1868,
+          "rating2": 0,
+          "post": 1877,
+          "club": "MA",
+          "byes": "3",
+          "results": [
+            "W",
+            "D",
+            "H"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "-"
+          ],
+          "ops": [
+            17,
+            4,
+            0
+          ],
+          "boards": [
+            7,
+            3,
+            0
+          ]
+        },
+        {
+          "name": "Reynolds, Douglas",
+          "id1": "12427040",
+          "rating": 1829,
+          "rating2": 0,
+          "post": 1838,
+          "club": "MA",
+          "results": [
+            "W",
+            "L",
+            "W"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "B"
+          ],
+          "ops": [
+            18,
+            1,
+            21
+          ],
+          "boards": [
+            8,
+            1,
+            5
+          ]
+        },
+        {
+          "name": "Thompson, Ethan",
+          "id1": "12650009",
+          "rating": 1825,
+          "rating2": 0,
+          "post": 1910,
+          "club": "MA",
+          "results": [
+            "W",
+            "W",
+            "W"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "W"
+          ],
+          "ops": [
+            19,
+            6,
+            2
+          ],
+          "boards": [
+            9,
+            4,
+            2
+          ]
+        },
+        {
+          "name": "Abbot, Ames",
+          "id1": "12522524",
+          "rating": 1806,
+          "rating2": 0,
+          "post": 1792,
+          "club": "MA",
+          "results": [
+            "L",
+            "D",
+            "D"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            1,
+            14,
+            16
+          ],
+          "boards": [
+            1,
+            7,
+            8
+          ]
+        },
+        {
+          "name": "Barros, Samuel",
+          "id1": "30671662",
+          "rating": 1805,
+          "rating2": 0,
+          "post": 1788,
+          "club": "MA",
+          "results": [
+            "L",
+            "W",
+            "L"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B"
+          ],
+          "ops": [
+            2,
+            17,
+            18
+          ],
+          "boards": [
+            2,
+            8,
+            6
+          ]
+        },
+        {
+          "name": "Bird, D.",
+          "id1": "14902922",
+          "rating": 1728,
+          "rating2": 0,
+          "post": 1762,
+          "club": "MA",
+          "byes": "1",
+          "results": [
+            "H",
+            "D",
+            "W"
+          ],
+          "colors": [
+            "-",
+            "W",
+            "B"
+          ],
+          "ops": [
+            0,
+            15,
+            6
+          ],
+          "boards": [
+            0,
+            6,
+            4
+          ]
+        },
+        {
+          "name": "Holmgren, Robert",
+          "id1": "11291635",
+          "rating": 1725,
+          "rating2": 0,
+          "post": 1695,
+          "club": "MA",
+          "results": [
+            "L",
+            "D",
+            "L"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            3,
+            16,
+            19
+          ],
+          "boards": [
+            3,
+            9,
+            9
+          ]
+        },
+        {
+          "name": "Barry, Michael",
+          "id1": "12584196",
+          "rating": 1717,
+          "rating2": 0,
+          "post": 1721,
+          "club": "MA",
+          "results": [
+            "L",
+            "D",
+            "W"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B"
+          ],
+          "ops": [
+            4,
+            10,
+            22
+          ],
+          "boards": [
+            4,
+            7,
+            10
+          ]
+        },
+        {
+          "name": "Kaprielian, Mark",
+          "id1": "10007763",
+          "rating": 1711,
+          "rating2": 0,
+          "post": 1724,
+          "club": "MA",
+          "results": [
+            "D",
+            "D",
+            "W"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            5,
+            12,
+            23
+          ],
+          "boards": [
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "name": "Duval, George",
+          "id1": "12471987",
+          "rating": 1708,
+          "rating2": 0,
+          "post": 1701,
+          "club": "MA",
+          "results": [
+            "L",
+            "D",
+            "D"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B"
+          ],
+          "ops": [
+            6,
+            13,
+            10
+          ],
+          "boards": [
+            6,
+            9,
+            8
+          ]
+        },
+        {
+          "name": "Hori, Calvin",
+          "id1": "12864842",
+          "rating": 1700,
+          "rating2": 0,
+          "post": 1677,
+          "club": "MA",
+          "results": [
+            "L",
+            "L",
+            "B"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "-"
+          ],
+          "ops": [
+            7,
+            11,
+            0
+          ],
+          "boards": [
+            7,
+            8,
+            0
+          ]
+        },
+        {
+          "name": "Singh, Karanbir",
+          "id1": "31286868",
+          "rating": 1679,
+          "rating2": 0,
+          "post": 1694,
+          "club": "MA",
+          "results": [
+            "L",
+            "B",
+            "W"
+          ],
+          "colors": [
+            "B",
+            "-",
+            "W"
+          ],
+          "ops": [
+            8,
+            0,
+            11
+          ],
+          "boards": [
+            8,
+            0,
+            6
+          ]
+        },
+        {
+          "name": "Kirubakaran, Gautham",
+          "id1": "31971144",
+          "rating": 1637,
+          "rating2": 0,
+          "post": 1654,
+          "club": "MA",
+          "byes": "2",
+          "results": [
+            "L",
+            "H",
+            "W"
+          ],
+          "colors": [
+            "W",
+            "-",
+            "B"
+          ],
+          "ops": [
+            9,
+            0,
+            13
+          ],
+          "boards": [
+            9,
+            0,
+            9
+          ]
+        },
+        {
+          "name": "Menon, Mannatt",
+          "id1": "14216906",
+          "rating": 1600,
+          "rating2": 0,
+          "post": 1600,
+          "club": "MA",
+          "byes": "1,2,3",
+          "results": [
+            "H",
+            "H",
+            "H"
+          ],
+          "colors": [
+            "-",
+            "-",
+            "-"
+          ],
+          "ops": [
+            0,
+            0,
+            0
+          ],
+          "boards": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "Liu, Connor",
+          "id1": "30071216",
+          "rating": 1557,
+          "rating2": 0,
+          "post": 1546,
+          "team": "Team Liu",
+          "club": "MA",
+          "results": [
+            "B",
+            "L",
+            "L"
+          ],
+          "colors": [
+            "-",
+            "B",
+            "W"
+          ],
+          "ops": [
+            0,
+            3,
+            8
+          ],
+          "boards": [
+            0,
+            2,
+            5
+          ]
+        },
+        {
+          "name": "Balakrishnan, Vasu",
+          "id1": "13691684",
+          "rating": 1554,
+          "rating2": 0,
+          "post": 1537,
+          "club": "MA",
+          "byes": "1",
+          "results": [
+            "H",
+            "L",
+            "L"
+          ],
+          "colors": [
+            "-",
+            "B",
+            "W"
+          ],
+          "ops": [
+            0,
+            5,
+            14
+          ],
+          "boards": [
+            0,
+            5,
+            10
+          ]
+        },
+        {
+          "name": "Watts, Robby",
+          "id1": "31274069",
+          "rating": 1317,
+          "rating2": 0,
+          "post": 1312,
+          "club": "MA",
+          "byes": "1,2",
+          "results": [
+            "H",
+            "H",
+            "L"
+          ],
+          "colors": [
+            "-",
+            "-",
+            "B"
+          ],
+          "ops": [
+            0,
+            0,
+            15
+          ],
+          "boards": [
+            0,
+            0,
+            7
+          ]
+        }
+      ],
+      "latest_pairing_is_draft": false
+    },
+    {
+      "section": "U1700",
+      "rounds_paired": 3,
+      "rounds_played": 3,
+      "time_stamp": "12/17/2025 - 22:41",
+      "standings": [
+        1,
+        4,
+        5,
+        12,
+        3,
+        7,
+        8,
+        13,
+        19,
+        6,
+        10,
+        22,
+        2,
+        11,
+        14,
+        16,
+        17,
+        18,
+        20,
+        9,
+        15,
+        21
+      ],
+      "place": [
+        "1-4",
+        "1-4",
+        "1-4",
+        "1-4",
+        "5-9",
+        "5-9",
+        "5-9",
+        "5-9",
+        "5-9",
+        "10-12",
+        "10-12",
+        "10-12",
+        "13-19",
+        "13-19",
+        "13-19",
+        "13-19",
+        "13-19",
+        "13-19",
+        "13-19",
+        "20-22",
+        "20-22",
+        "20-22"
+      ],
+      "tiebreaks": [],
+      "rounds": [
+        {
+          "pairings": [
+            {
+              "white": 11,
+              "black": 1,
+              "board": 10,
+              "result": "(0-1)"
+            },
+            {
+              "white": 2,
+              "black": 12,
+              "board": 11,
+              "result": "(0-1)"
+            },
+            {
+              "white": 14,
+              "black": 3,
+              "board": 12,
+              "result": "(1-0)"
+            },
+            {
+              "white": 4,
+              "black": 15,
+              "board": 13,
+              "result": "(1-0)"
+            },
+            {
+              "white": 16,
+              "black": 5,
+              "board": 14,
+              "result": "(0-1)"
+            },
+            {
+              "white": 6,
+              "black": 17,
+              "board": 15,
+              "result": "(1-0)"
+            },
+            {
+              "white": 18,
+              "black": 7,
+              "board": 16,
+              "result": "(0-1)"
+            },
+            {
+              "white": 8,
+              "black": 19,
+              "board": 17,
+              "result": "(0-1)"
+            },
+            {
+              "white": 20,
+              "black": 9,
+              "board": 18,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 10,
+              "black": 21,
+              "board": 19,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 13,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 22,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            }
+          ]
+        },
+        {
+          "pairings": [
+            {
+              "white": 1,
+              "black": 7,
+              "board": 10,
+              "result": "(1-0)"
+            },
+            {
+              "white": 12,
+              "black": 4,
+              "board": 11,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 5,
+              "black": 14,
+              "board": 12,
+              "result": "(1-0)"
+            },
+            {
+              "white": 19,
+              "black": 6,
+              "board": 13,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 13,
+              "black": 9,
+              "board": 14,
+              "result": "(1X-0F)"
+            },
+            {
+              "white": 22,
+              "black": 10,
+              "board": 15,
+              "result": "(0-1)"
+            },
+            {
+              "white": 21,
+              "black": 3,
+              "board": 16,
+              "result": "(0-1)"
+            },
+            {
+              "white": 16,
+              "black": 8,
+              "board": 17,
+              "result": "(0-1)"
+            },
+            {
+              "white": 15,
+              "black": 11,
+              "board": 18,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 17,
+              "black": 0,
+              "board": 0,
+              "result": "(1)"
+            },
+            {
+              "white": 2,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 18,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 20,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            }
+          ]
+        },
+        {
+          "pairings": [
+            {
+              "white": 5,
+              "black": 1,
+              "board": 11,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 4,
+              "black": 10,
+              "board": 12,
+              "result": "(1-0)"
+            },
+            {
+              "white": 6,
+              "black": 12,
+              "board": 13,
+              "result": "(0-1)"
+            },
+            {
+              "white": 3,
+              "black": 20,
+              "board": 14,
+              "result": "(1-0)"
+            },
+            {
+              "white": 7,
+              "black": 14,
+              "board": 15,
+              "result": "(1-0)"
+            },
+            {
+              "white": 17,
+              "black": 8,
+              "board": 16,
+              "result": "(0-1)"
+            },
+            {
+              "white": 21,
+              "black": 16,
+              "board": 17,
+              "result": "(0-1)"
+            },
+            {
+              "white": 15,
+              "black": 22,
+              "board": 18,
+              "result": "(0-1)"
+            },
+            {
+              "white": 2,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 18,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 11,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 13,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 19,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 9,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            }
+          ]
+        }
+      ],
+      "players": [
+        {
+          "name": "Martin, David",
+          "id1": "12877246",
+          "rating": 1666,
+          "rating2": 0,
+          "post": 1676,
+          "club": "MA",
+          "results": [
+            "W",
+            "W",
+            "D"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B"
+          ],
+          "ops": [
+            11,
+            7,
+            5
+          ],
+          "boards": [
+            10,
+            10,
+            11
+          ]
+        },
+        {
+          "name": "Walker, Jacob",
+          "id1": "30984259",
+          "rating": 1622,
+          "rating2": 0,
+          "post": 1592,
+          "club": "MA",
+          "byes": "2,3",
+          "results": [
+            "L",
+            "H",
+            "H"
+          ],
+          "colors": [
+            "W",
+            "-",
+            "-"
+          ],
+          "ops": [
+            12,
+            0,
+            0
+          ],
+          "boards": [
+            11,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "Garcia, Jesus",
+          "id1": "15783883",
+          "rating": 1556,
+          "rating2": 0,
+          "post": 1527,
+          "club": "MA",
+          "results": [
+            "L",
+            "W",
+            "W"
+          ],
+          "colors": [
+            "B",
+            "B",
+            "W"
+          ],
+          "ops": [
+            14,
+            21,
+            20
+          ],
+          "boards": [
+            12,
+            16,
+            14
+          ]
+        },
+        {
+          "name": "Thompson, Douglas",
+          "id1": "12668393",
+          "rating": 1536,
+          "rating2": 0,
+          "post": 1555,
+          "club": "MA",
+          "results": [
+            "W",
+            "D",
+            "W"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            15,
+            12,
+            10
+          ],
+          "boards": [
+            13,
+            11,
+            12
+          ]
+        },
+        {
+          "name": "Smith, Warner",
+          "id1": "12480740",
+          "rating": 1527,
+          "rating2": 0,
+          "post": 1565,
+          "club": "MA",
+          "results": [
+            "W",
+            "W",
+            "D"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "W"
+          ],
+          "ops": [
+            16,
+            14,
+            1
+          ],
+          "boards": [
+            14,
+            12,
+            11
+          ]
+        },
+        {
+          "name": "Nicewicz, Lars",
+          "id1": "31651988",
+          "rating": 1516,
+          "rating2": 0,
+          "post": 1482,
+          "club": "MA",
+          "results": [
+            "W",
+            "D",
+            "L"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            17,
+            19,
+            12
+          ],
+          "boards": [
+            15,
+            13,
+            13
+          ]
+        },
+        {
+          "name": "Chornoboy, Edward",
+          "id1": "12520269",
+          "rating": 1500,
+          "rating2": 0,
+          "post": 1503,
+          "club": "MA",
+          "results": [
+            "W",
+            "L",
+            "W"
+          ],
+          "colors": [
+            "B",
+            "B",
+            "W"
+          ],
+          "ops": [
+            18,
+            1,
+            14
+          ],
+          "boards": [
+            16,
+            10,
+            15
+          ]
+        },
+        {
+          "name": "Labelle, Matthew",
+          "id1": "30044073",
+          "rating": 1453,
+          "rating2": 0,
+          "post": 1436,
+          "club": "MA",
+          "results": [
+            "L",
+            "W",
+            "W"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "B"
+          ],
+          "ops": [
+            19,
+            16,
+            17
+          ],
+          "boards": [
+            17,
+            17,
+            16
+          ]
+        },
+        {
+          "name": "Prabhugee, Adhirit",
+          "id1": "16228992",
+          "rating": 1450,
+          "rating2": 0,
+          "post": 1430,
+          "club": "MA",
+          "results": [
+            "D",
+            "F",
+            "U"
+          ],
+          "colors": [
+            "B",
+            "-",
+            "-"
+          ],
+          "ops": [
+            20,
+            13,
+            0
+          ],
+          "boards": [
+            18,
+            14,
+            0
+          ]
+        },
+        {
+          "name": "Treiber, Robert",
+          "id1": "16102367",
+          "rating": 1426,
+          "rating2": 0,
+          "post": 1409,
+          "club": "MA",
+          "results": [
+            "D",
+            "W",
+            "L"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "B"
+          ],
+          "ops": [
+            21,
+            22,
+            4
+          ],
+          "boards": [
+            19,
+            15,
+            12
+          ]
+        },
+        {
+          "name": "Dorfman, John Roger",
+          "id1": "10338786",
+          "rating": 1400,
+          "rating2": 0,
+          "post": 1385,
+          "club": "MA",
+          "byes": "3",
+          "results": [
+            "L",
+            "D",
+            "H"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "-"
+          ],
+          "ops": [
+            1,
+            15,
+            0
+          ],
+          "boards": [
+            10,
+            18,
+            0
+          ]
+        },
+        {
+          "name": "Swartz, Paul",
+          "id1": "12679328",
+          "rating": 1373,
+          "rating2": 0,
+          "post": 1509,
+          "club": "MA",
+          "results": [
+            "W",
+            "D",
+            "W"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B"
+          ],
+          "ops": [
+            2,
+            4,
+            6
+          ],
+          "boards": [
+            11,
+            11,
+            13
+          ]
+        },
+        {
+          "name": "Mullen, John",
+          "id1": "12503480",
+          "rating": 1331,
+          "rating2": 1191,
+          "post": 1331,
+          "exp1": "7/31/2027",
+          "state": "MA",
+          "byes": "1,3",
+          "results": [
+            "H",
+            "X",
+            "H"
+          ],
+          "colors": [
+            "-",
+            "-",
+            "-"
+          ],
+          "ops": [
+            0,
+            9,
+            0
+          ],
+          "boards": [
+            0,
+            14,
+            0
+          ]
+        },
+        {
+          "name": "Krishnamurthy, Venkat",
+          "id1": "14927661",
+          "rating": 1309,
+          "rating2": 0,
+          "post": 1328,
+          "club": "MA",
+          "results": [
+            "W",
+            "L",
+            "L"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "B"
+          ],
+          "ops": [
+            3,
+            5,
+            7
+          ],
+          "boards": [
+            12,
+            12,
+            15
+          ]
+        },
+        {
+          "name": "Weast, Gordon",
+          "id1": "13711281",
+          "rating": 1308,
+          "rating2": 0,
+          "post": 1285,
+          "club": "MA",
+          "results": [
+            "L",
+            "D",
+            "L"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "W"
+          ],
+          "ops": [
+            4,
+            11,
+            22
+          ],
+          "boards": [
+            13,
+            18,
+            18
+          ]
+        },
+        {
+          "name": "Fallon, James",
+          "id1": "32006413",
+          "rating": 1289,
+          "rating2": 0,
+          "post": 1268,
+          "club": "MA",
+          "results": [
+            "L",
+            "L",
+            "W"
+          ],
+          "colors": [
+            "W",
+            "W",
+            "B"
+          ],
+          "ops": [
+            5,
+            8,
+            21
+          ],
+          "boards": [
+            14,
+            17,
+            17
+          ]
+        },
+        {
+          "name": "Lamare, Matthew",
+          "id1": "32113596",
+          "rating": 1265,
+          "rating2": 0,
+          "post": 1240,
+          "club": "MA",
+          "results": [
+            "L",
+            "B",
+            "L"
+          ],
+          "colors": [
+            "B",
+            "-",
+            "W"
+          ],
+          "ops": [
+            6,
+            0,
+            8
+          ],
+          "boards": [
+            15,
+            0,
+            16
+          ]
+        },
+        {
+          "name": "Murphy, Marielle",
+          "id1": "12876703",
+          "rating": 1076,
+          "rating2": 0,
+          "post": 1071,
+          "club": "MA",
+          "byes": "2,3",
+          "results": [
+            "L",
+            "H",
+            "H"
+          ],
+          "colors": [
+            "W",
+            "-",
+            "-"
+          ],
+          "ops": [
+            7,
+            0,
+            0
+          ],
+          "boards": [
+            16,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "Senne, Steven",
+          "id1": "32072558",
+          "rating": 1020,
+          "rating2": 0,
+          "post": 1166,
+          "club": "MA",
+          "byes": "3",
+          "results": [
+            "W",
+            "D",
+            "H"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "-"
+          ],
+          "ops": [
+            8,
+            6,
+            0
+          ],
+          "boards": [
+            17,
+            13,
+            0
+          ]
+        },
+        {
+          "name": "Recchia, Charles",
+          "id1": "31701471",
+          "rating": 1005,
+          "rating2": 0,
+          "post": 1037,
+          "club": "MA",
+          "byes": "2",
+          "results": [
+            "D",
+            "H",
+            "L"
+          ],
+          "colors": [
+            "W",
+            "-",
+            "B"
+          ],
+          "ops": [
+            9,
+            0,
+            3
+          ],
+          "boards": [
+            18,
+            0,
+            14
+          ]
+        },
+        {
+          "name": "Butler, Robert",
+          "id1": "31288308",
+          "rating": 704,
+          "rating2": 0,
+          "post": 747,
+          "club": "MA",
+          "results": [
+            "D",
+            "L",
+            "L"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "W"
+          ],
+          "ops": [
+            10,
+            3,
+            16
+          ],
+          "boards": [
+            19,
+            16,
+            17
+          ]
+        },
+        {
+          "name": "Stolper, Maksim",
+          "id1": "32751650",
+          "rating": 0,
+          "rating2": 0,
+          "post": 1347,
+          "exp1": "12/31/2026",
+          "state": "MA",
+          "byes": "1",
+          "results": [
+            "H",
+            "L",
+            "W"
+          ],
+          "colors": [
+            "-",
+            "W",
+            "B"
+          ],
+          "ops": [
+            0,
+            10,
+            15
+          ],
+          "boards": [
+            0,
+            15,
+            18
+          ]
+        }
+      ],
+      "latest_pairing_is_draft": false
+    },
+    {
+      "section": "Side Games - G/90; d5",
+      "rounds_paired": 1,
+      "rounds_played": 1,
+      "time_stamp": "12/17/2025 - 22:41",
+      "standings": [
+        2,
+        1
+      ],
+      "place": [
+        "1",
+        "2"
+      ],
+      "tiebreaks": [],
+      "rounds": [
+        {
+          "pairings": [
+            {
+              "white": 2,
+              "black": 1,
+              "board": 19,
+              "result": "(1-0)"
+            }
+          ]
+        }
+      ],
+      "players": [
+        {
+          "name": "Singh, Karanbir",
+          "id1": "31286868",
+          "rating": 1679,
+          "rating2": 0,
+          "post": 1644,
+          "club": "MA",
+          "results": [
+            "L"
+          ],
+          "colors": [
+            "B"
+          ],
+          "ops": [
+            2
+          ],
+          "boards": [
+            19
+          ]
+        },
+        {
+          "name": "Lamare, Matthew",
+          "id1": "32113596",
+          "rating": 1265,
+          "rating2": 0,
+          "post": 1350,
+          "club": "MA",
+          "results": [
+            "W"
+          ],
+          "colors": [
+            "W"
+          ],
+          "ops": [
+            1
+          ],
+          "boards": [
+            19
+          ]
+        }
+      ],
+      "latest_pairing_is_draft": false
+    }
+  ]
+}

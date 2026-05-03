@@ -98,7 +98,18 @@ public sealed record Tournament(
     /// changes thereafter. <c>null</c> means "never exported yet —
     /// fall back to Overview-derived values + AppSettings defaults".
     /// </summary>
-    UscfReportPrefs? UscfReportPrefs = null)
+    UscfReportPrefs? UscfReportPrefs = null,
+
+    /// <summary>
+    /// Tournament-level pairing engine override. <c>null</c> means
+    /// "derive from <see cref="RatingType"/>" — see
+    /// <see cref="PairingEngineDefaults.ForRatingType"/>. When set,
+    /// every section inherits this value unless it has its own
+    /// <see cref="Section.PairingEngine"/> override. Locked once any
+    /// section has paired a round (mutation throws). Persisted as
+    /// <c>"FreePair pairing engine"</c> in the SwissSys Overview block.
+    /// </summary>
+    Enums.PairingEngineKind? PairingEngine = null)
 {
     /// <summary>
     /// Human-readable one-line location summary built from the

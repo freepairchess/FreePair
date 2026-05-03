@@ -21,11 +21,18 @@ public partial class SettingsView : UserControl
         if (DataContext is SettingsViewModel vm)
         {
             vm.PickPairingEngineBinaryAsync = PickPairingEngineBinaryAsync;
+            vm.PickUscfEngineBinaryAsync    = PickUscfEngineBinaryAsync;
             vm.PickTournamentsRootFolderAsync = PickTournamentsRootFolderAsync;
         }
     }
 
-    private async Task<string?> PickPairingEngineBinaryAsync()
+    private Task<string?> PickPairingEngineBinaryAsync() =>
+        PickEngineBinaryAsync("Select BBP pairing engine binary");
+
+    private Task<string?> PickUscfEngineBinaryAsync() =>
+        PickEngineBinaryAsync("Select FreePair USCF engine binary");
+
+    private async Task<string?> PickEngineBinaryAsync(string title)
     {
         var topLevel = TopLevel.GetTopLevel(this);
         if (topLevel is null)
@@ -35,7 +42,7 @@ public partial class SettingsView : UserControl
 
         var options = new FilePickerOpenOptions
         {
-            Title = "Select pairing engine binary",
+            Title = title,
             AllowMultiple = false,
             FileTypeFilter = new[]
             {

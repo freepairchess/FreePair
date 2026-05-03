@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FreePair.Core.Formatting;
@@ -91,7 +92,13 @@ public partial class PairingRow : ObservableObject
         PairingResult initialResult,
         IScoreFormatter formatter,
         Action<PairingRow, PairingResult>? onResultChanged,
-        Action<PairingRow, int, ByeKind>? onConvertToBye = null)
+        Action<PairingRow, int, ByeKind>? onConvertToBye = null,
+        string? whiteTitle = null,
+        string? blackTitle = null,
+        decimal whiteScore = 0m,
+        decimal blackScore = 0m,
+        string? whiteColors = null,
+        string? blackColors = null)
     {
         ArgumentNullException.ThrowIfNull(formatter);
 
@@ -103,9 +110,15 @@ public partial class PairingRow : ObservableObject
         WhitePair = whitePair;
         WhiteName = whiteName;
         WhiteRating = whiteRating;
+        WhiteTitle = string.IsNullOrWhiteSpace(whiteTitle) ? null : whiteTitle.Trim();
+        WhiteScore = whiteScore;
+        WhiteColors = whiteColors ?? string.Empty;
         BlackPair = blackPair;
         BlackName = blackName;
         BlackRating = blackRating;
+        BlackTitle = string.IsNullOrWhiteSpace(blackTitle) ? null : blackTitle.Trim();
+        BlackScore = blackScore;
+        BlackColors = blackColors ?? string.Empty;
 
         AvailableResults = new[]
         {
@@ -123,17 +136,128 @@ public partial class PairingRow : ObservableObject
     public int WhitePair { get; }
     public string WhiteName { get; }
     public int WhiteRating { get; }
+    public string? WhiteTitle { get; }
     public int BlackPair { get; }
     public string BlackName { get; }
     public int BlackRating { get; }
+    public string? BlackTitle { get; }
+
+    /// <summary>
+    /// White's display name with optional title prefix (e.g.
+    /// <c>"GM Sun, Ryan"</c>). Falls back to bare name when the
+    /// player has no title set.
+    /// </summary>
+    public string WhiteTitledName =>
+        string.IsNullOrEmpty(WhiteTitle) ? WhiteName : $"{WhiteTitle} {WhiteName}";
+
+    /// <summary>Black's display name with optional title prefix.</summary>
+    public string BlackTitledName =>
+        string.IsNullOrEmpty(BlackTitle) ? BlackName : $"{BlackTitle} {BlackName}";
+
+    /// <summary>
+    /// White's score going INTO this round (sum of result scores
+    /// from all earlier rounds). Round 1 always reads <c>0</c>;
+    /// the round being viewed is excluded so the value is the
+    /// "what is each player playing FOR this round" pre-game
+    /// score the TD wants to see when scanning the pairings.
+    /// </summary>
+    public decimal WhiteScore { get; }
+
+    /// <summary>Black's pre-round score; same semantics as <see cref="WhiteScore"/>.</summary>
+    public decimal BlackScore { get; }
+
+    /// <summary>
+    /// White's color history string for rounds strictly before the
+    /// round being viewed: one character per round, <c>'W'</c> for
+    /// White, <c>'B'</c> for Black, <c>'X'</c> for any bye / unpaired
+    /// round (no color assigned). Empty string for round 1.
+    /// </summary>
+    public string WhiteColors { get; }
+
+    /// <summary>Black's color history; same semantics as <see cref="WhiteColors"/>.</summary>
+    public string BlackColors { get; }
+
+    /// <summary>
+    /// White's display name with the pre-round score (and, when any
+    /// rounds have been played, the per-round color history) appended
+    /// in brackets, e.g. <c>"FM Castaneda, Nelson [4.0 WBWXB]"</c> —
+    /// "score 4.0 going into this round, played W-B-W-bye-B previously".
+    /// Score is formatted via <see cref="IScoreFormatter.Score"/> so
+    /// ASCII vs. Unicode (½) preference is honoured. White's bracket
+    /// sits AFTER the name; the matching <see cref="BlackTitledNameWithScore"/>
+    /// puts black's bracket BEFORE the name so the two brackets frame
+    /// the matchup row symmetrically.
+    /// </summary>
+    public string WhiteTitledNameWithScore =>
+        WhiteColors.Length == 0
+            ? $"{WhiteTitledName} [{_formatter.Score(WhiteScore)}]"
+            : $"{WhiteTitledName} [{_formatter.Score(WhiteScore)} {WhiteColors}]";
+
+    /// <summary>
+    /// Black's display name with the pre-round score (and color
+    /// history when present) prepended in brackets, e.g.
+    /// <c>"[0.5 BWB] Sage, J Timothy"</c>. Bracket sits BEFORE the
+    /// name so it lines up on the inside of the matchup row,
+    /// mirroring <see cref="WhiteTitledNameWithScore"/>'s trailing
+    /// bracket.
+    /// </summary>
+    public string BlackTitledNameWithScore =>
+        BlackColors.Length == 0
+            ? $"[{_formatter.Score(BlackScore)}] {BlackTitledName}"
+            : $"[{_formatter.Score(BlackScore)} {BlackColors}] {BlackTitledName}";
 
     public IReadOnlyList<PairingResultOption> AvailableResults { get; }
 
     public PairingResult Result => SelectedResult.Value;
 
+    /// <summary>
+    /// Background brush for the result cell, encoding game-result
+    /// upset semantics:
+    /// <list type="bullet">
+    ///   <item><b>LightCoral</b> — the lower-rated player won
+    ///         (rating spread is irrelevant; any lower-rating win
+    ///         is an upset).</item>
+    ///   <item><b>LightGoldenrodYellow</b> — drawn game where the
+    ///         lower-rated player is at least 100 points below
+    ///         their opponent (a "draw upset" — the favourite
+    ///         dropped half a point against a much weaker player).</item>
+    ///   <item><b>Transparent</b> — expected result, no highlight.</item>
+    /// </list>
+    /// <para>Unplayed games and bye-converted rows always render
+    /// transparent — there's no "upset" without a played result.
+    /// Unrated players (rating <c>0</c>) are excluded from upset
+    /// detection on either side: comparing against a 0 rating
+    /// would flag every unrated win as an upset, which is not
+    /// useful.</para>
+    /// </summary>
+    public IBrush ResultBackground
+    {
+        get
+        {
+            // Need both ratings non-zero for a meaningful comparison.
+            if (WhiteRating <= 0 || BlackRating <= 0)
+                return Brushes.Transparent;
+
+            switch (Result)
+            {
+                case PairingResult.WhiteWins:
+                    return WhiteRating < BlackRating ? Brushes.LightCoral : Brushes.Transparent;
+                case PairingResult.BlackWins:
+                    return BlackRating < WhiteRating ? Brushes.LightCoral : Brushes.Transparent;
+                case PairingResult.Draw:
+                    var spread = Math.Abs(WhiteRating - BlackRating);
+                    return spread > 100 ? Brushes.LightGoldenrodYellow : Brushes.Transparent;
+                default:
+                    return Brushes.Transparent;
+            }
+        }
+    }
+
     partial void OnSelectedResultChanged(PairingResultOption value)
     {
         ResultText = value.Text;
+        // Background depends on the result, so notify when it changes.
+        OnPropertyChanged(nameof(ResultBackground));
         if (!_suppressCallback)
         {
             _onResultChanged?.Invoke(this, value.Value);
@@ -163,13 +287,85 @@ public partial class PairingRow : ObservableObject
 
 /// <summary>
 /// Pre-formatted row for the <b>Byes &amp; Withdrawals</b> tab and for
-/// per-round bye lists.
+/// per-round bye lists. Carries enough player metadata for the
+/// Pairings tab's "Byes this round" panel to show a TD-friendly
+/// summary: title-prefixed name, rating, the kind of bye for the
+/// current round, and the player's complete <c>RequestedByeRounds</c>
+/// list so a TD eyeballing the round can see "this player also has
+/// half-byes pending in R3 and R5".
 /// </summary>
 public sealed record ByeRow(
     int Round,
     int PairNumber,
     string Name,
-    string Kind);
+    string Kind,
+    /// <summary>Chess title (e.g. "GM"); null/blank when the player is untitled.</summary>
+    string? Title = null,
+    /// <summary>Player rating; <c>0</c> when unrated.</summary>
+    int Rating = 0,
+    /// <summary>
+    /// Comma-joined list of all rounds this player has a half-point
+    /// bye request on, formatted as <c>"R2, R5"</c>. Null when the
+    /// player has no half-bye requests at all. Includes the current
+    /// round if it's a half-bye request — the TD sees the same
+    /// information as on the Players tab without having to switch
+    /// tabs.
+    /// </summary>
+    string? HalfByeRequests = null)
+{
+    /// <summary>
+    /// Player's display name with optional title prefix
+    /// (e.g. <c>"GM Sun, Ryan"</c>). Falls back to bare name when
+    /// untitled.
+    /// </summary>
+    public string TitledName =>
+        string.IsNullOrEmpty(Title) ? Name : $"{Title} {Name}";
+
+    /// <summary>
+    /// One-line summary the Pairings tab's "Byes this round" panel
+    /// renders per row. Combines title + name + (rating + half-bye
+    /// requests in brackets) + dash + bye kind, e.g.
+    /// <list type="bullet">
+    ///   <item><c>"Ross Alanson [1890, HPB requested for R1, R4] - Full-point bye"</c></item>
+    ///   <item><c>"FM Alex Yang [2390, HPB requested for R1, R4] - Half-point bye"</c></item>
+    ///   <item><c>"Anyone [1500] - Zero-point bye"</c> when there are no half-bye requests</item>
+    ///   <item><c>"Unrated Newcomer - Half-point bye"</c> when neither rating nor half-bye requests are set</item>
+    /// </list>
+    /// </summary>
+    public string Description
+    {
+        get
+        {
+            var sb = new System.Text.StringBuilder(64);
+            sb.Append(TitledName);
+
+            // Bracket section: rating and / or "HPB requested for R..."
+            // Skipped entirely when both are empty so unrated, no-
+            // request players read cleanly.
+            var hasRating = Rating > 0;
+            var hasRequests = !string.IsNullOrEmpty(HalfByeRequests);
+            if (hasRating || hasRequests)
+            {
+                sb.Append(" [");
+                if (hasRating)
+                {
+                    sb.Append(Rating.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                }
+                if (hasRating && hasRequests) sb.Append(", ");
+                if (hasRequests)
+                {
+                    sb.Append("HPB requested for ");
+                    sb.Append(HalfByeRequests);
+                }
+                sb.Append(']');
+            }
+
+            sb.Append(" - ");
+            sb.Append(Kind);
+            return sb.ToString();
+        }
+    }
+}
 
 /// <summary>
 /// Lightweight round-selector entry bound to the Pairings tab's combo.
@@ -187,6 +383,7 @@ public sealed record RoundOption(int Number, string Label)
 public partial class SectionViewModel : ViewModelBase
 {
     private readonly IReadOnlyDictionary<int, Player> _byPair;
+    private bool _suppressEngineChangeCallback;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentRoundPairings))]
@@ -223,6 +420,17 @@ public partial class SectionViewModel : ViewModelBase
     /// confirmation prompt + mutation.
     /// </summary>
     public event Func<SectionViewModel, Task>? DeleteLastRoundRequested;
+
+    /// <summary>
+    /// Fired when the TD picks a new value in the section's
+    /// pairing-engine combobox. The host applies
+    /// <see cref="TournamentMutations.SetSectionPairingEngine"/>.
+    /// Wrapped in an event so the existing parent-vm dispatch
+    /// pattern (one event per intent, host attaches in
+    /// <c>AttachSectionEvents</c>) stays uniform.
+    /// </summary>
+    public event Func<SectionViewModel, FreePair.Core.Tournaments.Enums.PairingEngineKind?, Task>?
+        PairingEngineChangeRequested;
 
     public SectionViewModel(Section section)
         : this(section, new ScoreFormatter())
@@ -271,6 +479,17 @@ public partial class SectionViewModel : ViewModelBase
             .ToArray();
 
         SelectedRound = AvailableRounds.LastOrDefault();
+
+        // Seed the pairing-engine combobox to the section's current
+        // override (or the "inherit" sentinel when null). We suppress
+        // the change-callback during the initial seed so we don't
+        // round-trip through PairingEngineChangeRequested for a value
+        // that isn't actually changing.
+        _suppressEngineChangeCallback = true;
+        SelectedEngineChoice = PairingEngineChoice.SectionChoices.FirstOrDefault(
+            c => c.Value == section.PairingEngine)
+            ?? PairingEngineChoice.SectionChoices[0];
+        _suppressEngineChangeCallback = false;
     }
 
     /// <summary>Underlying domain section.</summary>
@@ -618,6 +837,70 @@ public partial class SectionViewModel : ViewModelBase
     /// </summary>
     public string TabLabelSuffix => IsSoftDeleted ? " [deleted]" : "";
 
+    // =================================================================
+    //  Pairing engine selection (per-section override)
+    // =================================================================
+
+    /// <summary>
+    /// Choices shown in the pairing-engine combobox on the section
+    /// header — same three items every section sees (inherit / BBP /
+    /// USCF).
+    /// </summary>
+    public IReadOnlyList<PairingEngineChoice> AvailableEngineChoices =>
+        PairingEngineChoice.SectionChoices;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(EffectivePairingEngineDisplay))]
+    private PairingEngineChoice? _selectedEngineChoice;
+
+    partial void OnSelectedEngineChoiceChanged(PairingEngineChoice? value)
+    {
+        if (_suppressEngineChangeCallback) return;
+        if (value is null) return;
+        // Fire-and-forget — the host's handler does the mutation and
+        // a possibly-async save. Errors flow through ErrorMessage on
+        // the parent VM.
+        var handler = PairingEngineChangeRequested;
+        if (handler is not null)
+        {
+            _ = handler(this, value.Value);
+        }
+    }
+
+    /// <summary>
+    /// True when the section's engine override can still be edited:
+    /// the section is live (not soft-deleted) AND it hasn't paired any
+    /// rounds yet. Once round 1 lands, swapping engines mid-event
+    /// would compromise rating-report reproducibility, so the
+    /// combobox goes read-only (the underlying mutation also throws).
+    /// </summary>
+    public bool CanChangePairingEngine =>
+        !IsSoftDeleted && Section.RoundsPaired == 0;
+
+    /// <summary>
+    /// Human-readable label for the section's <em>resolved</em>
+    /// pairing engine after the inherit / default cascade — e.g.
+    /// "USCF Swiss" or "BBP (FIDE Dutch)". Used as a small read-only
+    /// badge next to the combobox so the TD always knows which engine
+    /// will actually run for this section.
+    /// </summary>
+    public string EffectivePairingEngineDisplay
+    {
+        get
+        {
+            var t = ParentTournamentVm?.Tournament;
+            // Pre-attach (constructor → AttachSectionEvents) and in
+            // tests the parent VM may be null. Fall back to a
+            // section-only resolution that ignores tournament-level
+            // overrides — still useful for the UI to show *something*.
+            var effective = t is null
+                ? (Section.PairingEngine
+                   ?? FreePair.Core.Tournaments.Enums.PairingEngineKind.Bbp)
+                : FreePair.Core.Tournaments.PairingEngineDefaults.Resolve(t, Section);
+            return PairingEngineChoice.DisplayFor(effective);
+        }
+    }
+
     /// <summary>
     /// Raised when the TD clicks "🗑 Delete section…" on the Pairings
     /// tab. The parent <c>TournamentViewModel</c> handles the confirm
@@ -893,6 +1176,23 @@ public partial class SectionViewModel : ViewModelBase
         var black = _byPair.TryGetValue(p.BlackPair, out var b) ? b : null;
         var roundNumber = SelectedRound?.Number ?? 0;
 
+        // Pre-round score: sum of each player's scoring history from
+        // rounds STRICTLY BEFORE the round we're viewing. For round 1
+        // both reads as 0; for round 2 it's whatever the player got in
+        // R1; etc. Defensive against players who haven't accumulated
+        // enough history yet (e.g. late entry just added with no past
+        // results).
+        var whiteScore = ScoreThroughRound(white, roundNumber - 1);
+        var blackScore = ScoreThroughRound(black, roundNumber - 1);
+
+        // Per-round colour history for the same window: "W" white,
+        // "B" black, "X" any bye / unpaired round. Empty string for
+        // round 1 (no prior rounds). Lets the TD spot colour-balance
+        // pressure at a glance, e.g. "WBWXB" = three whites vs two
+        // blacks going in, so this player has a small black bias.
+        var whiteColors = ColorHistoryThroughRound(white, roundNumber - 1);
+        var blackColors = ColorHistoryThroughRound(black, roundNumber - 1);
+
         return new PairingRow(
             board: p.Board,
             whitePair: p.WhitePair,
@@ -904,16 +1204,65 @@ public partial class SectionViewModel : ViewModelBase
             initialResult: p.Result,
             formatter: Formatter,
             onResultChanged: (row, newResult) =>
-                ResultChanged?.Invoke(this, roundNumber, row, newResult));
+                ResultChanged?.Invoke(this, roundNumber, row, newResult),
+            whiteTitle: white?.Title,
+            blackTitle: black?.Title,
+            whiteScore: whiteScore,
+            blackScore: blackScore,
+            whiteColors: whiteColors,
+            blackColors: blackColors);
+    }
+
+    private static decimal ScoreThroughRound(Player? player, int endedRound)
+    {
+        if (player is null || endedRound <= 0) return 0m;
+        var rounds = Math.Min(endedRound, player.History.Count);
+        decimal score = 0m;
+        for (var i = 0; i < rounds; i++) score += player.History[i].Score;
+        return score;
+    }
+
+    private static string ColorHistoryThroughRound(Player? player, int endedRound)
+    {
+        if (player is null || endedRound <= 0) return string.Empty;
+        var rounds = Math.Min(endedRound, player.History.Count);
+        if (rounds <= 0) return string.Empty;
+        var sb = new System.Text.StringBuilder(rounds);
+        for (var i = 0; i < rounds; i++)
+        {
+            sb.Append(player.History[i].Color switch
+            {
+                PlayerColor.White => 'W',
+                PlayerColor.Black => 'B',
+                _                 => 'X',  // bye / unpaired / no colour assigned
+            });
+        }
+        return sb.ToString();
     }
 
     private ByeRow BuildByeRow(int round, ByeAssignment bye)
     {
-        var name = _byPair.TryGetValue(bye.PlayerPair, out var player)
-            ? player.Name
-            : $"Pair {bye.PlayerPair}";
+        if (!_byPair.TryGetValue(bye.PlayerPair, out var player))
+        {
+            // Unknown pair number (shouldn't happen in practice but be
+            // defensive) — render with placeholder name and no extras.
+            return new ByeRow(round, bye.PlayerPair, $"Pair {bye.PlayerPair}", FormatByeKind(bye.Kind));
+        }
 
-        return new ByeRow(round, bye.PlayerPair, name, FormatByeKind(bye.Kind));
+        var halfByeList = player.RequestedByeRounds.Count == 0
+            ? null
+            : string.Join(", ", player.RequestedByeRounds
+                .OrderBy(r => r)
+                .Select(r => "R" + r.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+
+        return new ByeRow(
+            Round: round,
+            PairNumber: bye.PlayerPair,
+            Name: player.Name,
+            Kind: FormatByeKind(bye.Kind),
+            Title: player.Title,
+            Rating: player.Rating,
+            HalfByeRequests: halfByeList);
     }
 
     private static string FormatByeKind(ByeKind kind) => kind switch

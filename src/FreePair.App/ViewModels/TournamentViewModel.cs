@@ -762,6 +762,25 @@ public partial class TournamentViewModel : ViewModelBase
             if (section.FirstBoard == newValue) continue;
             t = TournamentMutations.SetSectionFirstBoard(t, name, newValue);
         }
+
+        // Apply any per-section pairing-engine overrides the TD
+        // picked in the dashboard. Only R1-bound sections (rows
+        // where IsEngineEditable was true) are present in the
+        // dict — sections past round 1 are locked. The mutation
+        // throws if a row slipped through, so we wrap in try and
+        // skip locked sections silently.
+        var chosenEngines = result.SnapshotChosenPairingEngines();
+        foreach (var (name, engine) in chosenEngines)
+        {
+            var section = t.Sections.FirstOrDefault(s => s.Name == name);
+            if (section is null) continue;
+            if (section.PairingEngine == engine) continue;
+            try
+            {
+                t = TournamentMutations.SetSectionPairingEngine(t, name, engine);
+            }
+            catch (System.InvalidOperationException) { /* round-paired lock */ }
+        }
         if (!ReferenceEquals(t, Tournament))
         {
             Tournament = t;
@@ -1257,6 +1276,7 @@ public partial class TournamentViewModel : ViewModelBase
         vm.PlayerAddRequested        += OnPlayerAddAsync;
         vm.PlayerImportRequested     += OnPlayerImportAsync;
         vm.MoveRequested             += OnSectionMoveAsync;
+        vm.PairingEngineChangeRequested += OnSectionPairingEngineChangeAsync;
     }
 
     private void DetachSectionEvents()
@@ -1280,7 +1300,35 @@ public partial class TournamentViewModel : ViewModelBase
             vm.PlayerAddRequested -= OnPlayerAddAsync;
             vm.PlayerImportRequested -= OnPlayerImportAsync;
             vm.MoveRequested -= OnSectionMoveAsync;
+            vm.PairingEngineChangeRequested -= OnSectionPairingEngineChangeAsync;
         }
+    }
+
+    private async Task OnSectionPairingEngineChangeAsync(
+        SectionViewModel section,
+        FreePair.Core.Tournaments.Enums.PairingEngineKind? engine)
+    {
+        if (Tournament is null) return;
+        // No-op when the section already has the requested override;
+        // the combobox seeds itself on rebuild and we don't want to
+        // round-trip the writer for a no-change.
+        var current = Tournament.Sections.FirstOrDefault(s => s.Name == section.Name);
+        if (current is null) return;
+        if (current.PairingEngine == engine) return;
+
+        try
+        {
+            Tournament = TournamentMutations.SetSectionPairingEngine(
+                Tournament, section.Name, engine);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to change pairing engine for '{section.Name}': {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
     }
 
     private async void OnSectionResultChanged(
@@ -1865,9 +1913,37 @@ public partial class TournamentViewModel : ViewModelBase
             }
 
             var settings = await _settingsService.LoadAsync().ConfigureAwait(true);
-            var enginePath = settings.PairingEngineBinaryPath;
             var sectionSnapshot = section.Section;
             var tournamentSnapshot = Tournament;
+
+            // Pick the right binary for the section's effective pairing
+            // engine. FIDE-rated events default to BBP / FIDE Dutch;
+            // everything else defaults to FreePair's USCF engine. The
+            // TD can pin either tournament-wide (Tournament.PairingEngine)
+            // or per-section (Section.PairingEngine).
+            var effectiveEngine = FreePair.Core.Tournaments.PairingEngineDefaults
+                .Resolve(tournamentSnapshot, sectionSnapshot);
+            var enginePath = FreePair.Core.Bbp.BbpPairingEngine.ResolveEffectivePathFor(
+                effectiveEngine,
+                settings.PairingEngineBinaryPath,
+                settings.UscfEngineBinaryPath);
+
+            // Fail loud when the requested engine isn't available.
+            // Without this guard, BbpPairingEngine.GenerateNextRoundAsync
+            // would receive a null path and silently fall back to its
+            // bundled bbpPairings.exe -- producing FIDE Dutch pairings
+            // for a USCF event (different bye-selection / float /
+            // colour rules, including the wrong full-point bye
+            // recipient). Surface the engine-specific configuration
+            // error to the TD so they know what's actually wrong
+            // instead of getting silently-incorrect pairings.
+            if (string.IsNullOrWhiteSpace(enginePath))
+            {
+                ErrorMessage = effectiveEngine == FreePair.Core.Tournaments.Enums.PairingEngineKind.Uscf
+                    ? FreePair.Core.Bbp.BbpPairingEngine.UscfNotConfiguredInstructions
+                    : FreePair.Core.Bbp.BbpPairingEngine.NotConfiguredInstructions;
+                return;
+            }
 
             // Round 1: ask the TD which colour the top seed should receive.
             // Later rounds: BBP derives colours from history.

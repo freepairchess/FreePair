@@ -7,9 +7,9 @@
         x:Class="FreePair.App.Views.PairAllSectionsDialog"
         x:DataType="vm:PairAllSectionsViewModel"
         Title="Pair all sections"
-        Width="960"
+        Width="1100"
         Height="720"
-        MinWidth="720"
+        MinWidth="900"
         MinHeight="480"
         CanResize="True"
         WindowStartupLocation="CenterOwner"
@@ -69,19 +69,20 @@
                       VerticalScrollBarVisibility="Auto">
             <Border Background="#F6F6F6" BorderBrush="LightGray" BorderThickness="1" CornerRadius="4" Padding="12">
                 <StackPanel Spacing="6">
-                    <Grid ColumnDefinitions="2*,70,70,140,110,2*" Margin="0,0,0,4">
+                    <Grid ColumnDefinitions="2*,60,60,120,90,160,2*" Margin="0,0,0,4">
                         <TextBlock Grid.Column="0" Text="Section"      FontWeight="SemiBold" Foreground="DimGray"/>
                         <TextBlock Grid.Column="1" Text="Players"      FontWeight="SemiBold" Foreground="DimGray" HorizontalAlignment="Right" Margin="0,0,12,0"/>
                         <TextBlock Grid.Column="2" Text="Rounds"       FontWeight="SemiBold" Foreground="DimGray" HorizontalAlignment="Right" Margin="0,0,12,0"/>
                         <TextBlock Grid.Column="3" Text="Start board"  FontWeight="SemiBold" Foreground="DimGray"/>
                         <TextBlock Grid.Column="4" Text="Range"        FontWeight="SemiBold" Foreground="DimGray"/>
-                        <TextBlock Grid.Column="5" Text="Status / conflict" FontWeight="SemiBold" Foreground="DimGray"/>
+                        <TextBlock Grid.Column="5" Text="Pairing engine" FontWeight="SemiBold" Foreground="DimGray"/>
+                        <TextBlock Grid.Column="6" Text="Status / conflict" FontWeight="SemiBold" Foreground="DimGray"/>
                     </Grid>
 
                     <ItemsControl ItemsSource="{Binding Rows}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="vm:PairAllSectionRow">
-                                <Grid ColumnDefinitions="2*,70,70,140,110,2*" Margin="0,3">
+                                <Grid ColumnDefinitions="2*,60,60,120,90,160,2*" Margin="0,3">
                                     <TextBlock Grid.Column="0"
                                                Text="{Binding Name}"
                                                VerticalAlignment="Center"
@@ -109,7 +110,34 @@
                                                VerticalAlignment="Center"
                                                Foreground="Gray"
                                                Margin="6,0,0,0"/>
+
+                                    <!-- Engine column. Editable combobox when the section's next pair will be
+                                         round 1; otherwise a read-only label showing the locked-in engine. -->
+                                    <ComboBox Grid.Column="5"
+                                              ItemsSource="{Binding AvailableEngineChoices}"
+                                              SelectedItem="{Binding SelectedEngineChoice, Mode=TwoWay}"
+                                              IsVisible="{Binding IsEngineEditable}"
+                                              FontSize="11"
+                                              Padding="6,2"
+                                              Margin="6,0,6,0"
+                                              HorizontalAlignment="Stretch"
+                                              ToolTip.Tip="Pick the pairing engine for this section's first round. Locked once round 1 is paired."/>
                                     <StackPanel Grid.Column="5"
+                                                Orientation="Horizontal"
+                                                VerticalAlignment="Center"
+                                                Margin="6,0,6,0"
+                                                IsVisible="{Binding !IsEngineEditable}">
+                                        <TextBlock Text="🔒" FontSize="11"
+                                                   Foreground="Gray" VerticalAlignment="Center"
+                                                   Margin="0,0,4,0"
+                                                   ToolTip.Tip="Engine is locked because round 1 has already been paired."/>
+                                        <TextBlock Text="{Binding EffectivePairingEngineDisplay}"
+                                                   FontSize="11" Foreground="Gray" FontStyle="Italic"
+                                                   VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="6"
                                                 Orientation="Horizontal"
                                                 VerticalAlignment="Center">
                                         <StackPanel Orientation="Horizontal"

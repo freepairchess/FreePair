@@ -1,0 +1,853 @@
+{
+  "NACHEventID": 13952,
+  "NACHEventPasscode": "KDUALDGQ",
+  "tournament": "Chess A2Z May Open 2026",
+  "date": "2026/5/16",
+  "city": "Test",
+  "state": "Test",
+  "country": "",
+  "td": "Test",
+  "bye_message": "BYE",
+  "sections": [
+    {
+      "section": "Open",
+      "rounds_paired": 0,
+      "rounds_played": 0,
+      "time_stamp": "4/10/2026 - 11:27",
+      "standings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "place": [
+        "1-9",
+        "1-9",
+        "1-9",
+        "1-9",
+        "1-9",
+        "1-9",
+        "1-9",
+        "1-9",
+        "1-9"
+      ],
+      "tiebreaks": [
+      ],
+      "rounds": [
+      ],
+      "players": [
+        {
+          "name": "Tare, Eevie",
+          "id1": "31610593",
+          "rating": 1389,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Balasubramanian, Prakrithi",
+          "id1": "31649217",
+          "rating": 1305,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Balasubramanian, Pranav",
+          "id1": "31685074",
+          "rating": 1160,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Laughlin-Koch, Beowulf",
+          "id1": "30536547",
+          "rating": 1140,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Le, Alicia",
+          "id1": "31184129",
+          "rating": 1105,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Jamil, Matisse Aaryan",
+          "id1": "30890124",
+          "rating": 1076,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Khan, Beatrix",
+          "id1": "30507316",
+          "rating": 1020,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Hu, Tim",
+          "id1": "32234172",
+          "rating": 1012,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Xie, Vincent",
+          "id1": "31210338",
+          "rating": 976,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        }
+      ]
+    },
+    {
+      "section": "Under_1000",
+      "rounds_paired": 0,
+      "rounds_played": 0,
+      "time_stamp": "4/10/2026 - 11:27",
+      "standings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "place": [
+        "1-6",
+        "1-6",
+        "1-6",
+        "1-6",
+        "1-6",
+        "1-6"
+      ],
+      "tiebreaks": [
+      ],
+      "rounds": [
+      ],
+      "players": [
+        {
+          "name": "Das, Rajvi",
+          "id1": "31316627",
+          "rating": 969,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Pingale, Sharanya",
+          "id1": "31180471",
+          "rating": 949,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Hao, Tristan",
+          "id1": "31871866",
+          "rating": 898,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Murthy, Atharv",
+          "id1": "32501164",
+          "rating": 849,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Burbank, Olivia",
+          "id1": "31613734",
+          "rating": 745,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Burbank, Isaiah",
+          "id1": "31469754",
+          "rating": 606,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        }
+      ]
+    },
+    {
+      "section": "Under_700",
+      "rounds_paired": 0,
+      "rounds_played": 0,
+      "time_stamp": "4/10/2026 - 11:27",
+      "standings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "place": [
+        "1-13",
+        "1-13",
+        "1-13",
+        "1-13",
+        "1-13",
+        "1-13",
+        "1-13",
+        "1-13",
+        "1-13",
+        "1-13",
+        "1-13",
+        "1-13",
+        "1-13"
+      ],
+      "tiebreaks": [
+      ],
+      "rounds": [
+      ],
+      "players": [
+        {
+          "name": "Saha, Nora",
+          "id1": "32198222",
+          "rating": 700,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Gordon, Elise Petra",
+          "id1": "31872029",
+          "rating": 632,
+          "rating2": 0,
+          "club": "WA",
+          "state": "WA",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Earl, Micah",
+          "id1": "32272240",
+          "rating": 615,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Cattone, Jocelyn",
+          "id1": "30460759",
+          "rating": 611,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Malcolm, Trapper",
+          "id1": "31436792",
+          "rating": 594,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Burbank, Sebastian",
+          "id1": "31469738",
+          "rating": 524,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Burnett, Arian",
+          "id1": "32037459",
+          "rating": 517,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Nguyen, Janelle",
+          "id1": "31784942",
+          "rating": 478,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Mody, Jacksen",
+          "id1": "32416745",
+          "rating": 452,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Burbank, Simon",
+          "id1": "31613750",
+          "rating": 439,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Babian, Logan",
+          "id1": "31617042",
+          "rating": 436,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Burbank, Daniel",
+          "id1": "32049663",
+          "rating": 427,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Sharma, Vardaan V",
+          "id1": "31999609",
+          "rating": 409,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        }
+      ]
+    },
+    {
+      "section": "Under_400",
+      "rounds_paired": 0,
+      "rounds_played": 0,
+      "time_stamp": "4/10/2026 - 11:27",
+      "standings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "place": [
+        "1-14",
+        "1-14",
+        "1-14",
+        "1-14",
+        "1-14",
+        "1-14",
+        "1-14",
+        "1-14",
+        "1-14",
+        "1-14",
+        "1-14",
+        "1-14",
+        "1-14",
+        "1-14"
+      ],
+      "tiebreaks": [
+      ],
+      "rounds": [
+      ],
+      "players": [
+        {
+          "name": "Rajesh, Reva",
+          "id1": "32759720",
+          "rating": 396,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Orendorff, Joyce",
+          "id1": "31787376",
+          "rating": 376,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Wells, Drake",
+          "id1": "32563466",
+          "rating": 320,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Hall, Brooklyn",
+          "id1": "32606385",
+          "rating": 313,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Francis, Aiden",
+          "id1": "31469762",
+          "rating": 310,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Phelps, William",
+          "id1": "32444591",
+          "rating": 288,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Lancaster, Evan",
+          "id1": "32036958",
+          "rating": 285,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Rajesh, Riya",
+          "id1": "32705768",
+          "rating": 203,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "byes": "1,2",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Thompson, Olivia",
+          "id1": "32305755",
+          "rating": 198,
+          "rating2": 0,
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Spadt, Xander",
+          "id1": "32072979",
+          "rating": 193,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Burbank, Vivian",
+          "id1": "32606429",
+          "rating": 106,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Liddell, William",
+          "id1": "32785349",
+          "rating": 0,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Reed, Aurora",
+          "id1": "32049472",
+          "rating": 0,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        },
+        {
+          "name": "Burnett, Harley",
+          "id1": "32606403",
+          "rating": 0,
+          "rating2": 0,
+          "team": "Sherman County",
+          "club": "OR",
+          "state": "OR",
+          "results": [
+          ],
+          "colors": [
+          ],
+          "ops": [
+          ],
+          "boards": [
+          ]
+        }
+      ]
+    }
+  ]
+}

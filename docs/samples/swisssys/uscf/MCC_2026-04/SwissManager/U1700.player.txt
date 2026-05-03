@@ -1,0 +1,23 @@
+No;Name;Title;ID no;Rating nat;Rating int;Birth; Fed;Sex;Type;Gr;Clubno;Club;FIDE-No;surname;first name;atitle
+1;Edward S. Chornoboy;;12520269;1500;0;;USA;;;;;;00000000;Chornoboy;Edward S.;
+2;Robert J Matthews;;12910717;1016;0;;USA;;;;;;00000000;Matthews;Robert J;
+3;Douglas Thompson;;12668393;1502;0;;USA;;;;;;00000000;Thompson;Douglas;
+4;Aarav Chandak;;30690866;1205;0;;USA;;;;;;00000000;Chandak;Aarav;
+5;Gordon J Weast;;13711281;1300;0;;USA;;;;;;00000000;Weast;Gordon J;
+6;Richard Eifler;;32848692;1067;0;;USA;;;;;;00000000;Eifler;Richard;
+7;Robert M Butler;;31288308;897;0;;USA;;;;;;00000000;Butler;Robert M;
+8;John Patrick Mullen;;12503480;1368;0;;USA;;;;;;00000000;Mullen;John Patrick;
+9;John Roger Dorfman;;10338786;1400;0;;USA;;;;;;00000000;Dorfman;John Roger;
+10;Steven R Senne;;32072558;1097;0;;USA;;;;;;00000000;Senne;Steven R;
+11;Warner Smith;;12480740;1543;0;;USA;;;;;;00000000;Smith;Warner;
+12;Robert Treiber;;16102367;1416;0;;USA;;;;;;00000000;Treiber;Robert;
+13;Matthew Nicholas Labelle;;30044073;1530;0;;USA;;;;;;00000000;Labelle;Matthew Nicholas;
+14;Matthew Marc Lamare;;32113596;1248;0;;USA;;;;;;00000000;Lamare;Matthew Marc;
+15;David W Martin;;12877246;1637;0;;USA;;;;;;00000000;Martin;David W;
+16;Venkat Krishnamurthy;;14927661;1300;0;;USA;;;;;;00000000;Krishnamurthy;Venkat;
+17;James Joseph Fallon;;32006413;1497;0;;USA;;;;;;00000000;Fallon;James Joseph;
+18;Walter P. Michaels;;30670037;362;0;;USA;;;;;;00000000;Michaels;Walter P.;
+19;Adhirit Prabhugee;;16228992;1390;1611;;USA;;;;;;39983986;Prabhugee;Adhirit;
+20;Lars Nicewicz;;31651988;1480;0;;USA;;;;;;00000000;Nicewicz;Lars;
+21;Freddie Hu;;32640012;1095;0;;USA;;;;;;00000000;Hu;Freddie;
+22;Marielle Murphy;;12876703;1050;0;;USA;;;;;;00000000;Murphy;Marielle;

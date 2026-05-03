@@ -27,6 +27,12 @@ public partial class SettingsViewModel : ViewModelBase
     private string? _pairingEngineBinaryPath;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(UscfEngineBinaryExists))]
+    [NotifyPropertyChangedFor(nameof(UscfEngineBinaryMissing))]
+    [NotifyPropertyChangedFor(nameof(HasUscfEngineBinaryPath))]
+    private string? _uscfEngineBinaryPath;
+
+    [ObservableProperty]
     private bool _useAsciiOnly = true;
 
     // ============ Online publishing defaults ============
@@ -106,6 +112,13 @@ public partial class SettingsViewModel : ViewModelBase
     public Func<Task<string?>>? PickPairingEngineBinaryAsync { get; set; }
 
     /// <summary>
+    /// Callback used by <see cref="BrowseUscfEngineCommand"/> — same shape
+    /// as <see cref="PickPairingEngineBinaryAsync"/>, just for the USCF
+    /// engine binary slot.
+    /// </summary>
+    public Func<Task<string?>>? PickUscfEngineBinaryAsync { get; set; }
+
+    /// <summary>
     /// Callback used by <see cref="BrowseTournamentsRootFolderCommand"/>
     /// to let the view show a native folder picker. Returns the
     /// selected absolute path, or <c>null</c> if the user cancelled.
@@ -135,6 +148,16 @@ public partial class SettingsViewModel : ViewModelBase
     public bool PairingEngineBinaryMissing =>
         HasPairingEngineBinaryPath && !File.Exists(PairingEngineBinaryPath);
 
+    public bool HasUscfEngineBinaryPath => !string.IsNullOrWhiteSpace(UscfEngineBinaryPath);
+
+    /// <summary>True when the configured USCF engine path resolves to a real file.</summary>
+    public bool UscfEngineBinaryExists =>
+        HasUscfEngineBinaryPath && File.Exists(UscfEngineBinaryPath);
+
+    /// <summary>True when the configured USCF engine path is non-empty but does not exist.</summary>
+    public bool UscfEngineBinaryMissing =>
+        HasUscfEngineBinaryPath && !File.Exists(UscfEngineBinaryPath);
+
     /// <summary>
     /// Loads persisted settings into the view model. Call once after the view
     /// is ready.
@@ -147,6 +170,7 @@ public partial class SettingsViewModel : ViewModelBase
         try
         {
             PairingEngineBinaryPath = _settings.PairingEngineBinaryPath;
+            UscfEngineBinaryPath    = _settings.UscfEngineBinaryPath;
             UseAsciiOnly = _settings.UseAsciiOnly;
             NaChessHubBaseUrl          = _settings.NaChessHubBaseUrl;
             AutoPublishPairingsDefault = _settings.AutoPublishPairingsDefault;
@@ -224,6 +248,21 @@ public partial class SettingsViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    private async Task BrowseUscfEngineAsync()
+    {
+        if (PickUscfEngineBinaryAsync is null)
+        {
+            return;
+        }
+
+        var picked = await PickUscfEngineBinaryAsync().ConfigureAwait(true);
+        if (!string.IsNullOrWhiteSpace(picked))
+        {
+            UscfEngineBinaryPath = picked;
+        }
+    }
+
+    [RelayCommand]
     private async Task BrowseTournamentsRootFolderAsync()
     {
         if (PickTournamentsRootFolderAsync is null)
@@ -244,6 +283,9 @@ public partial class SettingsViewModel : ViewModelBase
         _settings.PairingEngineBinaryPath = string.IsNullOrWhiteSpace(PairingEngineBinaryPath)
             ? null
             : PairingEngineBinaryPath;
+        _settings.UscfEngineBinaryPath    = string.IsNullOrWhiteSpace(UscfEngineBinaryPath)
+            ? null
+            : UscfEngineBinaryPath;
         _settings.UseAsciiOnly = UseAsciiOnly;
         _settings.NaChessHubBaseUrl          = string.IsNullOrWhiteSpace(NaChessHubBaseUrl)
             ? "https://nachesshub.com" : NaChessHubBaseUrl.Trim();

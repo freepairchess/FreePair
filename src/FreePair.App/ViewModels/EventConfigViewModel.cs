@@ -73,7 +73,22 @@ public sealed partial class EventConfigViewModel : ViewModelBase
     [ObservableProperty] private EventType? _eventType;
     [ObservableProperty] private PairingRule? _pairingRule;
     [ObservableProperty] private TimeControlType? _timeControlType;
-    [ObservableProperty] private RatingType? _ratingType;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(EffectivePairingEngineDisplay))]
+    private RatingType? _ratingType;
+
+    /// <summary>
+    /// Tournament-level pairing engine override. Bound to a combobox
+    /// on the Event-config form. <c>null</c> ("Default for rating
+    /// type") means the engine is derived from <see cref="RatingType"/>
+    /// at run-time — see
+    /// <see cref="FreePair.Core.Tournaments.PairingEngineDefaults.ForRatingType"/>.
+    /// Read-only after any section has paired a round
+    /// (<see cref="CanChangePairingEngine"/>).
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(EffectivePairingEngineDisplay))]
+    private PairingEngineChoice? _selectedEngineChoice;
 
     // ============ scheduling / counts ============
     [ObservableProperty] private int? _roundsPlanned;
@@ -159,6 +174,41 @@ public sealed partial class EventConfigViewModel : ViewModelBase
         FreePair.Core.Tournaments.Enums.RatingType.Other,
     };
 
+    /// <summary>
+    /// Choices shown in the tournament-level pairing-engine combobox.
+    /// Same three items as the section-level combobox but with the
+    /// "inherit" sentinel labelled differently ("Default for rating
+    /// type" instead of "Inherit from event").
+    /// </summary>
+    public IReadOnlyList<PairingEngineChoice> AvailableEngineChoices =>
+        PairingEngineChoice.TournamentChoices;
+
+    /// <summary>
+    /// True when the TD can edit
+    /// <see cref="SelectedEngineChoice"/>: no section has paired a
+    /// round yet. Once a round lands the combobox goes read-only —
+    /// the underlying mutation also throws.
+    /// </summary>
+    public bool CanChangePairingEngine =>
+        _getTournament().Sections.All(s => s.SoftDeleted || s.RoundsPaired == 0);
+
+    /// <summary>
+    /// Live-resolved label for the engine FreePair would dispatch
+    /// today against the (potentially-edited) form values. Shows the
+    /// effective engine after the inherit/default cascade so the TD
+    /// can see what their override currently amounts to without
+    /// having to Apply first.
+    /// </summary>
+    public string EffectivePairingEngineDisplay
+    {
+        get
+        {
+            var effective = SelectedEngineChoice?.Value
+                ?? FreePair.Core.Tournaments.PairingEngineDefaults.ForRatingType(RatingType);
+            return PairingEngineChoice.DisplayFor(effective);
+        }
+    }
+
     public string? NachEventId => _getTournament().NachEventId;
 
     /// <summary>
@@ -220,6 +270,11 @@ public sealed partial class EventConfigViewModel : ViewModelBase
         PairingRule     = t.PairingRule;
         TimeControlType = t.TimeControlType;
         RatingType      = t.RatingType;
+
+        SelectedEngineChoice = PairingEngineChoice.TournamentChoices.FirstOrDefault(
+            c => c.Value == t.PairingEngine)
+            ?? PairingEngineChoice.TournamentChoices[0];
+        OnPropertyChanged(nameof(CanChangePairingEngine));
 
         RoundsPlanned        = t.RoundsPlanned;
         HalfPointByesAllowed = t.HalfPointByesAllowed;
@@ -298,6 +353,22 @@ public sealed partial class EventConfigViewModel : ViewModelBase
         // round-trip so both event-level and section-level edits
         // land as one auto-save.
         updated = ApplySectionBoardEdits(updated);
+
+        // Apply the tournament-level pairing-engine override too.
+        // Skipped silently when the value didn't change OR when any
+        // section has already paired a round (the mutation would
+        // throw — UI prevents the change but defensive in case the
+        // form value is stale).
+        try
+        {
+            var desiredEngine = SelectedEngineChoice?.Value;
+            if (updated.PairingEngine != desiredEngine
+                && updated.Sections.All(s => s.SoftDeleted || s.RoundsPaired == 0))
+            {
+                updated = TournamentMutations.SetTournamentPairingEngine(updated, desiredEngine);
+            }
+        }
+        catch (System.InvalidOperationException) { /* lock — keep prior value */ }
 
         _setTournament(updated);
         Reset();

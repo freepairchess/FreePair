@@ -179,4 +179,17 @@ public sealed class RawOverview
 
     [JsonPropertyName("FreePair USCF include section dates")]
     public bool? FreePairUscfIncludeSectionDates { get; set; }
+
+    // ==== FreePair pairing-engine selection (per-tournament) ====
+    /// <summary>
+    /// Tournament-level pairing engine override. Persisted as a
+    /// human-readable string (<c>"Bbp"</c> or <c>"Uscf"</c>) so a
+    /// reviewer skimming the .sjson can tell at a glance which
+    /// engine the TD picked. Unrecognised / missing values map to
+    /// <c>null</c> at the domain layer and FreePair falls back to
+    /// the rating-type-derived default.
+    /// </summary>
+    [JsonPropertyName("FreePair pairing engine")]
+    [JsonConverter(typeof(JsonStringEnumConverter<PairingEngineKind>))]
+    public PairingEngineKind? FreePairPairingEngine { get; set; }
 }

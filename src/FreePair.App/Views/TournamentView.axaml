@@ -290,6 +290,15 @@
                                             <Run Text="{Binding RoundsPaired}"/>
                                             <Run Text=" rounds"/>
                                         </TextBlock>
+                                        <!-- Engine badge: shows the resolved (effective)
+                                             pairing engine for this section. Hidden for
+                                             soft-deleted sections to keep the row clean. -->
+                                        <TextBlock FontSize="10" Foreground="#5A8FBF"
+                                                   IsVisible="{Binding IsLive}"
+                                                   ToolTip.Tip="Effective pairing engine for this section. Click into the section to override (until round 1 is paired).">
+                                            <Run Text="⚙ "/>
+                                            <Run Text="{Binding EffectivePairingEngineDisplay}"/>
+                                        </TextBlock>
                                     </StackPanel>
                                 </DockPanel>
                             </DataTemplate>

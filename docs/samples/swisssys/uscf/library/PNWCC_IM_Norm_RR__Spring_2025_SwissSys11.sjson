@@ -1,0 +1,292 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.53,
+    "Tournament title": "PNWCC IM Norm RR - Spring 2025",
+    "Tournament time controls": "90+30",
+    "Starting date": "2025-03-26",
+    "Ending date": "2025-03-30",
+    "NACH event ID": "81fb4707-9f0c-491d-aa21-46fcecf25fce",
+    "NACH passcode": "2f986abb-272c-423e-a7d6-be190c69bf8e",
+    "Trace": "3.7.3.7.3.3.7.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "IM_Norm_RR_7_9_IM_Norm",
+      "Type": 3,
+      "Section title": "IM Norm RR 7/9 IM Norm",
+      "Section time control": "90+30",
+      "Number of players": 10,
+      "Number of teams": 0,
+      "Rounds paired": 9,
+      "Rounds played": 9,
+      "Rating to use": 0,
+      "Engine": 0,
+      "Last unrestricted round": 0,
+      "Need search options": false,
+      "Lower rating limit": 2200,
+      "Final round": 9,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Table set": true,
+      "Berger": true,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Pair table items": 5,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Cruz Sanchez, Cristhian Arnaldo",
+          "ID": "3801969",
+          "Rating": 2470,
+          "ID2": "15574203",
+          "Rating2": 2550,
+          "Club": "PER",
+          "Player title": "GM",
+          "Sex": "M",
+          "Birth date": "1992",
+          "Current result": "½",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;10;W;1;0;0;0",
+            "+;2;W;5;0;0;0",
+            "=;3;B;2;0;0;0",
+            "+;4;W;4;0;0;0",
+            "=;5;B;3;0;0;0",
+            "=;6;W;3;0;0;0",
+            "=;7;B;4;0;0;0",
+            "+;8;W;2;0;0;0",
+            "=;9;B;5;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Atwell, Rose",
+          "ID": "30951011",
+          "Rating": 2263,
+          "ID2": "16303021",
+          "Rating2": 2357,
+          "Club": "USA",
+          "Player title": "FM",
+          "Sex": "F",
+          "Birth date": "2009",
+          "Current result": "½",
+          "Results": [
+            "+;9;W;2;0;0;0",
+            "-;1;B;5;0;0;0",
+            "-;10;W;1;0;0;0",
+            "-;3;W;5;0;0;0",
+            "-;4;B;2;0;0;0",
+            "+;5;W;4;0;0;0",
+            "+;6;B;3;0;0;0",
+            "=;7;W;3;0;0;0",
+            "=;8;B;4;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Cordova Daza, Emilio",
+          "ID": "3801497",
+          "Rating": 2516,
+          "ID2": "13208885",
+          "Rating2": 2594,
+          "Club": "PER",
+          "Player title": "GM",
+          "Sex": "M",
+          "Birth date": "1991",
+          "Current result": "½",
+          "Results": [
+            "+;8;W;3;0;0;0",
+            "=;9;B;4;0;0;0",
+            "=;1;W;2;0;0;0",
+            "+;2;B;5;0;0;0",
+            "+;10;W;1;0;0;0",
+            "+;4;W;5;0;0;0",
+            "=;5;B;2;0;0;0",
+            "=;6;W;4;0;0;0",
+            "=;7;B;3;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Harish, Neeraj",
+          "ID": "30958130",
+          "Rating": 2169,
+          "ID2": "16054553",
+          "Rating2": 2209,
+          "Club": "USA",
+          "Player title": "CM",
+          "Sex": "M",
+          "Birth date": "2009",
+          "Current result": "0",
+          "Results": [
+            "=;7;W;4;0;0;0",
+            "-;8;B;3;0;0;0",
+            "-;9;W;3;0;0;0",
+            "-;1;B;4;0;0;0",
+            "+;2;W;2;0;0;0",
+            "-;3;B;5;0;0;0",
+            "=;10;W;1;0;0;0",
+            "-;5;W;5;0;0;0",
+            "-;6;B;2;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Song, Ethan",
+          "ID": "62900412",
+          "Rating": 2291,
+          "ID2": "16160581",
+          "Rating2": 2278,
+          "Club": "CAN",
+          "Player title": "FM",
+          "Sex": "M",
+          "Birth date": "2009",
+          "Current result": "1",
+          "Results": [
+            "=;6;W;5;0;0;0",
+            "+;7;B;2;0;0;0",
+            "+;8;W;4;0;0;0",
+            "=;9;B;3;0;0;0",
+            "=;1;W;3;0;0;0",
+            "-;2;B;4;0;0;0",
+            "=;3;W;2;0;0;0",
+            "+;4;B;5;0;0;0",
+            "+;10;W;1;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "Georgiev, Vladimir",
+          "ID": "2903024",
+          "Rating": 2371,
+          "ID2": "12735967",
+          "Rating2": 2424,
+          "Club": "MKD",
+          "Player title": "GM",
+          "Sex": "M",
+          "Birth date": "1975",
+          "Current result": "1",
+          "Results": [
+            "=;5;B;5;0;0;0",
+            "-;10;B;1;0;0;0",
+            "=;7;W;5;0;0;0",
+            "=;8;B;2;0;0;0",
+            "=;9;W;4;0;0;0",
+            "=;1;B;3;0;0;0",
+            "-;2;W;3;0;0;0",
+            "=;3;B;4;0;0;0",
+            "+;4;W;2;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Xie, Bryan",
+          "ID": "30941296",
+          "Rating": 2320,
+          "ID2": "15733084",
+          "Rating2": 2405,
+          "Club": "USA",
+          "Player title": "FM",
+          "Sex": "M",
+          "Birth date": "2009",
+          "Current result": "½",
+          "Results": [
+            "=;4;B;4;0;0;0",
+            "-;5;W;2;0;0;0",
+            "=;6;B;5;0;0;0",
+            "=;10;B;1;0;0;0",
+            "+;8;W;5;0;0;0",
+            "-;9;B;2;0;0;0",
+            "=;1;W;4;0;0;0",
+            "=;2;B;3;0;0;0",
+            "=;3;W;3;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Sivakumar, Shaashwath",
+          "ID": "30912156",
+          "Rating": 2267,
+          "ID2": "15089302",
+          "Rating2": 2324,
+          "Club": "USA",
+          "Player title": "FM",
+          "Sex": "M",
+          "Birth date": "2004",
+          "Current result": "½",
+          "Results": [
+            "-;3;B;3;0;0;0",
+            "+;4;W;3;0;0;0",
+            "-;5;B;4;0;0;0",
+            "=;6;W;2;0;0;0",
+            "-;7;B;5;0;0;0",
+            "-;10;B;1;0;0;0",
+            "-;9;W;5;0;0;0",
+            "-;1;B;2;0;0;0",
+            "=;2;W;4;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "Tang, Zoey",
+          "ID": "30952530",
+          "Rating": 2325,
+          "ID2": "16097502",
+          "Rating2": 2366,
+          "Club": "USA",
+          "Player title": "FM",
+          "Sex": "F",
+          "Birth date": "2008",
+          "Current result": "½",
+          "Results": [
+            "-;2;B;2;0;0;0",
+            "=;3;W;4;0;0;0",
+            "+;4;B;3;0;0;0",
+            "=;5;W;3;0;0;0",
+            "=;6;B;4;0;0;0",
+            "+;7;W;2;0;0;0",
+            "+;8;B;5;0;0;0",
+            "=;10;B;1;0;0;0",
+            "=;1;W;5;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Yang, Ryan",
+          "ID": "2637375",
+          "Rating": 2350,
+          "ID2": "16160560",
+          "Rating2": 2259,
+          "Club": "CAN",
+          "Player title": "FM",
+          "Sex": "M",
+          "Birth date": "2009",
+          "Current result": "0",
+          "Results": [
+            "-;1;B;1;0;0;0",
+            "+;6;W;1;0;0;0",
+            "+;2;B;1;0;0;0",
+            "=;7;W;1;0;0;0",
+            "-;3;B;1;0;0;0",
+            "+;8;W;1;0;0;0",
+            "=;4;B;1;0;0;0",
+            "=;9;W;1;0;0;0",
+            "-;5;B;1;0;0;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    }
+  ]
+}

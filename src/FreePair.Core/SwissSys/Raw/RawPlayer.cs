@@ -51,6 +51,16 @@ public sealed class RawPlayer
     [JsonPropertyName("Note")]
     public string? Note { get; set; }
 
+    /// <summary>
+    /// Chess title (FIDE: GM/IM/FM/WGM/etc., USCF: NM/SM/LM, etc.).
+    /// SwissSys persists this in the player record as
+    /// <c>"Player title"</c>. We read it for display (the Pairings
+    /// tab prefixes the player name with this string) and the raw-
+    /// JSON pass-through writer preserves it untouched.
+    /// </summary>
+    [JsonPropertyName("Player title")]
+    public string? PlayerTitle { get; set; }
+
     [JsonPropertyName("Results")]
     public List<string> Results { get; set; } = new();
 

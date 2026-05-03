@@ -1,0 +1,183 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.79,
+    "VersionString": "11.79.3",
+    "Tournament title": "Vortex_CC_2026-03-22",
+    "Tournament time controls": "G/30; d5",
+    "Starting date": "2026-03-22",
+    "Ending date": "2026-03-22",
+    "NACH event ID": "0f86f7e7-d687-4a57-be79-4f760cb45f57",
+    "NACH passcode": "cfd3796e-67f8-4ad5-889e-93cc5fc8d6e4",
+    "ChessRoster auto sync enabled": true,
+    "ChessRoster sync interval minutes": 30,
+    "Trace": "1.3.7.1.1.1.3.7.1.1."
+  },
+  "Sections": [
+    {
+      "Section name": "Playing",
+      "Type": 0,
+      "Section title": "Playing",
+      "Section time control": "G/30; d5",
+      "Number of players": 8,
+      "Number of teams": 0,
+      "Rounds paired": 6,
+      "Rounds played": 6,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 5,
+      "Need search options": false,
+      "Final round": 6,
+      "Coin toss": 1,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 5,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Schenk, Patric",
+          "ID": "16085782",
+          "Rating": 1927,
+          "Club": "MA",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;5;W;1;5;5;0",
+            "+;4;B;1;3;3;0",
+            "+;3;W;1;3;3;0",
+            "+;2;B;1;2;2;0",
+            "+;8;W;1;3;8;0",
+            "+;6;B;1;2;6;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Barros, Samuel",
+          "ID": "30671662",
+          "Rating": 1825,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "+;6;B;2;6;6;0",
+            "-;3;W;2;4;4;0",
+            "+;5;B;2;5;5;0",
+            "-;1;W;1;1;1;0",
+            "+;7;B;4;4;4;0",
+            "+;4;W;2;1;4;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Hori, Calvin",
+          "ID": "12864842",
+          "Rating": 1724,
+          "Club": "MA",
+          "Reserved byes": "6z ",
+          "Current result": "0",
+          "Results": [
+            "+;7;W;3;7;7;0",
+            "+;2;B;2;1;1;0",
+            "-;1;B;1;1;1;0",
+            "+;4;W;2;4;4;0",
+            "=;6;B;2;1;5;0",
+            "U;0;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Kaprielian, Mark",
+          "ID": "10007763",
+          "Rating": 1700,
+          "Club": "MA",
+          "Current result": "0",
+          "Results": [
+            "+;8;B;4;8;8;0",
+            "-;1;W;1;2;2;0",
+            "+;6;B;3;6;6;0",
+            "-;3;B;2;3;3;0",
+            "+;5;W;3;2;2;0",
+            "-;2;B;2;5;2;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Chornoboy, Edward S.",
+          "ID": "12520269",
+          "Rating": 1500,
+          "Club": "MA",
+          "Current result": "1",
+          "Results": [
+            "-;1;B;1;1;1;0",
+            "+;8;W;3;7;7;0",
+            "-;2;W;2;2;2;0",
+            "=;7;B;3;6;7;0",
+            "-;4;B;3;8;3;0",
+            "+;8;W;3;4;8;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "Fallon, James Joseph",
+          "ID": "32006413",
+          "Rating": 1413,
+          "Club": "MA",
+          "Current result": "0",
+          "Results": [
+            "-;2;W;2;2;2;0",
+            "+;7;B;4;8;8;0",
+            "-;4;W;3;4;4;0",
+            "-;8;B;4;5;8;0",
+            "=;3;W;2;7;7;0",
+            "-;1;W;1;8;1;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Weast, Gordon J",
+          "ID": "13711281",
+          "Rating": 1300,
+          "Club": "MA",
+          "Reserved byes": "6z ",
+          "Current result": "0",
+          "Results": [
+            "-;3;B;3;3;3;0",
+            "-;6;W;4;5;5;0",
+            "=;8;B;4;8;8;0",
+            "=;5;W;3;8;5;0",
+            "-;2;W;4;6;6;0",
+            "U;0;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Senne, Steven R",
+          "ID": "32072558",
+          "Rating": 1105,
+          "Club": "MA",
+          "Current result": "0",
+          "Results": [
+            "-;4;W;4;4;4;0",
+            "-;5;B;3;6;6;0",
+            "=;7;W;4;7;7;0",
+            "+;6;W;4;7;6;0",
+            "-;1;B;1;5;1;0",
+            "-;5;B;3;6;5;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    }
+  ]
+}

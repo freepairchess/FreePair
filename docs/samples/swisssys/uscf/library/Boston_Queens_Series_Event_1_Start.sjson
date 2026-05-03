@@ -1,0 +1,90 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.34,
+    "Tournament title": "Boston Queens Series Event 1 Start",
+    "Tournament time controls": "10+5'",
+    "Starting date": "2025-09-14",
+    "Ending date": "2025-09-14",
+    "NACH event ID": "4684b243-180e-4600-b648-8d6532be2b71",
+    "NACH passcode": "a1ed96c8-12df-4fd1-b121-dcefdf5e755b",
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Section title": "Open",
+      "Section time control": "10+5'",
+      "Number of players": 6,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 6,
+      "Lower rating limit": 0,
+      "Upper rating limit": 0,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Odnorozhenko, Kateryna",
+          "ID": "30200342",
+          "Rating": 2100,
+          "Club": "MA",
+          "Player title": "WIM"
+        },
+        {
+          "Pair number": 2,
+          "Name": "Nguyen, Christine",
+          "ID": "16634247",
+          "Rating": 1938,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Christiansen, Natasha C",
+          "ID": "11366805",
+          "Rating": 1822,
+          "Club": "MA",
+          "Player title": "WCM"
+        },
+        {
+          "Pair number": 4,
+          "Name": "Argetsinger, Sophie Adeodata",
+          "ID": "12741178",
+          "Rating": 1662,
+          "Club": "MA",
+          "Player title": "",
+          "Reserved byes": "5 6 "
+        },
+        {
+          "Pair number": 5,
+          "Name": "Smits, Kaiya Bridgit Ng",
+          "ID": "16486827",
+          "Rating": 1484,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Balaggan, Nishita",
+          "ID": "32538761",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    }
+  ]
+}

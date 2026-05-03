@@ -1,0 +1,374 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.34,
+    "Tournament title": "Chess A2Z Inaugural Puzzle Competition",
+    "Tournament time controls": "30",
+    "Starting date": "2026-02-21",
+    "Ending date": "2026-02-21",
+    "NACH event ID": "1a75d93e-b5f0-4394-b9bb-e9b35aaa0e88",
+    "NACH passcode": "f4d1e20c-a412-4212-8df7-8d5df944fb39",
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Section title": "Open",
+      "Number of players": 42,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 0,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Maokhampio, Lucas",
+          "ID": "31368597",
+          "Rating": 1972,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Pedram, Mehrdad",
+          "ID": "12536681",
+          "Rating": 1900,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Barish, Elijah",
+          "ID": "30681390",
+          "Rating": 1711,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Li, Bohan Jaden",
+          "ID": "30458814",
+          "Rating": 1588,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Zhao, Raymond",
+          "ID": "31956702",
+          "Rating": 1559,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Rahul, Rihaan",
+          "ID": "31619668",
+          "Rating": 1532,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Liu, Merrick",
+          "ID": "31956683",
+          "Rating": 1530,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Shukla, Weg",
+          "ID": "30853222",
+          "Rating": 1523,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Saripalli, Prahlada",
+          "ID": "30709775",
+          "Rating": 1518,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Arun, Axl",
+          "ID": "31884150",
+          "Rating": 1493,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Tare, Eevie",
+          "ID": "31610593",
+          "Rating": 1383,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Maokhampio, Olivia",
+          "ID": "31368540",
+          "Rating": 1335,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Balasubramanian, Pranav",
+          "ID": "31685074",
+          "Rating": 1213,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Le, Alicia",
+          "ID": "31184129",
+          "Rating": 1184,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Laughlin-Koch, Beowulf",
+          "ID": "30536547",
+          "Rating": 1140,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Ranjit, Nimay",
+          "ID": "30292365",
+          "Rating": 1133,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Aravind, Eshan",
+          "ID": "30389746",
+          "Rating": 1124,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Xie, Vincent",
+          "ID": "31210338",
+          "Rating": 1107,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 19,
+          "Name": "Balasubramanian, Prakrithi",
+          "ID": "31649217",
+          "Rating": 1098,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 20,
+          "Name": "Rahul, Vihaan",
+          "ID": "32163892",
+          "Rating": 1067,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 21,
+          "Name": "Chen, Stephen",
+          "ID": "31444699",
+          "Rating": 991,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 22,
+          "Name": "Khanolkar, Aabha Aditya",
+          "ID": "31380748",
+          "Rating": 963,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 23,
+          "Name": "Pham, Liam",
+          "ID": "32131141",
+          "Rating": 923,
+          "Club": "WA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 24,
+          "Name": "Hao, Tristan",
+          "ID": "31871866",
+          "Rating": 898,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 25,
+          "Name": "Maokhampio, Corina",
+          "ID": "31368613",
+          "Rating": 808,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 26,
+          "Name": "Thompson, Benjamin",
+          "ID": "32379030",
+          "Rating": 773,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 27,
+          "Name": "Okamoto, Miles",
+          "ID": "30923516",
+          "Rating": 761,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 28,
+          "Name": "Tare, Reya",
+          "ID": "31993103",
+          "Rating": 755,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 29,
+          "Name": "Nguyen, Logan",
+          "ID": "31184057",
+          "Rating": 742,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 30,
+          "Name": "Quach, Maily",
+          "ID": "31697259",
+          "Rating": 729,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 31,
+          "Name": "Nguyen, Sophia",
+          "ID": "31784908",
+          "Rating": 695,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 32,
+          "Name": "Cattone, Jocelyn",
+          "ID": "30460759",
+          "Rating": 683,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 33,
+          "Name": "Edwards, Colton",
+          "ID": "32111303",
+          "Rating": 673,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 34,
+          "Name": "Aravind, Akshaj",
+          "ID": "31162605",
+          "Rating": 665,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 35,
+          "Name": "Farris, Oliad",
+          "ID": "32463105",
+          "Rating": 629,
+          "Club": "WA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 36,
+          "Name": "Shah, Saanvi",
+          "ID": "30330469",
+          "Rating": 614,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 37,
+          "Name": "Saha, Nora",
+          "ID": "32198222",
+          "Rating": 587,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 38,
+          "Name": "Zalavadiya, Riya",
+          "ID": "32063892",
+          "Rating": 502,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 39,
+          "Name": "Shah, Saaz",
+          "ID": "31821489",
+          "Rating": 411,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 40,
+          "Name": "Thompson, Roger",
+          "ID": "32345310",
+          "Rating": 337,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 41,
+          "Name": "Roser, Ada",
+          "ID": "31341837",
+          "Rating": 330,
+          "Club": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 42,
+          "Name": "Chappell, Robert Isaac",
+          "ID": "32365114",
+          "Rating": 0,
+          "Club": "OR",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    }
+  ]
+}

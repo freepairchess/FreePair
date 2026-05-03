@@ -1,0 +1,1298 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.34,
+    "Tournament title": "Fall Scholastic Individual-Team Chess Championship. NEW Format! Teams are welcome!",
+    "Tournament time controls": "G/30; d5",
+    "Starting date": "2025-11-09",
+    "Ending date": "2025-11-09",
+    "NACH event ID": "337f6bf1-2711-4c8a-aa91-77305e3c2623",
+    "NACH passcode": "89af9b87-9ec2-4523-a7f8-f65b5b853181",
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Section title": "Open",
+      "Section time control": "G/30; d5",
+      "Number of players": 28,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Shryoc, James Gavin",
+          "ID": "31284405",
+          "Rating": 1778,
+          "Club": "FL",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Singh, Karanbir",
+          "ID": "31286868",
+          "Rating": 1654,
+          "Club": "MA",
+          "Team": "Acton Checkers",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Rastogi, Viraj",
+          "ID": "30038645",
+          "Rating": 1591,
+          "Club": "MA",
+          "Team": "Keep the Change",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Devineni, Sriman",
+          "ID": "16732714",
+          "Rating": 1501,
+          "Club": "MA",
+          "Team": "Keep The Change",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Smits, Kaiya Bridgit Ng",
+          "ID": "16486827",
+          "Rating": 1492,
+          "Club": "MA",
+          "Team": "Funky Owls Chess",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Mishuris, Jacob",
+          "ID": "30932623",
+          "Rating": 1420,
+          "Club": "MA",
+          "Team": "Mighty Chess Chickens",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Faisal, Azim",
+          "ID": "30677634",
+          "Rating": 1413,
+          "Club": "MA",
+          "Team": "Keep the Change",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Zhou, Jayden",
+          "ID": "30461297",
+          "Rating": 1396,
+          "Club": "MA",
+          "Team": "The Fenn School",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Zuckerberg, Athena",
+          "ID": "30554794",
+          "Rating": 1383,
+          "Club": "MA",
+          "Team": "Acton Checkers",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Hasti, Moksha Varma",
+          "ID": "17146415",
+          "Rating": 1330,
+          "Club": "MA",
+          "Team": "Acton Checkers",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Patrick, Kieran",
+          "ID": "30342154",
+          "Rating": 1323,
+          "Club": "MA",
+          "Team": "Mighty Chess Chickens",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Sarantis, Dimitri Lombardo",
+          "ID": "30524148",
+          "Rating": 1303,
+          "Club": "NH",
+          "Team": "CEK Kings",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Wang, Aaron",
+          "ID": "31011711",
+          "Rating": 1283,
+          "Club": "MA",
+          "Team": "Funky Owls Chess",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Wainger, Asher",
+          "ID": "31520041",
+          "Rating": 1278,
+          "Club": "MA",
+          "Team": "Bulldogs",
+          "Player title": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Chung, Alexander Rapoport",
+          "ID": "31573708",
+          "Rating": 1236,
+          "Club": "MA",
+          "Team": "CEK Kings",
+          "Player title": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Chakraborty, Sanav Chandra",
+          "ID": "30818027",
+          "Rating": 1186,
+          "Club": "MA",
+          "Team": "Unexpected",
+          "Player title": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Rastogi, Yashmit",
+          "ID": "31346886",
+          "Rating": 1118,
+          "Club": "MA",
+          "Team": "Keep the Change",
+          "Player title": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Alexander, Phoebe",
+          "ID": "32348726",
+          "Rating": 1105,
+          "Club": "ME",
+          "Player title": ""
+        },
+        {
+          "Pair number": 19,
+          "Name": "Chaudhary , Saksham",
+          "ID": "31580612",
+          "Rating": 1080,
+          "Club": "MA",
+          "Team": "Acton Checkers",
+          "Player title": ""
+        },
+        {
+          "Pair number": 20,
+          "Name": "Sardana, Krish",
+          "ID": "31405719",
+          "Rating": 1059,
+          "Club": "MA",
+          "Team": "Mighty Chess Chickens",
+          "Player title": ""
+        },
+        {
+          "Pair number": 21,
+          "Name": "Subramanian, Ishaan",
+          "ID": "31290043",
+          "Rating": 1010,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 22,
+          "Name": "Sun, George",
+          "ID": "30551290",
+          "Rating": 995,
+          "Club": "TX",
+          "Team": "Fessenden ",
+          "Player title": ""
+        },
+        {
+          "Pair number": 23,
+          "Name": "Li, Gaochunxi",
+          "ID": "31369771",
+          "Rating": 985,
+          "Club": "MA",
+          "Team": "Mighty Chess Chickens",
+          "Player title": ""
+        },
+        {
+          "Pair number": 24,
+          "Name": "Alexander, Marin",
+          "ID": "32348719",
+          "Rating": 957,
+          "Club": "ME",
+          "Player title": ""
+        },
+        {
+          "Pair number": 25,
+          "Name": "Do, Hao Thien",
+          "ID": "31830459",
+          "Rating": 932,
+          "Club": "ME",
+          "Team": "Worcester Academy",
+          "Player title": ""
+        },
+        {
+          "Pair number": 26,
+          "Name": "Gafford, Aiden",
+          "ID": "32102134",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "Worcester Academy",
+          "Player title": ""
+        },
+        {
+          "Pair number": 27,
+          "Name": "Luo, Harry",
+          "ID": "32277282",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "Worcester Academy",
+          "Player title": ""
+        },
+        {
+          "Pair number": 28,
+          "Name": "Zhang, Timothy",
+          "ID": "32275940",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "Worcester Academy",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Under_1200",
+      "Type": 0,
+      "Section title": "Under 1200",
+      "Section time control": "G/30; d5",
+      "Number of players": 11,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 1199,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Dimmick, Dylan",
+          "ID": "30617237",
+          "Rating": 1144,
+          "Club": "MA",
+          "Team": "Funky Owls Chess",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Shah, Vedant",
+          "ID": "16911012",
+          "Rating": 1061,
+          "Club": "MA",
+          "Team": "Funky Owls Chess",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Palaparthi, Aaryash",
+          "ID": "31784635",
+          "Rating": 1048,
+          "Club": "MA",
+          "Team": "Acton Checkers",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Yountz, Luke",
+          "ID": "31296607",
+          "Rating": 1048,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Zheng, Daniel",
+          "ID": "31701440",
+          "Rating": 1009,
+          "Club": "MA",
+          "Team": "Funky Owls Chess",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Menon, Arjun",
+          "ID": "30185823",
+          "Rating": 1003,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Gao, Aiden",
+          "ID": "30986373",
+          "Rating": 811,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Srinivasan, Ashwath",
+          "ID": "30347185",
+          "Rating": 779,
+          "Club": "MA",
+          "Team": "CEK Kings",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Mekalampatta, Adharv",
+          "ID": "32386723",
+          "Rating": 745,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Mariottini, Francesco",
+          "ID": "31464987",
+          "Rating": 735,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Hu, Sherwin",
+          "ID": "32639905",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Under_900",
+      "Type": 0,
+      "Section title": "Under 900",
+      "Section time control": "G/30; d5",
+      "Number of players": 25,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 899,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Perlin, Boris",
+          "ID": "30993277",
+          "Rating": 874,
+          "Club": "MA",
+          "Team": "Unexpected",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Arolovitch, Esther",
+          "ID": "31092276",
+          "Rating": 848,
+          "Club": "MA",
+          "Team": "Unexpected",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Gounder, Harsha K",
+          "ID": "16437367",
+          "Rating": 835,
+          "Club": "NH",
+          "Team": "CEK Kings",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Hemaratne, Avin",
+          "ID": "30295092",
+          "Rating": 816,
+          "Club": "MA",
+          "Team": "Funky Owls Chess",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Patel, Vihaan",
+          "ID": "30295114",
+          "Rating": 816,
+          "Club": "MA",
+          "Team": "Funky Owls Chess",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Vasanth, Varun",
+          "ID": "17128377",
+          "Rating": 800,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Kosaraju, Nirav",
+          "ID": "31972433",
+          "Rating": 765,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Ciccarone, Alexander",
+          "ID": "31002603",
+          "Rating": 753,
+          "Club": "MA",
+          "Team": "BananaMan",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Wang, Aaron Yang",
+          "ID": "31265234",
+          "Rating": 737,
+          "Club": "MA",
+          "Team": "Funky Owls Chess",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Deych, Adrian",
+          "ID": "30995408",
+          "Rating": 731,
+          "Club": "MA",
+          "Team": "Needham Middle School",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Anzivino, Brady Xu",
+          "ID": "32084097",
+          "Rating": 726,
+          "Club": "MA",
+          "Team": "Fessenden",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Leppert, Emmett",
+          "ID": "31668590",
+          "Rating": 701,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Cosman, Bjorn",
+          "ID": "32337312",
+          "Rating": 700,
+          "Club": "MA",
+          "Team": "The Fenn School",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Sherman, Xander",
+          "ID": "31713013",
+          "Rating": 697,
+          "Club": "MA",
+          "Team": "Broadmeadow",
+          "Player title": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Zhu, Owen",
+          "ID": "32241303",
+          "Rating": 686,
+          "Club": "MA",
+          "Team": "Mitchell",
+          "Player title": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Eng, Oliver",
+          "ID": "30603335",
+          "Rating": 686,
+          "Club": "MA",
+          "Team": "Mitchell",
+          "Player title": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Porte, Sebastien Georges",
+          "ID": "31807473",
+          "Rating": 672,
+          "Club": "MA",
+          "Team": "Fessenden",
+          "Player title": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Sriram, Yazhini",
+          "ID": "31175009",
+          "Rating": 664,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 19,
+          "Name": "Regnier, Leo",
+          "ID": "31004961",
+          "Rating": 655,
+          "Club": "MA",
+          "Team": "BananaMan",
+          "Player title": ""
+        },
+        {
+          "Pair number": 20,
+          "Name": "Kalashnikov, Roman",
+          "ID": "32391619",
+          "Rating": 654,
+          "Club": "MA",
+          "Team": "Unexpected",
+          "Player title": ""
+        },
+        {
+          "Pair number": 21,
+          "Name": "Sargent, Hovhannes Kimball",
+          "ID": "30979462",
+          "Rating": 640,
+          "Club": "MA",
+          "Team": "Unexpected",
+          "Player title": ""
+        },
+        {
+          "Pair number": 22,
+          "Name": "Eng, Wesley",
+          "ID": "31090985",
+          "Rating": 621,
+          "Club": "MA",
+          "Team": "Mitchell ",
+          "Player title": ""
+        },
+        {
+          "Pair number": 23,
+          "Name": "Gracie, Donald, Jr",
+          "ID": "32279517",
+          "Rating": 613,
+          "Club": "MA",
+          "Team": "Funky Owls Chess",
+          "Player title": ""
+        },
+        {
+          "Pair number": 24,
+          "Name": "Wu, Rendi",
+          "ID": "32116702",
+          "Rating": 576,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 25,
+          "Name": "Guo, Leonard",
+          "ID": "31491564",
+          "Rating": 563,
+          "Club": "MA",
+          "Team": "BananaMan",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Under_600",
+      "Type": 0,
+      "Section title": "Under 600",
+      "Section time control": "G/30; d5",
+      "Number of players": 28,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 599,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Chaudhary, Ruhaan",
+          "ID": "31722363",
+          "Rating": 572,
+          "Club": "MA",
+          "Team": "Acton Checkers",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Kumar, Aaryash",
+          "ID": "30489975",
+          "Rating": 565,
+          "Club": "MA",
+          "Team": "The Fenn School",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Sun, Derek",
+          "ID": "31781880",
+          "Rating": 519,
+          "Club": "MA",
+          "Team": "Unexpected",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Nathenson Steier, Morrice",
+          "ID": "30807525",
+          "Rating": 513,
+          "Club": "MA",
+          "Team": "Unexpected",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Carbone, Julian",
+          "ID": "32135522",
+          "Rating": 510,
+          "Club": "MA",
+          "Team": "CEK Knights",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Tan, Tingting",
+          "ID": "31266745",
+          "Rating": 510,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Herschbergstiles, Jeffrey",
+          "ID": "31015869",
+          "Rating": 485,
+          "Club": "MA",
+          "Team": "Needham Middle School",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Boppana, Nitheesh",
+          "ID": "32225261",
+          "Rating": 482,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Ly, Ella",
+          "ID": "31909471",
+          "Rating": 479,
+          "Club": "MA",
+          "Team": "Broadmeadow",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Dunn, Pierce",
+          "ID": "31461188",
+          "Rating": 474,
+          "Club": "MA",
+          "Team": "CEK Bishops",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Kumar, Adhvik Senthil",
+          "ID": "31433460",
+          "Rating": 473,
+          "Club": "MA",
+          "Team": "Team Sai",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Doshi, Milin",
+          "ID": "32450532",
+          "Rating": 466,
+          "Club": "MA",
+          "Team": "Needham Middle School",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Pishuk, Kyryll",
+          "ID": "30996030",
+          "Rating": 423,
+          "Club": "MA",
+          "Team": "BananaMan",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Ma, Kathy Lexin",
+          "ID": "31671707",
+          "Rating": 401,
+          "Club": "MA",
+          "Team": "Mighty Chess Chickens",
+          "Player title": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Bernstein, Oscar",
+          "ID": "30992338",
+          "Rating": 388,
+          "Club": "MA",
+          "Team": "BananaMan",
+          "Player title": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Desilets, Ian",
+          "ID": "32138815",
+          "Rating": 386,
+          "Club": "MA",
+          "Team": "CEK Knights",
+          "Player title": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Thirukkonda, Danvir",
+          "ID": "32324960",
+          "Rating": 382,
+          "Club": "MA",
+          "Team": "Individual Player",
+          "Player title": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Hemberg Mierau, Benji",
+          "ID": "32259058",
+          "Rating": 363,
+          "Club": "MA",
+          "Team": "Beginners to Winners",
+          "Player title": ""
+        },
+        {
+          "Pair number": 19,
+          "Name": "Kalashnikov, Tima",
+          "ID": "32291741",
+          "Rating": 318,
+          "Club": "MA",
+          "Team": "Needham Middle School",
+          "Player title": ""
+        },
+        {
+          "Pair number": 20,
+          "Name": "Gutner, Mark",
+          "ID": "31002808",
+          "Rating": 312,
+          "Club": "MA",
+          "Team": "BananaMan",
+          "Player title": ""
+        },
+        {
+          "Pair number": 21,
+          "Name": "Bourque, Henry George",
+          "ID": "31713722",
+          "Rating": 312,
+          "Club": "MA",
+          "Team": "Mitchell",
+          "Player title": ""
+        },
+        {
+          "Pair number": 22,
+          "Name": "Bonthapally, Nirvaan",
+          "ID": "32259585",
+          "Rating": 312,
+          "Club": "MA",
+          "Team": "Pawn Steelers",
+          "Player title": ""
+        },
+        {
+          "Pair number": 23,
+          "Name": "Carroll, Brennan",
+          "ID": "32557824",
+          "Rating": 309,
+          "Club": "MA",
+          "Team": "Funky Owls Chess",
+          "Player title": ""
+        },
+        {
+          "Pair number": 24,
+          "Name": "Kota, Vihaan",
+          "ID": "32282656",
+          "Rating": 271,
+          "Club": "MA",
+          "Team": "CHESS HEROES",
+          "Player title": ""
+        },
+        {
+          "Pair number": 25,
+          "Name": "Sullivan, Shea Benjamin",
+          "ID": "32286212",
+          "Rating": 209,
+          "Club": "MA",
+          "Team": "CodeWiz - Reading",
+          "Player title": ""
+        },
+        {
+          "Pair number": 26,
+          "Name": "Chaudhary, Samarth",
+          "ID": "32267961",
+          "Rating": 146,
+          "Club": "MA",
+          "Team": "Acton Checkers",
+          "Player title": ""
+        },
+        {
+          "Pair number": 27,
+          "Name": "Ripley, Mason Carter",
+          "ID": "32659211",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 28,
+          "Name": "Mitra, Aarnik",
+          "ID": "32643336",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "Team Sai",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Under_300_not_first_USCF_tournament",
+      "Type": 0,
+      "Section title": "Under 300, not first USCF tournament",
+      "Section time control": "G/30; d5",
+      "Number of players": 20,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 299,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Bogdanov, Kyrill",
+          "ID": "32264966",
+          "Rating": 293,
+          "Club": "MA",
+          "Team": "Pawn Steelers",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Harikrishnan, Vivaan",
+          "ID": "31885116",
+          "Rating": 248,
+          "Club": "NH",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Glina, Lawrence",
+          "ID": "32270856",
+          "Rating": 228,
+          "Club": "MA",
+          "Team": "Beginners to Winners",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Boothpur, Akshaj",
+          "ID": "32485540",
+          "Rating": 222,
+          "Club": "MA",
+          "Team": "Team Sai",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Bulychev, Anna",
+          "ID": "31899594",
+          "Rating": 211,
+          "Club": "MA",
+          "Team": "Pawn Steelers",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Lam, George William",
+          "ID": "32263599",
+          "Rating": 188,
+          "Club": "MA",
+          "Team": "Beginners to Winners",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Park, Greyson Miles Hyun",
+          "ID": "32280245",
+          "Rating": 177,
+          "Club": "MA",
+          "Team": "Funky Owls Chess",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Hemberg Mierau, Miriam",
+          "ID": "32259087",
+          "Rating": 160,
+          "Club": "MA",
+          "Team": "Beginners to Winners",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Yambayev, Eric",
+          "ID": "32402800",
+          "Rating": 154,
+          "Club": "MA",
+          "Team": "Beginners to Winners",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Brown, Ani Nalbandian",
+          "ID": "32135372",
+          "Rating": 154,
+          "Club": "MA",
+          "Team": "CEK Bishops",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Piatkov, Daniel",
+          "ID": "31463433",
+          "Rating": 119,
+          "Club": "MA",
+          "Team": "Broadmeadow",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Dunn, Joseph",
+          "ID": "32148051",
+          "Rating": 112,
+          "Club": "MA",
+          "Team": "Pawn Steelers",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Yambayev, Marc",
+          "ID": "32402873",
+          "Rating": 106,
+          "Club": "MA",
+          "Team": "Beginners to Winners",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Carroll, Declan",
+          "ID": "32557830",
+          "Rating": 105,
+          "Club": "MA",
+          "Team": "Funky Owls Chess",
+          "Player title": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Choudhury, Riyaan",
+          "ID": "31613793",
+          "Rating": 105,
+          "Club": "MA",
+          "Team": "Mighty Chess Chickens",
+          "Player title": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Singh, Vikram",
+          "ID": "32646422",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Jain, Tejas",
+          "ID": "32589445",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Kumar, Viraaj",
+          "ID": "32635442",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "Team Sai",
+          "Player title": ""
+        },
+        {
+          "Pair number": 19,
+          "Name": "Karthikeyan, Aarav",
+          "ID": "32649303",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "Team Sai ",
+          "Player title": ""
+        },
+        {
+          "Pair number": 20,
+          "Name": "Seegert, Leopold",
+          "ID": "32648263",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "Broadmeadow",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Under_300_first_USCF_tournament",
+      "Type": 0,
+      "Section title": "Under 300, first USCF tournament",
+      "Section time control": "G/30; d5",
+      "Number of players": 16,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 0,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Litthi, Clark",
+          "ID": "32662847",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "Bulldogs",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Banet, Daniel",
+          "ID": "32653974",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "CEK Bishops",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Dunn, Felix",
+          "ID": "32647261",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "CEK Bishops",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Potamis, Olivia",
+          "ID": "32663327",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "CEK Knights",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Lupyan, Mila",
+          "ID": "32667736",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": "",
+          "Reserved byes": "1z 2z 3z 4z "
+        },
+        {
+          "Pair number": 6,
+          "Name": "Crawford, Jason",
+          "ID": "32652616",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "CEK Bishops",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Bernstein, Benjamin J",
+          "ID": "32661506",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "Bulldogs",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Levy, Ellery",
+          "ID": "32662652",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "Mitchell",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Foster, Malcolm",
+          "ID": "32660360",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "CEK Knights",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Anzivino, Cameron Yang",
+          "ID": "32620284",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "Fessenden",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Litthi, Oliver",
+          "ID": "32662876",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "Bulldogs",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Thanigaivel, Naraen",
+          "ID": "32667868",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Steier, Fredrik Nathenson",
+          "ID": "32664599",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "Beginners to Winners",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Seliger-Schamberg, Jonah",
+          "ID": "32663388",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "The Fenn School",
+          "Player title": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Bijoy, Aadvik",
+          "ID": "32651879",
+          "Rating": 0,
+          "Club": "MA",
+          "Team": "Chess Heroes",
+          "Player title": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Bilesimo-Koren, Jonathan",
+          "ID": "32649535",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    }
+  ]
+}

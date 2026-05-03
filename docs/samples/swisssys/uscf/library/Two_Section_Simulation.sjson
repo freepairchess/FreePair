@@ -1,0 +1,57 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.34,
+    "Tournament title": "Two Section Simulation",
+    "Tournament time controls": "G/90; d5",
+    "Starting date": "2025-02-07",
+    "Ending date": "2025-02-28",
+    "NACH event ID": "750ca57f-68d0-4338-ade6-d1507bcfa022",
+    "NACH passcode": "f1f86794-7a58-4690-8c2a-580615741379",
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Section title": "Open",
+      "Section time control": "G/90; d5",
+      "Number of players": 2,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 9999,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Reynolds, Douglas Sheldon",
+          "ID": "12427040",
+          "Rating": 1830,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Kaprielian, Mark",
+          "ID": "10007763",
+          "Rating": 1722,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    }
+  ]
+}

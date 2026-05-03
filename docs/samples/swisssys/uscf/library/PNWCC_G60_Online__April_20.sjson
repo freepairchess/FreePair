@@ -1,0 +1,219 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.34,
+    "Tournament title": "🚀 PNWCC G60 Online - April 20",
+    "Tournament time controls": "G/60;+5",
+    "Starting date": "2024-04-20",
+    "Ending date": "2024-04-20",
+    "NACH event ID": "a7b6ebea-c434-4669-a160-4b40c229705a",
+    "NACH passcode": "1501dbdb-388d-45c8-86bb-13788e5a44d9",
+    "Trace": "0.0.0.0.0.0.0.0.0.0.",
+    "Organizer ID": "A6051987",
+    "Organizer ID Type": "USCFAffiliateID",
+    "Organizer Name": "Pacific Northwest Chess Center",
+    "Starting date time": "2024-04-20T08:30:00",
+    "Ending date time": "2024-04-20T19:00:00",
+    "Time zone": "Pacific Standard Time",
+    "Event address": "Chess.com",
+    "Event city": "Online",
+    "Event state": "WA",
+    "Event zip code": "98034",
+    "Event country": "USA",
+    "Event format": "OTB",
+    "Event type": "Open",
+    "Pairing rule": "Swiss",
+    "Rounds": 4,
+    "Half point byes": 1,
+    "Time control type": "Classical",
+    "Rating type": "CHESSCOM"
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Section title": "Open",
+      "Section time control": "G/60;+5",
+      "Number of players": 13,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 2900,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Delchev [GMAlex1971], Aleksander",
+          "ID": "30215991",
+          "Rating": 2519,
+          "Club": "SRB",
+          "State": "",
+          "Player title": "GM",
+          "Email": "aleksandar.delchev@gmail.com",
+          "Phone": "359877657701"
+        },
+        {
+          "Pair number": 2,
+          "Name": "Estrada Nieto [dosto07], Julian",
+          "ID": "12489784",
+          "Rating": 2253,
+          "Club": "MEX",
+          "State": "",
+          "Player title": "IM",
+          "Email": "julianestrada@hotmail.com",
+          "Phone": "7772673218"
+        },
+        {
+          "Pair number": 3,
+          "Name": "Maksimovic [branimir1955], Branimir",
+          "ID": "30279002",
+          "Rating": 2247,
+          "Club": "SRB",
+          "State": "",
+          "Player title": "",
+          "Email": "aleksandar.delchev@gmail.com",
+          "Phone": "00359877657701"
+        },
+        {
+          "Pair number": 4,
+          "Name": "Kona [vidipkona], Vidip Kumar",
+          "ID": "16948874",
+          "Rating": 2208,
+          "Club": "USA",
+          "State": "WA",
+          "Player title": "",
+          "Email": "dilipkumarkona@gmail.com",
+          "Phone": "4254358853"
+        },
+        {
+          "Pair number": 5,
+          "Name": "Liu [ailopatricaliy], Austin",
+          "ID": "16679915",
+          "Rating": 2171,
+          "Club": "USA",
+          "State": "WA",
+          "Player title": "",
+          "Email": "liudalong0200@gmail.com",
+          "Phone": "4254452768"
+        },
+        {
+          "Pair number": 6,
+          "Name": "Karthikeyan [OrangeKing2504], Harishkumar",
+          "ID": "16934805",
+          "Rating": 2164,
+          "Club": "USA",
+          "State": "WA",
+          "Player title": "",
+          "Email": "katrik_s@hotmail.com",
+          "Phone": "4254443522"
+        },
+        {
+          "Pair number": 7,
+          "Name": "Huang [Happypanda20], George",
+          "ID": "17068417",
+          "Rating": 2029,
+          "Club": "USA",
+          "State": "CA",
+          "Player title": "",
+          "Email": "happyhonghong80@gmail.com",
+          "Phone": "6264614828"
+        },
+        {
+          "Pair number": 8,
+          "Name": "Lin [knightseu], Michael",
+          "ID": "17281737",
+          "Rating": 1990,
+          "Club": "USA",
+          "State": "WA",
+          "Player title": "",
+          "Email": "sean.xuanlin@gmail.com",
+          "Phone": "2069108652"
+        },
+        {
+          "Pair number": 9,
+          "Name": "Zhang [xiguadog], Ellery",
+          "ID": "30167442",
+          "Rating": 1948,
+          "Club": "USA",
+          "State": "TX",
+          "Player title": "",
+          "Email": "qingzhangwhu@gmail.com",
+          "Phone": "6178772591"
+        },
+        {
+          "Pair number": 10,
+          "Name": "Zhang [Liepardli], Kylie",
+          "ID": "16733661",
+          "Rating": 1888,
+          "Club": "USA",
+          "State": "WA",
+          "Player title": "WCM",
+          "Reserved byes": "3 4z ",
+          "Email": "zyhkylie@yahoo.com",
+          "Phone": "4252462620"
+        },
+        {
+          "Pair number": 11,
+          "Name": "Zhang [AmazingSteamBun], Brian",
+          "ID": "30085042",
+          "Rating": 1888,
+          "Club": "CAN",
+          "State": "",
+          "Player title": "",
+          "Email": "michael.zhang@smu.ca",
+          "Phone": "9024416887"
+        },
+        {
+          "Pair number": 12,
+          "Name": "Shi [tedshi], Ted",
+          "ID": "16223760",
+          "Rating": 1834,
+          "Club": "USA",
+          "State": "WA",
+          "Player title": "",
+          "Email": "tedshi3@gmail.com",
+          "Phone": "4258028602"
+        },
+        {
+          "Pair number": 13,
+          "Name": "Zhang [FluffyRedPandaChess], Michelle",
+          "ID": "30085051",
+          "Rating": 1817,
+          "Club": "CAN",
+          "State": "",
+          "Player title": "WFM",
+          "Email": "lisa_z_ca@yahoo.ca",
+          "Phone": "9024416887"
+        }
+      ],
+      "Teams": [],
+      "Prizes": {
+        "Place prizes": [
+          {
+            "Value": 100,
+            "Description": ""
+          },
+          {
+            "Value": 70,
+            "Description": ""
+          },
+          {
+            "Value": 30,
+            "Description": ""
+          }
+        ]
+      }
+    }
+  ]
+}

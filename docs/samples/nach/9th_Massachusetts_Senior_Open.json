@@ -1,0 +1,2953 @@
+{
+  "NACHEventID": 14403,
+  "NACHEventPasscode": "DUQVNWSP",
+  "tournament": "9th Massachusetts Senior Open",
+  "date": "2026/4/25",
+  "city": "Ashland",
+  "state": "MA",
+  "country": "USA",
+  "td": "Scheriff",
+  "bye_message": "BYE",
+  "sections": [
+    {
+      "section": "Open",
+      "rounds_paired": 4,
+      "rounds_played": 4,
+      "time_stamp": "4/27/2026 - 9:13",
+      "standings": [
+        1,
+        4,
+        5,
+        2,
+        6,
+        9,
+        17,
+        11,
+        15,
+        13,
+        12,
+        7,
+        10,
+        8,
+        20,
+        19,
+        22,
+        16,
+        18,
+        3,
+        21,
+        14
+      ],
+      "place": [
+        "1",
+        "2-4",
+        "2-4",
+        "2-4",
+        "5-9",
+        "5-9",
+        "5-9",
+        "5-9",
+        "5-9",
+        "10-13",
+        "10-13",
+        "10-13",
+        "10-13",
+        "14-18",
+        "14-18",
+        "14-18",
+        "14-18",
+        "14-18",
+        "19-21",
+        "19-21",
+        "19-21",
+        "22"
+      ],
+      "tiebreaks": [
+        "Mod. Med",
+        "Solk",
+        "Cumul.",
+        "Op. cumul."
+      ],
+      "rounds": [
+        {
+          "pairings": [
+            {
+              "white": 13,
+              "black": 1,
+              "board": 4,
+              "result": "(0-1)"
+            },
+            {
+              "white": 2,
+              "black": 14,
+              "board": 5,
+              "result": "(1-0)"
+            },
+            {
+              "white": 15,
+              "black": 3,
+              "board": 6,
+              "result": "(1-0)"
+            },
+            {
+              "white": 4,
+              "black": 16,
+              "board": 7,
+              "result": "(1-0)"
+            },
+            {
+              "white": 17,
+              "black": 5,
+              "board": 8,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 6,
+              "black": 18,
+              "board": 9,
+              "result": "(1-0)"
+            },
+            {
+              "white": 19,
+              "black": 7,
+              "board": 10,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 8,
+              "black": 20,
+              "board": 11,
+              "result": "(1-0)"
+            },
+            {
+              "white": 21,
+              "black": 11,
+              "board": 12,
+              "result": "(0-1)"
+            },
+            {
+              "white": 22,
+              "black": 0,
+              "board": 0,
+              "result": "(1)"
+            },
+            {
+              "white": 9,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 10,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 12,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            }
+          ]
+        },
+        {
+          "pairings": [
+            {
+              "white": 1,
+              "black": 6,
+              "board": 3,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 8,
+              "black": 2,
+              "board": 4,
+              "result": "(0-1)"
+            },
+            {
+              "white": 11,
+              "black": 4,
+              "board": 5,
+              "result": "(0-1)"
+            },
+            {
+              "white": 5,
+              "black": 22,
+              "board": 6,
+              "result": "(1-0)"
+            },
+            {
+              "white": 7,
+              "black": 12,
+              "board": 7,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 9,
+              "black": 17,
+              "board": 8,
+              "result": "(1-0)"
+            },
+            {
+              "white": 10,
+              "black": 19,
+              "board": 9,
+              "result": "(1-0)"
+            },
+            {
+              "white": 3,
+              "black": 16,
+              "board": 10,
+              "result": "(1-0)"
+            },
+            {
+              "white": 18,
+              "black": 13,
+              "board": 11,
+              "result": "(0-1)"
+            },
+            {
+              "white": 14,
+              "black": 20,
+              "board": 12,
+              "result": "(0-1)"
+            },
+            {
+              "white": 21,
+              "black": 0,
+              "board": 0,
+              "result": "(1)"
+            },
+            {
+              "white": 15,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            }
+          ]
+        },
+        {
+          "pairings": [
+            {
+              "white": 2,
+              "black": 4,
+              "board": 4,
+              "result": "(0-1)"
+            },
+            {
+              "white": 1,
+              "black": 9,
+              "board": 5,
+              "result": "(1-0)"
+            },
+            {
+              "white": 5,
+              "black": 10,
+              "board": 6,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 6,
+              "black": 15,
+              "board": 7,
+              "result": "(1-0)"
+            },
+            {
+              "white": 12,
+              "black": 3,
+              "board": 8,
+              "result": "(1-0)"
+            },
+            {
+              "white": 13,
+              "black": 7,
+              "board": 9,
+              "result": "(1-0)"
+            },
+            {
+              "white": 22,
+              "black": 8,
+              "board": 10,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 20,
+              "black": 11,
+              "board": 11,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 17,
+              "black": 19,
+              "board": 12,
+              "result": "(1-0)"
+            },
+            {
+              "white": 16,
+              "black": 14,
+              "board": 13,
+              "result": "(1-0)"
+            },
+            {
+              "white": 18,
+              "black": 0,
+              "board": 0,
+              "result": "(1)"
+            },
+            {
+              "white": 21,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            }
+          ]
+        },
+        {
+          "pairings": [
+            {
+              "white": 4,
+              "black": 1,
+              "board": 4,
+              "result": "(0-1)"
+            },
+            {
+              "white": 2,
+              "black": 6,
+              "board": 5,
+              "result": "(1-0)"
+            },
+            {
+              "white": 12,
+              "black": 5,
+              "board": 6,
+              "result": "(0-1)"
+            },
+            {
+              "white": 9,
+              "black": 13,
+              "board": 7,
+              "result": "(1-0)"
+            },
+            {
+              "white": 15,
+              "black": 8,
+              "board": 8,
+              "result": "(1-0)"
+            },
+            {
+              "white": 11,
+              "black": 22,
+              "board": 9,
+              "result": "(1-0)"
+            },
+            {
+              "white": 20,
+              "black": 17,
+              "board": 10,
+              "result": "(0-1)"
+            },
+            {
+              "white": 7,
+              "black": 18,
+              "board": 11,
+              "result": "(1-0)"
+            },
+            {
+              "white": 19,
+              "black": 0,
+              "board": 0,
+              "result": "(1)"
+            },
+            {
+              "white": 16,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 3,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            },
+            {
+              "white": 10,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            },
+            {
+              "white": 14,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            },
+            {
+              "white": 21,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            }
+          ]
+        }
+      ],
+      "players": [
+        {
+          "name": "Castaneda, Nelson",
+          "player_title": "FM",
+          "id1": "12564228",
+          "rating": 2249,
+          "rating2": 0,
+          "club": "CT",
+          "exp1": "06/30/2026",
+          "state": "CT",
+          "tiebreaks": [
+            8,
+            10,
+            8.5,
+            27
+          ],
+          "results": [
+            "W",
+            "D",
+            "W",
+            "W"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "W",
+            "B"
+          ],
+          "ops": [
+            13,
+            6,
+            9,
+            4
+          ],
+          "boards": [
+            4,
+            3,
+            5,
+            4
+          ]
+        },
+        {
+          "name": "Terrie, Henry L",
+          "id1": "10025265",
+          "rating": 2204,
+          "rating2": 0,
+          "club": "NH",
+          "exp1": "00/00/LIFE",
+          "state": "NH",
+          "tiebreaks": [
+            7,
+            7.5,
+            8,
+            21.5
+          ],
+          "results": [
+            "W",
+            "W",
+            "L",
+            "W"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W",
+            "W"
+          ],
+          "ops": [
+            14,
+            8,
+            4,
+            6
+          ],
+          "boards": [
+            5,
+            4,
+            4,
+            5
+          ]
+        },
+        {
+          "name": "Barnakov, Yury Anatolievich",
+          "id1": "12964843",
+          "rating": 2158,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "08/31/2026",
+          "state": "MA",
+          "tiebreaks": [
+            3.5,
+            6,
+            3,
+            13
+          ],
+          "results": [
+            "L",
+            "W",
+            "L",
+            "U"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B",
+            "-"
+          ],
+          "ops": [
+            15,
+            16,
+            12,
+            0
+          ],
+          "boards": [
+            6,
+            10,
+            8,
+            0
+          ]
+        },
+        {
+          "name": "Farfel, Vlad",
+          "id1": "13713073",
+          "rating": 2087,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "09/30/2026",
+          "state": "MA",
+          "tiebreaks": [
+            9,
+            10.5,
+            9,
+            24.5
+          ],
+          "results": [
+            "W",
+            "W",
+            "W",
+            "L"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "B",
+            "W"
+          ],
+          "ops": [
+            16,
+            11,
+            2,
+            1
+          ],
+          "boards": [
+            7,
+            5,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "Carey, Michael P",
+          "id1": "10120560",
+          "rating": 2070,
+          "rating2": 0,
+          "club": "RI",
+          "exp1": "00/00/LIFE",
+          "state": "RI",
+          "tiebreaks": [
+            7,
+            8,
+            7,
+            19.5
+          ],
+          "results": [
+            "D",
+            "W",
+            "D",
+            "W"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "W",
+            "B"
+          ],
+          "ops": [
+            17,
+            22,
+            10,
+            12
+          ],
+          "boards": [
+            8,
+            6,
+            6,
+            6
+          ]
+        },
+        {
+          "name": "Sage, J Timothy",
+          "id1": "10146712",
+          "rating": 2066,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "00/00/LIFE",
+          "state": "MA",
+          "tiebreaks": [
+            9,
+            9.5,
+            7.5,
+            23.5
+          ],
+          "results": [
+            "W",
+            "D",
+            "W",
+            "L"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W",
+            "B"
+          ],
+          "ops": [
+            18,
+            1,
+            15,
+            2
+          ],
+          "boards": [
+            9,
+            3,
+            7,
+            5
+          ]
+        },
+        {
+          "name": "Russell, Hanon",
+          "id1": "10036917",
+          "rating": 2054,
+          "rating2": 0,
+          "club": "NH",
+          "exp1": "00/00/LIFE",
+          "state": "NH",
+          "tiebreaks": [
+            3,
+            5.5,
+            4.5,
+            13
+          ],
+          "results": [
+            "D",
+            "D",
+            "L",
+            "W"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            19,
+            12,
+            13,
+            18
+          ],
+          "boards": [
+            10,
+            7,
+            9,
+            11
+          ]
+        },
+        {
+          "name": "Vaughan, John P",
+          "id1": "12481292",
+          "rating": 2013,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "00/00/LIFE",
+          "state": "MA",
+          "tiebreaks": [
+            5,
+            8,
+            5,
+            22
+          ],
+          "results": [
+            "W",
+            "L",
+            "D",
+            "L"
+          ],
+          "colors": [
+            "W",
+            "W",
+            "B",
+            "B"
+          ],
+          "ops": [
+            20,
+            2,
+            22,
+            15
+          ],
+          "boards": [
+            11,
+            4,
+            10,
+            8
+          ]
+        },
+        {
+          "name": "Secino, Robert T",
+          "id1": "10005434",
+          "rating": 1990,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "00/00/LIFE",
+          "state": "MA",
+          "byes": "1",
+          "tiebreaks": [
+            8,
+            8,
+            5.5,
+            18.5
+          ],
+          "results": [
+            "H",
+            "W",
+            "L",
+            "W"
+          ],
+          "colors": [
+            "-",
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            0,
+            17,
+            1,
+            13
+          ],
+          "boards": [
+            0,
+            8,
+            5,
+            7
+          ]
+        },
+        {
+          "name": "Pearson, Frederick Kemp",
+          "id1": "12223060",
+          "rating": 1937,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "09/30/2026",
+          "state": "MA",
+          "byes": "1",
+          "tiebreaks": [
+            1,
+            4,
+            5.5,
+            9
+          ],
+          "results": [
+            "H",
+            "W",
+            "D",
+            "U"
+          ],
+          "colors": [
+            "-",
+            "W",
+            "B",
+            "-"
+          ],
+          "ops": [
+            0,
+            19,
+            5,
+            0
+          ],
+          "boards": [
+            0,
+            9,
+            6,
+            0
+          ]
+        },
+        {
+          "name": "Shea, Christopher E",
+          "id1": "12489615",
+          "rating": 1916,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "06/30/2026",
+          "state": "MA",
+          "tiebreaks": [
+            6,
+            7,
+            6,
+            19
+          ],
+          "results": [
+            "W",
+            "L",
+            "D",
+            "W"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            21,
+            4,
+            20,
+            22
+          ],
+          "boards": [
+            12,
+            5,
+            11,
+            9
+          ]
+        },
+        {
+          "name": "Ross, Alonzo H",
+          "id1": "10481376",
+          "rating": 1900,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "00/00/LIFE",
+          "state": "MA",
+          "byes": "1",
+          "tiebreaks": [
+            3.5,
+            6.5,
+            5,
+            14.5
+          ],
+          "results": [
+            "H",
+            "D",
+            "W",
+            "L"
+          ],
+          "colors": [
+            "-",
+            "B",
+            "W",
+            "W"
+          ],
+          "ops": [
+            0,
+            7,
+            3,
+            5
+          ],
+          "boards": [
+            0,
+            7,
+            8,
+            6
+          ]
+        },
+        {
+          "name": "Carnevale, Christopher",
+          "id1": "12608782",
+          "rating": 1898,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "05/31/2026",
+          "state": "MA",
+          "tiebreaks": [
+            4.5,
+            8.5,
+            5,
+            19.5
+          ],
+          "results": [
+            "L",
+            "W",
+            "W",
+            "L"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W",
+            "B"
+          ],
+          "ops": [
+            1,
+            18,
+            7,
+            9
+          ],
+          "boards": [
+            4,
+            11,
+            9,
+            7
+          ]
+        },
+        {
+          "name": "Commisso, Michael",
+          "id1": "12525099",
+          "rating": 1874,
+          "rating2": 0,
+          "club": "NH",
+          "exp1": "00/00/LIFE",
+          "state": "NH",
+          "tiebreaks": [
+            3,
+            6,
+            0,
+            14
+          ],
+          "results": [
+            "L",
+            "L",
+            "L",
+            "U"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B",
+            "-"
+          ],
+          "ops": [
+            2,
+            20,
+            16,
+            0
+          ],
+          "boards": [
+            5,
+            12,
+            13,
+            0
+          ]
+        },
+        {
+          "name": "Malinin, Sergey",
+          "id1": "30302734",
+          "rating": 1871,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "10/31/2027",
+          "state": "MA",
+          "byes": "2",
+          "tiebreaks": [
+            5.5,
+            5.5,
+            6,
+            15.5
+          ],
+          "results": [
+            "W",
+            "H",
+            "L",
+            "W"
+          ],
+          "colors": [
+            "W",
+            "-",
+            "B",
+            "W"
+          ],
+          "ops": [
+            3,
+            0,
+            6,
+            8
+          ],
+          "boards": [
+            6,
+            0,
+            7,
+            8
+          ]
+        },
+        {
+          "name": "Dame, Erin",
+          "id1": "12533685",
+          "rating": 1871,
+          "rating2": 0,
+          "club": "NH",
+          "exp1": "00/00/LIFE",
+          "state": "NH",
+          "byes": "4",
+          "tiebreaks": [
+            2,
+            5,
+            2,
+            12
+          ],
+          "results": [
+            "L",
+            "L",
+            "W",
+            "H"
+          ],
+          "colors": [
+            "B",
+            "B",
+            "W",
+            "-"
+          ],
+          "ops": [
+            4,
+            3,
+            14,
+            0
+          ],
+          "boards": [
+            7,
+            10,
+            13,
+            0
+          ]
+        },
+        {
+          "name": "Zhaurov, Yuriy",
+          "id1": "14256202",
+          "rating": 1852,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "09/30/2026",
+          "state": "MA",
+          "tiebreaks": [
+            7,
+            8,
+            5,
+            18.5
+          ],
+          "results": [
+            "D",
+            "L",
+            "W",
+            "W"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W",
+            "B"
+          ],
+          "ops": [
+            5,
+            9,
+            19,
+            20
+          ],
+          "boards": [
+            8,
+            8,
+            12,
+            10
+          ]
+        },
+        {
+          "name": "Gradijan, Stephen",
+          "id1": "12454998",
+          "rating": 1821,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "04/30/2027",
+          "state": "MA",
+          "tiebreaks": [
+            4,
+            6.5,
+            1,
+            17
+          ],
+          "results": [
+            "L",
+            "L",
+            "B",
+            "L"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "-",
+            "B"
+          ],
+          "ops": [
+            6,
+            13,
+            0,
+            7
+          ],
+          "boards": [
+            9,
+            11,
+            0,
+            11
+          ]
+        },
+        {
+          "name": "Brassard, Gary",
+          "id1": "11156665",
+          "rating": 1797,
+          "rating2": 1700,
+          "exp1": "2027-01-31",
+          "state": "MA",
+          "tiebreaks": [
+            4.5,
+            7,
+            2,
+            15
+          ],
+          "results": [
+            "D",
+            "L",
+            "L",
+            "B"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "B",
+            "-"
+          ],
+          "ops": [
+            7,
+            10,
+            17,
+            0
+          ],
+          "boards": [
+            10,
+            9,
+            12,
+            0
+          ]
+        },
+        {
+          "name": "Urbonas, Michael",
+          "id1": "11015328",
+          "rating": 1794,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "03/31/2028",
+          "state": "MA",
+          "tiebreaks": [
+            4.5,
+            7,
+            4,
+            16
+          ],
+          "results": [
+            "L",
+            "W",
+            "D",
+            "L"
+          ],
+          "colors": [
+            "B",
+            "B",
+            "W",
+            "W"
+          ],
+          "ops": [
+            8,
+            14,
+            11,
+            17
+          ],
+          "boards": [
+            11,
+            12,
+            11,
+            10
+          ]
+        },
+        {
+          "name": "Smith, Stephen E",
+          "id1": "12451370",
+          "rating": 1778,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "10/31/2026",
+          "state": "MA",
+          "tiebreaks": [
+            0,
+            2.5,
+            2,
+            6
+          ],
+          "results": [
+            "L",
+            "B",
+            "U",
+            "U"
+          ],
+          "colors": [
+            "W",
+            "-",
+            "-",
+            "-"
+          ],
+          "ops": [
+            11,
+            0,
+            0,
+            0
+          ],
+          "boards": [
+            12,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "Tsakiris, Todd",
+          "id1": "12523634",
+          "rating": 1772,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "06/30/2026",
+          "state": "MA",
+          "tiebreaks": [
+            4,
+            7,
+            4,
+            18
+          ],
+          "results": [
+            "B",
+            "L",
+            "D",
+            "L"
+          ],
+          "colors": [
+            "-",
+            "B",
+            "W",
+            "B"
+          ],
+          "ops": [
+            0,
+            5,
+            8,
+            11
+          ],
+          "boards": [
+            0,
+            6,
+            10,
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "section": "U1810",
+      "rounds_paired": 4,
+      "rounds_played": 4,
+      "time_stamp": "4/27/2026 - 9:13",
+      "standings": [
+        12,
+        2,
+        5,
+        1,
+        3,
+        15,
+        21,
+        10,
+        17,
+        9,
+        18,
+        13,
+        4,
+        8,
+        6,
+        7,
+        16,
+        14,
+        20,
+        19,
+        24,
+        22,
+        23,
+        27,
+        26,
+        11,
+        25
+      ],
+      "place": [
+        "1",
+        "2-7",
+        "2-7",
+        "2-7",
+        "2-7",
+        "2-7",
+        "2-7",
+        "8-14",
+        "8-14",
+        "8-14",
+        "8-14",
+        "8-14",
+        "8-14",
+        "8-14",
+        "15-21",
+        "15-21",
+        "15-21",
+        "15-21",
+        "15-21",
+        "15-21",
+        "15-21",
+        "22-26",
+        "22-26",
+        "22-26",
+        "22-26",
+        "22-26",
+        "27"
+      ],
+      "tiebreaks": [
+        "Mod. Med",
+        "Solk",
+        "Cumul.",
+        "Op. cumul."
+      ],
+      "rounds": [
+        {
+          "pairings": [
+            {
+              "white": 14,
+              "black": 1,
+              "board": 15,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 2,
+              "black": 15,
+              "board": 16,
+              "result": "(1-0)"
+            },
+            {
+              "white": 16,
+              "black": 3,
+              "board": 17,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 4,
+              "black": 17,
+              "board": 18,
+              "result": "(0-1)"
+            },
+            {
+              "white": 18,
+              "black": 5,
+              "board": 19,
+              "result": "(0-1)"
+            },
+            {
+              "white": 6,
+              "black": 19,
+              "board": 20,
+              "result": "(1-0)"
+            },
+            {
+              "white": 20,
+              "black": 7,
+              "board": 21,
+              "result": "(0-1)"
+            },
+            {
+              "white": 8,
+              "black": 21,
+              "board": 22,
+              "result": "(0-1)"
+            },
+            {
+              "white": 22,
+              "black": 9,
+              "board": 23,
+              "result": "(0-1)"
+            },
+            {
+              "white": 10,
+              "black": 23,
+              "board": 24,
+              "result": "(1-0)"
+            },
+            {
+              "white": 24,
+              "black": 11,
+              "board": 25,
+              "result": "(1-0)"
+            },
+            {
+              "white": 12,
+              "black": 25,
+              "board": 26,
+              "result": "(1-0)"
+            },
+            {
+              "white": 27,
+              "black": 13,
+              "board": 27,
+              "result": "(0-1)"
+            },
+            {
+              "white": 26,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            }
+          ]
+        },
+        {
+          "pairings": [
+            {
+              "white": 1,
+              "black": 24,
+              "board": 15,
+              "result": "(1-0)"
+            },
+            {
+              "white": 5,
+              "black": 10,
+              "board": 16,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 17,
+              "black": 6,
+              "board": 17,
+              "result": "(1-0)"
+            },
+            {
+              "white": 7,
+              "black": 12,
+              "board": 18,
+              "result": "(0-1)"
+            },
+            {
+              "white": 9,
+              "black": 21,
+              "board": 19,
+              "result": "(1-0)"
+            },
+            {
+              "white": 13,
+              "black": 2,
+              "board": 20,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 3,
+              "black": 14,
+              "board": 21,
+              "result": "(1-0)"
+            },
+            {
+              "white": 26,
+              "black": 16,
+              "board": 22,
+              "result": "(0-1)"
+            },
+            {
+              "white": 19,
+              "black": 4,
+              "board": 23,
+              "result": "(0-1)"
+            },
+            {
+              "white": 23,
+              "black": 8,
+              "board": 24,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 11,
+              "black": 20,
+              "board": 25,
+              "result": "(1-0)"
+            },
+            {
+              "white": 15,
+              "black": 22,
+              "board": 26,
+              "result": "(1-0)"
+            },
+            {
+              "white": 25,
+              "black": 18,
+              "board": 27,
+              "result": "(0-1)"
+            },
+            {
+              "white": 27,
+              "black": 0,
+              "board": 0,
+              "result": "(1)"
+            }
+          ]
+        },
+        {
+          "pairings": [
+            {
+              "white": 12,
+              "black": 9,
+              "board": 16,
+              "result": "(1-0)"
+            },
+            {
+              "white": 1,
+              "black": 17,
+              "board": 17,
+              "result": "(1-0)"
+            },
+            {
+              "white": 2,
+              "black": 10,
+              "board": 18,
+              "result": "(1-0)"
+            },
+            {
+              "white": 13,
+              "black": 3,
+              "board": 19,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 16,
+              "black": 5,
+              "board": 20,
+              "result": "(0-1)"
+            },
+            {
+              "white": 21,
+              "black": 6,
+              "board": 21,
+              "result": "(1-0)"
+            },
+            {
+              "white": 4,
+              "black": 15,
+              "board": 22,
+              "result": "(0-1)"
+            },
+            {
+              "white": 18,
+              "black": 27,
+              "board": 23,
+              "result": "(1-0)"
+            },
+            {
+              "white": 8,
+              "black": 26,
+              "board": 24,
+              "result": "(1-0)"
+            },
+            {
+              "white": 14,
+              "black": 23,
+              "board": 25,
+              "result": "(1-0)"
+            },
+            {
+              "white": 22,
+              "black": 19,
+              "board": 26,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 20,
+              "black": 25,
+              "board": 27,
+              "result": "(1-0)"
+            },
+            {
+              "white": 7,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 24,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 11,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            }
+          ]
+        },
+        {
+          "pairings": [
+            {
+              "white": 24,
+              "black": 4,
+              "board": 15,
+              "result": "(0F-1X)"
+            },
+            {
+              "white": 5,
+              "black": 1,
+              "board": 16,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 3,
+              "black": 17,
+              "board": 17,
+              "result": "(1-0)"
+            },
+            {
+              "white": 15,
+              "black": 18,
+              "board": 18,
+              "result": "(1-0)"
+            },
+            {
+              "white": 21,
+              "black": 7,
+              "board": 19,
+              "result": "(1-0)"
+            },
+            {
+              "white": 10,
+              "black": 8,
+              "board": 20,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 6,
+              "black": 20,
+              "board": 21,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 19,
+              "black": 27,
+              "board": 22,
+              "result": "(1-0)"
+            },
+            {
+              "white": 23,
+              "black": 22,
+              "board": 23,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 25,
+              "black": 26,
+              "board": 24,
+              "result": "(0.5-0.5)"
+            },
+            {
+              "white": 2,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 12,
+              "black": 0,
+              "board": 0,
+              "result": "(0.5)"
+            },
+            {
+              "white": 9,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            },
+            {
+              "white": 11,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            },
+            {
+              "white": 13,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            },
+            {
+              "white": 14,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            },
+            {
+              "white": 16,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            }
+          ]
+        }
+      ],
+      "players": [
+        {
+          "name": "Messenger, Robert D",
+          "id1": "12418118",
+          "rating": 1800,
+          "rating2": 0,
+          "club": "NH",
+          "exp1": "00/00/LIFE",
+          "state": "NH",
+          "tiebreaks": [
+            7,
+            9,
+            7.5,
+            23.5
+          ],
+          "results": [
+            "D",
+            "W",
+            "W",
+            "D"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "W",
+            "B"
+          ],
+          "ops": [
+            14,
+            24,
+            17,
+            5
+          ],
+          "boards": [
+            15,
+            15,
+            17,
+            16
+          ]
+        },
+        {
+          "name": "McConville, James",
+          "id1": "12848589",
+          "rating": 1767,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "02/29/2028",
+          "state": "MA",
+          "byes": "4",
+          "tiebreaks": [
+            7.5,
+            7.5,
+            7.5,
+            18.5
+          ],
+          "results": [
+            "W",
+            "D",
+            "W",
+            "H"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W",
+            "-"
+          ],
+          "ops": [
+            15,
+            13,
+            10,
+            0
+          ],
+          "boards": [
+            16,
+            20,
+            18,
+            0
+          ]
+        },
+        {
+          "name": "Hanson, John Eric",
+          "id1": "12326830",
+          "rating": 1744,
+          "rating2": 0,
+          "club": "NY",
+          "exp1": "11/30/2026",
+          "state": "NY",
+          "tiebreaks": [
+            6.5,
+            8.5,
+            7,
+            22.5
+          ],
+          "results": [
+            "D",
+            "W",
+            "D",
+            "W"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            16,
+            14,
+            13,
+            17
+          ],
+          "boards": [
+            17,
+            21,
+            19,
+            17
+          ]
+        },
+        {
+          "name": "Kaprielian, Mark",
+          "id1": "10007763",
+          "rating": 1736,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "00/00/LIFE",
+          "state": "MA",
+          "tiebreaks": [
+            3.5,
+            6.5,
+            3,
+            15
+          ],
+          "results": [
+            "L",
+            "W",
+            "L",
+            "X"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W",
+            "-"
+          ],
+          "ops": [
+            17,
+            19,
+            15,
+            24
+          ],
+          "boards": [
+            18,
+            23,
+            22,
+            15
+          ]
+        },
+        {
+          "name": "Hori, Calvin",
+          "id1": "12864842",
+          "rating": 1733,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "03/31/2031",
+          "state": "MA",
+          "tiebreaks": [
+            7,
+            9,
+            8,
+            23.5
+          ],
+          "results": [
+            "W",
+            "D",
+            "W",
+            "D"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            18,
+            10,
+            16,
+            1
+          ],
+          "boards": [
+            19,
+            16,
+            20,
+            16
+          ]
+        },
+        {
+          "name": "Bird, D G",
+          "id1": "14902922",
+          "rating": 1728,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "05/31/2027",
+          "state": "MA",
+          "tiebreaks": [
+            5,
+            8,
+            4.5,
+            18.5
+          ],
+          "results": [
+            "W",
+            "L",
+            "L",
+            "D"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "B",
+            "W"
+          ],
+          "ops": [
+            19,
+            17,
+            21,
+            20
+          ],
+          "boards": [
+            20,
+            17,
+            21,
+            21
+          ]
+        },
+        {
+          "name": "Holmgren, Robert",
+          "id1": "11291635",
+          "rating": 1716,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "09/30/2223",
+          "state": "MA",
+          "byes": "3",
+          "tiebreaks": [
+            4.5,
+            8,
+            4.5,
+            18.5
+          ],
+          "results": [
+            "W",
+            "L",
+            "H",
+            "L"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "-",
+            "B"
+          ],
+          "ops": [
+            20,
+            12,
+            0,
+            21
+          ],
+          "boards": [
+            21,
+            18,
+            0,
+            19
+          ]
+        },
+        {
+          "name": "Donahue, James E",
+          "id1": "12633241",
+          "rating": 1708,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "09/30/2027",
+          "state": "MA",
+          "tiebreaks": [
+            3,
+            7,
+            4,
+            17
+          ],
+          "results": [
+            "L",
+            "D",
+            "W",
+            "D"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W",
+            "B"
+          ],
+          "ops": [
+            21,
+            23,
+            26,
+            10
+          ],
+          "boards": [
+            22,
+            24,
+            24,
+            20
+          ]
+        },
+        {
+          "name": "Moore, Michael O D",
+          "id1": "12538350",
+          "rating": 1700,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "12/31/2026",
+          "state": "MA",
+          "tiebreaks": [
+            4,
+            7.5,
+            7,
+            17.5
+          ],
+          "results": [
+            "W",
+            "W",
+            "L",
+            "U"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B",
+            "-"
+          ],
+          "ops": [
+            22,
+            21,
+            12,
+            0
+          ],
+          "boards": [
+            23,
+            19,
+            16,
+            0
+          ]
+        },
+        {
+          "name": "Hyland, James R",
+          "id1": "11309097",
+          "rating": 1675,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "01/31/2027",
+          "state": "MA",
+          "tiebreaks": [
+            5,
+            9,
+            6,
+            21.5
+          ],
+          "results": [
+            "W",
+            "D",
+            "L",
+            "D"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "B",
+            "W"
+          ],
+          "ops": [
+            23,
+            5,
+            2,
+            8
+          ],
+          "boards": [
+            24,
+            16,
+            18,
+            20
+          ]
+        },
+        {
+          "name": "Couture, David J",
+          "id1": "12413721",
+          "rating": 1666,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "06/30/2026",
+          "state": "MA",
+          "tiebreaks": [
+            1.5,
+            3.5,
+            3,
+            7
+          ],
+          "results": [
+            "L",
+            "W",
+            "U",
+            "U"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "-",
+            "-"
+          ],
+          "ops": [
+            24,
+            20,
+            0,
+            0
+          ],
+          "boards": [
+            25,
+            25,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "Shea, Stephen Michael",
+          "id1": "12202620",
+          "rating": 1607,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "09/30/2026",
+          "state": "MA",
+          "byes": "4",
+          "tiebreaks": [
+            4.5,
+            4.5,
+            9,
+            12
+          ],
+          "results": [
+            "W",
+            "W",
+            "W",
+            "H"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W",
+            "-"
+          ],
+          "ops": [
+            25,
+            7,
+            9,
+            0
+          ],
+          "boards": [
+            26,
+            18,
+            16,
+            0
+          ]
+        },
+        {
+          "name": "Kary, Mitchell",
+          "id1": "15431256",
+          "rating": 1603,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "06/30/2027",
+          "state": "MA",
+          "tiebreaks": [
+            3.5,
+            6.5,
+            6.5,
+            16.5
+          ],
+          "results": [
+            "W",
+            "D",
+            "D",
+            "U"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "W",
+            "-"
+          ],
+          "ops": [
+            27,
+            2,
+            3,
+            0
+          ],
+          "boards": [
+            27,
+            20,
+            19,
+            0
+          ]
+        },
+        {
+          "name": "Duval, George Wilfred",
+          "id1": "12471987",
+          "rating": 1602,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "03/31/2027",
+          "state": "MA",
+          "tiebreaks": [
+            4,
+            7,
+            4,
+            16.5
+          ],
+          "results": [
+            "D",
+            "L",
+            "W",
+            "U"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W",
+            "-"
+          ],
+          "ops": [
+            1,
+            3,
+            23,
+            0
+          ],
+          "boards": [
+            15,
+            21,
+            25,
+            0
+          ]
+        },
+        {
+          "name": "Becker, Thorsten",
+          "id1": "12787505",
+          "rating": 1600,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "02/29/2028",
+          "state": "MA",
+          "tiebreaks": [
+            6.5,
+            7.5,
+            6,
+            17
+          ],
+          "results": [
+            "L",
+            "W",
+            "W",
+            "W"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            2,
+            22,
+            4,
+            18
+          ],
+          "boards": [
+            16,
+            26,
+            22,
+            18
+          ]
+        },
+        {
+          "name": "Moss, Marvin",
+          "id1": "12476109",
+          "rating": 1600,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "08/31/2027",
+          "state": "MA",
+          "tiebreaks": [
+            4,
+            7,
+            5,
+            17
+          ],
+          "results": [
+            "D",
+            "W",
+            "L",
+            "U"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W",
+            "-"
+          ],
+          "ops": [
+            3,
+            26,
+            5,
+            0
+          ],
+          "boards": [
+            17,
+            22,
+            20,
+            0
+          ]
+        },
+        {
+          "name": "Gadomski, Thadeus A",
+          "id1": "30135710",
+          "rating": 1572,
+          "rating2": 949,
+          "exp1": "2027-03-31",
+          "state": "NH",
+          "tiebreaks": [
+            4.5,
+            9,
+            7,
+            22
+          ],
+          "results": [
+            "W",
+            "W",
+            "L",
+            "L"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B",
+            "B"
+          ],
+          "ops": [
+            4,
+            6,
+            1,
+            3
+          ],
+          "boards": [
+            18,
+            17,
+            17,
+            17
+          ]
+        },
+        {
+          "name": "Smith, Warner",
+          "id1": "12480740",
+          "rating": 1543,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "05/31/2027",
+          "state": "MA",
+          "tiebreaks": [
+            3.5,
+            7,
+            5,
+            16.5
+          ],
+          "results": [
+            "L",
+            "W",
+            "W",
+            "L"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W",
+            "B"
+          ],
+          "ops": [
+            5,
+            25,
+            27,
+            15
+          ],
+          "boards": [
+            19,
+            27,
+            23,
+            18
+          ]
+        },
+        {
+          "name": "Abramowitz, Fred",
+          "id1": "12682222",
+          "rating": 1535,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "03/31/2027",
+          "state": "MA",
+          "tiebreaks": [
+            3,
+            4.5,
+            2,
+            11
+          ],
+          "results": [
+            "L",
+            "L",
+            "D",
+            "W"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            6,
+            4,
+            22,
+            27
+          ],
+          "boards": [
+            20,
+            23,
+            26,
+            22
+          ]
+        },
+        {
+          "name": "Rosenholtz, Jeremy Seth",
+          "id1": "15786752",
+          "rating": 1520,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "04/30/2027",
+          "state": "MA",
+          "tiebreaks": [
+            3.5,
+            5.5,
+            2.5,
+            12.5
+          ],
+          "results": [
+            "L",
+            "L",
+            "W",
+            "D"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W",
+            "B"
+          ],
+          "ops": [
+            7,
+            11,
+            25,
+            6
+          ],
+          "boards": [
+            21,
+            25,
+            27,
+            21
+          ]
+        },
+        {
+          "name": "Axelrod, Alan",
+          "id1": "12541766",
+          "rating": 1503,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "03/31/2028",
+          "state": "MA",
+          "tiebreaks": [
+            6,
+            7.5,
+            7,
+            20
+          ],
+          "results": [
+            "W",
+            "L",
+            "W",
+            "W"
+          ],
+          "colors": [
+            "B",
+            "B",
+            "W",
+            "W"
+          ],
+          "ops": [
+            8,
+            9,
+            6,
+            7
+          ],
+          "boards": [
+            22,
+            19,
+            21,
+            19
+          ]
+        },
+        {
+          "name": "Sifter, Thomas L",
+          "id1": "12411472",
+          "rating": 1500,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "00/00/LIFE",
+          "state": "MA",
+          "tiebreaks": [
+            5,
+            8,
+            1.5,
+            17
+          ],
+          "results": [
+            "L",
+            "L",
+            "D",
+            "D"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "W",
+            "B"
+          ],
+          "ops": [
+            9,
+            15,
+            19,
+            23
+          ],
+          "boards": [
+            23,
+            26,
+            26,
+            23
+          ]
+        },
+        {
+          "name": "Meins, Gwen",
+          "id1": "10012091",
+          "rating": 1434,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "00/00/LIFE",
+          "state": "MA",
+          "tiebreaks": [
+            5,
+            7,
+            2,
+            15.5
+          ],
+          "results": [
+            "L",
+            "D",
+            "L",
+            "D"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            10,
+            8,
+            14,
+            22
+          ],
+          "boards": [
+            24,
+            24,
+            25,
+            23
+          ]
+        },
+        {
+          "name": "Alzuhairi, Riadh",
+          "id1": "16917268",
+          "rating": 1410,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "08/31/2026",
+          "state": "MA",
+          "byes": "3",
+          "tiebreaks": [
+            2,
+            5,
+            4.5,
+            10.5
+          ],
+          "results": [
+            "W",
+            "L",
+            "H",
+            "F"
+          ],
+          "colors": [
+            "W",
+            "B",
+            "-",
+            "-"
+          ],
+          "ops": [
+            11,
+            1,
+            0,
+            4
+          ],
+          "boards": [
+            25,
+            15,
+            0,
+            15
+          ]
+        },
+        {
+          "name": "Anderson, Robert L",
+          "id1": "12517182",
+          "rating": 1409,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "08/31/2026",
+          "state": "MA",
+          "tiebreaks": [
+            4.5,
+            8,
+            0.5,
+            18.5
+          ],
+          "results": [
+            "L",
+            "L",
+            "L",
+            "D"
+          ],
+          "colors": [
+            "B",
+            "W",
+            "B",
+            "W"
+          ],
+          "ops": [
+            12,
+            18,
+            20,
+            26
+          ],
+          "boards": [
+            26,
+            27,
+            27,
+            24
+          ]
+        },
+        {
+          "name": "Souhrada, Ernie",
+          "id1": "32455608",
+          "rating": 1101,
+          "rating2": 0,
+          "club": "CO",
+          "exp1": "05/31/2026",
+          "state": "CO",
+          "byes": "1",
+          "tiebreaks": [
+            2.5,
+            4.5,
+            2,
+            9.5
+          ],
+          "results": [
+            "H",
+            "L",
+            "L",
+            "D"
+          ],
+          "colors": [
+            "-",
+            "W",
+            "B",
+            "B"
+          ],
+          "ops": [
+            0,
+            16,
+            8,
+            25
+          ],
+          "boards": [
+            0,
+            22,
+            24,
+            24
+          ]
+        },
+        {
+          "name": "Butler, Robert M",
+          "id1": "31288308",
+          "rating": 897,
+          "rating2": 784,
+          "exp1": "2026-06-30",
+          "state": "MA",
+          "tiebreaks": [
+            3.5,
+            6,
+            2,
+            13.5
+          ],
+          "results": [
+            "L",
+            "B",
+            "L",
+            "L"
+          ],
+          "colors": [
+            "W",
+            "-",
+            "B",
+            "B"
+          ],
+          "ops": [
+            13,
+            0,
+            18,
+            19
+          ],
+          "boards": [
+            27,
+            0,
+            23,
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "section": "Side Games",
+      "rounds_paired": 2,
+      "rounds_played": 2,
+      "time_stamp": "4/27/2026 - 9:13",
+      "standings": [
+        2,
+        1,
+        4,
+        3
+      ],
+      "place": [
+        "1-2",
+        "1-2",
+        "3-4",
+        "3-4"
+      ],
+      "tiebreaks": [
+        "Mod. Med",
+        "Solk",
+        "Cumul.",
+        "Op. cumul."
+      ],
+      "rounds": [
+        {
+          "pairings": [
+            {
+              "white": 1,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            },
+            {
+              "white": 3,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            }
+          ]
+        },
+        {
+          "pairings": [
+            {
+              "white": 2,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            },
+            {
+              "white": 4,
+              "black": 0,
+              "board": 0,
+              "result": "(0)"
+            }
+          ]
+        }
+      ],
+      "players": [
+        {
+          "name": "Gradijan, Stephen",
+          "id1": "12454998",
+          "rating": 1821,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "04/30/2027",
+          "state": "MA",
+          "tiebreaks": [
+            0,
+            0.5,
+            1,
+            0
+          ],
+          "results": [
+            "U",
+            "W"
+          ],
+          "colors": [
+            "-",
+            "B"
+          ],
+          "ops": [
+            0,
+            3
+          ],
+          "boards": [
+            0,
+            15
+          ]
+        },
+        {
+          "name": "Smith, Stephen E",
+          "id1": "12451370",
+          "rating": 1778,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "10/31/2026",
+          "state": "MA",
+          "byes": "2z",
+          "tiebreaks": [
+            0,
+            0.5,
+            2,
+            0
+          ],
+          "results": [
+            "W",
+            "U"
+          ],
+          "colors": [
+            "B",
+            "-"
+          ],
+          "ops": [
+            4,
+            0
+          ],
+          "boards": [
+            13,
+            0
+          ]
+        },
+        {
+          "name": "Alzuhairi, Riadh",
+          "id1": "16917268",
+          "rating": 1410,
+          "rating2": 0,
+          "club": "MA",
+          "exp1": "08/31/2026",
+          "state": "MA",
+          "tiebreaks": [
+            0,
+            1.5,
+            0,
+            1
+          ],
+          "results": [
+            "U",
+            "L"
+          ],
+          "colors": [
+            "-",
+            "W"
+          ],
+          "ops": [
+            0,
+            1
+          ],
+          "boards": [
+            0,
+            15
+          ]
+        },
+        {
+          "name": "Butler, Robert M",
+          "id1": "31288308",
+          "rating": 897,
+          "rating2": 784,
+          "exp1": "2026-06-30",
+          "state": "MA",
+          "byes": "2z",
+          "tiebreaks": [
+            0,
+            1.5,
+            0,
+            2
+          ],
+          "results": [
+            "L",
+            "U"
+          ],
+          "colors": [
+            "W",
+            "-"
+          ],
+          "ops": [
+            2,
+            0
+          ],
+          "boards": [
+            13,
+            0
+          ]
+        }
+      ]
+    }
+  ]
+}

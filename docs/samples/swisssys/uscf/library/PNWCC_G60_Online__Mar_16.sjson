@@ -1,0 +1,165 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.34,
+    "Tournament title": "🚀 PNWCC G60 Online - Mar 16",
+    "Tournament time controls": "G/60;+5",
+    "Starting date": "2025-03-16",
+    "Ending date": "2025-03-16",
+    "NACH event ID": "4f7e5159-0f0c-4e18-ac65-de2181e441c9",
+    "NACH passcode": "31a00574-f9b8-48a5-a9db-6ac6612c8807",
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Section title": "Open",
+      "Section time control": "G/60;+5",
+      "Number of players": 13,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 2900,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Delchev [GMAlex1971], Aleksander",
+          "ID": "30215991",
+          "Rating": 2519,
+          "Club": "SRB",
+          "Player title": "GM"
+        },
+        {
+          "Pair number": 2,
+          "Name": "Harshavardhan [legendinunknown], G B",
+          "ID": "30105133",
+          "Rating": 2469,
+          "Club": "IND",
+          "Player title": "IM"
+        },
+        {
+          "Pair number": 3,
+          "Name": "Deng [HDiChess], Henry",
+          "ID": "16681298",
+          "Rating": 2367,
+          "Club": "USA",
+          "Player title": "FM"
+        },
+        {
+          "Pair number": 4,
+          "Name": "Estrada Nieto [dosto07], Julian",
+          "ID": "12489784",
+          "Rating": 2348,
+          "Club": "MEX",
+          "Player title": "IM"
+        },
+        {
+          "Pair number": 5,
+          "Name": "Liu [ailopatricaliy], Austin",
+          "ID": "16679915",
+          "Rating": 2203,
+          "Club": "USA",
+          "Player title": "NM"
+        },
+        {
+          "Pair number": 6,
+          "Name": "Zhang [AmazingSteamBun], Brian",
+          "ID": "30085042",
+          "Rating": 1950,
+          "Club": "CAN",
+          "Player title": "",
+          "Reserved byes": "4 "
+        },
+        {
+          "Pair number": 7,
+          "Name": "Lin [knightseu], Michael",
+          "ID": "17281737",
+          "Rating": 1898,
+          "Club": "USA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Verma [Dabdude125], Darsh",
+          "ID": "16885668",
+          "Rating": 1893,
+          "Club": "USA",
+          "Player title": "",
+          "Reserved byes": "3 "
+        },
+        {
+          "Pair number": 9,
+          "Name": "Bimod [KBforChess], Karthik",
+          "ID": "31093354",
+          "Rating": 1892,
+          "Club": "IND",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Han [Oshi_No_Ko_Chess], Shuyi",
+          "ID": "17101695",
+          "Rating": 1877,
+          "Club": "USA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Zhang [FluffyRedPandaChess], Michelle",
+          "ID": "30085051",
+          "Rating": 1817,
+          "Club": "CAN",
+          "Player title": "WCM",
+          "Reserved byes": "1 4z "
+        },
+        {
+          "Pair number": 12,
+          "Name": "Zhou [yzchess9667_zZz], Yuchen",
+          "ID": "30171464",
+          "Rating": 1734,
+          "Club": "USA",
+          "Player title": "",
+          "Reserved byes": "3 "
+        },
+        {
+          "Pair number": 13,
+          "Name": "Dominguez Alvarez [BlasDomingo], Blas",
+          "ID": "32240605",
+          "Rating": 1601,
+          "Club": "MEX",
+          "Player title": ""
+        }
+      ],
+      "Teams": [],
+      "Prizes": {
+        "Place prizes": [
+          {
+            "Value": 100,
+            "Description": ""
+          },
+          {
+            "Value": 70,
+            "Description": ""
+          },
+          {
+            "Value": 30,
+            "Description": ""
+          }
+        ]
+      }
+    }
+  ]
+}

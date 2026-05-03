@@ -1,0 +1,467 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.34,
+    "Tournament title": "Massachusetts Open Scholastic Under 300 and Under 600",
+    "Tournament time controls": "G/30 d5",
+    "Starting date": "2025-05-24",
+    "Ending date": "2025-05-24",
+    "NACH event ID": "3f72816b-e626-45ac-b2cc-2b1bd732be55",
+    "NACH passcode": "02c6bcdb-079d-4164-b059-0c652345c528",
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Under_300",
+      "Type": 0,
+      "Section title": "Under 300",
+      "Section time control": "G/30 d5",
+      "Number of players": 14,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 299,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Gutner, Mark",
+          "ID": "31002808",
+          "Rating": 278,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Stipanovich, Jovan",
+          "ID": "30610834",
+          "Rating": 275,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Bulychev, Anna",
+          "ID": "31899594",
+          "Rating": 251,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Godkar, Krisha",
+          "ID": "31497457",
+          "Rating": 213,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Naluvala, Maedha",
+          "ID": "31426091",
+          "Rating": 188,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Glina, Lawrence",
+          "ID": "32270856",
+          "Rating": 174,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Dunn, Joseph",
+          "ID": "32148051",
+          "Rating": 112,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Kroell, Julia",
+          "ID": "32278849",
+          "Rating": 110,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Chaudhary, Samarth",
+          "ID": "32267961",
+          "Rating": 108,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Etyemezian, Alik",
+          "ID": "32452204",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Negi, Rishaan",
+          "ID": "32444942",
+          "Rating": 0,
+          "Club": "CT",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Lantsman, Eli Alexander",
+          "ID": "32459584",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Pandit, Aarav",
+          "ID": "31727451",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Parikh, Sonia",
+          "ID": "32451616",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Under_600",
+      "Type": 0,
+      "Section title": "Under 600",
+      "Section time control": "G/30 d5",
+      "Number of players": 36,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 599,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Chen, Aidan",
+          "ID": "30717007",
+          "Rating": 620,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Nathenson Steier, Morrice",
+          "ID": "30807525",
+          "Rating": 607,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Breyt, Max",
+          "ID": "30485512",
+          "Rating": 599,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Ciccarone, Alexander",
+          "ID": "31002603",
+          "Rating": 594,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Huang, Nolan Wu",
+          "ID": "32115943",
+          "Rating": 593,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Govind, Aarav",
+          "ID": "31707634",
+          "Rating": 581,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Veeramanikandan, Vriishabh",
+          "ID": "32009918",
+          "Rating": 580,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Solonnikov, Gleb",
+          "ID": "16859567",
+          "Rating": 578,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Deych, Adrian",
+          "ID": "30995408",
+          "Rating": 577,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Yang, Edward",
+          "ID": "31712018",
+          "Rating": 573,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Delaney, Luke",
+          "ID": "30351251",
+          "Rating": 565,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Anzivino, Brady Xu",
+          "ID": "32084097",
+          "Rating": 559,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Guo, Leonard",
+          "ID": "31491564",
+          "Rating": 551,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Sundar, Tejas",
+          "ID": "31434901",
+          "Rating": 550,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Sriram, Yazhini",
+          "ID": "31175009",
+          "Rating": 545,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Okhravi, Adrian",
+          "ID": "31625407",
+          "Rating": 543,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Palaparthi, Aaryash",
+          "ID": "31784635",
+          "Rating": 536,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Sherman, Xander",
+          "ID": "31713013",
+          "Rating": 491,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 19,
+          "Name": "Yang, Nolan",
+          "ID": "31672499",
+          "Rating": 477,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 20,
+          "Name": "Kumar, Adhvik Senthil",
+          "ID": "31433460",
+          "Rating": 474,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 21,
+          "Name": "Kalla, Jai Vardhan",
+          "ID": "16636381",
+          "Rating": 468,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 22,
+          "Name": "Sun, Derek",
+          "ID": "31781880",
+          "Rating": 457,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 23,
+          "Name": "Tan, Tingting",
+          "ID": "31266745",
+          "Rating": 447,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 24,
+          "Name": "Chen, Jack",
+          "ID": "31964706",
+          "Rating": 447,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 25,
+          "Name": "Gowda, Vivaan Mahesh",
+          "ID": "32095123",
+          "Rating": 438,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 26,
+          "Name": "Shah, Rayansh",
+          "ID": "32354120",
+          "Rating": 432,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 27,
+          "Name": "Kantamneni, Adhvik",
+          "ID": "30290151",
+          "Rating": 411,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 28,
+          "Name": "Meng, Jinran",
+          "ID": "32008316",
+          "Rating": 396,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 29,
+          "Name": "Pishuk, Kyryll",
+          "ID": "30996030",
+          "Rating": 392,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 30,
+          "Name": "Thirukkonda, Danvir",
+          "ID": "32324960",
+          "Rating": 391,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 31,
+          "Name": "Jain, Paridhi",
+          "ID": "31305775",
+          "Rating": 383,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 32,
+          "Name": "Chaudhary, Ruhaan",
+          "ID": "31722363",
+          "Rating": 324,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 33,
+          "Name": "Maricherla, Anisha",
+          "ID": "31194400",
+          "Rating": 302,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 34,
+          "Name": "Niu, Ethan Maomao",
+          "ID": "32224245",
+          "Rating": 300,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 35,
+          "Name": "Shetye, Ruhaan",
+          "ID": "32459574",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 36,
+          "Name": "Chong, Raymond",
+          "ID": "32454331",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    }
+  ]
+}

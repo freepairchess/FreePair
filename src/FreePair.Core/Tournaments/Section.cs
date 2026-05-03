@@ -35,7 +35,17 @@ public sealed record Section(
     /// <see cref="TournamentMutations.UndeleteSection"/>; persisted
     /// as <c>"FreePair soft deleted"</c> in the section's Overview.
     /// </summary>
-    bool SoftDeleted = false)
+    bool SoftDeleted = false,
+    /// <summary>
+    /// Per-section pairing engine override. <c>null</c> means "inherit
+    /// from <see cref="Tournament.PairingEngine"/>, which itself falls
+    /// back to <see cref="PairingEngineDefaults.ForRatingType"/>". Use
+    /// <see cref="PairingEngineDefaults.Resolve"/> to compute the
+    /// effective engine for this section. Locked once
+    /// <see cref="RoundsPaired"/> is positive (mutation throws).
+    /// Persisted as <c>"FreePair pairing engine"</c> on the section.
+    /// </summary>
+    FreePair.Core.Tournaments.Enums.PairingEngineKind? PairingEngine = null)
 {
     /// <summary>
     /// Non-null view of <see cref="DoNotPairPairs"/>.

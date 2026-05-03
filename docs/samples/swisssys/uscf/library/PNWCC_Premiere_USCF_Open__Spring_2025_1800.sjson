@@ -1,0 +1,116 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.34,
+    "Tournament title": "PNWCC Premiere USCF Open - Spring 2025 (1800+)",
+    "Tournament time controls": "90+30",
+    "Starting date": "2025-03-26",
+    "Ending date": "2025-03-30",
+    "NACH event ID": "97610d0b-4350-46bd-91f4-0ce76e0d460f",
+    "NACH passcode": "98bd3f69-2bc7-45ee-addd-56c10e9f1c56",
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Section title": "Open",
+      "Section time control": "90+30",
+      "Number of players": 8,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 7,
+      "Lower rating limit": 1600,
+      "Upper rating limit": 9999,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Tang, Austin",
+          "ID": "16097497",
+          "Rating": 2220,
+          "Club": "OR",
+          "State": "OR",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Palathingal, Rafael",
+          "ID": "30810765",
+          "Rating": 2074,
+          "Club": "WA",
+          "State": "WA",
+          "Player title": "CM",
+          "Reserved byes": "6 7 "
+        },
+        {
+          "Pair number": 3,
+          "Name": "Han, Shuyi",
+          "ID": "17101695",
+          "Rating": 1997,
+          "Club": "WA",
+          "State": "WA",
+          "Player title": "",
+          "Reserved byes": "1 2 3z "
+        },
+        {
+          "Pair number": 4,
+          "Name": "Ramkumar, Nikhil",
+          "ID": "30040897",
+          "Rating": 1925,
+          "Club": "WA",
+          "State": "WA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Tagor, Bental Checking",
+          "ID": "31405015",
+          "Rating": 1877,
+          "Club": "WA",
+          "State": "WA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Zhou, Yuchen",
+          "ID": "30171464",
+          "Rating": 1808,
+          "Club": "WA",
+          "State": "WA",
+          "Player title": "",
+          "Reserved byes": "1 2 "
+        },
+        {
+          "Pair number": 7,
+          "Name": "Jones, Davey V",
+          "ID": "14364373",
+          "Rating": 1709,
+          "Club": "WA",
+          "State": "WA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Shankaranand, Deeksha",
+          "ID": "30178363",
+          "Rating": 1657,
+          "Club": "WA",
+          "State": "WA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    }
+  ]
+}

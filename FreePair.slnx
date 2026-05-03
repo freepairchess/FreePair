@@ -2,6 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/FreePair.App/FreePair.App.csproj" />
     <Project Path="src/FreePair.Core/FreePair.Core.csproj" />
+    <Project Path="src/FreePair.UscfEngine/FreePair.UscfEngine.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/FreePair.Core.Tests/FreePair.Core.Tests.csproj" />

@@ -1,0 +1,108 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.34,
+    "Tournament title": "Billerica February 2026 Swiss",
+    "Tournament time controls": "G/90; d5",
+    "Starting date": "2026-02-06",
+    "Ending date": "2026-02-27",
+    "NACH event ID": "c4fcdd75-326e-46fe-a505-0c3365c40c46",
+    "NACH passcode": "7a3d26fd-5f7a-494a-8d11-33b78a5ff46f",
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Section title": "Open",
+      "Section time control": "G/90; d5",
+      "Number of players": 8,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 9999,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Pearson, Frederick Kemp",
+          "ID": "12223060",
+          "Rating": 1903,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Reynolds, Douglas Sheldon",
+          "ID": "12427040",
+          "Rating": 1836,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Viyani, Kenisro Princeton",
+          "ID": "30304394",
+          "Rating": 1826,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Gradijan, Stephen",
+          "ID": "12454998",
+          "Rating": 1800,
+          "Club": "MA",
+          "Player title": "",
+          "Reserved byes": "2 "
+        },
+        {
+          "Pair number": 5,
+          "Name": "Kaprielian, Mark",
+          "ID": "10007763",
+          "Rating": 1715,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Barker, Kerry",
+          "ID": "32273255",
+          "Rating": 1065,
+          "Club": "MA",
+          "Player title": "",
+          "Reserved byes": "1 "
+        },
+        {
+          "Pair number": 7,
+          "Name": "Souhrada, Ernie",
+          "ID": "32455608",
+          "Rating": 928,
+          "Club": "CO",
+          "Player title": "",
+          "Reserved byes": "3 "
+        },
+        {
+          "Pair number": 8,
+          "Name": "Veeramanikandan, Vriishabh",
+          "ID": "32009918",
+          "Rating": 882,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    }
+  ]
+}

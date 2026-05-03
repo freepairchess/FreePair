@@ -36,14 +36,63 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FreePair.Core\FreePair.Core.csproj" />
+
+    <!-- FreePair.UscfEngine is the standalone console wrapper around
+         UscfPairer that the App shells out to when the effective engine
+         kind is Uscf (default for non-FIDE rating types). It MUST land
+         next to FreePair.App.exe in the output folder so that
+         BbpPairingEngine.ResolveEffectiveUscfPath can find it via the
+         AppContext.BaseDirectory probe. Without this reference dev
+         builds would silently fall back to bbpPairings.exe (which is
+         the FIDE Dutch engine and produces wrong USCF bye / pairing
+         decisions for non-FIDE events).
+
+         ReferenceOutputAssembly=false stops the App from linking the
+         UscfEngine assembly as a library — we only want the EXE
+         alongside, not loaded into the App process. The actual copy
+         happens in the CopyUscfEngineOutput target below. -->
+    <ProjectReference Include="..\FreePair.UscfEngine\FreePair.UscfEngine.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <Private>false</Private>
+      <SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
+    </ProjectReference>
   </ItemGroup>
+
+  <!-- Copy FreePair.UscfEngine.exe + its sibling .dll / .pdb /
+       .runtimeconfig.json files into the App's output directory so
+       BbpPairingEngine.ResolveEffectiveUscfPath finds the engine via
+       the AppContext.BaseDirectory probe. The ProjectReference above
+       guarantees UscfEngine has been built before this target runs.
+       FreePair.Core.dll is intentionally NOT copied here — the App
+       already produces its own copy of FreePair.Core.dll in the
+       same folder, and the UscfEngine binary loads it from there. -->
+  <Target Name="CopyUscfEngineOutput"
+          AfterTargets="Build"
+          Inputs="..\FreePair.UscfEngine\bin\$(Configuration)\net10.0\FreePair.UscfEngine.exe"
+          Outputs="$(OutputPath)FreePair.UscfEngine.exe">
+    <ItemGroup>
+      <UscfEngineFiles Include="..\FreePair.UscfEngine\bin\$(Configuration)\net10.0\FreePair.UscfEngine.exe" />
+      <UscfEngineFiles Include="..\FreePair.UscfEngine\bin\$(Configuration)\net10.0\FreePair.UscfEngine.dll" />
+      <UscfEngineFiles Include="..\FreePair.UscfEngine\bin\$(Configuration)\net10.0\FreePair.UscfEngine.pdb"
+                       Condition="Exists('..\FreePair.UscfEngine\bin\$(Configuration)\net10.0\FreePair.UscfEngine.pdb')" />
+      <UscfEngineFiles Include="..\FreePair.UscfEngine\bin\$(Configuration)\net10.0\FreePair.UscfEngine.runtimeconfig.json" />
+    </ItemGroup>
+    <Copy SourceFiles="@(UscfEngineFiles)"
+          DestinationFolder="$(OutputPath)"
+          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(UscfEngineFiles)"
+          DestinationFolder="$(PublishDir)"
+          SkipUnchangedFiles="true"
+          Condition="'$(PublishDir)' != ''" />
+  </Target>
 
   <!-- Bundled bbpPairings binary so installed users never have to
        download / configure the pairing engine separately. The exe
        is gitignored under tools/ — see tools/README.md for the
        one-time per-developer download step. The Condition keeps
        the build green when the file is missing locally; release
-       builds explicitly verify presence in release\release.ps1. -->
+       builds explicitly verify presence in release\release.ps1.
+       Used by FIDE-rated events (effective engine kind == Bbp). -->
   <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\..\tools\bbpPairings.exe')">
     <Content Include="..\..\tools\bbpPairings.exe">
       <Link>bbpPairings.exe</Link>

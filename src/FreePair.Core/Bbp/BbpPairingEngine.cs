@@ -45,6 +45,27 @@ public class BbpPairingEngine : IBbpPairingEngine
     public const string BundledExeName = "bbpPairings.exe";
 
     /// <summary>
+    /// File name of FreePair's USCF Swiss engine, probed in the install
+    /// directory the same way <see cref="BundledExeName"/> is. Released
+    /// installers ship both binaries side-by-side.
+    /// </summary>
+    public const string UscfBundledExeName = "FreePair.UscfEngine.exe";
+
+    /// <summary>
+    /// Friendly instructions surfaced when no FreePair USCF engine
+    /// binary can be located. Mirrors <see cref="NotConfiguredInstructions"/>
+    /// for parity.
+    /// </summary>
+    public const string UscfNotConfiguredInstructions =
+        "FreePair USCF pairing engine is not configured.\n\n" +
+        "FreePair installers normally bundle FreePair.UscfEngine.exe — you\n" +
+        "should not have to set this manually. If you're running from a\n" +
+        "manual build:\n" +
+        "1. Build src/FreePair.UscfEngine (dotnet publish -c Release).\n" +
+        "2. Open Settings in FreePair and set \"USCF engine binary\" to\n" +
+        "   the published FreePair.UscfEngine.exe.";
+
+    /// <summary>
     /// Resolves the pairing-engine binary to use. Returns
     /// <paramref name="configuredPath"/> when it points at a real file;
     /// otherwise falls back to <c>bbpPairings.exe</c> in the FreePair
@@ -59,6 +80,41 @@ public class BbpPairingEngine : IBbpPairingEngine
             return configuredPath;
         }
         var bundled = Path.Combine(AppContext.BaseDirectory, BundledExeName);
+        return File.Exists(bundled) ? bundled : null;
+    }
+
+    /// <summary>
+    /// Resolves the binary to use for a given pairing engine kind.
+    /// Each kind has its own configured-path slot in
+    /// <c>AppSettings</c> and its own bundled-exe fallback.
+    /// </summary>
+    /// <param name="engine">Which engine the caller wants to run.</param>
+    /// <param name="bbpConfiguredPath">User-configured BBP binary path
+    /// (typically <c>AppSettings.PairingEngineBinaryPath</c>).</param>
+    /// <param name="uscfConfiguredPath">User-configured USCF binary
+    /// path (typically <c>AppSettings.UscfEngineBinaryPath</c>).</param>
+    /// <returns>An absolute path to an existing executable, or
+    /// <c>null</c> when neither the configured path nor the bundled
+    /// fallback is usable.</returns>
+    public static string? ResolveEffectivePathFor(
+        FreePair.Core.Tournaments.Enums.PairingEngineKind engine,
+        string? bbpConfiguredPath,
+        string? uscfConfiguredPath)
+    {
+        return engine switch
+        {
+            FreePair.Core.Tournaments.Enums.PairingEngineKind.Uscf => ResolveEffectiveUscfPath(uscfConfiguredPath),
+            _                                                       => ResolveEffectivePath(bbpConfiguredPath),
+        };
+    }
+
+    private static string? ResolveEffectiveUscfPath(string? configuredPath)
+    {
+        if (!string.IsNullOrWhiteSpace(configuredPath) && File.Exists(configuredPath))
+        {
+            return configuredPath;
+        }
+        var bundled = Path.Combine(AppContext.BaseDirectory, UscfBundledExeName);
         return File.Exists(bundled) ? bundled : null;
     }
 

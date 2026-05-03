@@ -1,0 +1,21 @@
+[Setup]
+Version=9.06
+[Tournament info]
+Title=MCC - 2026-04
+Time controls=G/90; d5
+[NAChessHub]
+EventID="3165eda7-ae49-4e07-8acb-91d49ef51443"
+EventFileUploadPasscode="388c444a-7e52-4293-88f7-adc838df3dd6"
+[Section count]
+Total=2
+[Sections]
+Section1=Open
+Section2=U1700
+[Open]
+Section title=Open
+Time controls=G/90; d5
+Rounds=5
+[U1700]
+Section title=U1700
+Time controls=G/90; d5
+Rounds=5

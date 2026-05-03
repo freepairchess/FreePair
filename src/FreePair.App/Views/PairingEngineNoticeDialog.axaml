@@ -33,21 +33,32 @@
                        FontSize="16"/>
 
             <TextBlock TextWrapping="Wrap">
-                <Run Text="FreePair drives all Swiss pairings through the"/>
-                <Run Text=" BBP Pairings " FontWeight="SemiBold"/>
-                <Run Text="engine — the FIDE Dutch System reference implementation. It is the only pairing engine FreePair supports."/>
+                <Run Text="FreePair ships with two pairing engines side-by-side, neither replaces the other:"/>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap" Margin="12,0,0,0">
+                <Run Text="• " FontWeight="SemiBold"/>
+                <Run Text="BBP (FIDE Dutch System)" FontWeight="SemiBold"/>
+                <Run Text=" — drives bbpPairings.exe. Default for FIDE-rated events. Bit-for-bit FIDE-compliant per Rule C.04."/>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap" Margin="12,0,0,0">
+                <Run Text="• " FontWeight="SemiBold"/>
+                <Run Text="USCF Swiss" FontWeight="SemiBold"/>
+                <Run Text=" — FreePair's home-grown USCF engine (FreePair.UscfEngine.exe). Default for purely USCF-rated events and other non-FIDE federations."/>
             </TextBlock>
 
             <TextBlock TextWrapping="Wrap">
-                <Run Text="Pairings are bit-for-bit FIDE-compliant for FIDE-rated events."/>
-                <LineBreak/>
-                <LineBreak/>
+                <Run Text="Each tournament defaults to one of these based on its rating type, and each section can override the choice (until round 1 is paired). Once round 1 lands, the engine is locked for the rest of the event so rating-report submissions stay reproducible."/>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
                 <Run Text="USCF events:" FontWeight="SemiBold"/>
-                <Run Text=" the resulting crosstable is accepted for rating submission, but the pairings themselves follow FIDE Rule C.04 (Dutch System), not USCF Rule 27. Most weekend Swisses pair identically; edge cases (color repeats, last-round prize protection) may differ from a strict-USCF tool such as SwissSys."/>
+                <Run Text=" the resulting crosstable is accepted for rating submission regardless of which engine you pick. The two engines may differ on edge cases (color repeats, last-round prize protection, swap selection), but most weekend Swisses pair identically. The engine selector is on the Event configuration form and on each section's header."/>
             </TextBlock>
 
             <TextBlock Foreground="Gray" FontSize="11" TextWrapping="Wrap"
-                       Text="You can read this note again any time from Settings → Pairing engine."/>
+                       Text="You can read this note again any time from Settings → Pairing engines."/>
         </StackPanel>
     </DockPanel>
 </Window>

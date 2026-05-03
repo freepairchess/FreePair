@@ -1,0 +1,131 @@
+NAME = Martin, David W
+ID# = 12877246
+RATING = 1637
+Title = 
+CLUB = MA
+
+NAME = Smith, Warner
+ID# = 12480740
+RATING = 1543
+Title = 
+CLUB = MA
+
+NAME = Labelle, Matthew Nicholas
+ID# = 30044073
+RATING = 1530
+Title = 
+CLUB = MA
+
+NAME = Thompson, Douglas
+ID# = 12668393
+RATING = 1502
+Title = 
+CLUB = MA
+
+NAME = Chornoboy, Edward S.
+ID# = 12520269
+RATING = 1500
+Title = 
+CLUB = MA
+
+NAME = Fallon, James Joseph
+ID# = 32006413
+RATING = 1497
+Title = 
+CLUB = MA
+
+NAME = Nicewicz, Lars
+ID# = 31651988
+RATING = 1480
+Title = 
+CLUB = MA
+
+NAME = Treiber, Robert
+ID# = 16102367
+RATING = 1416
+Title = 
+CLUB = MA
+
+NAME = Dorfman, John Roger
+ID# = 10338786
+RATING = 1400
+Title = 
+CLUB = MA
+
+NAME = Prabhugee, Adhirit
+ID# = 16228992
+RATING = 1390
+Title = 
+CLUB = MA
+
+NAME = Mullen, John Patrick
+ID# = 12503480
+RATING = 1368
+Title = 
+CLUB = MA
+
+NAME = Weast, Gordon J
+ID# = 13711281
+RATING = 1300
+Title = 
+CLUB = MA
+
+NAME = Krishnamurthy, Venkat
+ID# = 14927661
+RATING = 1300
+Title = 
+CLUB = MA
+
+NAME = Lamare, Matthew Marc
+ID# = 32113596
+RATING = 1248
+Title = 
+CLUB = MA
+
+NAME = Chandak, Aarav
+ID# = 30690866
+RATING = 1205
+Title = 
+CLUB = MA
+
+NAME = Senne, Steven R
+ID# = 32072558
+RATING = 1097
+Title = 
+CLUB = MA
+
+NAME = Hu, Freddie
+ID# = 32640012
+RATING = 1095
+Title = 
+CLUB = MA
+
+NAME = Eifler, Richard
+ID# = 32848692
+RATING = 1067
+Title = 
+CLUB = MA
+
+NAME = Murphy, Marielle
+ID# = 12876703
+RATING = 1050
+Title = 
+CLUB = MA
+
+NAME = Matthews, Robert J
+ID# = 12910717
+RATING = 1016
+Title = 
+CLUB = MA
+
+NAME = Butler, Robert M
+ID# = 31288308
+RATING = 897
+Title = 
+CLUB = MA
+
+NAME = Michaels, Walter P.
+ID# = 30670037
+RATING = 362
+Title = 
+CLUB = MA

@@ -1,0 +1,1507 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.34,
+    "Tournament title": "33rd Massachusetts G/60 Championship",
+    "Tournament time controls": "G/60; d5",
+    "Starting date": "2025-04-13",
+    "Ending date": "2025-04-13",
+    "NACH event ID": "db74f9ea-9850-40fb-852e-339581c7ad90",
+    "NACH passcode": "8b944747-148e-4bee-9936-7d32d24de3cb",
+    "Trace": "0.0.0.0.0.0.0.0.0.0."
+  },
+  "Sections": [
+    {
+      "Section name": "Championship",
+      "Type": 0,
+      "Section title": "Championship",
+      "Section time control": "G/60; d5",
+      "Number of players": 26,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 2000,
+      "Upper rating limit": 9999,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Zhou, Jianchao",
+          "ID": "15524414",
+          "Rating": 2670,
+          "Club": "MA",
+          "Player title": "GM"
+        },
+        {
+          "Pair number": 2,
+          "Name": "Poliannikov, Danila",
+          "ID": "14969622",
+          "Rating": 2440,
+          "Club": "MA",
+          "Player title": "FM"
+        },
+        {
+          "Pair number": 3,
+          "Name": "Shanmugasundaram, Rajesh",
+          "ID": "16434545",
+          "Rating": 2337,
+          "Club": "RI",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Zhao, Kevin",
+          "ID": "30425013",
+          "Rating": 2190,
+          "Club": "MA",
+          "Player title": "CM"
+        },
+        {
+          "Pair number": 5,
+          "Name": "Wu, William",
+          "ID": "30020380",
+          "Rating": 2184,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Barnakov, Yury Anatolievich",
+          "ID": "12964843",
+          "Rating": 2160,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Botta, Alejandro Felix",
+          "ID": "12740272",
+          "Rating": 2155,
+          "Club": "MA",
+          "Player title": "NM"
+        },
+        {
+          "Pair number": 8,
+          "Name": "Zoffer, Oskar",
+          "ID": "16471866",
+          "Rating": 2144,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Wang, Ryan",
+          "ID": "15486461",
+          "Rating": 2125,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Xu, Shawn",
+          "ID": "30264362",
+          "Rating": 2108,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Gartenlaub, Corin",
+          "ID": "16899496",
+          "Rating": 2102,
+          "Club": "NY",
+          "Player title": "CM"
+        },
+        {
+          "Pair number": 12,
+          "Name": "Kilari, Dattasai",
+          "ID": "16429310",
+          "Rating": 2098,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Vedula, Hrishikesh Sai",
+          "ID": "16099404",
+          "Rating": 2097,
+          "Club": "NH",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Katsman, David",
+          "ID": "14958088",
+          "Rating": 2096,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Zhou, Arthur",
+          "ID": "30350651",
+          "Rating": 2095,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Odnorozhenko, Kateryna",
+          "ID": "30200342",
+          "Rating": 2088,
+          "Club": "MA",
+          "Player title": "WIM"
+        },
+        {
+          "Pair number": 17,
+          "Name": "Mehta, Dhairya M",
+          "ID": "16378663",
+          "Rating": 2082,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Jain, Vihaan",
+          "ID": "16584243",
+          "Rating": 2073,
+          "Club": "MA",
+          "Player title": "CM"
+        },
+        {
+          "Pair number": 19,
+          "Name": "Cheng, Eric",
+          "ID": "16921202",
+          "Rating": 2062,
+          "Club": "NY",
+          "Player title": ""
+        },
+        {
+          "Pair number": 20,
+          "Name": "Price, Alan Curtis",
+          "ID": "12534712",
+          "Rating": 2052,
+          "Club": "MA",
+          "Player title": "NM"
+        },
+        {
+          "Pair number": 21,
+          "Name": "Wang, Bohan",
+          "ID": "16880573",
+          "Rating": 2029,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 22,
+          "Name": "Zhang, Royce",
+          "ID": "30154455",
+          "Rating": 2022,
+          "Club": "RI",
+          "Player title": ""
+        },
+        {
+          "Pair number": 23,
+          "Name": "Ravn, William E",
+          "ID": "14925795",
+          "Rating": 2006,
+          "Club": "ME",
+          "Player title": ""
+        },
+        {
+          "Pair number": 24,
+          "Name": "Bernal, Andrew",
+          "ID": "16009740",
+          "Rating": 2005,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 25,
+          "Name": "Nugent, Arthur P",
+          "ID": "10011191",
+          "Rating": 2000,
+          "Club": "MA",
+          "Player title": "",
+          "Reserved byes": "4 "
+        },
+        {
+          "Pair number": 26,
+          "Name": "Wu, Felix",
+          "ID": "30258050",
+          "Rating": 1962,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Under_2200",
+      "Type": 0,
+      "Section title": "Under 2200",
+      "Section time control": "G/60; d5",
+      "Number of players": 28,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 2199,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Cousins, Robert P",
+          "ID": "12653439",
+          "Rating": 2129,
+          "Club": "NH",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Vertkin, Sergey",
+          "ID": "12780533",
+          "Rating": 2118,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Uwakwe, Michael",
+          "ID": "15610873",
+          "Rating": 2012,
+          "Club": "CT",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Carey, Michael P",
+          "ID": "10120560",
+          "Rating": 2010,
+          "Club": "RI",
+          "Player title": "NM"
+        },
+        {
+          "Pair number": 5,
+          "Name": "Maralappanavar, Omkar",
+          "ID": "30512002",
+          "Rating": 2001,
+          "Club": "CT",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Rueda, Libardo",
+          "ID": "12497363",
+          "Rating": 2000,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Van Vugt, Noah",
+          "ID": "30531637",
+          "Rating": 1971,
+          "Club": "NH",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Farzaneh-Far, Ramin",
+          "ID": "13794896",
+          "Rating": 1957,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Malinin, Sergey",
+          "ID": "30302734",
+          "Rating": 1940,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Kozlek, Tommy, Iv",
+          "ID": "30347417",
+          "Rating": 1930,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Zheng, Ryan",
+          "ID": "30773001",
+          "Rating": 1925,
+          "Club": "CT",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Dame, Erin",
+          "ID": "12533685",
+          "Rating": 1885,
+          "Club": "NH",
+          "Player title": "",
+          "Reserved byes": "4 "
+        },
+        {
+          "Pair number": 13,
+          "Name": "Klempf, Maxim",
+          "ID": "16715527",
+          "Rating": 1876,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Farzaneh-Far, Marcus",
+          "ID": "31665965",
+          "Rating": 1865,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Carnevale, Christopher",
+          "ID": "12608782",
+          "Rating": 1864,
+          "Club": "MA",
+          "Player title": "",
+          "Reserved byes": "2 "
+        },
+        {
+          "Pair number": 16,
+          "Name": "Jain, Parinya",
+          "ID": "16918131",
+          "Rating": 1848,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Dong, Albert",
+          "ID": "30036635",
+          "Rating": 1833,
+          "Club": "RI",
+          "Player title": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Liu, Jianda",
+          "ID": "17182781",
+          "Rating": 1817,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 19,
+          "Name": "Klempf, Nathan",
+          "ID": "16715512",
+          "Rating": 1813,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 20,
+          "Name": "Wang, William Heting",
+          "ID": "32019009",
+          "Rating": 1804,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 21,
+          "Name": "Shi, Evan",
+          "ID": "16966603",
+          "Rating": 1787,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 22,
+          "Name": "Bennett, Maxwell Heller",
+          "ID": "14159528",
+          "Rating": 1769,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 23,
+          "Name": "Kaprielian, Mark",
+          "ID": "10007763",
+          "Rating": 1742,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 24,
+          "Name": "Rivera, Mariano",
+          "ID": "12933153",
+          "Rating": 1705,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 25,
+          "Name": "Tanna, Vivaan",
+          "ID": "30179518",
+          "Rating": 1677,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 26,
+          "Name": "Trotter, Rowan",
+          "ID": "32083346",
+          "Rating": 1579,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 27,
+          "Name": "Kitchiner Valentine, Levi Horace",
+          "ID": "17173635",
+          "Rating": 1470,
+          "Club": "DC",
+          "Player title": ""
+        },
+        {
+          "Pair number": 28,
+          "Name": "Liang, Ryan",
+          "ID": "31092762",
+          "Rating": 198,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": [],
+      "Prizes": {
+        "Place prizes": [
+          {
+            "Value": 250,
+            "Description": ""
+          },
+          {
+            "Value": 150,
+            "Description": ""
+          }
+        ]
+      }
+    },
+    {
+      "Section name": "Under_2000",
+      "Type": 0,
+      "Section title": "Under 2000",
+      "Section time control": "G/60; d5",
+      "Number of players": 21,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 1999,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Pearson, Frederick Kemp",
+          "ID": "12223060",
+          "Rating": 1904,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Hori, Calvin",
+          "ID": "12864842",
+          "Rating": 1827,
+          "Club": "MA",
+          "Player title": "",
+          "Reserved byes": "4 "
+        },
+        {
+          "Pair number": 3,
+          "Name": "Vo, Phu Si",
+          "ID": "14522024",
+          "Rating": 1798,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Ganguly, Maitreya",
+          "ID": "30716324",
+          "Rating": 1792,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Smith, Stephen E",
+          "ID": "12451370",
+          "Rating": 1778,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Zhang, Ella Xinyue",
+          "ID": "30305617",
+          "Rating": 1767,
+          "Club": "MA",
+          "Team": "Zhang",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Nguyen, Duy Tuong",
+          "ID": "30581110",
+          "Rating": 1765,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Baginski, Paul A",
+          "ID": "12376240",
+          "Rating": 1757,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Zhang, Emma Linyue",
+          "ID": "30305579",
+          "Rating": 1725,
+          "Club": "MA",
+          "Team": "Zhang",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Francis, Joseph A",
+          "ID": "12433459",
+          "Rating": 1712,
+          "Club": "GA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Dondero, Ryan",
+          "ID": "30722640",
+          "Rating": 1699,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Raffa, Gabriel Anthony Joseph",
+          "ID": "17014432",
+          "Rating": 1665,
+          "Club": "MA",
+          "Player title": "",
+          "Reserved byes": "4 "
+        },
+        {
+          "Pair number": 13,
+          "Name": "Festa, Luca",
+          "ID": "30719751",
+          "Rating": 1646,
+          "Club": "CT",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Jain, Pamil",
+          "ID": "16904675",
+          "Rating": 1639,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Tower, Zachary Mark",
+          "ID": "30739679",
+          "Rating": 1605,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Duval, George Wilfred",
+          "ID": "12471987",
+          "Rating": 1604,
+          "Club": "MA",
+          "Player title": "",
+          "Reserved byes": "4 "
+        },
+        {
+          "Pair number": 17,
+          "Name": "Farmer, Chris M",
+          "ID": "12686129",
+          "Rating": 1600,
+          "Club": "GA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Li, Alexander",
+          "ID": "31814635",
+          "Rating": 1561,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 19,
+          "Name": "Dey, Soumili",
+          "ID": "30237854",
+          "Rating": 1536,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 20,
+          "Name": "Guerra, Justin Ralph Baldovino",
+          "ID": "12912297",
+          "Rating": 1535,
+          "Club": "TX",
+          "Player title": ""
+        },
+        {
+          "Pair number": 21,
+          "Name": "Bao, Kangdi",
+          "ID": "31343950",
+          "Rating": 1464,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": [],
+      "Prizes": {
+        "Place prizes": [
+          {
+            "Value": 250,
+            "Description": ""
+          },
+          {
+            "Value": 150,
+            "Description": ""
+          }
+        ]
+      }
+    },
+    {
+      "Section name": "Under_1800",
+      "Type": 0,
+      "Section title": "Under 1800",
+      "Section time control": "G/60; d5",
+      "Number of players": 20,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 1799,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Mcconville, James",
+          "ID": "12848589",
+          "Rating": 1766,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Moore, Michael O D",
+          "ID": "12538350",
+          "Rating": 1724,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Shakya, Amrit",
+          "ID": "31038686",
+          "Rating": 1673,
+          "Club": "ME",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Lin, Xinyu",
+          "ID": "32012230",
+          "Rating": 1637,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Sivakumar, Ragulan",
+          "ID": "14436252",
+          "Rating": 1613,
+          "Club": "VT",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Shryoc, James Gavin",
+          "ID": "31284405",
+          "Rating": 1610,
+          "Club": "FL",
+          "Player title": "",
+          "Reserved byes": "1 "
+        },
+        {
+          "Pair number": 7,
+          "Name": "Hyland, James R",
+          "ID": "11309097",
+          "Rating": 1600,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Martin, David W",
+          "ID": "12877246",
+          "Rating": 1600,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Barash, Yan",
+          "ID": "16433515",
+          "Rating": 1591,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Leclaire, Gabriel",
+          "ID": "31391393",
+          "Rating": 1576,
+          "Club": "NH",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Becker, Thorsten",
+          "ID": "12787505",
+          "Rating": 1551,
+          "Club": "MA",
+          "Player title": "",
+          "Reserved byes": "4 "
+        },
+        {
+          "Pair number": 12,
+          "Name": "Jiang, Brooks",
+          "ID": "30733511",
+          "Rating": 1485,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Klempf, Igor",
+          "ID": "16715506",
+          "Rating": 1468,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Swaroop, Anand",
+          "ID": "16455688",
+          "Rating": 1464,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Davis, Jason Mark",
+          "ID": "13750284",
+          "Rating": 1450,
+          "Club": "NH",
+          "Player title": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Zhou, Jayden",
+          "ID": "30461297",
+          "Rating": 1414,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Godkar, Yash",
+          "ID": "31393958",
+          "Rating": 1398,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Steeples, Duncan P",
+          "ID": "31311813",
+          "Rating": 1351,
+          "Club": "TN",
+          "Player title": ""
+        },
+        {
+          "Pair number": 19,
+          "Name": "Niu, Mengyuan",
+          "ID": "16836668",
+          "Rating": 1247,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 20,
+          "Name": "Sideris, Marinos",
+          "ID": "31518888",
+          "Rating": 1161,
+          "Club": "NH",
+          "Player title": ""
+        }
+      ],
+      "Teams": [],
+      "Prizes": {
+        "Place prizes": [
+          {
+            "Value": 250,
+            "Description": ""
+          },
+          {
+            "Value": 125,
+            "Description": ""
+          }
+        ]
+      }
+    },
+    {
+      "Section name": "Under_1600",
+      "Type": 0,
+      "Section title": "Under 1600",
+      "Section time control": "G/60; d5",
+      "Number of players": 14,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 1599,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Ni, Alvin",
+          "ID": "31935489",
+          "Rating": 1509,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Zimmerman, Kevin",
+          "ID": "12799878",
+          "Rating": 1500,
+          "Club": "CT",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Smith, Warner",
+          "ID": "12480740",
+          "Rating": 1419,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Pires, Matthew J",
+          "ID": "12541440",
+          "Rating": 1411,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Viyani, Kenisro Princeton",
+          "ID": "30304394",
+          "Rating": 1400,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Van Vugt, Eli",
+          "ID": "30531705",
+          "Rating": 1400,
+          "Club": "NH",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Hambardzumyan, Narek",
+          "ID": "17264734",
+          "Rating": 1376,
+          "Club": "NH",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Swartz, Paul K",
+          "ID": "12679328",
+          "Rating": 1371,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Jette, David",
+          "ID": "30226135",
+          "Rating": 1308,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Martin, Luke",
+          "ID": "30916096",
+          "Rating": 1274,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Vidrevich, David",
+          "ID": "31428701",
+          "Rating": 1256,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Santhosh Kumar, Krishna Chaitanya",
+          "ID": "31261246",
+          "Rating": 1244,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Chikosh, Adrian",
+          "ID": "31263754",
+          "Rating": 1161,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Jaiswal, Vivan",
+          "ID": "17281345",
+          "Rating": 1126,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": [],
+      "Prizes": {
+        "Place prizes": [
+          {
+            "Value": 200,
+            "Description": ""
+          },
+          {
+            "Value": 125,
+            "Description": ""
+          }
+        ]
+      }
+    },
+    {
+      "Section name": "Under_1400",
+      "Type": 0,
+      "Section title": "Under 1400",
+      "Section time control": "G/60; d5",
+      "Number of players": 12,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 1399,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Sivakumar, Niranjan",
+          "ID": "30413898",
+          "Rating": 1327,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Snow, Clyde Franklin",
+          "ID": "12460814",
+          "Rating": 1303,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Rapoport, Alexander",
+          "ID": "15946270",
+          "Rating": 1298,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Karthik, Prayag",
+          "ID": "17102677",
+          "Rating": 1239,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Chakraborty, Sanav Chandra",
+          "ID": "30818027",
+          "Rating": 1216,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Fan, Ziming Thomas",
+          "ID": "31566231",
+          "Rating": 1201,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Li, Tianyi",
+          "ID": "32172319",
+          "Rating": 1170,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Prem Kumar, Dhanvanth",
+          "ID": "31816882",
+          "Rating": 1073,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Faisal, Azim",
+          "ID": "30677634",
+          "Rating": 1041,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Romero, Joshua",
+          "ID": "30936615",
+          "Rating": 1017,
+          "Club": "MA",
+          "Player title": "",
+          "Reserved byes": "1 "
+        },
+        {
+          "Pair number": 11,
+          "Name": "Kirubakaran, Gautham",
+          "ID": "31971144",
+          "Rating": 996,
+          "Club": "MA",
+          "Player title": "",
+          "Reserved byes": "1 "
+        },
+        {
+          "Pair number": 12,
+          "Name": "Butler, Robert M",
+          "ID": "31288308",
+          "Rating": 754,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": []
+    },
+    {
+      "Section name": "Under_1200",
+      "Type": 0,
+      "Section title": "Under 1200",
+      "Section time control": "G/60; d5",
+      "Number of players": 10,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 1199,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Heine, Winston",
+          "ID": "31189937",
+          "Rating": 1182,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Wilkinson, Michael Todd",
+          "ID": "30355885",
+          "Rating": 1096,
+          "Club": "NH",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Wholey, Nathaniel",
+          "ID": "31427785",
+          "Rating": 1063,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Hinrichsen, Brennan",
+          "ID": "31520014",
+          "Rating": 1054,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Rachman, Gregory",
+          "ID": "30275607",
+          "Rating": 1037,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Jain, Parv",
+          "ID": "30295219",
+          "Rating": 982,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Gawande, Shlok",
+          "ID": "31395209",
+          "Rating": 938,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Oconnor, Daniel Francis",
+          "ID": "17290327",
+          "Rating": 931,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Farzaneh-Far, Cyrus",
+          "ID": "32285284",
+          "Rating": 926,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Ozdemir, Nafi Berkay",
+          "ID": "32247330",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": [],
+      "Prizes": {
+        "Place prizes": [
+          {
+            "Value": 200,
+            "Description": ""
+          },
+          {
+            "Value": 100,
+            "Description": ""
+          }
+        ]
+      }
+    },
+    {
+      "Section name": "Under_1000",
+      "Type": 0,
+      "Section title": "Under 1000",
+      "Section time control": "G/60; d5",
+      "Number of players": 19,
+      "Number of teams": 0,
+      "Rounds paired": 0,
+      "Rounds played": 0,
+      "Rating to use": 0,
+      "Engine": -1,
+      "Last unrestricted round": 0,
+      "Final round": 4,
+      "Lower rating limit": 0,
+      "Upper rating limit": 999,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": false,
+      "Pair table items": 0,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Goltsberg, Mark",
+          "ID": "32049702",
+          "Rating": 939,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 2,
+          "Name": "Wang, Noah",
+          "ID": "31225410",
+          "Rating": 863,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 3,
+          "Name": "Burdick, Brendan James",
+          "ID": "31975317",
+          "Rating": 826,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 4,
+          "Name": "Brueningsen, Sam",
+          "ID": "32191890",
+          "Rating": 780,
+          "Club": "VT",
+          "Player title": ""
+        },
+        {
+          "Pair number": 5,
+          "Name": "Tichkule, Aanya Ritesh",
+          "ID": "30911026",
+          "Rating": 744,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 6,
+          "Name": "Arolovitch, Esther",
+          "ID": "31092276",
+          "Rating": 744,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 7,
+          "Name": "Damigella, Anthony",
+          "ID": "32330154",
+          "Rating": 692,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 8,
+          "Name": "Zhou, Weiyi Athens",
+          "ID": "30574531",
+          "Rating": 654,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 9,
+          "Name": "Muthuraman, Aadith",
+          "ID": "31908802",
+          "Rating": 645,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 10,
+          "Name": "Veeramanikandan, Vriishabh",
+          "ID": "32009918",
+          "Rating": 595,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 11,
+          "Name": "Leblanc, Paul A",
+          "ID": "30989255",
+          "Rating": 588,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 12,
+          "Name": "Liu, Ethan",
+          "ID": "31539977",
+          "Rating": 540,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 13,
+          "Name": "Palaparthi, Aaryash",
+          "ID": "31784635",
+          "Rating": 522,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 14,
+          "Name": "Goltsberg, Vitaly",
+          "ID": "32186223",
+          "Rating": 489,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 15,
+          "Name": "Gowda, Vivaan Mahesh",
+          "ID": "32095123",
+          "Rating": 460,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 16,
+          "Name": "Michaels, Walter P.",
+          "ID": "30670037",
+          "Rating": 229,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 17,
+          "Name": "Nair, Advik R",
+          "ID": "32409325",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 18,
+          "Name": "Joel, Johan",
+          "ID": "32396894",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        },
+        {
+          "Pair number": 19,
+          "Name": "Arun, Hrishinandan",
+          "ID": "32408197",
+          "Rating": 0,
+          "Club": "MA",
+          "Player title": ""
+        }
+      ],
+      "Teams": [],
+      "Prizes": {
+        "Place prizes": [
+          {
+            "Value": 150,
+            "Description": ""
+          },
+          {
+            "Value": 75,
+            "Description": ""
+          }
+        ]
+      }
+    }
+  ]
+}
