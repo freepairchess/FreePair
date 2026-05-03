@@ -261,17 +261,50 @@ public sealed record ByeRow(
     public string TitledName =>
         string.IsNullOrEmpty(Title) ? Name : $"{Title} {Name}";
 
-    /// <summary>Rating as a string; empty when unrated.</summary>
-    public string RatingDisplay =>
-        Rating > 0 ? Rating.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty;
-
     /// <summary>
-    /// Half-bye request list with a leading label (e.g.
-    /// <c>"Half byes: R2, R5"</c>). Empty when the player has no
-    /// half-bye requests so the cell renders blank.
+    /// One-line summary the Pairings tab's "Byes this round" panel
+    /// renders per row. Combines title + name + (rating + half-bye
+    /// requests in brackets) + dash + bye kind, e.g.
+    /// <list type="bullet">
+    ///   <item><c>"Ross Alanson [1890, HPB requested for R1, R4] - Full-point bye"</c></item>
+    ///   <item><c>"FM Alex Yang [2390, HPB requested for R1, R4] - Half-point bye"</c></item>
+    ///   <item><c>"Anyone [1500] - Zero-point bye"</c> when there are no half-bye requests</item>
+    ///   <item><c>"Unrated Newcomer - Half-point bye"</c> when neither rating nor half-bye requests are set</item>
+    /// </list>
     /// </summary>
-    public string HalfByeRequestsDisplay =>
-        string.IsNullOrEmpty(HalfByeRequests) ? string.Empty : $"Half byes: {HalfByeRequests}";
+    public string Description
+    {
+        get
+        {
+            var sb = new System.Text.StringBuilder(64);
+            sb.Append(TitledName);
+
+            // Bracket section: rating and / or "HPB requested for R..."
+            // Skipped entirely when both are empty so unrated, no-
+            // request players read cleanly.
+            var hasRating = Rating > 0;
+            var hasRequests = !string.IsNullOrEmpty(HalfByeRequests);
+            if (hasRating || hasRequests)
+            {
+                sb.Append(" [");
+                if (hasRating)
+                {
+                    sb.Append(Rating.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                }
+                if (hasRating && hasRequests) sb.Append(", ");
+                if (hasRequests)
+                {
+                    sb.Append("HPB requested for ");
+                    sb.Append(HalfByeRequests);
+                }
+                sb.Append(']');
+            }
+
+            sb.Append(" - ");
+            sb.Append(Kind);
+            return sb.ToString();
+        }
+    }
 }
 
 /// <summary>
