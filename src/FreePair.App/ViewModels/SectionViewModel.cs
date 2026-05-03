@@ -96,7 +96,9 @@ public partial class PairingRow : ObservableObject
         string? whiteTitle = null,
         string? blackTitle = null,
         decimal whiteScore = 0m,
-        decimal blackScore = 0m)
+        decimal blackScore = 0m,
+        string? whiteColors = null,
+        string? blackColors = null)
     {
         ArgumentNullException.ThrowIfNull(formatter);
 
@@ -110,11 +112,13 @@ public partial class PairingRow : ObservableObject
         WhiteRating = whiteRating;
         WhiteTitle = string.IsNullOrWhiteSpace(whiteTitle) ? null : whiteTitle.Trim();
         WhiteScore = whiteScore;
+        WhiteColors = whiteColors ?? string.Empty;
         BlackPair = blackPair;
         BlackName = blackName;
         BlackRating = blackRating;
         BlackTitle = string.IsNullOrWhiteSpace(blackTitle) ? null : blackTitle.Trim();
         BlackScore = blackScore;
+        BlackColors = blackColors ?? string.Empty;
 
         AvailableResults = new[]
         {
@@ -163,26 +167,44 @@ public partial class PairingRow : ObservableObject
     public decimal BlackScore { get; }
 
     /// <summary>
-    /// White's display name with the pre-round score appended in
-    /// brackets, e.g. <c>"FM Castaneda, Nelson [1.0]"</c>. Score is
-    /// formatted via <see cref="IScoreFormatter.Score"/> so ASCII
-    /// vs. Unicode (½) preference is honoured. White's score sits
-    /// AFTER the name (white player conventionally reads
-    /// left-to-right in pairing sheets).
+    /// White's color history string for rounds strictly before the
+    /// round being viewed: one character per round, <c>'W'</c> for
+    /// White, <c>'B'</c> for Black, <c>'X'</c> for any bye / unpaired
+    /// round (no color assigned). Empty string for round 1.
     /// </summary>
-    public string WhiteTitledNameWithScore =>
-        $"{WhiteTitledName} [{_formatter.Score(WhiteScore)}]";
+    public string WhiteColors { get; }
+
+    /// <summary>Black's color history; same semantics as <see cref="WhiteColors"/>.</summary>
+    public string BlackColors { get; }
 
     /// <summary>
-    /// Black's display name with the pre-round score prepended in
-    /// brackets, e.g. <c>"[0.5] Sage, J Timothy"</c>. Score sits
-    /// BEFORE the name so the bracketed score sits in the same
-    /// visual column for white and black across the board: the
-    /// score "frames" the matchup with white-on-the-left and
-    /// black-on-the-right.
+    /// White's display name with the pre-round score (and, when any
+    /// rounds have been played, the per-round color history) appended
+    /// in brackets, e.g. <c>"FM Castaneda, Nelson [4.0 WBWXB]"</c> —
+    /// "score 4.0 going into this round, played W-B-W-bye-B previously".
+    /// Score is formatted via <see cref="IScoreFormatter.Score"/> so
+    /// ASCII vs. Unicode (½) preference is honoured. White's bracket
+    /// sits AFTER the name; the matching <see cref="BlackTitledNameWithScore"/>
+    /// puts black's bracket BEFORE the name so the two brackets frame
+    /// the matchup row symmetrically.
+    /// </summary>
+    public string WhiteTitledNameWithScore =>
+        WhiteColors.Length == 0
+            ? $"{WhiteTitledName} [{_formatter.Score(WhiteScore)}]"
+            : $"{WhiteTitledName} [{_formatter.Score(WhiteScore)} {WhiteColors}]";
+
+    /// <summary>
+    /// Black's display name with the pre-round score (and color
+    /// history when present) prepended in brackets, e.g.
+    /// <c>"[0.5 BWB] Sage, J Timothy"</c>. Bracket sits BEFORE the
+    /// name so it lines up on the inside of the matchup row,
+    /// mirroring <see cref="WhiteTitledNameWithScore"/>'s trailing
+    /// bracket.
     /// </summary>
     public string BlackTitledNameWithScore =>
-        $"[{_formatter.Score(BlackScore)}] {BlackTitledName}";
+        BlackColors.Length == 0
+            ? $"[{_formatter.Score(BlackScore)}] {BlackTitledName}"
+            : $"[{_formatter.Score(BlackScore)} {BlackColors}] {BlackTitledName}";
 
     public IReadOnlyList<PairingResultOption> AvailableResults { get; }
 
@@ -1163,6 +1185,14 @@ public partial class SectionViewModel : ViewModelBase
         var whiteScore = ScoreThroughRound(white, roundNumber - 1);
         var blackScore = ScoreThroughRound(black, roundNumber - 1);
 
+        // Per-round colour history for the same window: "W" white,
+        // "B" black, "X" any bye / unpaired round. Empty string for
+        // round 1 (no prior rounds). Lets the TD spot colour-balance
+        // pressure at a glance, e.g. "WBWXB" = three whites vs two
+        // blacks going in, so this player has a small black bias.
+        var whiteColors = ColorHistoryThroughRound(white, roundNumber - 1);
+        var blackColors = ColorHistoryThroughRound(black, roundNumber - 1);
+
         return new PairingRow(
             board: p.Board,
             whitePair: p.WhitePair,
@@ -1178,7 +1208,9 @@ public partial class SectionViewModel : ViewModelBase
             whiteTitle: white?.Title,
             blackTitle: black?.Title,
             whiteScore: whiteScore,
-            blackScore: blackScore);
+            blackScore: blackScore,
+            whiteColors: whiteColors,
+            blackColors: blackColors);
     }
 
     private static decimal ScoreThroughRound(Player? player, int endedRound)
@@ -1188,6 +1220,24 @@ public partial class SectionViewModel : ViewModelBase
         decimal score = 0m;
         for (var i = 0; i < rounds; i++) score += player.History[i].Score;
         return score;
+    }
+
+    private static string ColorHistoryThroughRound(Player? player, int endedRound)
+    {
+        if (player is null || endedRound <= 0) return string.Empty;
+        var rounds = Math.Min(endedRound, player.History.Count);
+        if (rounds <= 0) return string.Empty;
+        var sb = new System.Text.StringBuilder(rounds);
+        for (var i = 0; i < rounds; i++)
+        {
+            sb.Append(player.History[i].Color switch
+            {
+                PlayerColor.White => 'W',
+                PlayerColor.Black => 'B',
+                _                 => 'X',  // bye / unpaired / no colour assigned
+            });
+        }
+        return sb.ToString();
     }
 
     private ByeRow BuildByeRow(int round, ByeAssignment bye)
