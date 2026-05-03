@@ -73,10 +73,26 @@ public class UscfMultiRoundHarnessTests
     /// shrink while matches grow. Ratchet these constants downward (for
     /// the bad numbers) and upward (for matches) when the engine
     /// improves.
+    ///
+    /// <para><b>2026-05 ratchet — USCF 28F2 floater placement.</b>
+    /// Inserting downfloaters at the TOP of the BOTTOM HALF of the
+    /// combined pool (instead of at index 0) so SLIDE pairs them with
+    /// the highest-rated of the lower group reshuffled the corpus
+    /// numbers significantly:</para>
+    /// <list type="bullet">
+    ///   <item>matched 32 → 42 (+10)</item>
+    ///   <item>hard mismatch 372 → 342 (-30)</item>
+    ///   <item>colour-only 13 → 33 (+20 — most of the previously-hard
+    ///         mismatches now match at the pair-set level and only
+    ///         differ on colour allocation, gated until P3 lands)</item>
+    /// </list>
+    /// <para>Net: 30 hard mismatches converted to either matches or
+    /// colour-only diffs. Same change moved the NACH corpus from
+    /// 2269 → 2995 matched individual pairs (+726).</para>
     /// </summary>
-    private const int MinExpectedMatches         = 32;
-    private const int MaxExpectedHardMismatches  = 372;
-    private const int MaxExpectedColorOnlyDiffs  = 13;
+    private const int MinExpectedMatches         = 42;
+    private const int MaxExpectedHardMismatches  = 342;
+    private const int MaxExpectedColorOnlyDiffs  = 33;
 
     private readonly ITestOutputHelper _output;
 

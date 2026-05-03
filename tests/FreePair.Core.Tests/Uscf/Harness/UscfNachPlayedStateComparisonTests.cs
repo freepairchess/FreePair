@@ -57,9 +57,19 @@ public class UscfNachPlayedStateComparisonTests
     /// either count above the baseline can ratchet these constants
     /// upward in the same commit; a regression that drops either
     /// below the baseline fails the test.</para>
+    ///
+    /// <para><b>2026-05 ratchet — USCF 28F2 floater placement</b>
+    /// (UscfPairer.MergeWithFloaters): downfloaters now go to the
+    /// TOP of the BOTTOM HALF of the combined pool so SLIDE pairs
+    /// them with the highest-rated of the lower score group. Effect
+    /// on this corpus:</para>
+    /// <list type="bullet">
+    ///   <item>matched rounds 61 → 98 (+37)</item>
+    ///   <item>matched pairs 2269 → 2995 (+726)</item>
+    /// </list>
     /// </summary>
-    private const int MinExpectedMatchedRounds = 61;
-    private const int MinExpectedMatchedPairs  = 2269;
+    private const int MinExpectedMatchedRounds = 98;
+    private const int MinExpectedMatchedPairs  = 2995;
 
     private readonly ITestOutputHelper _output;
 

@@ -238,18 +238,29 @@ public static class UscfPairer
         var board = 1;
 
         // Players who couldn't be paired in their natural score group and
-        // are floating down into the next one. Always at the top of the
-        // next pool because their score is higher than that group's.
+        // are floating down into the next one. Per USCF 28F2, a downfloater
+        // plays the HIGHEST-rated player of the lower group (not the
+        // lowest-rated of the top-half-vs-bottom-half slide). To honour
+        // this with the same SLIDE machinery the rest of the pairer
+        // uses, we insert floaters at the TOP of the BOTTOM HALF of
+        // the combined pool — index = halfCount — so PairPool's slide
+        // pairs floater[0] with topHalf[0] (= highest-rated of the
+        // group). This matches SwissSys 11's behaviour and is what
+        // most live-event TDs expect from a USCF Swiss pairer.
         var floatDown = new List<TrfPlayer>();
 
         for (var gi = 0; gi < scoreGroups.Count; gi++)
         {
-            var pool = floatDown.Concat(scoreGroups[gi]).ToList();
+            var groupSorted = scoreGroups[gi];
+            var pool = MergeWithFloaters(groupSorted, floatDown);
             floatDown = new List<TrfPlayer>();
 
             // Odd group → drop the lowest-rated player to the next group.
             // (Last score group's leftover becomes the round's bye, handled
-            // after the loop.)
+            // after the loop.) The floater(s) we just embedded are
+            // intentionally NOT eligible to drop — pool[^1] is always
+            // the lowest of the original score group, never a floater,
+            // because floaters live at indices halfCount .. halfCount+F-1.
             if (pool.Count % 2 == 1 && gi < scoreGroups.Count - 1)
             {
                 floatDown.Add(pool[^1]);
@@ -278,6 +289,59 @@ public static class UscfPairer
 
         return new UscfPairingResult(pairings, byePair);
     }
+
+    /// <summary>
+    /// Builds the combined pool used by <see cref="PairPool"/> for a
+    /// score group, embedding any downfloaters from higher groups at
+    /// the TOP of the BOTTOM HALF rather than at index 0 of the pool.
+    /// </summary>
+    /// <remarks>
+    /// <para>USCF 28F2 says a downfloater plays the highest-rated
+    /// player of the lower score group. Encoding that into the SLIDE
+    /// pairing machinery requires positioning the floater so that
+    /// <c>top[0]</c> (highest-rated of the lower group) ends up
+    /// paired with <c>bot[0]</c> (= the floater). Concretely: with
+    /// G original group players + F floaters and total halfCount
+    /// = (G+F)/2, the layout is:</para>
+    /// <code>
+    ///   pool[0..halfCount]                = first halfCount of G
+    ///   pool[halfCount..halfCount+F]      = floaters (kept in arrival order)
+    ///   pool[halfCount+F..G+F]            = remaining G - halfCount of G
+    /// </code>
+    /// <para>This guarantees pool[^1] is always the lowest-rated of
+    /// the original group (never a floater) so the odd-group "drop
+    /// the last one to the next group" logic continues to drop the
+    /// right player.</para>
+    /// </remarks>
+    private static List<TrfPlayer> MergeWithFloaters(
+        IReadOnlyList<TrfPlayer> groupSorted,
+        IReadOnlyList<TrfPlayer> floaters)
+    {
+        if (floaters.Count == 0)
+        {
+            return new List<TrfPlayer>(groupSorted);
+        }
+
+        var total = groupSorted.Count + floaters.Count;
+        var halfCount = total / 2;
+
+        // Defensive: when the group is so small that all of it is in
+        // the top half (halfCount > groupSorted.Count), fall back to
+        // the simple prepend layout. Practically this only happens in
+        // pathological cases (e.g. a group of 1 receiving a floater)
+        // where SLIDE doesn't really apply anyway.
+        if (halfCount >= groupSorted.Count)
+        {
+            return floaters.Concat(groupSorted).ToList();
+        }
+
+        var pool = new List<TrfPlayer>(total);
+        for (var i = 0; i < halfCount; i++) pool.Add(groupSorted[i]);
+        foreach (var f in floaters) pool.Add(f);
+        for (var i = halfCount; i < groupSorted.Count; i++) pool.Add(groupSorted[i]);
+        return pool;
+    }
+
 
     /// <summary>
     /// Pairs an even-sized score-group pool top-half-vs-bottom-half,

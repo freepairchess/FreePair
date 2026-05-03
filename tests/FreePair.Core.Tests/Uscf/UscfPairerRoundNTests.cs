@@ -57,16 +57,22 @@ public class UscfPairerRoundNTests
         // odd (3+3), so the lowest-rated of the 1.0 group (pair 4) floats
         // down to the 0.0 group.
         //
-        // Walk-through:
+        // Walk-through with USCF 28F2 floater placement (floater is
+        // inserted at the TOP of the BOTTOM HALF of the combined pool
+        // so SLIDE pairs them with the highest-rated of the lower
+        // group — see UscfPairer.MergeWithFloaters):
+        //
         //   1.0 group: [1 (R2200), 3 (R2000), 4 (R1700)]. Odd, drop pair
         //              4 to floatDown. Remaining [1, 3] → pair (1 vs 3).
-        //   0.0 group: pool = [4 (floater), 2 (R2100), 5 (R1600), 6 (R1500)].
-        //              Even after the float-down. Natural top-vs-bottom:
-        //              top half [4, 2], bottom half [5, 6] →
-        //              natural pairing (4 vs 5), (2 vs 6).
-        //              BUT: pair 4 won vs pair 5 in R1 — that's a rematch.
-        //              P2 transposition swaps bot[0]=5 with bot[1]=6 →
-        //              (4 vs 6), (2 vs 5). Neither pair is a rematch.
+        //   0.0 group: groupSorted = [2 (R2100), 5 (R1600), 6 (R1500)].
+        //              floater = [4]. halfCount = 4/2 = 2.
+        //              Pool layout = top half [2, 5] + floater [4]
+        //              + bot half [6] = [2, 5, 4, 6]. SLIDE half=2:
+        //              top = [2, 5], bot = [4, 6] → (2 vs 4), (5 vs 6).
+        //              Per 28F2, floater 4 is paired with the highest
+        //              of the next group (pair 2). Neither pair is a
+        //              rematch (4 played 5 in R1, not 2; 5 played 4
+        //              in R1, not 6).
         //   No bye.
         var doc = MakeDocWithHistory(
             new RoundCellSpec(PairNumber: 1, Rating: 2200, Cells: [Cell(2, 'w', '1')]),
@@ -85,9 +91,9 @@ public class UscfPairerRoundNTests
             .Select(p => (Math.Min(p.WhitePair, p.BlackPair), Math.Max(p.WhitePair, p.BlackPair)))
             .ToHashSet();
 
-        Assert.Contains((1, 3), pairs);   // 1.0 group, no rematch issue
-        Assert.Contains((4, 6), pairs);   // transposed (was 4-5 naturally, but rematch)
-        Assert.Contains((2, 5), pairs);   // transposed counterpart
+        Assert.Contains((1, 3), pairs);   // 1.0 group
+        Assert.Contains((2, 4), pairs);   // floater (4) with highest of 0.0 (2) — USCF 28F2
+        Assert.Contains((5, 6), pairs);   // remaining 0.0 players
         Assert.DoesNotContain((4, 5), pairs);  // would have been a rematch
     }
 
