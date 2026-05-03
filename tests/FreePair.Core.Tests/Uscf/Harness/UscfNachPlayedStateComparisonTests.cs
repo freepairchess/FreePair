@@ -242,10 +242,107 @@ public class UscfNachPlayedStateComparisonTests
             _output.WriteLine($"  bd{pp.Board,2}  W#{pp.WhitePair,-2} {w?.Name,-25} (rt {w?.Rating,4}) vs  B#{pp.BlackPair,-2} {b?.Name,-25} (rt {b?.Rating,4})");
         }
 
+        // Dump the harness's TrfDocument so it can be diffed against
+        // the live-app pipeline diagnostic to find the divergence.
+        _output.WriteLine($"harness TrfDocument: TotalRounds={trf.TotalRounds}, InitialColor={trf.InitialColor}");
+        _output.WriteLine($"harness RequestedByes=" +
+            (trf.RequestedByes is null ? "null"
+                : "{" + string.Join(",", trf.RequestedByes.Select(kv => $"{kv.Key}={kv.Value}")) + "}"));
+        foreach (var p in trf.Players.OrderBy(x => x.PairNumber))
+        {
+            var cells = string.Join(" ",
+                p.Rounds.Select(c => $"({c.Opponent},{c.Color},{c.Result})"));
+            _output.WriteLine($"  #{p.PairNumber,-2} {p.Name,-28} rt={p.Rating,4} pts={p.Points,4}  [{cells}]");
+        }
+
         // Assertion: lowest-rated of the lowest score group (score 0)
         // gets the full-point bye. That's Smith, pair 21. Urbonas
         // (pair 20) is one rating point higher and should NOT be the
         // bye recipient.
+        Assert.Equal(21, produced.ByePair);
+    }
+
+    /// <summary>
+    /// End-to-end pipeline diagnostic for the same Senior Open R2
+    /// scenario, but driven through the EXACT path the live app
+    /// uses: load the user's <c>.sjson</c> via
+    /// <see cref="SwissSysImporter"/>, truncate any already-paired
+    /// R2, render TRF text via <see cref="TrfWriter"/> (with
+    /// <c>pairingRound=2</c> so half-bye pre-flag cells are emitted
+    /// just like <c>BbpPairingEngine.GenerateNextRoundAsync</c>
+    /// does), parse it back via <see cref="TrfReader.Parse"/>, and
+    /// run <see cref="UscfPairer.Pair"/> on the result.
+    ///
+    /// <para>Skips silently when the user's external <c>.sjson</c>
+    /// fixture isn't present (it lives in
+    /// <c>~\OneDrive\Desktop\TestUSCFPair</c> on the dev box, not
+    /// in-repo). The test is informational only — it dumps the
+    /// engine's pairings + the TRF cells the engine actually saw to
+    /// the test-output channel so the live-app vs harness
+    /// divergence can be traced when it shows up.</para>
+    /// </summary>
+    [Fact]
+    public async Task Senior_Open_R2_live_app_pipeline_diagnostic()
+    {
+        var path = @"C:\Users\xuhaohe\OneDrive - Microsoft\Desktop\TestUSCFPair\9th_Massachusetts_Senior_Open.sjson";
+        if (!File.Exists(path))
+        {
+            _output.WriteLine($"(external .sjson fixture not present at {path} -- diagnostic is a no-op)");
+            return;
+        }
+
+        var loader = new FreePair.Core.Tournaments.TournamentLoader();
+        var t = await loader.LoadAsync(path);
+
+        // Truncate any already-paired R2 so we re-pair fresh from
+        // the post-R1 state.
+        while (t.Sections.First(s => s.Name == "Open").Rounds.Count >= 2)
+        {
+            t = FreePair.Core.Tournaments.TournamentMutations.DeleteLastRound(t, "Open");
+        }
+        var openSec = t.Sections.First(s => s.Name == "Open");
+        _output.WriteLine($"Open section: {openSec.Players.Count} players, {openSec.Rounds.Count} round(s) of history");
+
+        // Generate TRF the way the live app does for R2 pairing:
+        // pairingRound=2 so half-bye pre-flag cells are emitted for
+        // any player with R2 in their RequestedByeRounds.
+        var trfText = FreePair.Core.Trf.TrfWriter.Write(
+            t, openSec,
+            FreePair.Core.Bbp.InitialColor.White,
+            pairingRound: 2);
+
+        // Round-trip via the same TrfReader the FreePair.UscfEngine
+        // binary uses, so we feed UscfPairer EXACTLY the document
+        // it gets in production.
+        var doc = FreePair.Core.Uscf.Trf.TrfReader.Parse(trfText);
+        _output.WriteLine($"Parsed: {doc.Players.Count} players, RequestedByes=" +
+            (doc.RequestedByes is null ? "null"
+                : "{" + string.Join(",", doc.RequestedByes.Select(kv => $"{kv.Key}={kv.Value}")) + "}"));
+
+        var produced = FreePair.Core.Uscf.UscfPairer.Pair(doc);
+        _output.WriteLine($"engine ByePair = {produced.ByePair}");
+        _output.WriteLine($"engine pairings:");
+        foreach (var pp in produced.Pairings.OrderBy(x => x.Board))
+        {
+            var w = doc.Players.First(x => x.PairNumber == pp.WhitePair);
+            var b = doc.Players.First(x => x.PairNumber == pp.BlackPair);
+            _output.WriteLine($"  bd{pp.Board,2}  W#{pp.WhitePair,-2} {w.Name,-28} (rt {w.Rating,4})  vs  B#{pp.BlackPair,-2} {b.Name,-28} (rt {b.Rating,4})");
+        }
+
+        // Dump per-player score + history cell summary so any
+        // discrepancy with the harness's BuildTrfDoc ordering /
+        // cell content is visible at a glance.
+        _output.WriteLine($"player TRF state (#pair  rating  score  history-cells):");
+        foreach (var p in doc.Players.OrderBy(x => x.PairNumber))
+        {
+            var cells = string.Join(" ",
+                p.Rounds.Select(c => $"({c.Opponent},{c.Color},{c.Result})"));
+            _output.WriteLine($"  #{p.PairNumber,-2} {p.Name,-28} rt={p.Rating,4} pts={p.Points,4}  [{cells}]");
+        }
+
+        // Pinned: the bye must still be Smith (pair 21). Beyond
+        // that, the test is purely informational so engine drift
+        // surfaces in the test output without a hard failure.
         Assert.Equal(21, produced.ByePair);
     }
 
