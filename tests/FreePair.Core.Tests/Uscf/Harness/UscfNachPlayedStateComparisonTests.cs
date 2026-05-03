@@ -169,6 +169,87 @@ public class UscfNachPlayedStateComparisonTests
     }
 
     /// <summary>
+    /// User-reported bug repro (TestUSCFPair sjson dated 2026-04-25):
+    /// for the 9th MA Senior Open Open section, after R1 played the
+    /// engine should give the full-point bye in R2 to the lowest-rated
+    /// player in the lowest score group. The score-0 group has 7
+    /// players (Terrie 2204, Barnakov 2158, Carnevale 1898, Dame 1871,
+    /// Gradijan 1821, Urbonas 1794, Smith 1778); Smith is the lowest
+    /// rated and SwissSys correctly assigns him the full-point bye.
+    /// FreePair was assigning Urbonas instead — this test captures
+    /// the actual <c>UscfPairer.ByePair</c> output and asserts it is
+    /// Smith (pair 21), not Urbonas (pair 20).
+    /// </summary>
+    [Fact]
+    public void Senior_Open_R2_full_point_bye_goes_to_lowest_rated_in_lowest_score_group()
+    {
+        var path = Path.Combine(TestPaths.RepoRoot,
+            "docs", "samples", "nach", "9th_Massachusetts_Senior_Open.json");
+        if (!File.Exists(path)) { _output.WriteLine("(NACH fixture not present)"); return; }
+
+        using var doc = JsonDocument.Parse(File.ReadAllText(path));
+        var root = doc.RootElement;
+        var open = root.GetProperty("sections").EnumerateArray()
+            .First(s => s.GetProperty("section").GetString() == "Open");
+
+        // Build NachPlayer list, then run the same compose-TRF-and-Pair
+        // pipeline the aggregate harness uses, but for this specific
+        // (section, round) only.
+        var players = new List<NachPlayer>();
+        var pairNo = 1;
+        foreach (var pe in open.GetProperty("players").EnumerateArray())
+        {
+            players.Add(NachPlayer.From(pe, pairNo));
+            pairNo++;
+        }
+
+        const int round = 2;
+        var rosterPairs = new HashSet<int>();
+        foreach (var p in players)
+        {
+            if (round - 1 >= p.Ops.Count) continue;
+            var opp = p.Ops[round - 1];
+            if (opp != 0) { rosterPairs.Add(p.PairNumber); rosterPairs.Add(opp); }
+        }
+        foreach (var p in players)
+        {
+            if (round - 1 >= p.Results.Count) continue;
+            var res = p.Results[round - 1];
+            if (res == 'H' || res == 'B') rosterPairs.Add(p.PairNumber);
+        }
+        var requestedByes = new Dictionary<int, char>();
+        foreach (var p in players)
+        {
+            if (round - 1 >= p.Results.Count) continue;
+            if (!rosterPairs.Contains(p.PairNumber)) continue;
+            if (p.Results[round - 1] == 'H') requestedByes[p.PairNumber] = 'H';
+        }
+        var roster = players.Where(p => rosterPairs.Contains(p.PairNumber))
+                            .OrderBy(p => p.PairNumber).ToList();
+
+        var trf = BuildTrfDoc(roster, endedRound: round - 1, "9th MA Senior Open", "2026-04-25")
+            with { RequestedByes = requestedByes.Count == 0 ? null : requestedByes };
+        var produced = UscfPairer.Pair(trf);
+
+        // Diagnostic print so the test output makes the failure
+        // obvious if the engine drifts again.
+        _output.WriteLine($"engine ByePair = {produced.ByePair}");
+        _output.WriteLine($"engine pairings:");
+        foreach (var pp in produced.Pairings.OrderBy(x => x.Board))
+        {
+            var w = roster.FirstOrDefault(r => r.PairNumber == pp.WhitePair);
+            var b = roster.FirstOrDefault(r => r.PairNumber == pp.BlackPair);
+            _output.WriteLine($"  bd{pp.Board,2}  W#{pp.WhitePair,-2} {w?.Name,-25} (rt {w?.Rating,4}) vs  B#{pp.BlackPair,-2} {b?.Name,-25} (rt {b?.Rating,4})");
+        }
+
+        // Assertion: lowest-rated of the lowest score group (score 0)
+        // gets the full-point bye. That's Smith, pair 21. Urbonas
+        // (pair 20) is one rating point higher and should NOT be the
+        // bye recipient.
+        Assert.Equal(21, produced.ByePair);
+    }
+
+    /// <summary>
     /// Lightweight pass over a single NACH file used by the aggregate
     /// sweep — same logic as <see cref="RunComparison"/> but doesn't
     /// emit per-round detail and short-circuits on file errors.

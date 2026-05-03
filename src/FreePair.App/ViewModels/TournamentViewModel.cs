@@ -1928,6 +1928,23 @@ public partial class TournamentViewModel : ViewModelBase
                 settings.PairingEngineBinaryPath,
                 settings.UscfEngineBinaryPath);
 
+            // Fail loud when the requested engine isn't available.
+            // Without this guard, BbpPairingEngine.GenerateNextRoundAsync
+            // would receive a null path and silently fall back to its
+            // bundled bbpPairings.exe -- producing FIDE Dutch pairings
+            // for a USCF event (different bye-selection / float /
+            // colour rules, including the wrong full-point bye
+            // recipient). Surface the engine-specific configuration
+            // error to the TD so they know what's actually wrong
+            // instead of getting silently-incorrect pairings.
+            if (string.IsNullOrWhiteSpace(enginePath))
+            {
+                ErrorMessage = effectiveEngine == FreePair.Core.Tournaments.Enums.PairingEngineKind.Uscf
+                    ? FreePair.Core.Bbp.BbpPairingEngine.UscfNotConfiguredInstructions
+                    : FreePair.Core.Bbp.BbpPairingEngine.NotConfiguredInstructions;
+                return;
+            }
+
             // Round 1: ask the TD which colour the top seed should receive.
             // Later rounds: BBP derives colours from history.
             var initialColor = InitialColor.White;
