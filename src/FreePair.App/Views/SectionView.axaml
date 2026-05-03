@@ -577,9 +577,13 @@
                                       AutoGenerateColumns="False"
                                       HorizontalScrollBarVisibility="Auto">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Bd"     Binding="{Binding Board}"            SortMemberPath="Board"        Width="50"  IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="Rtg"    Binding="{Binding WhiteRating}"      SortMemberPath="WhiteRating"  Width="60"  IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="White"  Binding="{Binding WhiteTitledName}"  SortMemberPath="WhiteName"    Width="*"   MinWidth="160" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Bd"     Binding="{Binding Board}"                     SortMemberPath="Board"        Width="50"  IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Rtg"    Binding="{Binding WhiteRating}"               SortMemberPath="WhiteRating"  Width="60"  IsReadOnly="True"/>
+                                    <!-- White name is suffixed with the player's pre-round score
+                                         in brackets, e.g. "FM Castaneda, Nelson [1.0]", so the TD
+                                         can see who's playing for what at a glance. Sort still keys
+                                         off plain name. -->
+                                    <DataGridTextColumn Header="White"  Binding="{Binding WhiteTitledNameWithScore}"  SortMemberPath="WhiteName"    Width="*"   MinWidth="180" IsReadOnly="True"/>
                                     <!-- Result column: a ComboBox in the
                                          default cell template so one click
                                          drops it open. We previously kept
@@ -606,8 +610,12 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTextColumn Header="Black"  Binding="{Binding BlackTitledName}"  SortMemberPath="BlackName"    Width="*"   MinWidth="160" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="Rtg"    Binding="{Binding BlackRating}"      SortMemberPath="BlackRating"  Width="60"  IsReadOnly="True"/>
+                                    <!-- Black name is PREFIXED with the pre-round score so the
+                                         bracket sits on the inside of the matchup row, framing the
+                                         pair with white's score on the left of the table and
+                                         black's score on the right. -->
+                                    <DataGridTextColumn Header="Black"  Binding="{Binding BlackTitledNameWithScore}"  SortMemberPath="BlackName"    Width="*"   MinWidth="180" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Rtg"    Binding="{Binding BlackRating}"               SortMemberPath="BlackRating"  Width="60"  IsReadOnly="True"/>
                                 </DataGrid.Columns>
                             </DataGrid>
 

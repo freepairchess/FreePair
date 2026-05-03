@@ -94,7 +94,9 @@ public partial class PairingRow : ObservableObject
         Action<PairingRow, PairingResult>? onResultChanged,
         Action<PairingRow, int, ByeKind>? onConvertToBye = null,
         string? whiteTitle = null,
-        string? blackTitle = null)
+        string? blackTitle = null,
+        decimal whiteScore = 0m,
+        decimal blackScore = 0m)
     {
         ArgumentNullException.ThrowIfNull(formatter);
 
@@ -107,10 +109,12 @@ public partial class PairingRow : ObservableObject
         WhiteName = whiteName;
         WhiteRating = whiteRating;
         WhiteTitle = string.IsNullOrWhiteSpace(whiteTitle) ? null : whiteTitle.Trim();
+        WhiteScore = whiteScore;
         BlackPair = blackPair;
         BlackName = blackName;
         BlackRating = blackRating;
         BlackTitle = string.IsNullOrWhiteSpace(blackTitle) ? null : blackTitle.Trim();
+        BlackScore = blackScore;
 
         AvailableResults = new[]
         {
@@ -145,6 +149,40 @@ public partial class PairingRow : ObservableObject
     /// <summary>Black's display name with optional title prefix.</summary>
     public string BlackTitledName =>
         string.IsNullOrEmpty(BlackTitle) ? BlackName : $"{BlackTitle} {BlackName}";
+
+    /// <summary>
+    /// White's score going INTO this round (sum of result scores
+    /// from all earlier rounds). Round 1 always reads <c>0</c>;
+    /// the round being viewed is excluded so the value is the
+    /// "what is each player playing FOR this round" pre-game
+    /// score the TD wants to see when scanning the pairings.
+    /// </summary>
+    public decimal WhiteScore { get; }
+
+    /// <summary>Black's pre-round score; same semantics as <see cref="WhiteScore"/>.</summary>
+    public decimal BlackScore { get; }
+
+    /// <summary>
+    /// White's display name with the pre-round score appended in
+    /// brackets, e.g. <c>"FM Castaneda, Nelson [1.0]"</c>. Score is
+    /// formatted via <see cref="IScoreFormatter.Score"/> so ASCII
+    /// vs. Unicode (½) preference is honoured. White's score sits
+    /// AFTER the name (white player conventionally reads
+    /// left-to-right in pairing sheets).
+    /// </summary>
+    public string WhiteTitledNameWithScore =>
+        $"{WhiteTitledName} [{_formatter.Score(WhiteScore)}]";
+
+    /// <summary>
+    /// Black's display name with the pre-round score prepended in
+    /// brackets, e.g. <c>"[0.5] Sage, J Timothy"</c>. Score sits
+    /// BEFORE the name so the bracketed score sits in the same
+    /// visual column for white and black across the board: the
+    /// score "frames" the matchup with white-on-the-left and
+    /// black-on-the-right.
+    /// </summary>
+    public string BlackTitledNameWithScore =>
+        $"[{_formatter.Score(BlackScore)}] {BlackTitledName}";
 
     public IReadOnlyList<PairingResultOption> AvailableResults { get; }
 
@@ -1116,6 +1154,15 @@ public partial class SectionViewModel : ViewModelBase
         var black = _byPair.TryGetValue(p.BlackPair, out var b) ? b : null;
         var roundNumber = SelectedRound?.Number ?? 0;
 
+        // Pre-round score: sum of each player's scoring history from
+        // rounds STRICTLY BEFORE the round we're viewing. For round 1
+        // both reads as 0; for round 2 it's whatever the player got in
+        // R1; etc. Defensive against players who haven't accumulated
+        // enough history yet (e.g. late entry just added with no past
+        // results).
+        var whiteScore = ScoreThroughRound(white, roundNumber - 1);
+        var blackScore = ScoreThroughRound(black, roundNumber - 1);
+
         return new PairingRow(
             board: p.Board,
             whitePair: p.WhitePair,
@@ -1129,7 +1176,18 @@ public partial class SectionViewModel : ViewModelBase
             onResultChanged: (row, newResult) =>
                 ResultChanged?.Invoke(this, roundNumber, row, newResult),
             whiteTitle: white?.Title,
-            blackTitle: black?.Title);
+            blackTitle: black?.Title,
+            whiteScore: whiteScore,
+            blackScore: blackScore);
+    }
+
+    private static decimal ScoreThroughRound(Player? player, int endedRound)
+    {
+        if (player is null || endedRound <= 0) return 0m;
+        var rounds = Math.Min(endedRound, player.History.Count);
+        decimal score = 0m;
+        for (var i = 0; i < rounds; i++) score += player.History[i].Score;
+        return score;
     }
 
     private ByeRow BuildByeRow(int round, ByeAssignment bye)
