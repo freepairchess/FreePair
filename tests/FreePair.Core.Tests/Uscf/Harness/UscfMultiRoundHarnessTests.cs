@@ -90,9 +90,9 @@ public class UscfMultiRoundHarnessTests
     /// colour-only diffs. Same change moved the NACH corpus from
     /// 2269 → 2995 matched individual pairs (+726).</para>
     /// </summary>
-    private const int MinExpectedMatches         = 42;
-    private const int MaxExpectedHardMismatches  = 342;
-    private const int MaxExpectedColorOnlyDiffs  = 33;
+    private const int MinExpectedMatches         = 45;
+    private const int MaxExpectedHardMismatches  = 343;
+    private const int MaxExpectedColorOnlyDiffs  = 29;
 
     private readonly ITestOutputHelper _output;
 

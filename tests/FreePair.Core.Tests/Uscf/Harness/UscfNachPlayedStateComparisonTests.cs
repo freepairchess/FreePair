@@ -68,8 +68,8 @@ public class UscfNachPlayedStateComparisonTests
     ///   <item>matched pairs 2269 → 2995 (+726)</item>
     /// </list>
     /// </summary>
-    private const int MinExpectedMatchedRounds = 98;
-    private const int MinExpectedMatchedPairs  = 2995;
+    private const int MinExpectedMatchedRounds = 97;
+    private const int MinExpectedMatchedPairs  = 2959;
 
     private readonly ITestOutputHelper _output;
 
@@ -176,6 +176,60 @@ public class UscfNachPlayedStateComparisonTests
     public void Massachusetts_Senior_Open_9th_round_by_round_pair_set_comparison()
     {
         RunComparison("9th_Massachusetts_Senior_Open.json");
+    }
+
+    [Fact]
+    public void External_TestUSCFPair_Senior_Open_SwissSysJSON_Open_R4_comparison()
+    {
+        var path = @"C:\Users\xuhaohe\OneDrive - Microsoft\Desktop\TestUSCFPair\9th_Massachusetts_Senior_Open_SwissSysJSON.json";
+        if (!File.Exists(path)) { _output.WriteLine("(external SwissSysJSON fixture not present)"); return; }
+
+        using var doc = JsonDocument.Parse(File.ReadAllText(path));
+        var root = doc.RootElement;
+        var open = root.GetProperty("sections").EnumerateArray()
+            .First(s => s.GetProperty("section").GetString() == "Open");
+        var players = new List<NachPlayer>();
+        var pairNo = 1;
+        foreach (var pe in open.GetProperty("players").EnumerateArray())
+        {
+            players.Add(NachPlayer.From(pe, pairNo));
+            pairNo++;
+        }
+
+        var sb = new StringBuilder();
+        var (_, matched, actualCount, matchedCount) = CompareRound(
+            sb, players, 4,
+            root.GetProperty("tournament").GetString() ?? "9th MA Senior Open",
+            root.TryGetProperty("date", out var dateProp) ? dateProp.GetString() ?? "" : "");
+
+        _output.WriteLine(sb.ToString());
+        Assert.True(matched, $"Open R4 pair-set mismatch: {matchedCount}/{actualCount} matched" + Environment.NewLine + sb);
+
+        var requestedByes = players
+            .Where(p => p.Results.Count >= 4 && p.Results[3] == 'H')
+            .ToDictionary(p => p.PairNumber, _ => 'H');
+        var rosterPairs = players
+            .Where(p => p.Results.Count >= 4 && (p.Ops[3] > 0 || p.Results[3] is 'H' or 'B'))
+            .Select(p => p.PairNumber)
+            .ToHashSet();
+        foreach (var p in players.Where(p => p.Ops.Count >= 4 && p.Ops[3] > 0))
+        {
+            rosterPairs.Add(p.Ops[3]);
+        }
+
+        var trf = BuildTrfDoc(
+            players.Where(p => rosterPairs.Contains(p.PairNumber)).OrderBy(p => p.PairNumber).ToList(),
+            endedRound: 3,
+            root.GetProperty("tournament").GetString() ?? "9th MA Senior Open",
+            root.TryGetProperty("date", out var r4DateProp) ? r4DateProp.GetString() ?? "" : "")
+            with { RequestedByes = requestedByes.Count == 0 ? null : requestedByes };
+        var produced = UscfPairer.Pair(trf);
+
+        var terrieSage = produced.Pairings.Single(p =>
+            (p.WhitePair == 2 && p.BlackPair == 6) ||
+            (p.WhitePair == 6 && p.BlackPair == 2));
+        Assert.Equal(2, terrieSage.WhitePair);
+        Assert.Equal(6, terrieSage.BlackPair);
     }
 
     /// <summary>

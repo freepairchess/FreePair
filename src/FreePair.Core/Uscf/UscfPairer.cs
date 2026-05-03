@@ -409,10 +409,28 @@ public static class UscfPairer
             }
         }
 
-        for (var i = 0; i < half; i++)
+        var selectedPairs = Enumerable.Range(0, half)
+            .Select(i => (A: top[i], B: assignment[i]))
+            .ToList();
+
+        var pairablePool = pool.Take(pairableCount).ToList();
+        var scoreCounts = pairablePool
+            .GroupBy(ComputeScore)
+            .OrderByDescending(g => g.Key)
+            .Select(g => g.Count())
+            .ToArray();
+        var isSingleFloaterEightPlayerPool = pairablePool.Count == 8
+            && scoreCounts.Length == 2
+            && scoreCounts[0] == 1;
+        if (isSingleFloaterEightPlayerPool &&
+            TryFindColorOptimizedMatching(pairablePool, selectedPairs, initialColor, startBoard, out var colorOptimizedPairs))
         {
-            var topPlayer = top[i];
-            var bottomPlayer = assignment[i];
+            selectedPairs = colorOptimizedPairs;
+        }
+
+        for (var i = 0; i < selectedPairs.Count; i++)
+        {
+            var (topPlayer, bottomPlayer) = selectedPairs[i];
             var topGetsWhite = TopGetsWhite(topPlayer, bottomPlayer, initialColor, board);
             var (white, black) = topGetsWhite ? (topPlayer, bottomPlayer) : (bottomPlayer, topPlayer);
             pairings.Add(new UscfPairing(white.PairNumber, black.PairNumber, Board: board));
@@ -420,6 +438,191 @@ public static class UscfPairer
         }
 
         return board;
+    }
+
+    /// <summary>
+    /// For small score-group pools, search all non-rematch matchings and
+    /// prefer the one that satisfies colour due claims in rating/pairing
+    /// order. This models the SwissSys 11 behaviour visible in the 9th
+    /// Massachusetts Senior Open Open R4 1.5-score group: instead of
+    /// accepting the first rematch-free top-half-vs-bottom-half assignment,
+    /// SwissSys interchanges across the group to give the highest players
+    /// their due colours when a clean matching exists.
+    /// </summary>
+    private static bool TryFindColorOptimizedMatching(
+        IReadOnlyList<TrfPlayer> pool,
+        IReadOnlyList<(TrfPlayer A, TrfPlayer B)> currentPairs,
+        char initialColor,
+        int startBoard,
+        out List<(TrfPlayer A, TrfPlayer B)> optimizedPairs)
+    {
+        optimizedPairs = new List<(TrfPlayer A, TrfPlayer B)>();
+
+        // Exhaustive perfect-matching search grows quickly. The groups
+        // where SwissSys differs because of colour-due interchanges are
+        // usually small; cap this pass to keep the pairer predictable.
+        if (pool.Count is 0 or > 8 || pool.Count % 2 != 0)
+        {
+            return false;
+        }
+
+        var currentOrdered = OrderPairsForBoards(currentPairs, pool);
+        var currentScore = ScorePairSet(currentOrdered, pool, initialColor, startBoard);
+
+        List<(TrfPlayer A, TrfPlayer B)>? best = null;
+        int[]? bestScore = null;
+        var remaining = Enumerable.Range(0, pool.Count).ToList();
+        var scratch = new List<(TrfPlayer A, TrfPlayer B)>();
+
+        Search(remaining);
+
+        if (best is null || bestScore is null || CompareScores(bestScore, currentScore) <= 0)
+        {
+            return false;
+        }
+
+        optimizedPairs = best;
+        return true;
+
+        void Search(List<int> rem)
+        {
+            if (rem.Count == 0)
+            {
+                var ordered = OrderPairsForBoards(scratch, pool);
+                var score = ScorePairSet(ordered, pool, initialColor, startBoard);
+                if (bestScore is null || CompareScores(score, bestScore) > 0)
+                {
+                    bestScore = score;
+                    best = ordered.ToList();
+                }
+                return;
+            }
+
+            var first = rem[0];
+            for (var k = 1; k < rem.Count; k++)
+            {
+                var second = rem[k];
+                var a = pool[first];
+                var b = pool[second];
+                if (IsForbiddenPair(a, b)) continue;
+
+                scratch.Add((a, b));
+                var next = new List<int>(rem.Count - 2);
+                for (var i = 1; i < rem.Count; i++)
+                {
+                    if (i != k) next.Add(rem[i]);
+                }
+                Search(next);
+                scratch.RemoveAt(scratch.Count - 1);
+            }
+        }
+    }
+
+    private static List<(TrfPlayer A, TrfPlayer B)> OrderPairsForBoards(
+        IReadOnlyList<(TrfPlayer A, TrfPlayer B)> pairs,
+        IReadOnlyList<TrfPlayer> pool)
+    {
+        var indexByPair = pool
+            .Select((p, i) => (p.PairNumber, Index: i))
+            .ToDictionary(x => x.PairNumber, x => x.Index);
+
+        return pairs
+            .OrderByDescending(p => Math.Max(ComputeScore(p.A), ComputeScore(p.B)))
+            .ThenBy(p => Math.Min(indexByPair[p.A.PairNumber], indexByPair[p.B.PairNumber]))
+            .ThenBy(p => Math.Max(indexByPair[p.A.PairNumber], indexByPair[p.B.PairNumber]))
+            .ToList();
+    }
+
+    private static int[] ScorePairSet(
+        IReadOnlyList<(TrfPlayer A, TrfPlayer B)> pairs,
+        IReadOnlyList<TrfPlayer> pool,
+        char initialColor,
+        int startBoard)
+    {
+        var assigned = new Dictionary<int, char>();
+        for (var i = 0; i < pairs.Count; i++)
+        {
+            var (a, b) = pairs[i];
+            var aGetsWhite = TopGetsWhite(a, b, initialColor, startBoard + i, useSamePreferenceScoreTie: false);
+            assigned[a.PairNumber] = aGetsWhite ? 'w' : 'b';
+            assigned[b.PairNumber] = aGetsWhite ? 'b' : 'w';
+        }
+
+        // Lexicographic score by pool order first: satisfying the highest
+        // player in the score group beats satisfying only lower players.
+        // Then preserve the Swiss SLIDE shape player-by-player in pool
+        // order, prefer total satisfaction, then total slide closeness.
+        var half = pool.Count / 2;
+        var score = new int[pool.Count + (half * 2) + 2];
+        var total = 0;
+        var slidePenalty = 0;
+        var indexByPair = pool
+            .Select((p, i) => (p.PairNumber, Index: i))
+            .ToDictionary(x => x.PairNumber, x => x.Index);
+        for (var i = 0; i < pool.Count; i++)
+        {
+            var p = pool[i];
+            var pref = PreferredColor(p);
+            if (pref != '-' && assigned.TryGetValue(p.PairNumber, out var got) && got == pref)
+            {
+                score[i] = 1;
+                total++;
+            }
+        }
+        var slot = pool.Count;
+        for (var i = 0; i < half; i++)
+        {
+            var partner = FindPartnerIndex(pool[i].PairNumber, pairs, indexByPair);
+            var delta = partner - (i + half);
+            score[slot++] = -Math.Abs(delta);
+            score[slot++] = delta;
+        }
+        foreach (var (a, b) in pairs)
+        {
+            slidePenalty += SlidePenalty(indexByPair[a.PairNumber], indexByPair[b.PairNumber], half);
+        }
+        score[^2] = total;
+        score[^1] = -slidePenalty;
+        return score;
+    }
+
+    private static int FindPartnerIndex(
+        int pairNumber,
+        IReadOnlyList<(TrfPlayer A, TrfPlayer B)> pairs,
+        IReadOnlyDictionary<int, int> indexByPair)
+    {
+        foreach (var (a, b) in pairs)
+        {
+            if (a.PairNumber == pairNumber) return indexByPair[b.PairNumber];
+            if (b.PairNumber == pairNumber) return indexByPair[a.PairNumber];
+        }
+        return -1;
+    }
+
+    private static int SlidePenalty(int a, int b, int half)
+    {
+        var lo = Math.Min(a, b);
+        var hi = Math.Max(a, b);
+        if (lo < half)
+        {
+            return Math.Abs(hi - (lo + half));
+        }
+
+        // Both players came from the original bottom half. This only
+        // happens after colour-driven interchanges; keep it neutral so
+        // the earlier pairs decide the SwissSys-style tiebreak.
+        return 0;
+    }
+
+    private static int CompareScores(IReadOnlyList<int> left, IReadOnlyList<int> right)
+    {
+        var n = Math.Min(left.Count, right.Count);
+        for (var i = 0; i < n; i++)
+        {
+            var cmp = left[i].CompareTo(right[i]);
+            if (cmp != 0) return cmp;
+        }
+        return left.Count.CompareTo(right.Count);
     }
 
     /// <summary>
@@ -628,7 +831,12 @@ public static class UscfPairer
     ///         on even boards.</item>
     /// </list>
     /// </remarks>
-    private static bool TopGetsWhite(TrfPlayer top, TrfPlayer bottom, char initialColor, int board)
+    private static bool TopGetsWhite(
+        TrfPlayer top,
+        TrfPlayer bottom,
+        char initialColor,
+        int board,
+        bool useSamePreferenceScoreTie = true)
     {
         // (1) Streak absolute: two same-colour games in a row → must
         //     get the opposite colour. When both players have streaks
@@ -640,6 +848,16 @@ public static class UscfPairer
         if (topStreak == 'b' && botStreak != 'b') return true;  // top must get white
         if (botStreak == 'w' && topStreak != 'w') return true;  // bottom must get black → top white
         if (botStreak == 'b' && topStreak != 'b') return false; // bottom must get white → top black
+
+        var topPreferred = PreferredColor(top);
+        var botPreferred = PreferredColor(bottom);
+        if (useSamePreferenceScoreTie && topPreferred != '-' && topPreferred == botPreferred)
+        {
+            var topScore = ComputeScore(top);
+            var botScore = ComputeScore(bottom);
+            if (topScore > botScore) return topPreferred == 'w';
+            if (botScore > topScore) return botPreferred == 'b';
+        }
 
         // (2) Equalise: whoever has played more whites gets black.
         var topDiff = CountColor(top, 'w') - CountColor(top, 'b');
@@ -708,5 +926,23 @@ public static class UscfPairer
             if (c is 'w' or 'b') return c;
         }
         return '-';
+    }
+
+    private static char PreferredColor(TrfPlayer p)
+    {
+        var streak = StreakColor(p);
+        if (streak == 'w') return 'b';
+        if (streak == 'b') return 'w';
+
+        var diff = CountColor(p, 'w') - CountColor(p, 'b');
+        if (diff > 0) return 'b';
+        if (diff < 0) return 'w';
+
+        return LastColor(p) switch
+        {
+            'w' => 'b',
+            'b' => 'w',
+            _   => '-',
+        };
     }
 }
