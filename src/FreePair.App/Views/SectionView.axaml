@@ -617,10 +617,18 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate DataType="vm:ByeRow">
                                             <Border Classes="row">
-                                                <Grid ColumnDefinitions="60,*,140">
+                                                <!-- Layout: Pair # | Title+Name | Kind (close to name) | Rating | half-bye requests
+                                                     The Kind column sits right after the name (TD's eye reads
+                                                     name → bye kind without scanning across rating columns).
+                                                     Rating and the half-bye request list are right-trailing
+                                                     informational columns. -->
+                                                <Grid ColumnDefinitions="50, *, 130, 60, Auto">
                                                     <TextBlock Grid.Column="0" Classes="cell" Text="{Binding PairNumber}"/>
-                                                    <TextBlock Grid.Column="1" Classes="cell" Text="{Binding Name}"/>
+                                                    <TextBlock Grid.Column="1" Classes="cell" Text="{Binding TitledName}"/>
                                                     <TextBlock Grid.Column="2" Classes="cell" Text="{Binding Kind}" Foreground="DarkBlue"/>
+                                                    <TextBlock Grid.Column="3" Classes="cell" Text="{Binding RatingDisplay}"/>
+                                                    <TextBlock Grid.Column="4" Classes="cell" Text="{Binding HalfByeRequestsDisplay}"
+                                                               FontStyle="Italic" Foreground="Gray" Margin="12,0,0,0"/>
                                                 </Grid>
                                             </Border>
                                         </DataTemplate>

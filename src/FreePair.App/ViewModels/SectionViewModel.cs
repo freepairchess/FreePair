@@ -227,13 +227,52 @@ public partial class PairingRow : ObservableObject
 
 /// <summary>
 /// Pre-formatted row for the <b>Byes &amp; Withdrawals</b> tab and for
-/// per-round bye lists.
+/// per-round bye lists. Carries enough player metadata for the
+/// Pairings tab's "Byes this round" panel to show a TD-friendly
+/// summary: title-prefixed name, rating, the kind of bye for the
+/// current round, and the player's complete <c>RequestedByeRounds</c>
+/// list so a TD eyeballing the round can see "this player also has
+/// half-byes pending in R3 and R5".
 /// </summary>
 public sealed record ByeRow(
     int Round,
     int PairNumber,
     string Name,
-    string Kind);
+    string Kind,
+    /// <summary>Chess title (e.g. "GM"); null/blank when the player is untitled.</summary>
+    string? Title = null,
+    /// <summary>Player rating; <c>0</c> when unrated.</summary>
+    int Rating = 0,
+    /// <summary>
+    /// Comma-joined list of all rounds this player has a half-point
+    /// bye request on, formatted as <c>"R2, R5"</c>. Null when the
+    /// player has no half-bye requests at all. Includes the current
+    /// round if it's a half-bye request — the TD sees the same
+    /// information as on the Players tab without having to switch
+    /// tabs.
+    /// </summary>
+    string? HalfByeRequests = null)
+{
+    /// <summary>
+    /// Player's display name with optional title prefix
+    /// (e.g. <c>"GM Sun, Ryan"</c>). Falls back to bare name when
+    /// untitled.
+    /// </summary>
+    public string TitledName =>
+        string.IsNullOrEmpty(Title) ? Name : $"{Title} {Name}";
+
+    /// <summary>Rating as a string; empty when unrated.</summary>
+    public string RatingDisplay =>
+        Rating > 0 ? Rating.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty;
+
+    /// <summary>
+    /// Half-bye request list with a leading label (e.g.
+    /// <c>"Half byes: R2, R5"</c>). Empty when the player has no
+    /// half-bye requests so the cell renders blank.
+    /// </summary>
+    public string HalfByeRequestsDisplay =>
+        string.IsNullOrEmpty(HalfByeRequests) ? string.Empty : $"Half byes: {HalfByeRequests}";
+}
 
 /// <summary>
 /// Lightweight round-selector entry bound to the Pairings tab's combo.
@@ -1062,11 +1101,27 @@ public partial class SectionViewModel : ViewModelBase
 
     private ByeRow BuildByeRow(int round, ByeAssignment bye)
     {
-        var name = _byPair.TryGetValue(bye.PlayerPair, out var player)
-            ? player.Name
-            : $"Pair {bye.PlayerPair}";
+        if (!_byPair.TryGetValue(bye.PlayerPair, out var player))
+        {
+            // Unknown pair number (shouldn't happen in practice but be
+            // defensive) — render with placeholder name and no extras.
+            return new ByeRow(round, bye.PlayerPair, $"Pair {bye.PlayerPair}", FormatByeKind(bye.Kind));
+        }
 
-        return new ByeRow(round, bye.PlayerPair, name, FormatByeKind(bye.Kind));
+        var halfByeList = player.RequestedByeRounds.Count == 0
+            ? null
+            : string.Join(", ", player.RequestedByeRounds
+                .OrderBy(r => r)
+                .Select(r => "R" + r.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+
+        return new ByeRow(
+            Round: round,
+            PairNumber: bye.PlayerPair,
+            Name: player.Name,
+            Kind: FormatByeKind(bye.Kind),
+            Title: player.Title,
+            Rating: player.Rating,
+            HalfByeRequests: halfByeList);
     }
 
     private static string FormatByeKind(ByeKind kind) => kind switch
