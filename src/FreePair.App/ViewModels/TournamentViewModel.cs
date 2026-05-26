@@ -285,7 +285,7 @@ public partial class TournamentViewModel : ViewModelBase
     /// asking the TD which colour the top seed should receive on board 1.
     /// Returns <c>null</c> if the user cancelled.
     /// </summary>
-    public Func<Task<InitialColor?>>? PromptInitialColorAsync { get; set; }
+    public Func<bool, Task<Views.InitialColorResult?>>? PromptInitialColorAsync { get; set; }
 
     /// <summary>
     /// Callback opened before every "Pair next round" action so the
@@ -1277,6 +1277,7 @@ public partial class TournamentViewModel : ViewModelBase
         vm.PlayerImportRequested     += OnPlayerImportAsync;
         vm.MoveRequested             += OnSectionMoveAsync;
         vm.PairingEngineChangeRequested += OnSectionPairingEngineChangeAsync;
+        vm.AvoidSameTeamChangeRequested += OnSectionAvoidSameTeamChangeAsync;
     }
 
     private void DetachSectionEvents()
@@ -1301,6 +1302,7 @@ public partial class TournamentViewModel : ViewModelBase
             vm.PlayerImportRequested -= OnPlayerImportAsync;
             vm.MoveRequested -= OnSectionMoveAsync;
             vm.PairingEngineChangeRequested -= OnSectionPairingEngineChangeAsync;
+            vm.AvoidSameTeamChangeRequested -= OnSectionAvoidSameTeamChangeAsync;
         }
     }
 
@@ -1325,6 +1327,26 @@ public partial class TournamentViewModel : ViewModelBase
         catch (Exception ex)
         {
             ErrorMessage = $"Failed to change pairing engine for '{section.Name}': {ex.Message}";
+            return;
+        }
+
+        await PersistCurrentTournamentAsync().ConfigureAwait(true);
+    }
+
+    private async Task OnSectionAvoidSameTeamChangeAsync(
+        SectionViewModel section, bool avoid)
+    {
+        if (Tournament is null) return;
+
+        try
+        {
+            Tournament = TournamentMutations.SetAvoidSameTeam(
+                Tournament, section.Name, avoid);
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to toggle avoid-same-team for '{section.Name}': {ex.Message}";
             return;
         }
 
@@ -1950,13 +1972,22 @@ public partial class TournamentViewModel : ViewModelBase
             var initialColor = InitialColor.White;
             if (sectionSnapshot.Rounds.Count == 0 && PromptInitialColorAsync is not null)
             {
-                var picked = await PromptInitialColorAsync().ConfigureAwait(true);
+                var picked = await PromptInitialColorAsync(sectionSnapshot.AvoidSameTeam).ConfigureAwait(true);
                 if (picked is null)
                 {
                     // User cancelled the dialog — abort without an error.
                     return;
                 }
-                initialColor = picked.Value;
+                initialColor = picked.Color;
+
+                // Apply avoid-same-team toggle if the TD changed it.
+                if (picked.AvoidSameTeam != sectionSnapshot.AvoidSameTeam)
+                {
+                    Tournament = TournamentMutations.SetAvoidSameTeam(
+                        Tournament, section.Name, picked.AvoidSameTeam);
+                    tournamentSnapshot = Tournament;
+                    sectionSnapshot = tournamentSnapshot.Sections.Single(s => s.Name == section.Name);
+                }
             }
 
             // Every-round prompt: confirm/override the physical

@@ -174,10 +174,46 @@ public class BbpPairingEngine : IBbpPairingEngine
 
         try
         {
+            // Build a dense rating-ordered rank mapping so BBP sees
+            // correct top/bottom half splits. BBP uses "starting rank"
+            // as the seeding position; if pair numbers don't follow
+            // rating order, pairings come out wrong.
+            var activePlayers = section.Players
+                .Where(p => !p.Withdrawn
+                         && !p.SoftDeleted
+                         && !section.ForcedPairs
+                              .Where(f => f.Round == pairingRound)
+                              .SelectMany(f => new[] { f.WhitePair, f.BlackPair })
+                              .Contains(p.PairNumber)
+                         && !requestedZeroByes.Contains(p.PairNumber))
+                .OrderByDescending(p => p.Rating)
+                .ThenBy(p => p.PairNumber)
+                .ToArray();
+
+            var pairToRank = new Dictionary<int, int>(activePlayers.Length);
+            var rankToPair = new Dictionary<int, int>(activePlayers.Length);
+            for (var i = 0; i < activePlayers.Length; i++)
+            {
+                var rank = i + 1;
+                pairToRank[activePlayers[i].PairNumber] = rank;
+                rankToPair[rank] = activePlayers[i].PairNumber;
+            }
+
             await using (var writer = new StreamWriter(trfPath, append: false, Encoding.ASCII))
             {
-                TrfWriter.Write(tournament, section, writer, effectiveInitialColor, pairingRound);
+                TrfWriter.Write(tournament, section, writer, effectiveInitialColor, pairingRound, pairToRank);
             }
+
+            // Diagnostic: preserve the TRF for inspection.
+            var diagPath = Path.Combine(Path.GetTempPath(), "freepair-debug-last.trf");
+            try { File.Copy(trfPath, diagPath, overwrite: true); } catch { }
+            var diagMapPath = Path.Combine(Path.GetTempPath(), "freepair-debug-rankmap.txt");
+            try
+            {
+                File.WriteAllText(diagMapPath,
+                    $"Engine: {executablePath}\nPlayers: {activePlayers.Length}\n" +
+                    string.Join("\n", rankToPair.OrderBy(kv => kv.Key).Select(kv => $"Rank {kv.Key} => Pair {kv.Value} (rating {section.Players.First(p => p.PairNumber == kv.Value).Rating})")));
+            } catch { }
 
             var psi = new ProcessStartInfo
             {
@@ -237,6 +273,17 @@ public class BbpPairingEngine : IBbpPairingEngine
             var text = await File.ReadAllTextAsync(pairingsPath, cancellationToken)
                 .ConfigureAwait(false);
             var parsed = BbpPairingsParser.Parse(text);
+
+            // Reverse-map BBP's rank-based output back to real pair numbers.
+            var remappedPairings = parsed.Pairings
+                .Select(p => new BbpPairing(
+                    rankToPair.GetValueOrDefault(p.WhitePair, p.WhitePair),
+                    rankToPair.GetValueOrDefault(p.BlackPair, p.BlackPair)))
+                .ToArray();
+            var remappedByes = parsed.ByePlayerPairs
+                .Select(b => rankToPair.GetValueOrDefault(b, b))
+                .ToArray();
+            parsed = new BbpPairingResult(remappedPairings, remappedByes);
 
             // Prepend any forced pairings for this round in front of
             // BBP's output. The affected players were withheld from

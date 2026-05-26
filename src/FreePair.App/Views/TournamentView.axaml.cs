@@ -99,16 +99,15 @@ public partial class TournamentView : UserControl
         return file?.TryGetLocalPath();
     }
 
-    private async Task<InitialColor?> PromptInitialColorAsync()
+    private async Task<InitialColorResult?> PromptInitialColorAsync(bool currentAvoidSameTeam)
     {
         if (TopLevel.GetTopLevel(this) is not Window owner)
         {
-            // No owner window (e.g. running in design-time) — default silently.
-            return InitialColor.White;
+            return new InitialColorResult(InitialColor.White, currentAvoidSameTeam);
         }
 
-        var dialog = new InitialColorDialog();
-        return await dialog.ShowDialog<InitialColor?>(owner);
+        var dialog = new InitialColorDialog { AvoidSameTeam = currentAvoidSameTeam };
+        return await dialog.ShowDialog<InitialColorResult?>(owner);
     }
 
     private async Task<int?> PromptStartingBoardAsync(string sectionName, int roundNumber, int current, int recommended)

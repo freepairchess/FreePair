@@ -23,7 +23,7 @@ public sealed record Section(
     Prizes Prizes,
     bool UseAcceleration = false,
     InitialColor InitialColor = InitialColor.White,
-    bool AvoidSameTeam = true,
+    bool AvoidSameTeam = false,
     bool AvoidSameClub = false,
     IReadOnlyList<(int A, int B)>? DoNotPairPairs = null,
     IReadOnlyList<ForcedPairing>? ForcedPairings = null,

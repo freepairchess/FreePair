@@ -73,6 +73,13 @@
             </StackPanel>
         </Border>
 
+        <!-- ===== avoid same team toggle ===== -->
+        <CheckBox DockPanel.Dock="Top"
+                  Margin="0,0,0,8"
+                  IsChecked="{Binding AvoidSameTeam}"
+                  Content="Avoid pairing players from the same team"
+                  ToolTip.Tip="When enabled, post-pairing constraint processing swaps teammates apart (best-effort). Persists to the section when committed."/>
+
         <!-- ===== accept/cancel ===== -->
         <StackPanel DockPanel.Dock="Bottom"
                     Orientation="Horizontal"

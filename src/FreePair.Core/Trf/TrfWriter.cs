@@ -51,7 +51,8 @@ public static class TrfWriter
         Tournaments.Section section,
         TextWriter writer,
         InitialColor initialColor = InitialColor.White,
-        int? pairingRound = null)
+        int? pairingRound = null,
+        IReadOnlyDictionary<int, int>? pairToRank = null)
     {
         ArgumentNullException.ThrowIfNull(tournament);
         ArgumentNullException.ThrowIfNull(section);
@@ -88,7 +89,7 @@ public static class TrfWriter
 
         WriteHeader(tournament, section, writer, activePlayers.Length);
         WriteNumberOfRounds(section, writer, initialColor);
-        WritePlayers(section, activePlayers, writer, pairingRound);
+        WritePlayers(section, activePlayers, writer, pairingRound, pairToRank);
     }
 
     /// <summary>
@@ -98,11 +99,12 @@ public static class TrfWriter
         Tournaments.Tournament tournament,
         Tournaments.Section section,
         InitialColor initialColor = InitialColor.White,
-        int? pairingRound = null)
+        int? pairingRound = null,
+        IReadOnlyDictionary<int, int>? pairToRank = null)
     {
         using var sw = new StringWriter(CultureInfo.InvariantCulture);
         sw.NewLine = "\n";
-        Write(tournament, section, sw, initialColor, pairingRound);
+        Write(tournament, section, sw, initialColor, pairingRound, pairToRank);
         return sw.ToString();
     }
 
@@ -162,11 +164,12 @@ public static class TrfWriter
         Tournaments.Section s,
         IReadOnlyList<Tournaments.Player> activePlayers,
         TextWriter w,
-        int? pairingRound)
+        int? pairingRound,
+        IReadOnlyDictionary<int, int>? pairToRank)
     {
         foreach (var p in activePlayers.OrderBy(x => x.PairNumber))
         {
-            w.WriteLine(FormatPlayerLine(p, s.RoundsPlayed, pairingRound));
+            w.WriteLine(FormatPlayerLine(p, s.RoundsPlayed, pairingRound, pairToRank));
         }
     }
 
@@ -184,7 +187,8 @@ public static class TrfWriter
     internal static string FormatPlayerLine(
         Tournaments.Player player,
         int roundsPlayed,
-        int? pairingRound = null)
+        int? pairingRound = null,
+        IReadOnlyDictionary<int, int>? pairToRank = null)
     {
         // TRF-16 fixed columns (1-based):
         //   1- 3  "001"
@@ -201,9 +205,12 @@ public static class TrfWriter
         //  91...  per-round blocks (10 chars wide: 4 opp + space + color + space + result + space)
         var sb = new StringBuilder(200);
 
+        var rankId = pairToRank is not null && pairToRank.TryGetValue(player.PairNumber, out var mappedRank)
+            ? mappedRank : player.PairNumber;
+
         Append(sb, "001", width: 3);                                         //  1-3
         sb.Append(' ');                                                      //  4
-        Append(sb, player.PairNumber.ToString(CultureInfo.InvariantCulture),
+        Append(sb, rankId.ToString(CultureInfo.InvariantCulture),
             width: 4, rightJustify: true);                                   //  5-8
         sb.Append(' ');                                                      //  9
         sb.Append(' ');                                                      // 10  sex (unknown)
@@ -228,6 +235,12 @@ public static class TrfWriter
         for (var r = 0; r < roundsPlayed; r++)
         {
             var history = r < player.History.Count ? player.History[r] : RoundResult.Empty;
+            // Remap opponent pair number to rank when a mapping is active.
+            if (pairToRank is not null && history.Opponent > 0
+                && pairToRank.TryGetValue(history.Opponent, out var oppRank))
+            {
+                history = history with { Opponent = oppRank };
+            }
             AppendRoundCell(sb, history);
         }
 

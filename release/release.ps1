@@ -101,8 +101,10 @@ $env:DOTNET_ROLL_FORWARD = "LatestMajor"
 
 $repoRoot   = Resolve-Path (Join-Path $PSScriptRoot "..")
 $appProj    = Join-Path $repoRoot "src\FreePair.App\FreePair.App.csproj"
+$engineProj = Join-Path $repoRoot "src\FreePair.UscfEngine\FreePair.UscfEngine.csproj"
 $bbpExe     = Join-Path $repoRoot "tools\bbpPairings.exe"
 $publishDir = Join-Path $repoRoot "release\publish"
+$enginePublishDir = Join-Path $repoRoot "release\publish-uscfengine"
 $outputDir  = Join-Path $repoRoot "release\output\$Version"
 $rid        = "win-x64"
 
@@ -125,8 +127,10 @@ if (-not (Get-Command vpk -ErrorAction SilentlyContinue))
 
 # Clean previous artefacts ------------------------------------------------
 if (Test-Path $publishDir) { Remove-Item -Recurse -Force $publishDir }
+if (Test-Path $enginePublishDir) { Remove-Item -Recurse -Force $enginePublishDir }
 if (Test-Path $outputDir)  { Remove-Item -Recurse -Force $outputDir  }
 New-Item -ItemType Directory -Force -Path $publishDir | Out-Null
+New-Item -ItemType Directory -Force -Path $enginePublishDir | Out-Null
 New-Item -ItemType Directory -Force -Path $outputDir  | Out-Null
 
 # Run all unit tests before producing a release ---------------------------
@@ -134,6 +138,14 @@ Write-Host "==> Running unit tests ..." -ForegroundColor Cyan
 dotnet test (Join-Path $repoRoot "tests\FreePair.Core.Tests\FreePair.Core.Tests.csproj") `
     --configuration $Configuration --nologo
 if ($LASTEXITCODE -ne 0) { throw "Tests failed; aborting release." }
+
+# The App project has a build target that probes the framework-dependent
+# UscfEngine output folder while publishing. Build that output explicitly
+# before the app publish, then replace it with the self-contained engine
+# EXE below before Velopack packs the installer.
+Write-Host "==> dotnet build USCF engine for app publish target ..." -ForegroundColor Cyan
+dotnet build $engineProj --configuration $Configuration --nologo
+if ($LASTEXITCODE -ne 0) { throw "dotnet build USCF engine failed." }
 
 # Publish self-contained, single-file --------------------------------------
 # - SelfContained=true bakes the .NET 10 runtime into the publish folder
@@ -144,7 +156,23 @@ if ($LASTEXITCODE -ne 0) { throw "Tests failed; aborting release." }
 #   snappier on lower-end laptops typical at chess clubs.
 # - Trim is intentionally OFF: Avalonia + reflection-heavy bindings
 #   regressed when trimmed in 12.x; cost a few extra MB to keep stable.
-Write-Host "==> dotnet publish ..." -ForegroundColor Cyan
+# FreePair.UscfEngine is a separate EXE that the desktop app shells out to.
+# Publish it self-contained too; otherwise the app installer would include
+# .NET for FreePair.App.exe, but the USCF engine child process would still
+# require a machine-wide .NET runtime.
+Write-Host "==> dotnet publish USCF engine ..." -ForegroundColor Cyan
+dotnet publish $engineProj `
+    --configuration $Configuration `
+    --runtime $rid `
+    --self-contained true `
+    --output $enginePublishDir `
+    /p:PublishSingleFile=true `
+    /p:PublishReadyToRun=true `
+    /p:DebugType=None `
+    /p:DebugSymbols=false
+if ($LASTEXITCODE -ne 0) { throw "dotnet publish USCF engine failed." }
+
+Write-Host "==> dotnet publish app ..." -ForegroundColor Cyan
 dotnet publish $appProj `
     --configuration $Configuration `
     --runtime $rid `
@@ -155,6 +183,20 @@ dotnet publish $appProj `
     /p:DebugType=None `
     /p:DebugSymbols=false
 if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed." }
+
+# Replace the framework-dependent UscfEngine files copied by the App project
+# with the self-contained single-file EXE published above.
+Remove-Item (Join-Path $publishDir "FreePair.UscfEngine.dll") -Force -ErrorAction SilentlyContinue
+Remove-Item (Join-Path $publishDir "FreePair.UscfEngine.pdb") -Force -ErrorAction SilentlyContinue
+Remove-Item (Join-Path $publishDir "FreePair.UscfEngine.runtimeconfig.json") -Force -ErrorAction SilentlyContinue
+Remove-Item (Join-Path $publishDir "FreePair.Core.dll") -Force -ErrorAction SilentlyContinue
+Copy-Item (Join-Path $enginePublishDir "FreePair.UscfEngine.exe") $publishDir -Force
+
+$publishedEngine = Join-Path $publishDir "FreePair.UscfEngine.exe"
+if (-not (Test-Path $publishedEngine))
+{
+    throw "FreePair.UscfEngine.exe is missing from publish output ($publishedEngine)."
+}
 
 # Verify the bundled bbpPairings.exe made it into publish output.
 $publishedBbp = Join-Path $publishDir "bbpPairings.exe"

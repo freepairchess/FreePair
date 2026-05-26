@@ -5,22 +5,40 @@ using FreePair.Core.Bbp;
 
 namespace FreePair.App.Views;
 
+/// <summary>
+/// Result returned by <see cref="InitialColorDialog"/>: the chosen
+/// initial colour <em>and</em> whether the TD toggled the avoid-same-team
+/// constraint during the prompt.
+/// </summary>
+public sealed record InitialColorResult(InitialColor Color, bool AvoidSameTeam);
+
 public partial class InitialColorDialog : Window
 {
     private InitialColor _coinTossResult = InitialColor.White;
+
+    /// <summary>
+    /// Set before <see cref="ShowDialog{TResult}"/> to seed the
+    /// checkbox state from the section's current value.
+    /// </summary>
+    public bool AvoidSameTeam { get; set; }
 
     public InitialColorDialog()
     {
         InitializeComponent();
 
-        // The XAML pre-checks the "Coin toss" radio, but the IsCheckedChanged
-        // event that normally reveals the outcome fires before our field
-        // handlers are hooked up. Do an explicit initial roll so the preview
-        // panel always shows a valid result.
         _coinTossResult = RollCoin();
         if (PreviewText is not null)
         {
             PreviewText.Text = FormatCoinTossMessage(_coinTossResult);
+        }
+    }
+
+    protected override void OnOpened(EventArgs e)
+    {
+        base.OnOpened(e);
+        if (AvoidSameTeamCheck is not null)
+        {
+            AvoidSameTeamCheck.IsChecked = AvoidSameTeam;
         }
     }
 
@@ -69,12 +87,13 @@ public partial class InitialColorDialog : Window
             result = _coinTossResult;
         }
 
-        Close((InitialColor?)result);
+        var avoidTeam = AvoidSameTeamCheck?.IsChecked == true;
+        Close(new InitialColorResult(result, avoidTeam));
     }
 
     private void OnCancel(object? sender, RoutedEventArgs e)
     {
-        Close((InitialColor?)null);
+        Close((InitialColorResult?)null);
     }
 
     private static InitialColor RollCoin() =>

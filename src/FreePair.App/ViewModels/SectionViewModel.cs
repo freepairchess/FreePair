@@ -384,6 +384,7 @@ public partial class SectionViewModel : ViewModelBase
 {
     private readonly IReadOnlyDictionary<int, Player> _byPair;
     private bool _suppressEngineChangeCallback;
+    private bool _suppressAvoidSameTeamCallback;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentRoundPairings))]
@@ -431,6 +432,12 @@ public partial class SectionViewModel : ViewModelBase
     /// </summary>
     public event Func<SectionViewModel, FreePair.Core.Tournaments.Enums.PairingEngineKind?, Task>?
         PairingEngineChangeRequested;
+
+    /// <summary>
+    /// Fired when the TD toggles the "Avoid same team" checkbox.
+    /// The host applies <see cref="TournamentMutations.SetAvoidSameTeam"/>.
+    /// </summary>
+    public event Func<SectionViewModel, bool, Task>? AvoidSameTeamChangeRequested;
 
     public SectionViewModel(Section section)
         : this(section, new ScoreFormatter())
@@ -490,6 +497,10 @@ public partial class SectionViewModel : ViewModelBase
             c => c.Value == section.PairingEngine)
             ?? PairingEngineChoice.SectionChoices[0];
         _suppressEngineChangeCallback = false;
+
+        _suppressAvoidSameTeamCallback = true;
+        AvoidSameTeam = section.AvoidSameTeam;
+        _suppressAvoidSameTeamCallback = false;
     }
 
     /// <summary>Underlying domain section.</summary>
@@ -525,6 +536,19 @@ public partial class SectionViewModel : ViewModelBase
     public int PlayerCount => Section.Players.Count;
 
     public int TeamCount => Section.Teams.Count;
+
+    [ObservableProperty]
+    private bool _avoidSameTeam;
+
+    partial void OnAvoidSameTeamChanged(bool value)
+    {
+        if (_suppressAvoidSameTeamCallback) return;
+        var handler = AvoidSameTeamChangeRequested;
+        if (handler is not null)
+        {
+            _ = handler(this, value);
+        }
+    }
 
     public int WithdrawnCount => Section.WithdrawnPlayers.Count();
 

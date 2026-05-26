@@ -235,19 +235,21 @@ public class PairingSwapperTests
     [Fact]
     public void Apply_refuses_swap_that_would_recreate_a_previously_played_game()
     {
-        // Pair 1 already played pair 4 last round. Swap would pair them
-        // again; must be rejected even though it resolves the team conflict.
+        // Pair 1 already played pair 4 last round. A SwapBlacks swap would
+        // pair 1 vs 4 again, so it must be rejected. But a SwapWhites swap
+        // yields (4,2) and (3,1) — both constraint-free and no repeat game.
+        // When no alternative swap exists at all, the conflict remains.
         var section = BuildSection(
-            P(1, "A", 1m, team: "TeamX", pastOpponents: new[] { 4 }),
-            P(2, "B", 1m, team: "TeamX"),
-            P(3, "C", 1m, team: "TeamY"),
-            P(4, "D", 1m, team: "TeamY"));
+            P(1, "A", 1m, team: "TeamX", pastOpponents: new[] { 4, 3 }),
+            P(2, "B", 1m, team: "TeamX", pastOpponents: new[] { 3 }),
+            P(3, "C", 1m, team: "TeamY", pastOpponents: new[] { 1, 2 }),
+            P(4, "D", 1m, team: "TeamY", pastOpponents: new[] { 1 }));
         var pairings = new[] { new BbpPairing(1, 2), new BbpPairing(3, 4) };
 
         var result = PairingSwapper.Apply(
             pairings, section, new[] { new SameTeamConstraint() });
 
-        // Swap rejected → conflicts remain.
+        // All swap variants recreate previously-played games → conflicts remain.
         Assert.Equal(pairings, result.Pairings);
         Assert.NotEmpty(result.UnresolvedConflicts);
     }

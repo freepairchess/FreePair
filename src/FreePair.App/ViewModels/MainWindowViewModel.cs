@@ -48,6 +48,8 @@ public partial class MainWindowViewModel : ViewModelBase
     /// </summary>
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasUpdateAvailable))]
+    [NotifyPropertyChangedFor(nameof(CanApplyUpdate))]
+    [NotifyCanExecuteChangedFor(nameof(ApplyUpdateCommand))]
     private string? _availableUpdateVersion;
 
     /// <summary>
@@ -64,8 +66,15 @@ public partial class MainWindowViewModel : ViewModelBase
     /// </summary>
     [ObservableProperty] private string? _updateStatusMessage;
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanApplyUpdate))]
+    [NotifyCanExecuteChangedFor(nameof(ApplyUpdateCommand))]
+    private bool _isApplyingUpdate;
+
     /// <summary>True when an update banner should be shown.</summary>
     public bool HasUpdateAvailable => !string.IsNullOrEmpty(AvailableUpdateVersion);
+
+    public bool CanApplyUpdate => HasUpdateAvailable && !IsApplyingUpdate;
 
     /// <summary>
     /// Wires the platform-specific update service. Call once
@@ -121,11 +130,14 @@ public partial class MainWindowViewModel : ViewModelBase
     /// FreePair so Velopack's launcher can swap binaries. The
     /// tournament VM auto-saves before we hand off.
     /// </summary>
-    [RelayCommand(CanExecute = nameof(HasUpdateAvailable))]
+    [RelayCommand(CanExecute = nameof(CanApplyUpdate))]
     public async Task ApplyUpdateAsync()
     {
         if (_updateService is null) return;
+        if (!HasUpdateAvailable) return;
+
         UpdateStatusMessage = "Downloading update...";
+        IsApplyingUpdate = true;
         // Note: TDs are expected to have saved (or auto-save has
         // flushed) before clicking Apply Update. The banner copy
         // tells them so. We don't force a save here because
@@ -138,6 +150,7 @@ public partial class MainWindowViewModel : ViewModelBase
         catch (Exception ex)
         {
             UpdateStatusMessage = $"Update failed: {ex.Message}";
+            IsApplyingUpdate = false;
         }
     }
 

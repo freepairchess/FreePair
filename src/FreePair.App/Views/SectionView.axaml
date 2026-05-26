@@ -125,6 +125,12 @@
                         <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding RequestedByeCount}"/>
                     </Grid>
 
+                    <!-- Avoid same-team pairing constraint -->
+                    <CheckBox Margin="0,12,0,0"
+                              IsChecked="{Binding AvoidSameTeam}"
+                              Content="Avoid pairing players from the same team"
+                              ToolTip.Tip="When enabled, the pairing engine will swap pairings to avoid matching teammates against each other (best-effort post-processing)."/>
+
                     <!-- Section-level danger zone. Only the soft-delete
                          entry point lives here; Undelete / Permanently
                          delete… surface in the yellow banner at the top

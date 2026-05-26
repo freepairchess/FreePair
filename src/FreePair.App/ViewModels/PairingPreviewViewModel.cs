@@ -55,6 +55,15 @@ public sealed partial class PairingPreviewViewModel : ObservableObject
     /// </summary>
     public IReadOnlyList<string> Conflicts { get; }
 
+    [ObservableProperty]
+    private bool _avoidSameTeam;
+
+    partial void OnAvoidSameTeamChanged(bool value)
+    {
+        Tournament = TournamentMutations.SetAvoidSameTeam(
+            Tournament, SectionName, value);
+    }
+
     public PairingPreviewViewModel(
         Tournament tournament,
         string sectionName,
@@ -65,6 +74,10 @@ public sealed partial class PairingPreviewViewModel : ObservableObject
         SectionName = sectionName;
         Round = round;
         Conflicts = conflicts ?? System.Array.Empty<string>();
+
+        var section = tournament.Sections.FirstOrDefault(s => s.Name == sectionName);
+        _avoidSameTeam = section?.AvoidSameTeam ?? false;
+
         RefreshRows();
     }
 
