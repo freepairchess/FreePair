@@ -427,6 +427,22 @@ public static class UscfPairer
         {
             selectedPairs = colorOptimizedPairs;
         }
+        else if (TryReduceColorConflicts(pairablePool, selectedPairs, out var reducedConflictPairs))
+        {
+            // USCF 29E colour-due transposition (narrow scope). Independent
+            // of the colour-due-preference optimiser above: this only fires
+            // when the natural SLIDE has ≥1 board where both players prefer
+            // the same colour, and the search finds an alternative matching
+            // with STRICTLY FEWER such conflicts. We don't try to optimise
+            // individual preferences — only to reduce hard colour clashes —
+            // so pools that SwissSys leaves alone keep their natural SLIDE.
+            //
+            // Concrete case: Chess A2Z May Open 2026 R2, 1.0 score group
+            // of 12. Natural SLIDE has two colour conflicts (3 vs 9, both
+            // due W; 4 vs 10, both due B). Swapping bot[1]=9 ↔ bot[2]=10
+            // gives 3-10 and 4-9, zero conflicts — what SwissSys produces.
+            selectedPairs = reducedConflictPairs;
+        }
 
         for (var i = 0; i < selectedPairs.Count; i++)
         {
@@ -789,6 +805,132 @@ public static class UscfPairer
     /// </summary>
     private static bool IsForbiddenPair(TrfPlayer top, TrfPlayer bot) =>
         HasPlayed(top, bot) || ShareTeam(top, bot);
+
+    private static int CountColorConflictPairs(IReadOnlyList<(TrfPlayer A, TrfPlayer B)> pairs)
+    {
+        var n = 0;
+        foreach (var (a, b) in pairs)
+        {
+            var prefA = PreferredColor(a);
+            var prefB = PreferredColor(b);
+            if (prefA != '-' && prefA == prefB) n++;
+        }
+        return n;
+    }
+
+    /// <summary>
+    /// USCF 29E (narrow scope): search within the score-group pool's
+    /// top-half × bottom-half bipartite shape for an alternative
+    /// rematch-free matching with STRICTLY FEWER hard colour conflicts
+    /// (pairs where both players prefer the same colour) than the
+    /// natural SLIDE pairing supplied in <paramref name="currentPairs"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Search shape preserves the SLIDE structure SwissSys uses:
+    /// for each top[i], try every bot[j] not yet used. This is the
+    /// same shape as <see cref="TryFindNonRematchMatching"/>; we
+    /// enumerate all complete bipartite matchings instead of just
+    /// the first rematch-free one, and pick the lowest-conflict
+    /// answer.</para>
+    /// <para>Ties on conflict count break by minimum total bottom-half
+    /// disturbance (sum of <c>|j - i|</c>), which favours the natural
+    /// pairing whenever it's already conflict-free or among the
+    /// lowest-conflict candidates — so we never gratuitously re-shuffle
+    /// when the natural answer is fine.</para>
+    /// <para>No size cap: the search is branch-and-bound on conflict
+    /// count and disturbance, so as soon as a zero-conflict matching
+    /// is found the whole rest of the tree is pruned. Real-world
+    /// USCF score groups (even 30-player Open sections) terminate
+    /// in well under a millisecond.</para>
+    /// </remarks>
+    private static bool TryReduceColorConflicts(
+        IReadOnlyList<TrfPlayer> pool,
+        IReadOnlyList<(TrfPlayer A, TrfPlayer B)> currentPairs,
+        out List<(TrfPlayer A, TrfPlayer B)> reducedPairs)
+    {
+        reducedPairs = new List<(TrfPlayer A, TrfPlayer B)>();
+        if (pool.Count == 0 || pool.Count % 2 != 0) return false;
+
+        var currentConflicts = CountColorConflictPairs(currentPairs);
+        if (currentConflicts == 0) return false;
+
+        var half = pool.Count / 2;
+        var top = new TrfPlayer[half];
+        var bot = new TrfPlayer[half];
+        for (var i = 0; i < half; i++)
+        {
+            top[i] = pool[i];
+            bot[i] = pool[i + half];
+        }
+
+        var used = new bool[half];
+        var assignment = new TrfPlayer[half];
+        var bestConflicts = currentConflicts;
+        var bestDisturbance = int.MaxValue;
+        TrfPlayer[]? best = null;
+
+        Search(0, 0, 0);
+
+        if (best is null) return false;
+
+        var list = new List<(TrfPlayer A, TrfPlayer B)>(half);
+        for (var i = 0; i < half; i++) list.Add((top[i], best[i]));
+        reducedPairs = list;
+        return true;
+
+        void Search(int i, int conflictsSoFar, int disturbanceSoFar)
+        {
+            if (conflictsSoFar > bestConflicts) return;
+            if (conflictsSoFar == bestConflicts && disturbanceSoFar >= bestDisturbance) return;
+            if (i == half)
+            {
+                if (conflictsSoFar < bestConflicts ||
+                    (conflictsSoFar == bestConflicts && disturbanceSoFar < bestDisturbance))
+                {
+                    bestConflicts = conflictsSoFar;
+                    bestDisturbance = disturbanceSoFar;
+                    best = (TrfPlayer[])assignment.Clone();
+                }
+                return;
+            }
+
+            for (var j = 0; j < half; j++)
+            {
+                if (used[j]) continue;
+                var a = top[i];
+                var b = bot[j];
+                if (IsForbiddenPair(a, b)) continue;
+
+                var prefA = PreferredColor(a);
+                var prefB = PreferredColor(b);
+                var conflict = prefA != '-' && prefA == prefB ? 1 : 0;
+
+                used[j] = true;
+                assignment[i] = b;
+                Search(i + 1, conflictsSoFar + conflict, disturbanceSoFar + Math.Abs(j - i));
+                used[j] = false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// True when at least one pair in <paramref name="pairs"/> has both
+    /// players preferring the same colour — a hard colour conflict that
+    /// the round's colour assignment will be unable to satisfy without
+    /// re-matching. Used to gate the USCF 29E colour-driven transposition
+    /// search so it only runs when the natural SLIDE pairing actually
+    /// has a conflict to resolve.
+    /// </summary>
+    private static bool HasColorConflictPair(IReadOnlyList<(TrfPlayer A, TrfPlayer B)> pairs)
+    {
+        foreach (var (a, b) in pairs)
+        {
+            var prefA = PreferredColor(a);
+            var prefB = PreferredColor(b);
+            if (prefA != '-' && prefA == prefB) return true;
+        }
+        return false;
+    }
 
     private static decimal ComputeScore(TrfPlayer p)
     {

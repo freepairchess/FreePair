@@ -49,6 +49,10 @@
                        Text="Rolling coin..."/>
         </Border>
 
+        <CheckBox x:Name="AvoidSameTeamCheck"
+                  Content="Avoid pairing players from the same team"
+                  ToolTip.Tip="When enabled, post-pairing constraint processing swaps teammates apart (best-effort). Persists to this section."/>
+
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     Spacing="8"
