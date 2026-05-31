@@ -1,6 +1,9 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using FreePair.App.ViewModels;
@@ -39,6 +42,29 @@ public partial class TournamentView : UserControl
             vm.ShowRenumberBoardsDialogAsync = ShowRenumberBoardsDialogAsync;
             vm.ShowPairAllSectionsDialogAsync = ShowPairAllSectionsDialogAsync;
         }
+    }
+
+    /// <summary>
+    /// Opens the containing folder when the user clicks the file path text.
+    /// </summary>
+    private void OnFilePathClick(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is not TournamentViewModel vm) return;
+        var path = vm.CurrentFilePath;
+        if (string.IsNullOrWhiteSpace(path)) return;
+
+        var folder = Path.GetDirectoryName(path);
+        if (string.IsNullOrEmpty(folder) || !Directory.Exists(folder)) return;
+
+        try
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = folder,
+                UseShellExecute = true,
+            });
+        }
+        catch { /* best effort */ }
     }
 
     private async Task<string?> PickTournamentFileAsync()

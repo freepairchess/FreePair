@@ -98,7 +98,10 @@ public partial class PairingRow : ObservableObject
         decimal whiteScore = 0m,
         decimal blackScore = 0m,
         string? whiteColors = null,
-        string? blackColors = null)
+        string? blackColors = null,
+        string? whiteTeam = null,
+        string? blackTeam = null,
+        bool showTeam = false)
     {
         ArgumentNullException.ThrowIfNull(formatter);
 
@@ -113,12 +116,15 @@ public partial class PairingRow : ObservableObject
         WhiteTitle = string.IsNullOrWhiteSpace(whiteTitle) ? null : whiteTitle.Trim();
         WhiteScore = whiteScore;
         WhiteColors = whiteColors ?? string.Empty;
+        WhiteTeam = string.IsNullOrWhiteSpace(whiteTeam) ? null : whiteTeam.Trim();
         BlackPair = blackPair;
         BlackName = blackName;
         BlackRating = blackRating;
         BlackTitle = string.IsNullOrWhiteSpace(blackTitle) ? null : blackTitle.Trim();
         BlackScore = blackScore;
         BlackColors = blackColors ?? string.Empty;
+        BlackTeam = string.IsNullOrWhiteSpace(blackTeam) ? null : blackTeam.Trim();
+        ShowTeam = showTeam;
 
         AvailableResults = new[]
         {
@@ -141,6 +147,18 @@ public partial class PairingRow : ObservableObject
     public string BlackName { get; }
     public int BlackRating { get; }
     public string? BlackTitle { get; }
+
+    /// <summary>White player's team name (null if not set).</summary>
+    public string? WhiteTeam { get; }
+
+    /// <summary>Black player's team name (null if not set).</summary>
+    public string? BlackTeam { get; }
+
+    /// <summary>
+    /// Whether to show team annotations in the display name.
+    /// True when the section's AvoidSameTeam flag is enabled.
+    /// </summary>
+    public bool ShowTeam { get; }
 
     /// <summary>
     /// White's display name with optional title prefix (e.g.
@@ -188,10 +206,16 @@ public partial class PairingRow : ObservableObject
     /// puts black's bracket BEFORE the name so the two brackets frame
     /// the matchup row symmetrically.
     /// </summary>
-    public string WhiteTitledNameWithScore =>
-        WhiteColors.Length == 0
-            ? $"{WhiteTitledName} [{_formatter.Score(WhiteScore)}]"
-            : $"{WhiteTitledName} [{_formatter.Score(WhiteScore)} {WhiteColors}]";
+    public string WhiteTitledNameWithScore
+    {
+        get
+        {
+            var name = WhiteTitledName;
+            return WhiteColors.Length == 0
+                ? $"{name} [{_formatter.Score(WhiteScore)}]"
+                : $"{name} [{_formatter.Score(WhiteScore)} {WhiteColors}]";
+        }
+    }
 
     /// <summary>
     /// Black's display name with the pre-round score (and color
@@ -201,10 +225,16 @@ public partial class PairingRow : ObservableObject
     /// mirroring <see cref="WhiteTitledNameWithScore"/>'s trailing
     /// bracket.
     /// </summary>
-    public string BlackTitledNameWithScore =>
-        BlackColors.Length == 0
-            ? $"[{_formatter.Score(BlackScore)}] {BlackTitledName}"
-            : $"[{_formatter.Score(BlackScore)} {BlackColors}] {BlackTitledName}";
+    public string BlackTitledNameWithScore
+    {
+        get
+        {
+            var name = BlackTitledName;
+            return BlackColors.Length == 0
+                ? $"[{_formatter.Score(BlackScore)}] {name}"
+                : $"[{_formatter.Score(BlackScore)} {BlackColors}] {name}";
+        }
+    }
 
     public IReadOnlyList<PairingResultOption> AvailableResults { get; }
 
@@ -539,6 +569,9 @@ public partial class SectionViewModel : ViewModelBase
 
     [ObservableProperty]
     private bool _avoidSameTeam;
+
+    [ObservableProperty]
+    private bool _showTeamColumns;
 
     partial void OnAvoidSameTeamChanged(bool value)
     {
@@ -1234,7 +1267,10 @@ public partial class SectionViewModel : ViewModelBase
             whiteScore: whiteScore,
             blackScore: blackScore,
             whiteColors: whiteColors,
-            blackColors: blackColors);
+            blackColors: blackColors,
+            whiteTeam: white?.Team,
+            blackTeam: black?.Team,
+            showTeam: AvoidSameTeam);
     }
 
     private static decimal ScoreThroughRound(Player? player, int endedRound)

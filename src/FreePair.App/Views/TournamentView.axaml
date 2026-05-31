@@ -58,7 +58,10 @@
                 <TextBlock Text="{Binding CurrentFilePath}"
                            Foreground="Gray"
                            VerticalAlignment="Center"
-                           TextTrimming="CharacterEllipsis"/>
+                           TextTrimming="CharacterEllipsis"
+                           Cursor="Hand"
+                           PointerPressed="OnFilePathClick"
+                           ToolTip.Tip="Click to open containing folder"/>
 
                 <!-- Transient status shown only while a save / publish is
                      in flight (SaveStatus is set while the op is running

@@ -1209,6 +1209,30 @@ public static class TournamentMutations
             .Where(p => p.PairNumber != pairNumber)
             .ToArray();
         var updatedSection = section with { Players = remaining };
+        var updated = ReplaceSection(tournament, sectionName, updatedSection);
+        return ReassignPairNumbers(updated, sectionName);
+    }
+
+    /// <summary>
+    /// Re-assigns pair numbers to all players in the section, sorted by
+    /// rating descending then alphabetically by name (USCF rule 28E).
+    /// Only valid before round 1 has been paired.
+    /// </summary>
+    public static Tournament ReassignPairNumbers(
+        Tournament tournament, string sectionName)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sectionName);
+
+        var section = FindSection(tournament, sectionName);
+
+        var renumbered = section.Players
+            .OrderByDescending(p => p.Rating)
+            .ThenBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
+            .Select((p, i) => p with { PairNumber = i + 1 })
+            .ToArray();
+
+        var updatedSection = section with { Players = renumbered };
         return ReplaceSection(tournament, sectionName, updatedSection);
     }
 

@@ -92,7 +92,7 @@ public class UscfMultiRoundHarnessTests
     /// </summary>
     private const int MinExpectedMatches         = 83;
     private const int MaxExpectedHardMismatches  = 343;
-    private const int MaxExpectedColorOnlyDiffs  = 44;
+    private const int MaxExpectedColorOnlyDiffs  = 46;
 
     private readonly ITestOutputHelper _output;
 

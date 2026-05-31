@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -17,6 +18,38 @@ public partial class SectionView : UserControl
     public SectionView()
     {
         InitializeComponent();
+        DataContextChanged += OnDataContextChanged;
+    }
+
+    private void OnDataContextChanged(object? sender, EventArgs e)
+    {
+        if (DataContext is ViewModels.SectionViewModel vm)
+        {
+            vm.PropertyChanged += OnVmPropertyChanged;
+            UpdateTeamColumnVisibility(vm.ShowTeamColumns);
+        }
+    }
+
+    private void OnVmPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(ViewModels.SectionViewModel.ShowTeamColumns)
+            && sender is ViewModels.SectionViewModel vm)
+        {
+            UpdateTeamColumnVisibility(vm.ShowTeamColumns);
+        }
+    }
+
+    private void UpdateTeamColumnVisibility(bool visible)
+    {
+        var grid = this.FindControl<DataGrid>("PairingsGrid");
+        if (grid is null) return;
+        // Team columns are at indices 2 (white team) and 5 (black team)
+        // after: Bd, Rtg, White, Team, Result, Black, Team, Rtg
+        foreach (var col in grid.Columns)
+        {
+            if (col.Header is string h && h == "Team")
+                col.IsVisible = visible;
+        }
     }
 
     /// <summary>
@@ -60,6 +93,46 @@ public partial class SectionView : UserControl
         {
             vm.PlayerFilter = string.Empty;
         }
+    }
+
+    /// <summary>
+    /// Keyboard shortcuts for entering results on the Pairings grid.
+    /// W = White wins (1-0), D = Draw, L = White loses (0-1).
+    /// After setting the result, focus advances to the next row.
+    /// </summary>
+    private void OnPairingsGridKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (sender is not DataGrid grid) return;
+        if (grid.SelectedItem is not ViewModels.PairingRow row) return;
+
+        PairingResult? result = e.Key switch
+        {
+            Key.W => PairingResult.WhiteWins,
+            Key.D => PairingResult.Draw,
+            Key.L => PairingResult.BlackWins,
+            _ => null,
+        };
+
+        if (result is null) return;
+
+        e.Handled = true;
+
+        var option = row.AvailableResults.FirstOrDefault(o => o.Value == result.Value);
+        if (option is null) return;
+
+        var nextIndex = grid.SelectedIndex + 1;
+        row.SelectedResult = option;
+
+        // Defer advance so the grid can finish processing the result change.
+        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+        {
+            if (grid.ItemsSource is System.Collections.ICollection col && nextIndex < col.Count)
+            {
+                grid.SelectedIndex = nextIndex;
+                grid.ScrollIntoView(grid.SelectedItem, null);
+            }
+            grid.Focus();
+        }, Avalonia.Threading.DispatcherPriority.Background);
     }
 
     // ================================================================
@@ -130,6 +203,16 @@ public partial class SectionView : UserControl
             && DataContext is ViewModels.SectionViewModel vm)
         {
             await vm.RequestPlayerEditAsync(pn);
+        }
+    }
+
+    private async void OnPlayersGridDoubleTapped(object? sender, TappedEventArgs e)
+    {
+        if (sender is DataGrid grid
+            && grid.SelectedItem is ViewModels.PlayerRow row
+            && DataContext is ViewModels.SectionViewModel vm)
+        {
+            await vm.RequestPlayerEditAsync(row.PairNumber);
         }
     }
 

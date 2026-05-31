@@ -78,6 +78,13 @@ public partial class TournamentViewModel : ViewModelBase
     /// </summary>
     private bool _suppressEventConfigClearOnSelection;
 
+    /// <summary>
+    /// When true, <see cref="OnTournamentChanged"/> skips the expensive
+    /// <see cref="RebuildSections"/> call. Used during result entry so the
+    /// pairings grid stays intact and focus can advance to the next row.
+    /// </summary>
+    private bool _suppressRebuild;
+
     [ObservableProperty]
     private string? _currentFilePath;
 
@@ -355,7 +362,10 @@ public partial class TournamentViewModel : ViewModelBase
 
     partial void OnTournamentChanged(Tournament? value)
     {
-        RebuildSections();
+        if (!_suppressRebuild)
+        {
+            RebuildSections();
+        }
 
         // Rebuild the event-config VM to track the new tournament's
         // identity (so its Reset pulls fresh values). Discarded when
@@ -1366,6 +1376,7 @@ public partial class TournamentViewModel : ViewModelBase
 
         try
         {
+            _suppressRebuild = true;
             Tournament = TournamentMutations.SetPairingResult(
                 Tournament,
                 section.Name,
@@ -1373,10 +1384,12 @@ public partial class TournamentViewModel : ViewModelBase
                 row.WhitePair,
                 row.BlackPair,
                 newResult);
+            _suppressRebuild = false;
             ErrorMessage = null;
         }
         catch (Exception ex)
         {
+            _suppressRebuild = false;
             ErrorMessage = $"Failed to record result: {ex.Message}";
             return;
         }
@@ -2020,6 +2033,17 @@ public partial class TournamentViewModel : ViewModelBase
                     tournamentSnapshot = Tournament;
                     sectionSnapshot = tournamentSnapshot.Sections.Single(s => s.Name == section.Name);
                 }
+            }
+
+            // Before round 1, reassign pair numbers by rating descending
+            // then alphabetical name (USCF 28E) so the pairing engine and
+            // the Players tab both reflect correct seeding order.
+            if (sectionSnapshot.Rounds.Count == 0)
+            {
+                Tournament = TournamentMutations.ReassignPairNumbers(
+                    Tournament, section.Name);
+                tournamentSnapshot = Tournament;
+                sectionSnapshot = tournamentSnapshot.Sections.Single(s => s.Name == section.Name);
             }
 
             var result = await Task.Run(() =>

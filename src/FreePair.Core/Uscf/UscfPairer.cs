@@ -162,10 +162,13 @@ public static class UscfPairer
 
     private static UscfPairingResult PairRoundOne(TrfDocument document)
     {
-        // USCF 28C: order players by rating (descending), break ties by
-        // starting rank to keep the result deterministic for a given TRF.
+        // USCF 28C/28E: order players by rating (descending), break ties
+        // alphabetically by last name then first name (names are stored
+        // as "Last, First"), then by pair number as a final deterministic
+        // tiebreaker.
         var ordered = document.Players
             .OrderByDescending(p => p.Rating)
+            .ThenBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
             .ThenBy(p => p.PairNumber)
             .ToArray();
 
@@ -229,6 +232,7 @@ public static class UscfPairer
             .OrderByDescending(g => g.Key)
             .Select(g => g
                 .OrderByDescending(p => p.Rating)
+                .ThenBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(p => p.PairNumber)
                 .ToList())
             .ToList();
@@ -255,16 +259,80 @@ public static class UscfPairer
             var pool = MergeWithFloaters(groupSorted, floatDown);
             floatDown = new List<TrfPlayer>();
 
-            // Odd group → drop the lowest-rated player to the next group.
-            // (Last score group's leftover becomes the round's bye, handled
-            // after the loop.) The floater(s) we just embedded are
-            // intentionally NOT eligible to drop — pool[^1] is always
-            // the lowest of the original score group, never a floater,
-            // because floaters live at indices halfCount .. halfCount+F-1.
+            // Odd group → drop a player to the next group. Prefer the
+            // natural SLIDE drop (lowest-rated candidate). However, if the
+            // natural SLIDE produces ≥2 color conflicts and an alternative
+            // drop yields 0 conflicts, prefer the color-friendly drop
+            // (matching SwissSys behavior). Floaters don't re-float.
             if (pool.Count % 2 == 1 && gi < scoreGroups.Count - 1)
             {
-                floatDown.Add(pool[^1]);
-                pool.RemoveAt(pool.Count - 1);
+                var floaterCount = pool.Count - groupSorted.Count;
+                var mergeHalf = pool.Count / 2;
+
+                int naturalIdx = -1;
+                int naturalConflicts = int.MaxValue;
+                int bestColorIdx = -1;
+                int bestColorConflicts = int.MaxValue;
+
+                for (var di = pool.Count - 1; di >= 0; di--)
+                {
+                    // Skip floater indices (they sit at mergeHalf..mergeHalf+floaterCount-1).
+                    if (di >= mergeHalf && di < mergeHalf + floaterCount)
+                        continue;
+
+                    var testPool = pool.Where((_, idx) => idx != di).ToList();
+                    var testHalf = testPool.Count / 2;
+                    var testTop = testPool.Take(testHalf).ToList();
+                    var testBot = testPool.Skip(testHalf).Take(testHalf).ToList();
+                    var testAssign = new TrfPlayer[testHalf];
+
+                    if (!TryFindNonRematchMatching(testTop, testBot, testAssign))
+                        continue;
+
+                    // Count color conflicts for this matching.
+                    var pairs = new List<(TrfPlayer A, TrfPlayer B)>(testHalf);
+                    for (var k = 0; k < testHalf; k++)
+                        pairs.Add((testTop[k], testAssign[k]));
+                    var colorConflicts = CountColorConflictPairs(pairs);
+
+                    // Check if the solution is natural SLIDE.
+                    var isNatural = true;
+                    for (var k = 0; k < testHalf; k++)
+                    {
+                        if (testAssign[k].PairNumber != testBot[k].PairNumber)
+                        { isNatural = false; break; }
+                    }
+
+                    if (isNatural && naturalIdx == -1)
+                    {
+                        naturalIdx = di;
+                        naturalConflicts = colorConflicts;
+                        if (colorConflicts == 0) break; // perfect — stop searching
+                    }
+
+                    if (colorConflicts < bestColorConflicts)
+                    {
+                        bestColorIdx = di;
+                        bestColorConflicts = colorConflicts;
+                    }
+                }
+
+                // Use the natural SLIDE drop unless it produces ≥2 color
+                // conflicts and an alternative yields 0.
+                int dropIdx;
+                if (naturalIdx >= 0 && (naturalConflicts < 2 || bestColorConflicts > 0))
+                    dropIdx = naturalIdx;
+                else if (bestColorConflicts == 0 && bestColorIdx >= 0)
+                    dropIdx = bestColorIdx;
+                else if (naturalIdx >= 0)
+                    dropIdx = naturalIdx;
+                else if (bestColorIdx >= 0)
+                    dropIdx = bestColorIdx;
+                else
+                    dropIdx = pool.Count - 1;
+
+                floatDown.Add(pool[dropIdx]);
+                pool.RemoveAt(dropIdx);
             }
 
             board = PairPool(pool, board, pairings, initialColor);
@@ -327,9 +395,7 @@ public static class UscfPairer
 
         // Defensive: when the group is so small that all of it is in
         // the top half (halfCount > groupSorted.Count), fall back to
-        // the simple prepend layout. Practically this only happens in
-        // pathological cases (e.g. a group of 1 receiving a floater)
-        // where SLIDE doesn't really apply anyway.
+        // the simple prepend layout.
         if (halfCount >= groupSorted.Count)
         {
             return floaters.Concat(groupSorted).ToList();
@@ -538,14 +604,10 @@ public static class UscfPairer
         IReadOnlyList<(TrfPlayer A, TrfPlayer B)> pairs,
         IReadOnlyList<TrfPlayer> pool)
     {
-        var indexByPair = pool
-            .Select((p, i) => (p.PairNumber, Index: i))
-            .ToDictionary(x => x.PairNumber, x => x.Index);
-
         return pairs
             .OrderByDescending(p => Math.Max(ComputeScore(p.A), ComputeScore(p.B)))
-            .ThenBy(p => Math.Min(indexByPair[p.A.PairNumber], indexByPair[p.B.PairNumber]))
-            .ThenBy(p => Math.Max(indexByPair[p.A.PairNumber], indexByPair[p.B.PairNumber]))
+            .ThenByDescending(p => Math.Max(p.A.Rating, p.B.Rating))
+            .ThenByDescending(p => Math.Min(p.A.Rating, p.B.Rating))
             .ToList();
     }
 
@@ -1009,12 +1071,24 @@ public static class UscfPairer
 
         // (3) Alternate: last actual-game colour decides.
         var topLast = LastColor(top);
-        return topLast switch
+        var botLast = LastColor(bottom);
+        if (topLast != '-' && botLast != '-')
         {
-            'w' => false,  // had white last → black this round
-            'b' => true,   // had black last → white this round
-            _   => InitialColorOnBoard(initialColor, board), // (4) R1 fallback
-        };
+            // Both have history — alternate based on top's last.
+            return topLast == 'w' ? false : true;
+        }
+        if (topLast != '-')
+        {
+            return topLast == 'w' ? false : true;
+        }
+        if (botLast != '-')
+        {
+            // Only bottom has history — honour bottom's alternation.
+            // bot had white last → bot due black → top gets white (true)
+            // bot had black last → bot due white → top gets black (false)
+            return botLast == 'w';
+        }
+        return InitialColorOnBoard(initialColor, board); // (4) R1 fallback
     }
 
     /// <summary>
