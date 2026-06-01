@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Text.Json;
+using FreePair.Core.Tournaments;
 using FreePair.Core.Uscf;
 using FreePair.Core.Uscf.Trf;
 
@@ -53,6 +55,16 @@ internal static class Program
 
             using var writer = new StreamWriter(output!, append: false, Encoding.ASCII);
             BbpFormatWriter.Write(result, writer);
+
+            // Write annotations as a sidecar JSON file so the host
+            // (BbpPairingEngine) can read them back and attach to the Round.
+            if (result.Annotations is { Count: > 0 })
+            {
+                var annotationsPath = output + ".annotations.json";
+                var json = JsonSerializer.Serialize(result.AnnotationsOrEmpty, AnnotationsJsonContext.Default.IReadOnlyListPairingAnnotation);
+                File.WriteAllText(annotationsPath, json, Encoding.UTF8);
+            }
+
             return 0;
         }
         catch (FileNotFoundException ex)

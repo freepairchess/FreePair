@@ -69,20 +69,21 @@
                       VerticalScrollBarVisibility="Auto">
             <Border Background="#F6F6F6" BorderBrush="LightGray" BorderThickness="1" CornerRadius="4" Padding="12">
                 <StackPanel Spacing="6">
-                    <Grid ColumnDefinitions="2*,60,60,120,90,160,2*" Margin="0,0,0,4">
+                    <Grid ColumnDefinitions="2*,60,60,120,90,160,120,2*" Margin="0,0,0,4">
                         <TextBlock Grid.Column="0" Text="Section"      FontWeight="SemiBold" Foreground="DimGray"/>
                         <TextBlock Grid.Column="1" Text="Players"      FontWeight="SemiBold" Foreground="DimGray" HorizontalAlignment="Right" Margin="0,0,12,0"/>
                         <TextBlock Grid.Column="2" Text="Rounds"       FontWeight="SemiBold" Foreground="DimGray" HorizontalAlignment="Right" Margin="0,0,12,0"/>
                         <TextBlock Grid.Column="3" Text="Start board"  FontWeight="SemiBold" Foreground="DimGray"/>
                         <TextBlock Grid.Column="4" Text="Range"        FontWeight="SemiBold" Foreground="DimGray"/>
                         <TextBlock Grid.Column="5" Text="Pairing engine" FontWeight="SemiBold" Foreground="DimGray"/>
-                        <TextBlock Grid.Column="6" Text="Status / conflict" FontWeight="SemiBold" Foreground="DimGray"/>
+                        <TextBlock Grid.Column="6" Text="Avoid same team" FontWeight="SemiBold" Foreground="DimGray" Margin="6,0,6,0"/>
+                        <TextBlock Grid.Column="7" Text="Status / conflict" FontWeight="SemiBold" Foreground="DimGray"/>
                     </Grid>
 
                     <ItemsControl ItemsSource="{Binding Rows}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="vm:PairAllSectionRow">
-                                <Grid ColumnDefinitions="2*,60,60,120,90,160,2*" Margin="0,3">
+                                <Grid ColumnDefinitions="2*,60,60,120,90,160,120,2*" Margin="0,3">
                                     <TextBlock Grid.Column="0"
                                                Text="{Binding Name}"
                                                VerticalAlignment="Center"
@@ -138,6 +139,15 @@
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="6"
+                                                Orientation="Horizontal"
+                                                VerticalAlignment="Center"
+                                                Margin="6,0,6,0">
+                                        <CheckBox IsChecked="{Binding AvoidSameTeam, Mode=TwoWay}"
+                                                  VerticalAlignment="Center"
+                                                  ToolTip.Tip="Avoid pairing players from the same team in this section."/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="7"
                                                 Orientation="Horizontal"
                                                 VerticalAlignment="Center">
                                         <StackPanel Orientation="Horizontal"

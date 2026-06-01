@@ -6,37 +6,37 @@ namespace FreePair.Core.Tests.Formatting;
 public class ScoreFormatterTests
 {
     [Theory]
-    [InlineData(0.0,  "0")]
-    [InlineData(1.0,  "1")]
-    [InlineData(3.0,  "3")]
-    [InlineData(0.5,  "1/2")]
-    [InlineData(1.5,  "1 1/2")]
-    [InlineData(2.5,  "2 1/2")]
-    [InlineData(3.5,  "3 1/2")]
-    [InlineData(29.5, "29 1/2")]
-    public void Score_ASCII_mode_uses_slash(decimal input, string expected)
+    [InlineData(0.0,  "0.0")]
+    [InlineData(1.0,  "1.0")]
+    [InlineData(3.0,  "3.0")]
+    [InlineData(0.5,  "0.5")]
+    [InlineData(1.5,  "1.5")]
+    [InlineData(2.5,  "2.5")]
+    [InlineData(3.5,  "3.5")]
+    [InlineData(29.5, "29.5")]
+    public void Score_ASCII_mode_uses_decimal(decimal input, string expected)
     {
         var f = new ScoreFormatter { UseAsciiOnly = true };
         Assert.Equal(expected, f.Score(input));
     }
 
     [Theory]
-    [InlineData(0.0,  "0")]
-    [InlineData(1.0,  "1")]
-    [InlineData(0.5,  "\u00BD")]
-    [InlineData(1.5,  "1\u00BD")]
-    [InlineData(29.5, "29\u00BD")]
-    public void Score_Unicode_mode_uses_half_glyph(decimal input, string expected)
+    [InlineData(0.0,  "0.0")]
+    [InlineData(1.0,  "1.0")]
+    [InlineData(0.5,  "0.5")]
+    [InlineData(1.5,  "1.5")]
+    [InlineData(29.5, "29.5")]
+    public void Score_Unicode_mode_uses_decimal(decimal input, string expected)
     {
         var f = new ScoreFormatter { UseAsciiOnly = false };
         Assert.Equal(expected, f.Score(input));
     }
 
     [Fact]
-    public void Score_non_half_fraction_falls_back_to_decimal()
+    public void Score_non_half_fraction_uses_single_decimal()
     {
         var f = new ScoreFormatter { UseAsciiOnly = true };
-        Assert.Equal("0.25", f.Score(0.25m));
+        Assert.Equal("0.3", f.Score(0.25m));
     }
 
     [Theory]

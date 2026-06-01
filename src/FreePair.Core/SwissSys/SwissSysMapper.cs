@@ -154,7 +154,7 @@ public static class SwissSysMapper
 
         var players = raw.Players.Select(MapPlayer).ToArray();
         var teams = raw.Teams.Select(MapTeam).ToArray();
-        var rounds = ReconstructRounds(players, Math.Max(raw.RoundsPaired, raw.RoundsPlayed));
+        var rounds = ReconstructRounds(players, Math.Max(raw.RoundsPaired, raw.RoundsPlayed), raw.FreePairAnnotations);
         var prizes = MapPrizes(raw.Prizes);
 
         return new Section(
@@ -173,7 +173,9 @@ public static class SwissSysMapper
             UseAcceleration: raw.Acceleration != 0,
             InitialColor: MapCoinToss(raw.CoinToss),
             SoftDeleted: raw.FreePairSoftDeleted ?? false,
-            PairingEngine: raw.FreePairPairingEngine);
+            PairingEngine: raw.FreePairPairingEngine,
+            AvoidSameTeam: raw.FreePairAvoidSameTeam ?? false,
+            AvoidSameClub: raw.FreePairAvoidSameClub ?? false);
     }
 
     /// <summary>
@@ -291,7 +293,8 @@ public static class SwissSysMapper
     /// </summary>
     internal static IReadOnlyList<Round> ReconstructRounds(
         IReadOnlyList<Player> players,
-        int roundsPlayed)
+        int roundsPlayed,
+        Dictionary<string, List<Raw.RawPairingAnnotation>>? rawAnnotations = null)
     {
         if (players.Count == 0 || roundsPlayed <= 0)
         {
@@ -363,7 +366,19 @@ public static class SwissSysMapper
                 .OrderBy(p => p.Board)
                 .ToArray();
 
-            rounds.Add(new Round(r + 1, ordered, byes.ToArray()));
+            IReadOnlyList<PairingAnnotation>? annotations = null;
+            if (rawAnnotations is not null &&
+                rawAnnotations.TryGetValue((r + 1).ToString(), out var rawList))
+            {
+                annotations = rawList
+                    .Select(a => new PairingAnnotation(
+                        a.Board,
+                        Enum.TryParse<PairingReason>(a.Reason, out var pr) ? pr : PairingReason.FideEngine,
+                        a.Detail ?? string.Empty))
+                    .ToArray();
+            }
+
+            rounds.Add(new Round(r + 1, ordered, byes.ToArray(), annotations));
         }
 
         return rounds;

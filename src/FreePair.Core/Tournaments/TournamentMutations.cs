@@ -288,7 +288,7 @@ public static class TournamentMutations
             .Concat(zeroByeAssignments)
             .ToArray();
 
-        var newRound = new Round(newRoundNumber, boardPairings, byeAssignments);
+        var newRound = new Round(newRoundNumber, boardPairings, byeAssignments, pairings.AnnotationsOrEmpty);
 
         var byPair = section.Players.ToDictionary(p => p.PairNumber);
         var pairingByPlayer = new Dictionary<int, (int Opponent, PlayerColor Color, int Board)>();
@@ -1920,5 +1920,25 @@ public static class TournamentMutations
             if (pa.History[i].Opponent == b) return true;
         }
         return false;
+    }
+
+    /// <summary>
+    /// Removes all pairing annotations from every round in every section.
+    /// The pairings and results themselves are left intact.
+    /// </summary>
+    public static Tournament ClearAllAnnotations(Tournament tournament)
+    {
+        ArgumentNullException.ThrowIfNull(tournament);
+
+        var newSections = tournament.Sections
+            .Select(s => s with
+            {
+                Rounds = s.Rounds
+                    .Select(r => r with { Annotations = null })
+                    .ToList()
+            })
+            .ToList();
+
+        return tournament with { Sections = newSections };
     }
 }

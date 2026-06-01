@@ -101,7 +101,8 @@ public partial class PairingRow : ObservableObject
         string? blackColors = null,
         string? whiteTeam = null,
         string? blackTeam = null,
-        bool showTeam = false)
+        bool showTeam = false,
+        string? annotationText = null)
     {
         ArgumentNullException.ThrowIfNull(formatter);
 
@@ -125,6 +126,7 @@ public partial class PairingRow : ObservableObject
         BlackColors = blackColors ?? string.Empty;
         BlackTeam = string.IsNullOrWhiteSpace(blackTeam) ? null : blackTeam.Trim();
         ShowTeam = showTeam;
+        AnnotationText = annotationText;
 
         AvailableResults = new[]
         {
@@ -159,6 +161,12 @@ public partial class PairingRow : ObservableObject
     /// True when the section's AvoidSameTeam flag is enabled.
     /// </summary>
     public bool ShowTeam { get; }
+
+    /// <summary>
+    /// Pairing annotation/explanation text for this board (null if none).
+    /// Displayed as a tooltip in the Pairings DataGrid.
+    /// </summary>
+    public string? AnnotationText { get; }
 
     /// <summary>
     /// White's display name with optional title prefix (e.g.
@@ -534,7 +542,60 @@ public partial class SectionViewModel : ViewModelBase
     }
 
     /// <summary>Underlying domain section.</summary>
-    public Section Section { get; }
+    public Section Section { get; private set; }
+
+    /// <summary>
+    /// Updates the underlying section snapshot after a mutation that was
+    /// performed while rebuild was suppressed (e.g. result entry).
+    /// Re-evaluates <see cref="CanPairNextRound"/> and related gates.
+    /// </summary>
+    public void RefreshSection(Section updatedSection)
+    {
+        var previousRoundsPlayed = Section.RoundsPlayed;
+        Section = updatedSection;
+        OnPropertyChanged(nameof(CanPairNextRound));
+        OnPropertyChanged(nameof(PairNextRoundBlockReason));
+
+        // When RoundsPlayed changes (round completes or a result is
+        // reverted to Unplayed), recompute standings and wall chart.
+        if (updatedSection.RoundsPlayed != previousRoundsPlayed)
+        {
+            RebuildStandingsAndWallChart();
+        }
+    }
+
+    private void RebuildStandingsAndWallChart()
+    {
+        Standings = StandingsBuilder.Build(Section);
+        WallChart = WallChartBuilder.Build(Section);
+
+        StandingsDisplay = Standings
+            .Select(r => new StandingsDisplayRow(
+                r,
+                Formatter.Score(r.Score),
+                Formatter.Score(r.Tiebreaks.ModifiedMedian),
+                Formatter.Score(r.Tiebreaks.Solkoff),
+                Formatter.Score(r.Tiebreaks.Cumulative),
+                Formatter.Score(r.Tiebreaks.OpponentCumulative)))
+            .ToArray();
+
+        WallChartDisplay = WallChart
+            .Select(w => new WallChartDisplayRow(
+                w,
+                Formatter.Score(w.Score),
+                Formatter.Score(w.Tiebreaks.ModifiedMedian),
+                Formatter.Score(w.Tiebreaks.Solkoff),
+                Formatter.Score(w.Tiebreaks.Cumulative),
+                Formatter.Score(w.Tiebreaks.OpponentCumulative)))
+            .ToArray();
+
+        OnPropertyChanged(nameof(Standings));
+        OnPropertyChanged(nameof(StandingsDisplay));
+        OnPropertyChanged(nameof(FilteredStandings));
+        OnPropertyChanged(nameof(WallChart));
+        OnPropertyChanged(nameof(WallChartDisplay));
+        OnPropertyChanged(nameof(FilteredWallChart));
+    }
 
     public IScoreFormatter Formatter { get; }
 
@@ -573,6 +634,9 @@ public partial class SectionViewModel : ViewModelBase
     [ObservableProperty]
     private bool _showTeamColumns;
 
+    [ObservableProperty]
+    private bool _showPairingNotes;
+
     partial void OnAvoidSameTeamChanged(bool value)
     {
         if (_suppressAvoidSameTeamCallback) return;
@@ -588,13 +652,13 @@ public partial class SectionViewModel : ViewModelBase
     public int RequestedByeCount =>
         Section.Players.Count(p => p.RequestedByeRounds.Count > 0);
 
-    public IReadOnlyList<StandingsRow> Standings { get; }
+    public IReadOnlyList<StandingsRow> Standings { get; private set; }
 
-    public IReadOnlyList<WallChartRow> WallChart { get; }
+    public IReadOnlyList<WallChartRow> WallChart { get; private set; }
 
-    public IReadOnlyList<StandingsDisplayRow> StandingsDisplay { get; }
+    public IReadOnlyList<StandingsDisplayRow> StandingsDisplay { get; private set; }
 
-    public IReadOnlyList<WallChartDisplayRow> WallChartDisplay { get; }
+    public IReadOnlyList<WallChartDisplayRow> WallChartDisplay { get; private set; }
 
     public IReadOnlyList<PlayerRow> Players { get; }
 
@@ -1233,22 +1297,24 @@ public partial class SectionViewModel : ViewModelBase
         var black = _byPair.TryGetValue(p.BlackPair, out var b) ? b : null;
         var roundNumber = SelectedRound?.Number ?? 0;
 
-        // Pre-round score: sum of each player's scoring history from
-        // rounds STRICTLY BEFORE the round we're viewing. For round 1
-        // both reads as 0; for round 2 it's whatever the player got in
-        // R1; etc. Defensive against players who haven't accumulated
-        // enough history yet (e.g. late entry just added with no past
-        // results).
         var whiteScore = ScoreThroughRound(white, roundNumber - 1);
         var blackScore = ScoreThroughRound(black, roundNumber - 1);
 
-        // Per-round colour history for the same window: "W" white,
-        // "B" black, "X" any bye / unpaired round. Empty string for
-        // round 1 (no prior rounds). Lets the TD spot colour-balance
-        // pressure at a glance, e.g. "WBWXB" = three whites vs two
-        // blacks going in, so this player has a small black bias.
         var whiteColors = ColorHistoryThroughRound(white, roundNumber - 1);
         var blackColors = ColorHistoryThroughRound(black, roundNumber - 1);
+
+        // Gather annotations for this board from the selected round.
+        string? annotationText = null;
+        var selectedRoundNumber = SelectedRound?.Number ?? 0;
+        var domainRound = Section.Rounds.FirstOrDefault(r => r.Number == selectedRoundNumber);
+        if (domainRound?.Annotations is { Count: > 0 } annotations)
+        {
+            var boardNotes = annotations
+                .Where(a => a.Board == p.Board)
+                .Select(a => a.Detail);
+            var joined = string.Join("\n", boardNotes);
+            if (joined.Length > 0) annotationText = joined;
+        }
 
         return new PairingRow(
             board: p.Board,
@@ -1270,7 +1336,8 @@ public partial class SectionViewModel : ViewModelBase
             blackColors: blackColors,
             whiteTeam: white?.Team,
             blackTeam: black?.Team,
-            showTeam: AvoidSameTeam);
+            showTeam: AvoidSameTeam,
+            annotationText: annotationText);
     }
 
     private static decimal ScoreThroughRound(Player? player, int endedRound)

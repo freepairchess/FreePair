@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FreePair.Core.Tournaments;
 
 namespace FreePair.Core.Bbp;
 
@@ -43,7 +44,8 @@ public sealed record BbpPairingResult(
     /// result surfaces them so <see cref="Tournaments.TournamentMutations.AppendRound"/>
     /// can stamp a <c>ZeroPointBye</c> history entry.
     /// </summary>
-    IReadOnlyList<int>? ZeroPointByePlayerPairs = null)
+    IReadOnlyList<int>? ZeroPointByePlayerPairs = null,
+    IReadOnlyList<PairingAnnotation>? Annotations = null)
 {
     /// <summary>
     /// Non-null view of <see cref="HalfPointByePlayerPairs"/>.
@@ -62,4 +64,10 @@ public sealed record BbpPairingResult(
     /// </summary>
     public IReadOnlyList<int> ZeroPointByes =>
         ZeroPointByePlayerPairs ?? System.Array.Empty<int>();
+
+    /// <summary>
+    /// Non-null view of <see cref="Annotations"/>.
+    /// </summary>
+    public IReadOnlyList<PairingAnnotation> AnnotationsOrEmpty =>
+        Annotations ?? System.Array.Empty<PairingAnnotation>();
 }

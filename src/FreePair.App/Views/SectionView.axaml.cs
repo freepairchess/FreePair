@@ -27,15 +27,21 @@ public partial class SectionView : UserControl
         {
             vm.PropertyChanged += OnVmPropertyChanged;
             UpdateTeamColumnVisibility(vm.ShowTeamColumns);
+            UpdateNotesColumnVisibility(vm.ShowPairingNotes);
         }
     }
 
     private void OnVmPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(ViewModels.SectionViewModel.ShowTeamColumns)
-            && sender is ViewModels.SectionViewModel vm)
+        if (sender is not ViewModels.SectionViewModel vm) return;
+
+        if (e.PropertyName == nameof(ViewModels.SectionViewModel.ShowTeamColumns))
         {
             UpdateTeamColumnVisibility(vm.ShowTeamColumns);
+        }
+        else if (e.PropertyName == nameof(ViewModels.SectionViewModel.ShowPairingNotes))
+        {
+            UpdateNotesColumnVisibility(vm.ShowPairingNotes);
         }
     }
 
@@ -43,11 +49,20 @@ public partial class SectionView : UserControl
     {
         var grid = this.FindControl<DataGrid>("PairingsGrid");
         if (grid is null) return;
-        // Team columns are at indices 2 (white team) and 5 (black team)
-        // after: Bd, Rtg, White, Team, Result, Black, Team, Rtg
         foreach (var col in grid.Columns)
         {
             if (col.Header is string h && h == "Team")
+                col.IsVisible = visible;
+        }
+    }
+
+    private void UpdateNotesColumnVisibility(bool visible)
+    {
+        var grid = this.FindControl<DataGrid>("PairingsGrid");
+        if (grid is null) return;
+        foreach (var col in grid.Columns)
+        {
+            if (col.Header is string h && h == "Notes")
                 col.IsVisible = visible;
         }
     }
@@ -110,6 +125,9 @@ public partial class SectionView : UserControl
             Key.W => PairingResult.WhiteWins,
             Key.D => PairingResult.Draw,
             Key.L => PairingResult.BlackWins,
+            Key.D1 or Key.NumPad1 => PairingResult.WhiteWins,
+            Key.D2 or Key.NumPad2 => PairingResult.Draw,
+            Key.D0 or Key.NumPad0 => PairingResult.BlackWins,
             _ => null,
         };
 

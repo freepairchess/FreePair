@@ -40,8 +40,8 @@ public class StandingsBuilderTests
         var rows = StandingsBuilder.Build(openI);
 
         Assert.Equal(
-            new[] { "1", "2", "3-5", "3-5", "3-5", "6-10", "6-10", "6-10", "6-10", "6-10",
-                    "11-15", "11-15", "11-15", "11-15", "11-15", "16" },
+            new[] { "1", "2", "3-5", "", "", "6-10", "", "", "", "",
+                    "11-15", "", "", "", "", "16" },
             rows.Select(r => r.Place).ToArray());
     }
 
@@ -93,9 +93,9 @@ public class StandingsBuilderTests
         var rows = StandingsBuilder.Build(openII);
 
         Assert.Equal(
-            new[] { "1-2", "1-2", "3-4", "3-4", "5-7", "5-7", "5-7",
-                    "8-10", "8-10", "8-10", "11-16", "11-16", "11-16",
-                    "11-16", "11-16", "11-16", "17", "18" },
+            new[] { "1-2", "", "3-4", "", "5-7", "", "",
+                    "8-10", "", "", "11-16", "", "",
+                    "", "", "", "17", "18" },
             rows.Select(r => r.Place).ToArray());
     }
 

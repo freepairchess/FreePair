@@ -59,6 +59,13 @@ public sealed partial class PairAllSectionRow : ObservableObject
     private PairingEngineChoice? _selectedEngineChoice;
 
     /// <summary>
+    /// Two-way-bindable checkbox for same-team avoidance. Seeded
+    /// from the section's persisted <see cref="Section.AvoidSameTeam"/>.
+    /// </summary>
+    [ObservableProperty]
+    private bool _avoidSameTeam;
+
+    /// <summary>
     /// Read-only label showing the resolved (effective) engine
     /// after the inherit/default cascade. Always populated; the
     /// view shows EITHER the combobox (when editable) OR this
@@ -157,6 +164,9 @@ public sealed partial class PairAllSectionRow : ObservableObject
 
         // Engine editability: only when the next pair will be round 1.
         IsEngineEditable = section.RoundsPaired == 0;
+
+        // Seed same-team avoidance from the section's persisted value.
+        _avoidSameTeam = section.AvoidSameTeam;
 
         // Seed the combobox from the section's current override.
         SelectedEngineChoice = PairingEngineChoice.SectionChoices.FirstOrDefault(
@@ -327,6 +337,19 @@ public sealed partial class PairAllSectionsViewModel : ViewModelBase
             if (!row.IsEngineEditable) continue;
             dict[row.Name] = row.SelectedEngineChoice?.Value;
         }
+        return dict;
+    }
+
+    /// <summary>
+    /// Per-section avoid-same-team setting the TD chose. Caller
+    /// applies via <see cref="TournamentMutations.SetAvoidSameTeam"/>
+    /// before pairing so the constraint is in effect.
+    /// </summary>
+    public IReadOnlyDictionary<string, bool> SnapshotChosenAvoidSameTeam()
+    {
+        var dict = new Dictionary<string, bool>(StringComparer.Ordinal);
+        foreach (var row in Rows)
+            dict[row.Name] = row.AvoidSameTeam;
         return dict;
     }
 }
