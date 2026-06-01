@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FreePair.Core.Tournaments;
 
 namespace FreePair.Core.Uscf;
 
@@ -32,9 +33,14 @@ public sealed record UscfRequestedBye(int PairNumber, char Kind);
 public sealed record UscfPairingResult(
     IReadOnlyList<UscfPairing> Pairings,
     int? ByePair,
-    IReadOnlyList<UscfRequestedBye>? RequestedByes = null)
+    IReadOnlyList<UscfRequestedBye>? RequestedByes = null,
+    IReadOnlyList<PairingAnnotation>? Annotations = null)
 {
     /// <summary>Non-null view of <see cref="RequestedByes"/> for callers that prefer enumeration.</summary>
     public IReadOnlyList<UscfRequestedBye> RequestedByesOrEmpty =>
         RequestedByes ?? Array.Empty<UscfRequestedBye>();
+
+    /// <summary>Non-null view of <see cref="Annotations"/> for callers that prefer enumeration.</summary>
+    public IReadOnlyList<PairingAnnotation> AnnotationsOrEmpty =>
+        Annotations ?? Array.Empty<PairingAnnotation>();
 }

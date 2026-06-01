@@ -311,12 +311,52 @@ public class BbpPairingEngine : IBbpPairingEngine
             // Merge the requested-bye pair numbers into the result so
             // the caller (TournamentMutations.AppendRound) records the
             // HalfPointBye history entry for those players.
+
+            // Try to read annotations sidecar (written by FreePair.UscfEngine).
+            // For pure bbpPairings (FIDE), generate simple per-board annotations.
+            var annotationsPath = pairingsPath + ".annotations.json";
+            IReadOnlyList<Tournaments.PairingAnnotation>? annotations = null;
+            if (File.Exists(annotationsPath))
+            {
+                try
+                {
+                    var annotationsJson = await File.ReadAllTextAsync(annotationsPath, cancellationToken)
+                        .ConfigureAwait(false);
+                    annotations = System.Text.Json.JsonSerializer.Deserialize<List<Tournaments.PairingAnnotation>>(annotationsJson);
+                }
+                catch { /* best effort */ }
+                TryDelete(annotationsPath);
+            }
+            else
+            {
+                // FIDE engine — generate basic annotations
+                var fideAnnotations = new List<Tournaments.PairingAnnotation>();
+                for (var bi = 0; bi < resolved.Pairings.Count; bi++)
+                {
+                    var p = resolved.Pairings[bi];
+                    fideAnnotations.Add(new Tournaments.PairingAnnotation(
+                        bi + 1, Tournaments.PairingReason.FideEngine,
+                        $"Paired by FIDE Dutch engine (bbpPairings): #{p.WhitePair} vs #{p.BlackPair}"));
+                }
+                if (remappedByes.Length > 0)
+                {
+                    foreach (var bye in remappedByes)
+                    {
+                        fideAnnotations.Add(new Tournaments.PairingAnnotation(
+                            0, Tournaments.PairingReason.ByeAssigned,
+                            $"Full-point bye: #{bye} (assigned by FIDE engine)"));
+                    }
+                }
+                annotations = fideAnnotations;
+            }
+
             return new BbpPairingResult(
                 resolved.Pairings,
                 parsed.ByePlayerPairs,
                 HalfPointByePlayerPairs: requestedHalfByes,
                 UnresolvedConflicts: resolved.UnresolvedConflicts,
-                ZeroPointByePlayerPairs: requestedZeroByes);
+                ZeroPointByePlayerPairs: requestedZeroByes,
+                Annotations: annotations);
         }
         finally
         {

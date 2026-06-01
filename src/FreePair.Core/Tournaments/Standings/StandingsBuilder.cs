@@ -39,14 +39,19 @@ public static class StandingsBuilder
 
         var tiebreaks = TiebreakCalculator.Compute(section);
 
+        // Only count scores through completed rounds (RoundsPlayed).
+        // In-progress round results are excluded so standings don't
+        // fluctuate while the round is being entered.
+        var roundsPlayed = section.RoundsPlayed;
+
         // Soft-deleted players (pre-round-1 only) are omitted from the
         // standings entirely — they don't appear in FreePair's own
         // standings / wall-chart views, the TRF export, or the
         // NA Chess Hub publish payload.
         var sorted = section.Players
             .Where(p => !p.SoftDeleted)
-            .Select(p => new SortItem(p, tiebreaks[p.PairNumber]))
-            .OrderByDescending(x => x.Player.Score)
+            .Select(p => new SortItem(p, tiebreaks[p.PairNumber], ScoreThrough(p, roundsPlayed)))
+            .OrderByDescending(x => x.Score)
             .ThenByDescending(x => x.Tb.ModifiedMedian)
             .ThenByDescending(x => x.Tb.Solkoff)
             .ThenByDescending(x => x.Tb.Cumulative)
@@ -59,9 +64,9 @@ public static class StandingsBuilder
 
         while (i < sorted.Length)
         {
-            var groupScore = sorted[i].Player.Score;
+            var groupScore = sorted[i].Score;
             var j = i + 1;
-            while (j < sorted.Length && sorted[j].Player.Score == groupScore)
+            while (j < sorted.Length && sorted[j].Score == groupScore)
             {
                 j++;
             }
@@ -77,11 +82,11 @@ public static class StandingsBuilder
                 var item = sorted[k];
                 rows.Add(new StandingsRow(
                     Rank: k + 1,
-                    Place: place,
+                    Place: k == i ? place : string.Empty,
                     PairNumber: item.Player.PairNumber,
                     Name: item.Player.Name,
                     Rating: item.Player.Rating,
-                    Score: item.Player.Score,
+                    Score: item.Score,
                     Tiebreaks: item.Tb));
             }
 
@@ -91,5 +96,14 @@ public static class StandingsBuilder
         return rows;
     }
 
-    private readonly record struct SortItem(Player Player, TiebreakValues Tb);
+    private readonly record struct SortItem(Player Player, TiebreakValues Tb, decimal Score);
+
+    private static decimal ScoreThrough(Player player, int roundsPlayed)
+    {
+        if (roundsPlayed <= 0) return 0m;
+        var rounds = Math.Min(roundsPlayed, player.History.Count);
+        decimal score = 0m;
+        for (var i = 0; i < rounds; i++) score += player.History[i].Score;
+        return score;
+    }
 }

@@ -569,6 +569,9 @@
                                 <CheckBox IsChecked="{Binding ShowTeamColumns}"
                                           Content="Show team name"
                                           ToolTip.Tip="Show team name columns in the pairings grid."/>
+                                <CheckBox IsChecked="{Binding ShowPairingNotes}"
+                                          Content="Show pairing notes"
+                                          ToolTip.Tip="Show a Notes column with pairing explanations for debugging."/>
                             </StackPanel>
 
                             <!-- Sortable / resizable pairings grid. Result is a template-column ComboBox
@@ -624,13 +627,10 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <!-- Black name is PREFIXED with the pre-round score so the
-                                         bracket sits on the inside of the matchup row, framing the
-                                         pair with white's score on the left of the table and
-                                         black's score on the right. -->
-                                    <DataGridTextColumn Header="Black"  Binding="{Binding BlackTitledNameWithScore}"  SortMemberPath="BlackName"    Width="*"   MinWidth="180" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="Team"   Binding="{Binding BlackTeam}"                  SortMemberPath="BlackTeam"    Width="100" IsReadOnly="True" IsVisible="False"/>
+                                    <DataGridTextColumn Header="Black"  Binding="{Binding BlackTitledNameWithScore}"  SortMemberPath="BlackName"    Width="*"   MinWidth="180" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="Rtg"    Binding="{Binding BlackRating}"               SortMemberPath="BlackRating"  Width="60"  IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Notes"  Binding="{Binding AnnotationText}"            SortMemberPath="AnnotationText" Width="200" IsReadOnly="True" IsVisible="False"/>
                                 </DataGrid.Columns>
                             </DataGrid>
 

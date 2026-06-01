@@ -167,6 +167,54 @@ public class SwissSysTournamentWriter : ITournamentWriter
                 sectionNode.Remove("FreePair pairing engine");
             }
 
+            // FreePair-specific constraint toggles.
+            if (section.AvoidSameTeam)
+            {
+                sectionNode["FreePair avoid same team"] = true;
+            }
+            else
+            {
+                sectionNode.Remove("FreePair avoid same team");
+            }
+
+            if (section.AvoidSameClub)
+            {
+                sectionNode["FreePair avoid same club"] = true;
+            }
+            else
+            {
+                sectionNode.Remove("FreePair avoid same club");
+            }
+
+            // FreePair-specific pairing annotations keyed by round number.
+            // These are debug/explanation notes for each round's pairings.
+            // SwissSys ignores unknown keys, so this is safe.
+            var hasAnnotations = section.Rounds.Any(r => r.Annotations is { Count: > 0 });
+            if (hasAnnotations)
+            {
+                var annotObj = new JsonObject();
+                foreach (var round in section.Rounds)
+                {
+                    if (round.Annotations is not { Count: > 0 }) continue;
+                    var arr = new JsonArray();
+                    foreach (var a in round.Annotations)
+                    {
+                        arr.Add(new JsonObject
+                        {
+                            ["board"] = a.Board,
+                            ["reason"] = a.Reason.ToString(),
+                            ["detail"] = a.Detail,
+                        });
+                    }
+                    annotObj[round.Number.ToString()] = arr;
+                }
+                sectionNode["FreePair annotations"] = annotObj;
+            }
+            else
+            {
+                sectionNode.Remove("FreePair annotations");
+            }
+
             var playersArray = sectionNode["Players"]?.AsArray();
             if (playersArray is null)
             {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FreePair.Core.Tournaments;
 using FreePair.Core.Uscf.Trf;
 
 namespace FreePair.Core.Uscf;
@@ -192,6 +193,8 @@ public static class UscfPairer
         var initialIsWhite = (document.InitialColor ?? 'w') == 'w';
 
         var pairings = new List<UscfPairing>(half);
+        var annotations = new List<PairingAnnotation>();
+
         for (var i = 0; i < half; i++)
         {
             var topSeed = ordered[i];
@@ -207,10 +210,25 @@ public static class UscfPairer
                 ? (topSeed, bottomSeed)
                 : (bottomSeed, topSeed);
 
-            pairings.Add(new UscfPairing(white.PairNumber, black.PairNumber, Board: i + 1));
+            var board = i + 1;
+            pairings.Add(new UscfPairing(white.PairNumber, black.PairNumber, Board: board));
+
+            annotations.Add(new PairingAnnotation(board, PairingReason.RoundOneSlide,
+                $"Natural R1 slide: #{topSeed.PairNumber} (top half, rated {topSeed.Rating}) vs #{bottomSeed.PairNumber} (bottom half, rated {bottomSeed.Rating})"));
+            annotations.Add(new PairingAnnotation(board,
+                topGetsWhite ? PairingReason.ColorByInitialRule : PairingReason.ColorByInitialRule,
+                topGetsWhite
+                    ? $"White: #{topSeed.PairNumber} (top seed gets initial color on board {board})"
+                    : $"White: #{bottomSeed.PairNumber} (top seed gets opposite color on even board {board})"));
         }
 
-        return new UscfPairingResult(pairings, byePair);
+        if (byePair is not null)
+        {
+            annotations.Add(new PairingAnnotation(0, PairingReason.ByeAssigned,
+                $"Full-point bye: #{byePair.Value} (lowest-rated player in R1)"));
+        }
+
+        return new UscfPairingResult(pairings, byePair, Annotations: annotations);
     }
 
     // ============================================================ Round N
@@ -238,6 +256,7 @@ public static class UscfPairer
             .ToList();
 
         var pairings = new List<UscfPairing>();
+        var annotations = new List<PairingAnnotation>();
         int? byePair = null;
         var board = 1;
 
@@ -256,6 +275,7 @@ public static class UscfPairer
         for (var gi = 0; gi < scoreGroups.Count; gi++)
         {
             var groupSorted = scoreGroups[gi];
+            var currentFloaterCount = floatDown.Count;
             var pool = MergeWithFloaters(groupSorted, floatDown);
             floatDown = new List<TrfPlayer>();
 
@@ -332,10 +352,16 @@ public static class UscfPairer
                     dropIdx = pool.Count - 1;
 
                 floatDown.Add(pool[dropIdx]);
+                var droppedPlayer = pool[dropIdx];
+                var dropReason = (dropIdx == naturalIdx)
+                    ? PairingReason.FloaterDropNatural
+                    : PairingReason.FloaterDropColorFriendly;
+                annotations.Add(new PairingAnnotation(0, dropReason,
+                    $"Floater drop: #{droppedPlayer.PairNumber} (rated {droppedPlayer.Rating}) dropped from score group {ComputeScore(droppedPlayer):F1} — {(dropReason == PairingReason.FloaterDropNatural ? "natural SLIDE drop" : "color-friendly alternative")}"));
                 pool.RemoveAt(dropIdx);
             }
 
-            board = PairPool(pool, board, pairings, initialColor);
+            board = PairPool(pool, board, pairings, initialColor, annotations, currentFloaterCount);
 
             // If we're on the last group and it's still odd, the leftover
             // is the bye.
@@ -343,6 +369,8 @@ public static class UscfPairer
             {
                 // PairPool ignored the trailing odd one — now collect it.
                 byePair = pool[^1].PairNumber;
+                annotations.Add(new PairingAnnotation(0, PairingReason.ByeAssigned,
+                    $"Full-point bye: #{byePair.Value} (lowest-rated in last score group)"));
             }
         }
 
@@ -352,10 +380,10 @@ public static class UscfPairer
         {
             byePair = floatDown[^1].PairNumber;
             floatDown.RemoveAt(floatDown.Count - 1);
-            board = PairPool(floatDown, board, pairings, initialColor);
+            board = PairPool(floatDown, board, pairings, initialColor, annotations, 0);
         }
 
-        return new UscfPairingResult(pairings, byePair);
+        return new UscfPairingResult(pairings, byePair, Annotations: annotations);
     }
 
     /// <summary>
@@ -418,61 +446,44 @@ public static class UscfPairer
     /// trailing element is left unpaired (caller's responsibility to
     /// either float it down or assign as bye).
     /// </summary>
-    private static int PairPool(IList<TrfPlayer> pool, int startBoard, List<UscfPairing> pairings, char initialColor)
+    private static int PairPool(IList<TrfPlayer> pool, int startBoard, List<UscfPairing> pairings, char initialColor, List<PairingAnnotation> annotations, int floaterCount = 0)
     {
         var pairableCount = pool.Count - (pool.Count % 2);
         var half = pairableCount / 2;
         var board = startBoard;
 
-        // Take the top and bottom halves. Then run a backtracking
-        // matcher (USCF 28L1-L2 deeper transpositions) that searches
-        // for an assignment of bot[*] to top[*] avoiding rematches,
-        // preferring the natural rating order whenever feasible. The
-        // search visits bot[i]'s natural counterpart first, then the
-        // closest non-natural choices in widening rings, so when no
-        // rematches exist we get the same output the simple zip would
-        // produce; when one or two rematches exist we transpose only
-        // as much as needed; and when many rematches exist we still
-        // find a non-rematch matching as long as one is mathematically
-        // possible (single-swap couldn't, full backtracking can).
-        //
-        // SLIDE vs FOLD: we use SLIDE — top[0] plays bot[0], top[1]
-        // plays bot[1], etc. (USCF 28D2(d), explicit). SwissSys
-        // matches us on most score groups but occasionally uses fold-
-        // shaped output; when it does, it's because of a downstream
-        // optimisation (colour balance at the GROUP level, downfloat
-        // reassignment, etc.) we haven't identified yet — see
-        // UscfMccDiagnosticTests for concrete divergence cases.
         var top = pool.Take(half).ToList();
         var bot = pool.Skip(half).Take(half).ToList();
         var assignment = new TrfPlayer[half];
 
+        var matchingKind = PairingReason.NaturalSlide;
+
         if (!TryFindNonRematchMatching(top, bot, assignment))
         {
-            // 28L3 cross-half interchange (P2-deeper-still): when no
-            // within-half non-rematch matching exists, USCF allows
-            // SWAPPING one player from the top half with one from
-            // the bottom half, then re-running the standard top-vs-
-            // bot pairing on the new halves. The smallest disturbance
-            // is interchanging the lowest-rated top with the highest-
-            // rated bot (i = half-1, j = 0); we widen from there.
-            //
-            // Concrete case: GBO 2025 Premier R4, score 1.5 group of 4
-            // players (#6, #10, #15, #18). Both SLIDE (6-15, 10-18)
-            // and FOLD (6-18, 10-15) have one rematch each. Only the
-            // cross-half (6-10, 15-18) is rematch-free, and SwissSys
-            // produced exactly that.
             if (!TryCrossHalfInterchange(top, bot, assignment, out var newTop, out var newBot))
             {
                 // No 28L3 solution either — commit the natural
                 // pairing as a least-bad fallback.
                 for (var i = 0; i < half; i++) assignment[i] = bot[i];
+                matchingKind = PairingReason.FallbackRematchAccepted;
             }
             else
             {
                 top = (List<TrfPlayer>)newTop;
                 bot = (List<TrfPlayer>)newBot;
+                matchingKind = PairingReason.CrossHalfInterchange;
             }
+        }
+        else
+        {
+            // Check if the matching is truly natural (no transposition).
+            var isNatural = true;
+            for (var i = 0; i < half; i++)
+            {
+                if (assignment[i].PairNumber != bot[i].PairNumber)
+                { isNatural = false; break; }
+            }
+            if (!isNatural) matchingKind = PairingReason.TranspositionAvoidRematch;
         }
 
         var selectedPairs = Enumerable.Range(0, half)
@@ -488,26 +499,20 @@ public static class UscfPairer
         var isSingleFloaterEightPlayerPool = pairablePool.Count == 8
             && scoreCounts.Length == 2
             && scoreCounts[0] == 1;
+
+        // USCF 28F2: color optimizations must preserve floater pairings.
+        // Floaters sit at bot[0..floaterCount-1] paired with top[0..floaterCount-1].
         if (isSingleFloaterEightPlayerPool &&
-            TryFindColorOptimizedMatching(pairablePool, selectedPairs, initialColor, startBoard, out var colorOptimizedPairs))
+            TryFindColorOptimizedMatching(pairablePool, selectedPairs, initialColor, startBoard, out var colorOptimizedPairs, floaterCount))
         {
             selectedPairs = colorOptimizedPairs;
+            matchingKind = PairingReason.ColorOptimizedMatching;
         }
-        else if (TryReduceColorConflicts(pairablePool, selectedPairs, out var reducedConflictPairs))
+        else if (TryReduceColorConflicts(pairablePool, selectedPairs, out var reducedConflictPairs, floaterCount))
         {
-            // USCF 29E colour-due transposition (narrow scope). Independent
-            // of the colour-due-preference optimiser above: this only fires
-            // when the natural SLIDE has ≥1 board where both players prefer
-            // the same colour, and the search finds an alternative matching
-            // with STRICTLY FEWER such conflicts. We don't try to optimise
-            // individual preferences — only to reduce hard colour clashes —
-            // so pools that SwissSys leaves alone keep their natural SLIDE.
-            //
-            // Concrete case: Chess A2Z May Open 2026 R2, 1.0 score group
-            // of 12. Natural SLIDE has two colour conflicts (3 vs 9, both
-            // due W; 4 vs 10, both due B). Swapping bot[1]=9 ↔ bot[2]=10
-            // gives 3-10 and 4-9, zero conflicts — what SwissSys produces.
             selectedPairs = reducedConflictPairs;
+            if (matchingKind == PairingReason.NaturalSlide)
+                matchingKind = PairingReason.ColorConflictReduction;
         }
 
         for (var i = 0; i < selectedPairs.Count; i++)
@@ -516,10 +521,71 @@ public static class UscfPairer
             var topGetsWhite = TopGetsWhite(topPlayer, bottomPlayer, initialColor, board);
             var (white, black) = topGetsWhite ? (topPlayer, bottomPlayer) : (bottomPlayer, topPlayer);
             pairings.Add(new UscfPairing(white.PairNumber, black.PairNumber, Board: board));
+
+            // Emit annotations for this board
+            var detail = matchingKind switch
+            {
+                PairingReason.NaturalSlide => $"Natural SLIDE: #{topPlayer.PairNumber} vs #{bottomPlayer.PairNumber}",
+                PairingReason.TranspositionAvoidRematch => $"Transposition (USCF 28L1-L2) to avoid rematch: #{topPlayer.PairNumber} vs #{bottomPlayer.PairNumber}",
+                PairingReason.CrossHalfInterchange => $"Cross-half interchange (USCF 28L3): #{topPlayer.PairNumber} vs #{bottomPlayer.PairNumber}",
+                PairingReason.ColorOptimizedMatching => $"Color-optimized matching: #{topPlayer.PairNumber} vs #{bottomPlayer.PairNumber}",
+                PairingReason.ColorConflictReduction => $"Color-conflict reduction (USCF 29E): #{topPlayer.PairNumber} vs #{bottomPlayer.PairNumber}",
+                PairingReason.FallbackRematchAccepted => $"Fallback (no non-rematch possible): #{topPlayer.PairNumber} vs #{bottomPlayer.PairNumber} — rematch accepted",
+                _ => $"#{topPlayer.PairNumber} vs #{bottomPlayer.PairNumber}",
+            };
+            annotations.Add(new PairingAnnotation(board, matchingKind, detail));
+
+            // Color annotation
+            var colorReason = DescribeColorChoice(topPlayer, bottomPlayer, topGetsWhite, initialColor, board);
+            annotations.Add(new PairingAnnotation(board, colorReason.Reason, colorReason.Detail));
+
             board++;
         }
 
         return board;
+    }
+
+    /// <summary>
+    /// Produces a human-readable annotation explaining why a particular
+    /// player was assigned White for a given board.
+    /// </summary>
+    private static (PairingReason Reason, string Detail) DescribeColorChoice(
+        TrfPlayer topPlayer, TrfPlayer bottomPlayer, bool topGetsWhite, char initialColor, int board)
+    {
+        var white = topGetsWhite ? topPlayer : bottomPlayer;
+        var black = topGetsWhite ? bottomPlayer : topPlayer;
+
+        // Determine the dominant factor from TopGetsWhite logic.
+        var topWhites = topPlayer.Rounds.Count(h => h.Color == 'w');
+        var topBlacks = topPlayer.Rounds.Count(h => h.Color == 'b');
+        var botWhites = bottomPlayer.Rounds.Count(h => h.Color == 'w');
+        var botBlacks = bottomPlayer.Rounds.Count(h => h.Color == 'b');
+        var topBalance = topWhites - topBlacks; // positive = more whites
+        var botBalance = botWhites - botBlacks;
+
+        if (topBalance != botBalance)
+        {
+            return (PairingReason.ColorEqualization,
+                $"White: #{white.PairNumber} — color equalization (balance: #{topPlayer.PairNumber}={topBalance:+0;-0;0}, #{bottomPlayer.PairNumber}={botBalance:+0;-0;0})");
+        }
+
+        // Check alternation (last-round color)
+        var topLast = topPlayer.Rounds.Count > 0 ? topPlayer.Rounds[^1].Color : '\0';
+        var botLast = bottomPlayer.Rounds.Count > 0 ? bottomPlayer.Rounds[^1].Color : '\0';
+        if (topLast != botLast && topLast != '\0' && botLast != '\0')
+        {
+            return (PairingReason.ColorAlternation,
+                $"White: #{white.PairNumber} — alternation (#{topPlayer.PairNumber} was {topLast} last, #{bottomPlayer.PairNumber} was {botLast} last)");
+        }
+
+        if (topPlayer.Rating != bottomPlayer.Rating)
+        {
+            return (PairingReason.ColorByRating,
+                $"White: #{white.PairNumber} — higher-rated player gets due color (#{topPlayer.PairNumber}={topPlayer.Rating} vs #{bottomPlayer.PairNumber}={bottomPlayer.Rating})");
+        }
+
+        return (PairingReason.ColorByInitialRule,
+            $"White: #{white.PairNumber} — initial color rule for board {board}");
     }
 
     /// <summary>
@@ -536,7 +602,8 @@ public static class UscfPairer
         IReadOnlyList<(TrfPlayer A, TrfPlayer B)> currentPairs,
         char initialColor,
         int startBoard,
-        out List<(TrfPlayer A, TrfPlayer B)> optimizedPairs)
+        out List<(TrfPlayer A, TrfPlayer B)> optimizedPairs,
+        int lockedPairs = 0)
     {
         optimizedPairs = new List<(TrfPlayer A, TrfPlayer B)>();
 
@@ -548,13 +615,35 @@ public static class UscfPairer
             return false;
         }
 
+        // USCF 28F2: lock floater pairs — remove them from search space
+        // and pre-insert them into results.
+        var half = pool.Count / 2;
+        var lockedResults = new List<(TrfPlayer A, TrfPlayer B)>();
+        var searchIndices = new List<int>();
+        for (var i = 0; i < pool.Count; i++)
+        {
+            // Floater positions: top[0..lockedPairs-1] and bot[0..lockedPairs-1]
+            // In pool layout: indices 0..lockedPairs-1 (top) and half..half+lockedPairs-1 (bot)
+            if (i < lockedPairs || (i >= half && i < half + lockedPairs))
+                continue;
+            searchIndices.Add(i);
+        }
+        for (var i = 0; i < lockedPairs && i < half; i++)
+            lockedResults.Add((pool[i], pool[i + half]));
+
+        if (searchIndices.Count == 0)
+        {
+            // All pairs are locked — nothing to optimize.
+            return false;
+        }
+
         var currentOrdered = OrderPairsForBoards(currentPairs, pool);
         var currentScore = ScorePairSet(currentOrdered, pool, initialColor, startBoard);
 
         List<(TrfPlayer A, TrfPlayer B)>? best = null;
         int[]? bestScore = null;
-        var remaining = Enumerable.Range(0, pool.Count).ToList();
-        var scratch = new List<(TrfPlayer A, TrfPlayer B)>();
+        var remaining = searchIndices;
+        var scratch = new List<(TrfPlayer A, TrfPlayer B)>(lockedResults);
 
         Search(remaining);
 
@@ -908,7 +997,8 @@ public static class UscfPairer
     private static bool TryReduceColorConflicts(
         IReadOnlyList<TrfPlayer> pool,
         IReadOnlyList<(TrfPlayer A, TrfPlayer B)> currentPairs,
-        out List<(TrfPlayer A, TrfPlayer B)> reducedPairs)
+        out List<(TrfPlayer A, TrfPlayer B)> reducedPairs,
+        int lockedPairs = 0)
     {
         reducedPairs = new List<(TrfPlayer A, TrfPlayer B)>();
         if (pool.Count == 0 || pool.Count % 2 != 0) return false;
@@ -931,7 +1021,20 @@ public static class UscfPairer
         var bestDisturbance = int.MaxValue;
         TrfPlayer[]? best = null;
 
-        Search(0, 0, 0);
+        // USCF 28F2: lock floater positions — bot[i] must stay with top[i]
+        // for i < lockedPairs.
+        var initialConflicts = 0;
+        var initialDisturbance = 0;
+        for (var i = 0; i < lockedPairs && i < half; i++)
+        {
+            used[i] = true;
+            assignment[i] = bot[i];
+            var prefA = PreferredColor(top[i]);
+            var prefB = PreferredColor(bot[i]);
+            if (prefA != '-' && prefA == prefB) initialConflicts++;
+        }
+
+        Search(lockedPairs, initialConflicts, initialDisturbance);
 
         if (best is null) return false;
 

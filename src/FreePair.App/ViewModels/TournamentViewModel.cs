@@ -421,6 +421,10 @@ public partial class TournamentViewModel : ViewModelBase
         var previouslySelectedRound = SelectedSection?.SelectedRound?.Number;
         var previouslySelectedTab = SelectedSection?.SelectedTabIndex ?? 0;
 
+        // Preserve per-section UI toggle state across rebuilds.
+        var previousShowTeam = Sections?.ToDictionary(s => s.Name, s => s.ShowTeamColumns);
+        var previousShowNotes = Sections?.ToDictionary(s => s.Name, s => s.ShowPairingNotes);
+
         // Suppress the "selecting a section clears the event-config flag"
         // side-effect while we re-point SelectedSection at a freshly-built
         // VM — the user didn't change their pane choice.
@@ -443,6 +447,10 @@ public partial class TournamentViewModel : ViewModelBase
             foreach (var vm in newSections)
             {
                 AttachSectionEvents(vm);
+                if (previousShowTeam is not null && previousShowTeam.TryGetValue(vm.Name, out var showTeam))
+                    vm.ShowTeamColumns = showTeam;
+                if (previousShowNotes is not null && previousShowNotes.TryGetValue(vm.Name, out var showNotes))
+                    vm.ShowPairingNotes = showNotes;
             }
 
             Sections = newSections;
@@ -790,6 +798,17 @@ public partial class TournamentViewModel : ViewModelBase
                 t = TournamentMutations.SetSectionPairingEngine(t, name, engine);
             }
             catch (System.InvalidOperationException) { /* round-paired lock */ }
+        }
+        // Apply any per-section avoid-same-team settings the TD
+        // picked in the dashboard. Persists so it takes effect
+        // during pairing and survives save/load.
+        var chosenAvoidTeam = result.SnapshotChosenAvoidSameTeam();
+        foreach (var (name, avoid) in chosenAvoidTeam)
+        {
+            var section = t.Sections.FirstOrDefault(s => s.Name == name);
+            if (section is null) continue;
+            if (section.AvoidSameTeam == avoid) continue;
+            t = TournamentMutations.SetAvoidSameTeam(t, name, avoid);
         }
         if (!ReferenceEquals(t, Tournament))
         {
@@ -1386,6 +1405,15 @@ public partial class TournamentViewModel : ViewModelBase
                 newResult);
             _suppressRebuild = false;
             ErrorMessage = null;
+
+            // Update the section VM's domain snapshot so CanPairNextRound
+            // re-evaluates (rebuild is suppressed to keep focus stable).
+            var updatedSection = Tournament.Sections
+                .FirstOrDefault(s => s.Name == section.Name);
+            if (updatedSection is not null)
+            {
+                section.RefreshSection(updatedSection);
+            }
         }
         catch (Exception ex)
         {

@@ -108,4 +108,18 @@ public sealed class RawSection
     [JsonPropertyName("FreePair pairing engine")]
     [JsonConverter(typeof(JsonStringEnumConverter<PairingEngineKind>))]
     public PairingEngineKind? FreePairPairingEngine { get; set; }
+
+    [JsonPropertyName("FreePair avoid same team")]
+    public bool? FreePairAvoidSameTeam { get; set; }
+
+    [JsonPropertyName("FreePair avoid same club")]
+    public bool? FreePairAvoidSameClub { get; set; }
+
+    /// <summary>
+    /// FreePair-specific per-round pairing annotations. Keyed by round
+    /// number (as string). Each entry is an array of annotation objects
+    /// with board, reason, and detail fields.
+    /// </summary>
+    [JsonPropertyName("FreePair annotations")]
+    public Dictionary<string, List<RawPairingAnnotation>>? FreePairAnnotations { get; set; }
 }
