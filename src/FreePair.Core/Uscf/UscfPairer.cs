@@ -337,12 +337,12 @@ public static class UscfPairer
                     }
                 }
 
-                // Use the natural SLIDE drop unless it produces ≥2 color
-                // conflicts and an alternative yields 0.
+                // Use the natural SLIDE drop unless a color-friendly
+                // alternative produces strictly fewer color conflicts.
                 int dropIdx;
-                if (naturalIdx >= 0 && (naturalConflicts < 2 || bestColorConflicts > 0))
+                if (naturalIdx >= 0 && naturalConflicts <= bestColorConflicts)
                     dropIdx = naturalIdx;
-                else if (bestColorConflicts == 0 && bestColorIdx >= 0)
+                else if (bestColorIdx >= 0 && bestColorConflicts < naturalConflicts)
                     dropIdx = bestColorIdx;
                 else if (naturalIdx >= 0)
                     dropIdx = naturalIdx;
@@ -508,11 +508,32 @@ public static class UscfPairer
             selectedPairs = colorOptimizedPairs;
             matchingKind = PairingReason.ColorOptimizedMatching;
         }
-        else if (TryReduceColorConflicts(pairablePool, selectedPairs, out var reducedConflictPairs, floaterCount))
+        else if (TryReduceColorConflicts(pairablePool, selectedPairs, out var reducedConflictPairs, 0))
         {
             selectedPairs = reducedConflictPairs;
             if (matchingKind == PairingReason.NaturalSlide)
                 matchingKind = PairingReason.ColorConflictReduction;
+        }
+
+        // After color optimization the floater pair may have moved away
+        // from position 0. Floaters come from a higher score group and
+        // must retain top-board priority. Move any pair containing a
+        // floater back to the front (preserving relative order among
+        // floater pairs and among non-floater pairs).
+        if (floaterCount > 0)
+        {
+            var floaterSet = new HashSet<int>(
+                bot.Take(floaterCount).Select(f => f.PairNumber));
+            var floaterPairs = selectedPairs
+                .Where(p => floaterSet.Contains(p.B.PairNumber))
+                .ToList();
+            var nonFloaterPairs = selectedPairs
+                .Where(p => !floaterSet.Contains(p.B.PairNumber))
+                .ToList();
+            if (floaterPairs.Count > 0 && selectedPairs.IndexOf(floaterPairs[0]) != 0)
+            {
+                selectedPairs = floaterPairs.Concat(nonFloaterPairs).ToList();
+            }
         }
 
         for (var i = 0; i < selectedPairs.Count; i++)
@@ -1191,7 +1212,31 @@ public static class UscfPairer
             // bot had black last → bot due white → top gets black (false)
             return botLast == 'w';
         }
-        return InitialColorOnBoard(initialColor, board); // (4) R1 fallback
+
+        // (4) Neither player has any colour history (both had byes or
+        //     forfeits in all prior rounds). When their scores differ the
+        //     higher-scored player's "due colour" takes priority — it is
+        //     inferred from the initial-colour pattern of their score
+        //     group (matching SwissSys behaviour). The higher-scored
+        //     player is treated as top-half of their natural score group
+        //     and assigned the board-1 colour for the CURRENT round
+        //     (which alternates each round from the initial colour).
+        var topPts = ComputeScore(top);
+        var botPts = ComputeScore(bottom);
+        if (topPts != botPts)
+        {
+            // Current round = number of prior rounds + 1.
+            var currentRound = top.Rounds.Count + 1;
+            // In odd rounds top-half gets initialColor on board 1;
+            // in even rounds top-half gets the opposite.
+            var topHalfGetsWhiteThisRound = (initialColor == 'w') ^ (currentRound % 2 == 0);
+            var higherIsTop = topPts > botPts;
+            // If the higher-scored player IS "top" → they get topHalfGetsWhiteThisRound.
+            // Otherwise flip.
+            return higherIsTop == topHalfGetsWhiteThisRound;
+        }
+
+        return InitialColorOnBoard(initialColor, board); // (5) R1 fallback
     }
 
     /// <summary>

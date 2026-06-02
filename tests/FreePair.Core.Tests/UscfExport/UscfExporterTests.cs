@@ -84,6 +84,19 @@ public class UscfExporterTests
                 SendCrossTable: 'N', RatingSystem: 'R',
                 GrandPrix: 'N', FideRated: 'N')
         },
+        // MCC 2026-05 — includes forfeited games; exercises the IsForfeit →
+        // "X0"/"F0" round-code path and verifies forfeit annotations do not
+        // affect rated results.
+        {
+            "May2026",
+            "MCC__2026_05.sjson",
+            new UscfExportOptions(
+                AffiliateId: "A4324545", City: "Redmond", State: "WA",
+                ZipCode: "98074", Country: "USA",
+                ChiefTdId: "123456", AssistantTdId: "",
+                SendCrossTable: 'N', RatingSystem: 'R',
+                GrandPrix: 'N', FideRated: 'N')
+        },
     };
 
     private static string FixturePath(string sampleFolder, string fileName) =>
