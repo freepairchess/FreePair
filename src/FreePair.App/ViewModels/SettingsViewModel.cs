@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FreePair.Core.Bbp;
 using FreePair.Core.Formatting;
 using FreePair.Core.Settings;
 
@@ -171,6 +172,20 @@ public partial class SettingsViewModel : ViewModelBase
         {
             PairingEngineBinaryPath = _settings.PairingEngineBinaryPath;
             UscfEngineBinaryPath    = _settings.UscfEngineBinaryPath;
+
+            // Auto-detect bundled engines when no explicit path is configured.
+            if (string.IsNullOrWhiteSpace(PairingEngineBinaryPath))
+            {
+                var bundledBbp = Path.Combine(AppContext.BaseDirectory, BbpPairingEngine.BundledExeName);
+                if (File.Exists(bundledBbp))
+                    PairingEngineBinaryPath = bundledBbp;
+            }
+            if (string.IsNullOrWhiteSpace(UscfEngineBinaryPath))
+            {
+                var bundledUscf = Path.Combine(AppContext.BaseDirectory, BbpPairingEngine.UscfBundledExeName);
+                if (File.Exists(bundledUscf))
+                    UscfEngineBinaryPath = bundledUscf;
+            }
             UseAsciiOnly = _settings.UseAsciiOnly;
             NaChessHubBaseUrl          = _settings.NaChessHubBaseUrl;
             AutoPublishPairingsDefault = _settings.AutoPublishPairingsDefault;
