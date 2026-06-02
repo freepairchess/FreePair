@@ -48,9 +48,9 @@ public static class WallChartBuilder
         switch (result.Kind)
         {
             case RoundResultKind.Win:
-                return FormatPlayedGame("W", result);
+                return FormatPlayedGame(result.IsForfeit ? "X" : "W", result);
             case RoundResultKind.Loss:
-                return FormatPlayedGame("L", result);
+                return FormatPlayedGame(result.IsForfeit ? "F" : "L", result);
             case RoundResultKind.Draw:
                 return FormatPlayedGame("D", result);
             case RoundResultKind.FullPointBye:

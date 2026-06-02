@@ -1732,11 +1732,18 @@ public static class TournamentMutations
 
         var kind = result switch
         {
-            PairingResult.WhiteWins => isWhite ? RoundResultKind.Win  : RoundResultKind.Loss,
-            PairingResult.BlackWins => isWhite ? RoundResultKind.Loss : RoundResultKind.Win,
-            PairingResult.Draw      => RoundResultKind.Draw,
-            _                       => RoundResultKind.None,
+            PairingResult.WhiteWins          => isWhite ? RoundResultKind.Win  : RoundResultKind.Loss,
+            PairingResult.BlackWins          => isWhite ? RoundResultKind.Loss : RoundResultKind.Win,
+            PairingResult.WhiteWinsForfeit   => isWhite ? RoundResultKind.Win  : RoundResultKind.Loss,
+            PairingResult.BlackWinsForfeit   => isWhite ? RoundResultKind.Loss : RoundResultKind.Win,
+            PairingResult.DoubleForfeit      => RoundResultKind.Loss,
+            PairingResult.Draw               => RoundResultKind.Draw,
+            _                                => RoundResultKind.None,
         };
+
+        var isForfeit = result is PairingResult.WhiteWinsForfeit
+                                or PairingResult.BlackWinsForfeit
+                                or PairingResult.DoubleForfeit;
 
         var newHistory = player.History.ToArray();
         newHistory[roundIndex] = new RoundResult(
@@ -1746,7 +1753,8 @@ public static class TournamentMutations
             Board: existing.Board,
             Logic1: existing.Logic1,
             Logic2: existing.Logic2,
-            GamePoints: existing.GamePoints);
+            GamePoints: existing.GamePoints,
+            IsForfeit: isForfeit);
 
         return player with { History = newHistory };
     }

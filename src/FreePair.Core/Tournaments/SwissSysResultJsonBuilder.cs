@@ -226,10 +226,13 @@ public static class SwissSysResultJsonBuilder
 
     private static string FormatTwoPlayerResult(PairingResult r) => r switch
     {
-        PairingResult.WhiteWins => "(1-0)",
-        PairingResult.BlackWins => "(0-1)",
-        PairingResult.Draw      => "(0.5-0.5)",
-        _                       => "",  // Unplayed: blank matches SwissSys output
+        PairingResult.WhiteWins        => "(1-0)",
+        PairingResult.BlackWins        => "(0-1)",
+        PairingResult.WhiteWinsForfeit => "(1-0)",
+        PairingResult.BlackWinsForfeit => "(0-1)",
+        PairingResult.DoubleForfeit    => "(0-0)",
+        PairingResult.Draw             => "(0.5-0.5)",
+        _                              => "",  // Unplayed: blank matches SwissSys output
     };
 
     private static string FormatSoloResult(ByeKind kind) => kind switch

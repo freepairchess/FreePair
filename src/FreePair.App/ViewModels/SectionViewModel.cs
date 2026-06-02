@@ -130,10 +130,13 @@ public partial class PairingRow : ObservableObject
 
         AvailableResults = new[]
         {
-            new PairingResultOption(PairingResult.Unplayed,  "-"),
-            new PairingResultOption(PairingResult.WhiteWins, "1-0"),
-            new PairingResultOption(PairingResult.Draw,      formatter.PairingResult(PairingResult.Draw)),
-            new PairingResultOption(PairingResult.BlackWins, "0-1"),
+            new PairingResultOption(PairingResult.Unplayed,           "-"),
+            new PairingResultOption(PairingResult.WhiteWins,          "1-0"),
+            new PairingResultOption(PairingResult.Draw,               formatter.PairingResult(PairingResult.Draw)),
+            new PairingResultOption(PairingResult.BlackWins,          "0-1"),
+            new PairingResultOption(PairingResult.WhiteWinsForfeit,   "1-0F"),
+            new PairingResultOption(PairingResult.BlackWinsForfeit,   "0F-1"),
+            new PairingResultOption(PairingResult.DoubleForfeit,      "0F-0F"),
         };
 
         _selectedResult = AvailableResults.First(o => o.Value == initialResult);

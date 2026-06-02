@@ -366,6 +366,27 @@ public static class SwissSysMapper
                 .OrderBy(p => p.Board)
                 .ToArray();
 
+            // Double-forfeit fixup: if a pairing was tagged as a single
+            // forfeit win but the "winner"'s history also shows a forfeit
+            // loss for this round, upgrade to DoubleForfeit.
+            for (var pi = 0; pi < ordered.Length; pi++)
+            {
+                var p = ordered[pi];
+                if (p.Result is not (PairingResult.WhiteWinsForfeit or PairingResult.BlackWinsForfeit))
+                    continue;
+
+                // Find the supposed winner's history for this round.
+                var winnerPn = p.Result == PairingResult.WhiteWinsForfeit ? p.WhitePair : p.BlackPair;
+                var winner = players.FirstOrDefault(pl => pl.PairNumber == winnerPn);
+                if (winner is null || r >= winner.History.Count) continue;
+
+                var winnerRes = winner.History[r];
+                if (winnerRes.Kind == RoundResultKind.Loss && winnerRes.IsForfeit)
+                {
+                    ordered[pi] = p with { Result = PairingResult.DoubleForfeit };
+                }
+            }
+
             IReadOnlyList<PairingAnnotation>? annotations = null;
             if (rawAnnotations is not null &&
                 rawAnnotations.TryGetValue((r + 1).ToString(), out var rawList))
@@ -411,11 +432,13 @@ public static class SwissSysMapper
         {
             white = player.PairNumber;
             black = res.Opponent;
-            result = res.Kind switch
+            result = (res.Kind, res.IsForfeit) switch
             {
-                RoundResultKind.Win => PairingResult.WhiteWins,
-                RoundResultKind.Loss => PairingResult.BlackWins,
-                RoundResultKind.Draw => PairingResult.Draw,
+                (RoundResultKind.Win,  true)  => PairingResult.WhiteWinsForfeit,
+                (RoundResultKind.Loss, true)  => PairingResult.BlackWinsForfeit,
+                (RoundResultKind.Win,  false) => PairingResult.WhiteWins,
+                (RoundResultKind.Loss, false) => PairingResult.BlackWins,
+                (RoundResultKind.Draw, _)     => PairingResult.Draw,
                 _ => PairingResult.Unplayed,
             };
         }
@@ -424,11 +447,13 @@ public static class SwissSysMapper
             // Treat any non-White color (Black or missing) as Black-side entry.
             white = res.Opponent;
             black = player.PairNumber;
-            result = res.Kind switch
+            result = (res.Kind, res.IsForfeit) switch
             {
-                RoundResultKind.Win => PairingResult.BlackWins,
-                RoundResultKind.Loss => PairingResult.WhiteWins,
-                RoundResultKind.Draw => PairingResult.Draw,
+                (RoundResultKind.Win,  true)  => PairingResult.BlackWinsForfeit,
+                (RoundResultKind.Loss, true)  => PairingResult.WhiteWinsForfeit,
+                (RoundResultKind.Win,  false) => PairingResult.BlackWins,
+                (RoundResultKind.Loss, false) => PairingResult.WhiteWins,
+                (RoundResultKind.Draw, _)     => PairingResult.Draw,
                 _ => PairingResult.Unplayed,
             };
         }

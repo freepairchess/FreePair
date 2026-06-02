@@ -128,6 +128,8 @@ public partial class SectionView : UserControl
             Key.D1 or Key.NumPad1 => PairingResult.WhiteWins,
             Key.D2 or Key.NumPad2 => PairingResult.Draw,
             Key.D0 or Key.NumPad0 => PairingResult.BlackWins,
+            Key.X => PairingResult.WhiteWinsForfeit,
+            Key.F => PairingResult.BlackWinsForfeit,
             _ => null,
         };
 

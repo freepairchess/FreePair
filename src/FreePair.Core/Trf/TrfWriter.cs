@@ -306,6 +306,13 @@ public static class TrfWriter
             _                            => '-',
         };
 
+        // Forfeited games should not contribute to colour history for
+        // future-round pairing; suppress colour so the engine ignores them.
+        if (result.IsForfeit)
+        {
+            color = '-';
+        }
+
         // Byes and unpaired rounds have no opponent and no colour.
         if (!IsPlayedGame(result.Kind))
         {

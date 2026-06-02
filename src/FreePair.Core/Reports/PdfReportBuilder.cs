@@ -576,9 +576,12 @@ public static class PdfReportBuilder
 
     private static string FormatResult(PairingResult result) => result switch
     {
-        PairingResult.WhiteWins => "1 – 0",
-        PairingResult.BlackWins => "0 – 1",
-        PairingResult.Draw      => "½ – ½",
+        PairingResult.WhiteWins        => "1 – 0",
+        PairingResult.BlackWins        => "0 – 1",
+        PairingResult.WhiteWinsForfeit => "1 – 0F",
+        PairingResult.BlackWinsForfeit => "0F – 1",
+        PairingResult.DoubleForfeit    => "0F – 0F",
+        PairingResult.Draw             => "½ – ½",
         _ => string.Empty,
     };
 }

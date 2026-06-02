@@ -16,4 +16,13 @@ public enum PairingResult
 
     /// <summary>Draw (½-½).</summary>
     Draw,
+
+    /// <summary>White won by forfeit — black forfeited (1-0F).</summary>
+    WhiteWinsForfeit,
+
+    /// <summary>Black won by forfeit — white forfeited (0F-1).</summary>
+    BlackWinsForfeit,
+
+    /// <summary>Double forfeit — neither player showed (0F-0F).</summary>
+    DoubleForfeit,
 }

@@ -22,9 +22,12 @@ public class ScoreFormatter : IScoreFormatter
     /// <inheritdoc />
     public string PairingResult(PairingResult result) => result switch
     {
-        Tournaments.PairingResult.WhiteWins => "1-0",
-        Tournaments.PairingResult.BlackWins => "0-1",
-        Tournaments.PairingResult.Draw      => UseAsciiOnly ? "1/2-1/2" : "\u00BD-\u00BD",
+        Tournaments.PairingResult.WhiteWins        => "1-0",
+        Tournaments.PairingResult.BlackWins        => "0-1",
+        Tournaments.PairingResult.Draw             => UseAsciiOnly ? "1/2-1/2" : "\u00BD-\u00BD",
+        Tournaments.PairingResult.WhiteWinsForfeit => "1-0F",
+        Tournaments.PairingResult.BlackWinsForfeit => "0F-1",
+        Tournaments.PairingResult.DoubleForfeit    => "0F-0F",
         _ => "-",
     };
 }
