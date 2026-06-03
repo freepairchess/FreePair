@@ -177,16 +177,22 @@ public static class UscfPairer
             return new UscfPairingResult(Array.Empty<UscfPairing>(), null);
         }
 
-        // Odd count: assign a full-point bye. Per USCF 28L, the bye goes
-        // to the lowest-rated player who hasn't already had a bye. We
-        // extend that to "and who isn't already scheduled for a TD-flagged
-        // bye later in the event" (28L4 prevents double-byes). If every
-        // candidate has a scheduled bye, fall back to the lowest-rated.
+        // Odd count: assign a full-point bye. Per USCF 28L and TD
+        // tradition, the bye should go to the lowest-RATED player who
+        // (a) hasn't already had a bye (28L4 — no double byes) and
+        // (b) isn't unrated. Unrated players need games to establish
+        // a rating, so even if they're the lowest seed they aren't the
+        // bye recipient when a rated alternative exists. Fallback order:
+        //   1) lowest-rated player with no scheduled bye AND Rating > 0
+        //   2) lowest-rated player with no scheduled bye (even if unrated)
+        //   3) absolute lowest seed (if every candidate has a scheduled bye)
         int? byePair = null;
         if (ordered.Length % 2 == 1)
         {
-            var byeCandidate = ordered.LastOrDefault(p => !p.HasScheduledBye)
-                               ?? ordered[^1];
+            var byeCandidate =
+                ordered.LastOrDefault(p => !p.HasScheduledBye && p.Rating > 0)
+                ?? ordered.LastOrDefault(p => !p.HasScheduledBye)
+                ?? ordered[^1];
             byePair = byeCandidate.PairNumber;
             ordered = ordered.Where(p => p.PairNumber != byeCandidate.PairNumber).ToArray();
         }
@@ -298,10 +304,13 @@ public static class UscfPairer
             floatDown = new List<TrfPlayer>();
 
             // Odd group → drop a player to the next group. Prefer the
-            // natural SLIDE drop (lowest-rated candidate). However, if the
-            // natural SLIDE produces ≥2 color conflicts and an alternative
-            // drop yields 0 conflicts, prefer the color-friendly drop
-            // (matching SwissSys behavior). Floaters don't re-float.
+            // natural SLIDE drop (lowest-rated RATED candidate — unrated
+            // players need games to establish a rating and are not
+            // floated down unless no rated alternative exists). However,
+            // if the natural SLIDE produces ≥2 color conflicts and an
+            // alternative drop yields 0 conflicts, prefer the
+            // color-friendly drop (matching SwissSys behavior). Floaters
+            // don't re-float.
             if (pool.Count % 2 == 1 && gi < scoreGroups.Count - 1)
             {
                 var floaterCount = pool.Count - groupSorted.Count;
@@ -312,12 +321,20 @@ public static class UscfPairer
                 int bestColorIdx = -1;
                 int bestColorConflicts = int.MaxValue;
 
-                for (var di = pool.Count - 1; di >= 0; di--)
-                {
-                    // Skip floater indices (they sit at mergeHalf..mergeHalf+floaterCount-1).
-                    if (di >= mergeHalf && di < mergeHalf + floaterCount)
-                        continue;
+                // Walk drop candidates in "natural" preference order:
+                // rated players from lowest-rated upward (skipping
+                // floater positions), then unrated players as a last
+                // resort. This keeps unrated entries in their natural
+                // score group when a rated player can be floated instead.
+                var dropOrder = Enumerable.Range(0, pool.Count)
+                    .Where(idx => !(idx >= mergeHalf && idx < mergeHalf + floaterCount))
+                    .OrderBy(idx => pool[idx].Rating == 0 ? 1 : 0)  // rated first (0), unrated last (1)
+                    .ThenBy(idx => pool[idx].Rating)                 // lowest-rated first within each tier
+                    .ThenByDescending(idx => idx)                    // stable: prefer trailing slot
+                    .ToList();
 
+                foreach (var di in dropOrder)
+                {
                     var testPool = pool.Where((_, idx) => idx != di).ToList();
                     var testHalf = testPool.Count / 2;
                     var testTop = testPool.Take(testHalf).ToList();
@@ -387,17 +404,21 @@ public static class UscfPairer
             board = PairPool(pool, board, pairings, initialColor, annotations, currentFloaterCount);
 
             // If we're on the last group and it's still odd, the leftover
-            // is the bye. Per USCF 28L4, prefer a player who isn't already
-            // scheduled for a TD-flagged bye elsewhere in the event; if
-            // every candidate has one, fall back to the natural trailing
-            // (lowest-rated) player.
+            // is the bye. Per USCF 28L4 (no double byes) and the TD
+            // tradition that unrated players need games to establish a
+            // rating, prefer a candidate who (a) isn't already scheduled
+            // for a TD-flagged bye elsewhere in the event AND (b) is
+            // rated. Fall back through the same ladder as PairRoundOne.
             if (gi == scoreGroups.Count - 1 && pool.Count % 2 == 1)
             {
                 // PairPool ignored the trailing odd one — now collect it.
-                var byeCandidate = pool.LastOrDefault(p => !p.HasScheduledBye) ?? pool[^1];
+                var byeCandidate =
+                    pool.LastOrDefault(p => !p.HasScheduledBye && p.Rating > 0)
+                    ?? pool.LastOrDefault(p => !p.HasScheduledBye)
+                    ?? pool[^1];
                 byePair = byeCandidate.PairNumber;
                 annotations.Add(new PairingAnnotation(0, PairingReason.ByeAssigned,
-                    $"Full-point bye: #{byePair.Value} (lowest-rated in last score group{(byeCandidate.HasScheduledBye ? "" : ", skipping pre-flagged-bye players")})"));
+                    $"Full-point bye: #{byePair.Value} (lowest-rated rated player in last score group without a scheduled bye)"));
             }
         }
 
@@ -518,24 +539,11 @@ public static class UscfPairer
             .ToList();
 
         var pairablePool = pool.Take(pairableCount).ToList();
-        var scoreCounts = pairablePool
-            .GroupBy(ComputeScore)
-            .OrderByDescending(g => g.Key)
-            .Select(g => g.Count())
-            .ToArray();
-        var isSingleFloaterEightPlayerPool = pairablePool.Count == 8
-            && scoreCounts.Length == 2
-            && scoreCounts[0] == 1;
 
-        // USCF 28F2: color optimizations must preserve floater pairings.
-        // Floaters sit at bot[0..floaterCount-1] paired with top[0..floaterCount-1].
-        if (isSingleFloaterEightPlayerPool &&
-            TryFindColorOptimizedMatching(pairablePool, selectedPairs, initialColor, startBoard, out var colorOptimizedPairs, floaterCount))
-        {
-            selectedPairs = colorOptimizedPairs;
-            matchingKind = PairingReason.ColorOptimizedMatching;
-        }
-        else if (TryReduceColorConflicts(pairablePool, selectedPairs, out var reducedConflictPairs, floaterCount))
+        // USCF 28F2 / 29E: reduce hard colour conflicts where possible
+        // while preserving the floater lock (the floater at bot[0..floaterCount-1]
+        // must keep pairing with top[0..floaterCount-1]).
+        if (TryReduceColorConflicts(pairablePool, selectedPairs, out var reducedConflictPairs, floaterCount))
         {
             selectedPairs = reducedConflictPairs;
             if (matchingKind == PairingReason.NaturalSlide)
