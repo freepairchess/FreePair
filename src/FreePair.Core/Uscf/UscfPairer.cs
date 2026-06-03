@@ -161,6 +161,22 @@ public static class UscfPairer
         return n;
     }
 
+    /// <summary>
+    /// True when the player already received a full-point bye in this
+    /// event (round cell with result <c>'U'</c>). Used by the bye selector
+    /// to enforce USCF 28L4 ("a player should not receive more than one
+    /// full-point bye") across rounds — without this check the lowest
+    /// candidate keeps re-receiving the bye in every odd-field round.
+    /// </summary>
+    private static bool HasReceivedFullPointBye(TrfPlayer p)
+    {
+        foreach (var cell in p.Rounds)
+        {
+            if (cell.Result == 'U') return true;
+        }
+        return false;
+    }
+
     private static UscfPairingResult PairRoundOne(TrfDocument document)
     {
         // USCF 28C/28E: order players by rating (descending). Tie-break on
@@ -177,17 +193,30 @@ public static class UscfPairer
             return new UscfPairingResult(Array.Empty<UscfPairing>(), null);
         }
 
-        // Odd count: assign a full-point bye. Per USCF 28L4 (no double
-        // byes), prefer a player who isn't already scheduled for a
-        // TD-flagged bye elsewhere in the event. SwissSys treats unrated
-        // entrants as rating 0 here, so they're eligible for the bye when
-        // they're the lowest seed and have no scheduled bye — match that
-        // convention rather than special-casing them out.
+        // Odd count: assign a full-point bye. Per USCF 28L:
+        //   - The bye should go to the LOWEST RATED player who hasn't
+        //     already had a bye (28L4 — no double byes). This includes
+        //     past full-point byes the player ALREADY received in this
+        //     event (we check round history), plus any TD-scheduled
+        //     half / zero / future full byes (HasScheduledBye).
+        //   - "But not unrated, if avoidable." Unrated players need
+        //     games to establish a rating; a full-point bye gives no
+        //     rating data, so they're skipped when a rated alternative
+        //     exists.
+        // Fallback ladder when the natural choice is unavailable:
+        //   1) lowest-rated player WITH NO previous full-point bye AND
+        //      no scheduled bye AND Rating > 0
+        //   2) lowest-rated player with no previous full-point bye and
+        //      no scheduled bye (even if unrated)
+        //   3) lowest-rated player with no previous full-point bye
+        //   4) absolute lowest seed (every candidate has had a bye)
         int? byePair = null;
         if (ordered.Length % 2 == 1)
         {
             var byeCandidate =
-                ordered.LastOrDefault(p => !p.HasScheduledBye)
+                ordered.LastOrDefault(p => !HasReceivedFullPointBye(p) && !p.HasScheduledBye && p.Rating > 0)
+                ?? ordered.LastOrDefault(p => !HasReceivedFullPointBye(p) && !p.HasScheduledBye)
+                ?? ordered.LastOrDefault(p => !HasReceivedFullPointBye(p))
                 ?? ordered[^1];
             byePair = byeCandidate.PairNumber;
             ordered = ordered.Where(p => p.PairNumber != byeCandidate.PairNumber).ToArray();
@@ -417,19 +446,21 @@ public static class UscfPairer
             board = PairPool(pool, board, pairings, initialColor, annotations, currentFloaterCount);
 
             // If we're on the last group and it's still odd, the leftover
-            // is the bye. Per USCF 28L4 (no double byes), prefer a
-            // candidate who isn't already scheduled for a TD-flagged bye
-            // elsewhere in the event; fall back to the absolute lowest
-            // seed if every candidate has one.
+            // is the bye. Per USCF 28L: lowest-rated player who hasn't
+            // had a bye (28L4 — counts both past full-point byes in this
+            // event AND any TD-scheduled bye) and isn't unrated (28L
+            // "but not unrated, if avoidable").
             if (gi == scoreGroups.Count - 1 && pool.Count % 2 == 1)
             {
                 // PairPool ignored the trailing odd one — now collect it.
                 var byeCandidate =
-                    pool.LastOrDefault(p => !p.HasScheduledBye)
+                    pool.LastOrDefault(p => !HasReceivedFullPointBye(p) && !p.HasScheduledBye && p.Rating > 0)
+                    ?? pool.LastOrDefault(p => !HasReceivedFullPointBye(p) && !p.HasScheduledBye)
+                    ?? pool.LastOrDefault(p => !HasReceivedFullPointBye(p))
                     ?? pool[^1];
                 byePair = byeCandidate.PairNumber;
                 annotations.Add(new PairingAnnotation(0, PairingReason.ByeAssigned,
-                    $"Full-point bye: #{byePair.Value} (lowest-rated in last score group without a scheduled bye)"));
+                    $"Full-point bye: #{byePair.Value} (lowest-rated rated player in last score group without a prior or scheduled bye)"));
             }
         }
 
@@ -442,7 +473,74 @@ public static class UscfPairer
             board = PairPool(floatDown, board, pairings, initialColor, annotations, 0);
         }
 
+        // USCF 28L4 post-fix: if the auto-assigned bye landed on a player
+        // who has already received a full-point bye in this event, swap
+        // the bye with the lowest-scoring rated paired player who hasn't
+        // had one. The "swap" gives the bye to that player and pairs the
+        // would-be-byed player with whoever was previously paired with
+        // the new bye recipient. This keeps the standard algorithm
+        // intact for the common case (one bye per player) and only
+        // intervenes when the natural choice would violate 28L4.
+        if (byePair is int currentBye)
+        {
+            var currentByePlayer = document.Players
+                .FirstOrDefault(p => p.PairNumber == currentBye);
+            if (currentByePlayer is not null && HasReceivedFullPointBye(currentByePlayer))
+            {
+                // Find the lowest-scoring rated player in the pairings
+                // who hasn't already received a full-point bye. Walk the
+                // pairings in REVERSE (lowest boards) so we swap with the
+                // bottom rather than the top.
+                for (var pi = pairings.Count - 1; pi >= 0; pi--)
+                {
+                    var pair = pairings[pi];
+                    var swapCandidate = SelectSwapBye(document.Players, pair.WhitePair, pair.BlackPair);
+                    if (swapCandidate is null) continue;
+                    var keep = swapCandidate.PairNumber == pair.WhitePair
+                        ? pair.BlackPair
+                        : pair.WhitePair;
+                    // Replace the pair (kept-vs-currentByePlayer) on the
+                    // same board. Color is assigned by TopGetsWhite-style
+                    // logic from the perspective of the higher-rated.
+                    var keepPlayer = document.Players.First(p => p.PairNumber == keep);
+                    var topGetsWhite = TopGetsWhite(keepPlayer, currentByePlayer, initialColor, pair.Board);
+                    var (w, b) = topGetsWhite
+                        ? (keepPlayer.PairNumber, currentBye)
+                        : (currentBye, keepPlayer.PairNumber);
+                    pairings[pi] = pair with { WhitePair = w, BlackPair = b };
+                    byePair = swapCandidate.PairNumber;
+                    annotations.Add(new PairingAnnotation(0, PairingReason.ByeAssigned,
+                        $"Bye swap (USCF 28L4): #{currentBye} already had a full-point bye; reassigned to #{swapCandidate.PairNumber} (paired #{currentBye} with #{keep} on bd {pair.Board})."));
+                    break;
+                }
+            }
+        }
+
         return new UscfPairingResult(pairings, byePair, Annotations: annotations);
+    }
+
+    /// <summary>
+    /// Picks the lowest-scoring rated player in a candidate pair who
+    /// hasn't already received a full-point bye and isn't unrated. Used
+    /// by the 28L4 post-fix to find a swap target when the natural bye
+    /// would violate "no double byes". Returns null when neither member
+    /// of the pair is eligible.
+    /// </summary>
+    private static TrfPlayer? SelectSwapBye(
+        IReadOnlyList<TrfPlayer> players,
+        int whitePair,
+        int blackPair)
+    {
+        var w = players.FirstOrDefault(p => p.PairNumber == whitePair);
+        var b = players.FirstOrDefault(p => p.PairNumber == blackPair);
+        var candidates = new List<TrfPlayer>(2);
+        if (w is not null) candidates.Add(w);
+        if (b is not null) candidates.Add(b);
+
+        return candidates
+            .Where(p => !HasReceivedFullPointBye(p) && !p.HasScheduledBye && p.Rating > 0)
+            .OrderBy(p => p.Rating)
+            .FirstOrDefault();
     }
 
     /// <summary>
