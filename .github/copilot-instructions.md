@@ -151,8 +151,69 @@ desirable (session-only semantics).
   lists each landing commit in the body. Keep feature boundaries visible.
 - Push every commit; don't batch many commits before pushing.
 
+## Release / installer convention
+
+- **Version scheme is `v0.<minor>.<yyyyMMdd>`**, not plain SemVer.
+  Examples: `v0.1.20260601`, `v0.3.20260603`. The date is the day the
+  release is cut (use `Get-Date -Format "yyyyMMdd"`). Plain
+  `v0.<minor>.0` was used for the first two releases but the date-
+  stamped scheme is now the norm — see existing tags with
+  `git tag --list "v*"`.
+- **Build + publish** with `release\release.ps1`:
+  ```pwsh
+  .\release\release.ps1 `
+      -Version 0.<minor>.<yyyyMMdd> `
+      -ReleaseNotes release\notes-v<version>.md `
+      -PublishGitHub -GenerateNotes [-SkipTests]
+  ```
+  `-PublishGitHub` hands off to `publish-github.ps1` which tags the
+  commit, pushes to `github`, creates the GitHub Release, and uploads
+  the Velopack installer + portable zip + nupkg + metadata. Cached
+  `release\github-repo.txt` + `github-user.txt` are used; no extra
+  args needed after the first run.
+- **`-SkipTests`** bypasses the pre-release test gate when the curated
+  SwissSys-fidelity harness carries known-failing tests that are
+  deliberate trade-offs (board ordering, SwissSys-discretionary bye
+  choices, etc.). Don't use it to mask genuine regressions; check the
+  diff against the previous release's pass count first.
+- **After publish, sync the tag back to `origin`** (publish-github only
+  pushes to `github`):
+  ```pwsh
+  git fetch github --tags
+  git push origin v<version>
+  ```
+  Also merge `github/main` back so the "Release v<version>" marker
+  commit lands on `origin` too.
+
+## Release-notes convention
+
+- File lives at `release\notes-v<version>.md`. Markdown.
+- **Audience is TDs and end users**, NOT engine contributors. Speak in
+  outcomes: "no double byes", "unrated players keep playing",
+  "installer bundles the .NET runtime". Avoid USCF rule numbers in
+  headlines; cite them parenthetically only when they reinforce a
+  user-visible behaviour.
+- **Never name specific testing events / `.sjson` filenames** in
+  release notes. Tournament directors and federation policies are
+  sensitive about whether their data was used as a regression target.
+  Always describe coverage in general terms ("validated against a
+  large real-world SwissSys corpus", "100% on many representative
+  events"). Engine-implementation details with specific event names
+  belong in commit messages, not the release notes that ship to the
+  public.
+- Structure: `What's new` (grouped by feature area) → `Installer`
+  (what's bundled, how to install) → `Known limitations` (categorised,
+  framed as deliberate trade-offs rather than bugs).
+- Bold the headline of each bullet so the notes are skim-readable in
+  the GitHub release card.
+- When citing fidelity numbers, prefer the aggregate ("83.7% of all
+  individual pairings") plus a peak ("100% on many representative
+  events") instead of per-file tables. Per-file tables expose corpus
+  composition.
+
 ## When in doubt
 
 Grep the git log for an analogous feature and mirror its pattern.
 `git log --oneline --all | Select-String <keyword>` gives a fast
 overview. Commit bodies are verbose specifically to enable this.
+

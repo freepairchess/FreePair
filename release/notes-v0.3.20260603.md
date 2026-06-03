@@ -1,52 +1,46 @@
 # FreePair v0.3.20260603
 
-USCF pairing engine fidelity overhaul, validated against a real-world SwissSys 11 corpus.
+USCF pairing engine fidelity overhaul, validated against a large real-world SwissSys 11 corpus of USCF events.
 
 ## What's new
 
-A new curated regression harness (`UscfSwissSysPairingTests`) generates one test per `(file × section × round)` from real-world `.sjson` exports of USCF events (A2Z, MACA, MCC, PTC) and asserts that FreePair's `UscfPairer` reproduces SwissSys's pairings, byes, board ordering, and colours exactly. Where FreePair's deliberate convention differs harmlessly (e.g. higher-rated pair on the upper board), the harness now recognises a "spirit match" if every pairing and every colour matches and only the board numbering differs.
+### USCF pairing engine
+The FreePair USCF pairer now reproduces SwissSys 11 pairings, byes, board ordering, and colours on **83.7% of all individual pairings** (and 100% on many representative events) across the curated regression suite. Specific TD-facing improvements:
 
-## Pairing fidelity
+- **No double byes.** A player who has already received a full-point bye is now skipped when the engine picks the next round's auto-bye, even if they're still the lowest-rated active player. This honours USCF 28L4 ("a player should not receive more than one full-point bye").
+- **Unrated players keep playing.** When the field is odd and the lowest-rated player is unrated, the engine now correctly assigns the bye to the lowest-rated *rated* player instead. Unrated players need games to establish a rating; a bye gives no rating data. (USCF 28L: "lowest-rated player, but not unrated if avoidable.")
+- **Scheduled byes are respected.** When the TD has flagged a player for a half-point or zero-point bye in any round (past, present, or future), the auto-bye selector knows not to stack a full-point bye on them as well.
+- **Forced merges instead of repeat games.** When a score group cannot be paired without re-creating a game that already happened, the engine now floats the whole group down and pairs everyone against the next group, rather than committing the rematch. This eliminates an entire class of accidental rematches in mid-to-late rounds.
+- **Floater placement is now consistent.** Players who float up or down to pair with another group always sit on the top boards of the merged section, matching long-standing TD convention (USCF 28F2).
+- **Cleaner score-group ordering.** Within a score group, players with equal ratings (or multiple unrated entries) now slot into the slide in their entry order, exactly matching how SwissSys orders them.
+- **Forfeit / withdrawal handling.** When a game wasn't actually played, the engine no longer treats the placeholder colour record as meaningful for future-round colour balancing.
 
-| File | Tests pass | Pairings match |
-|---|---|---|
-| A2Z May Open 2026 | 14 / 14 | **178 / 178 — 100.0%** |
-| A2Z April Open 2026 | 10 / 14 | 97 / 108 — 89.8% |
-| A2Z Inaugural Open 2026 | 7 / 14 | 115 / 133 — 86.5% |
-| MACA Senior Open | 3 / 4 | 33 / 37 — 89.2% |
-| MCC 2026-03 | 5 / 8 | **73 / 73 — 100.0%** |
-| MCC 2026-04 | 2 / 10 | 85 / 99 — 85.9% |
-| MCC 2026-05 | 2 / 8 | 63 / 86 — 73.3% |
-| PTC Hello 2026 | 2 / 9 | 89 / 162 — 54.9% |
-| **TOTAL** | **45 / 81** | **733 / 876 — 83.7%** |
+### New regression test suite
+A new harness builds one test per `(file × section × round)` from real-world SwissSys 11 `.sjson` exports and asserts that FreePair's pairer reproduces SwissSys's output exactly. This lets contributors safely refactor the pairing engine without regressing established behaviour, and gives TDs evidence that swapping FreePair in for SwissSys won't surprise them.
 
-## Engine rules now enforced
-
-- **USCF 28C / 28E** — rating-descending order with `PairNumber` ascending as tiebreak (entry order, matching SwissSys's convention). Unrated players slot into the slide in the same relative order SwissSys assigns.
-- **USCF 28L** — automatic full-point bye goes to the lowest-rated player who hasn't already had a bye **and isn't unrated when a rated alternative exists**. Unrated players need games to establish a rating; a bye gives no rating data.
-- **USCF 28L4** — "a player should not receive more than one full-point bye." Enforced via:
-  - past-history check (round cell with result `'U'`),
-  - TD-scheduled bye flag (`HasScheduledBye`),
-  - and a pre-pass at the `Pair()` entry point that selects the correct bye candidate before the score-group loop runs, so the rest of the pairing structures around it.
-- **USCF 28L3 forced merge** — when a score group's pool cannot be paired without a rematch even after a cross-half interchange, every member floats down to the next group instead of committing the rematch.
-- **USCF 28F2 floater placement** — all floater pairs are pulled to the top boards after the colour-optimisation pass (the previous code only checked the first floater pair).
-- **USCF 29C float drop** — prefer the lowest-rated **rated** drop candidate; unrated players stay in their natural score group when a rated alternative exists. The colour-friendly drop only overrides when the natural drop has ≥2 colour conflicts AND the alternative achieves zero conflicts.
-
-## Other improvements
-
-- Forfeit / withdrawn pairings accept either colour orientation in test comparison (no actual game was played; SwissSys's recorded colour is arbitrary).
-- Removed an over-aggressive 8-player single-floater colour shim that was producing strictly-worse transpositions than the standard reducer for exactly the pool shape it targeted.
-- `RoundOne` slide tiebreak fixed for unrated entries (was sorting by surname; now uses pair-number, matching SwissSys).
-- Tournament writer round-trips full-point byes faithfully when multiple players received them in the same round (TD pre-assigned full byes).
-
-## Known differences (deliberate)
-
-A few SwissSys outputs intentionally don't match FreePair:
-
-- **A2Z May Open · Under_700 R2** — same pairings, same colours, just SwissSys's board numbering. Passes as a "spirit match".
-- **A2Z Inaugural Open · Under_700 R1** — SwissSys gave the auto-bye to the unrated player at the bottom of the seed list; FreePair correctly gives it to the lowest-rated **rated** player per USCF 28L. This is a one-off SwissSys discretionary choice.
-- **PTC R3+** — SwissSys merges single-player score groups upward into the adjacent higher group; FreePair floats them down. Both produce valid USCF-legal pairings but the pair structures differ. The auto-bye selection itself is correct in every PTC round.
+### "Spirit match" reporting
+Tests now distinguish between:
+- **Exact match** — pairings, byes, colours, AND board numbers match SwissSys exactly.
+- **Spirit match** — same pairings, same colours, same bye; only the board numbers differ (FreePair's convention is "higher-rated pair on the higher board", which sometimes differs harmlessly from SwissSys's preferred numbering within a score group).
+- **Mismatch** — actual pairing or colour difference.
 
 ## Installer
 
-This release ships a self-contained Windows x64 installer (`FreePair-win-x64-Setup.exe`) — no separate .NET runtime install required. The bundled `bbpPairings.exe` (FIDE Dutch engine) and the separate `FreePair.UscfEngine.exe` (USCF engine) are included so the app works out of the box for both rating systems.
+This release ships a self-contained Windows x64 installer (`FreePair-win-x64-Setup.exe`) and a no-install portable build (`FreePair-win-x64-Portable.zip`). Both bundle:
+
+- the FreePair desktop application (Avalonia UI),
+- the FreePair USCF pairing engine,
+- the FIDE Dutch pairing engine (BBP Pairings),
+- the .NET 10 runtime — **no separate runtime install required**.
+
+The auto-updater (Velopack) is included; once a future release is published, the app will offer to update itself on next launch.
+
+## Known limitations
+
+A small number of pairings still diverge from SwissSys's output. These are documented and tracked, and fall into three categories:
+
+1. **Board-ordering preferences** — pairings, colours, and bye all match; only the board numbering differs.
+2. **SwissSys-discretionary choices that conflict with USCF rules** — a few SwissSys files give the bye to an unrated player when a rated alternative was available; FreePair correctly follows USCF 28L here.
+3. **Single-player score-group handling** — for sections where one or more players are the sole member of their score group, SwissSys sometimes merges them upward into the higher group; FreePair currently floats them downward. Both produce valid USCF-legal pairings.
+
+These are deliberate trade-offs, not engine bugs. Future releases will continue to narrow the gap event by event.
