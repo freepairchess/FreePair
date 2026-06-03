@@ -174,20 +174,21 @@ public static class SwissSysMapper
             InitialColor: MapCoinToss(raw.CoinToss),
             SoftDeleted: raw.FreePairSoftDeleted ?? false,
             PairingEngine: raw.FreePairPairingEngine,
-            AvoidSameTeam: raw.FreePairAvoidSameTeam ?? false,
+            AvoidSameTeam: raw.FreePairAvoidSameTeam ?? raw.UseTeamPairings ?? false,
             AvoidSameClub: raw.FreePairAvoidSameClub ?? false);
     }
 
     /// <summary>
     /// Maps SwissSys's per-section <c>Coin toss</c> field to our
     /// <see cref="Bbp.InitialColor"/> enum. SwissSys convention:
-    /// 0 = board-1 white, 1 = board-1 black; anything else defaults
-    /// to white to match bbpPairings' own default.
+    /// 0 = lower-half gets white on board 1, 1 = lower-half gets black
+    /// on board 1. Our <see cref="Bbp.InitialColor"/> represents the colour
+    /// the TOP-half player receives, so the mapping is inverted.
     /// </summary>
     internal static Bbp.InitialColor MapCoinToss(int coinToss) => coinToss switch
     {
-        1 => Bbp.InitialColor.Black,
-        _ => Bbp.InitialColor.White,
+        1 => Bbp.InitialColor.White,
+        _ => Bbp.InitialColor.Black,
     };
 
     internal static Player MapPlayer(RawPlayer raw)

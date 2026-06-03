@@ -97,9 +97,66 @@ public static class UscfPairer
             ? document
             : document with { Players = paired };
 
+        // USCF 28L / 28L4 pre-pass for round 2+: when the active field is
+        // odd, the auto-bye must land on a player who hasn't already had
+        // a full-point bye and isn't unrated (when a rated alternative
+        // exists). The score-group loop in PairRoundN naturally byes the
+        // trailing player of the lowest score group; if that natural
+        // candidate is ineligible (already byed, or unrated when better
+        // exists), we pre-remove the correct candidate so the pairing
+        // algorithm structures the remaining (even) field around them.
+        // Critically, we ONLY pre-remove when the natural candidate is
+        // ineligible — when the lowest seed of the lowest score group
+        // is already valid, leave the standard algorithm alone so the
+        // existing score-group / floater behaviour (validated by A2Z
+        // May Open et al.) isn't disturbed.
+        int? preselectedByePair = null;
+        if (maxPlayedRounds > 0 && filteredDoc.Players.Count % 2 == 1)
+        {
+            // The "natural" candidate is the lowest-rated player in the
+            // lowest score group (the trailing slot of the last group's
+            // pool in PairRoundN).
+            var lowestGroup = filteredDoc.Players
+                .GroupBy(ComputeScore)
+                .OrderBy(g => g.Key)
+                .First();
+            var naturalByeCandidate = lowestGroup
+                .OrderByDescending(p => p.Rating)
+                .ThenBy(p => p.PairNumber)
+                .Last();
+
+            var naturalIsEligible =
+                !HasReceivedFullPointBye(naturalByeCandidate) &&
+                !naturalByeCandidate.HasScheduledBye &&
+                naturalByeCandidate.Rating > 0;
+
+            if (!naturalIsEligible)
+            {
+                // The trailing player can't take the bye — pick the best
+                // alternative from the full roster (scoped by lowest
+                // score group first) and exclude them.
+                var byeCandidate = SelectPreAssignedBye(filteredDoc.Players);
+                if (byeCandidate is not null && byeCandidate.PairNumber != naturalByeCandidate.PairNumber)
+                {
+                    preselectedByePair = byeCandidate.PairNumber;
+                    filteredDoc = filteredDoc with
+                    {
+                        Players = filteredDoc.Players
+                            .Where(p => p.PairNumber != byeCandidate.PairNumber)
+                            .ToList(),
+                    };
+                }
+            }
+        }
+
         var inner = maxPlayedRounds > 0
             ? PairRoundN(filteredDoc)
             : PairRoundOne(filteredDoc);
+
+        if (preselectedByePair is int preBye)
+        {
+            inner = inner with { ByePair = preBye };
+        }
 
         // Splice the pre-flagged byes back into the result. The
         // auto-assigned full-point bye (ByePair) remains separate
@@ -108,6 +165,50 @@ public static class UscfPairer
         return requestedByes.Count == 0
             ? inner
             : inner with { RequestedByes = requestedByes };
+    }
+
+    /// <summary>
+    /// Picks the player who should receive the auto-assigned full-point
+    /// bye in round 2+ when the natural lowest-seed candidate is
+    /// ineligible (already byed, scheduled, or unrated when a rated
+    /// alternative exists). USCF 28L tradition: the bye is awarded
+    /// from the LOWEST-SCORED group (not the globally lowest rated),
+    /// so callers should scope the candidate set to that group.
+    /// Selection within the group: lowest-rated rated player with no
+    /// prior or scheduled bye → lowest-rated with no prior/scheduled
+    /// bye (even if unrated) → lowest-rated with no prior bye →
+    /// absolute lowest in the group.
+    /// </summary>
+    private static TrfPlayer? SelectPreAssignedBye(IReadOnlyList<TrfPlayer> players)
+    {
+        // Group by score, walk lowest-score group first. Within the
+        // group, lowest rated is the natural bye candidate.
+        var byScoreAsc = players
+            .GroupBy(ComputeScore)
+            .OrderBy(g => g.Key)
+            .ToArray();
+
+        foreach (var group in byScoreAsc)
+        {
+            var ordered = group
+                .OrderByDescending(p => p.Rating)
+                .ThenBy(p => p.PairNumber)
+                .ToArray();
+
+            var pick =
+                ordered.LastOrDefault(p => !HasReceivedFullPointBye(p) && !p.HasScheduledBye && p.Rating > 0)
+                ?? ordered.LastOrDefault(p => !HasReceivedFullPointBye(p) && !p.HasScheduledBye)
+                ?? ordered.LastOrDefault(p => !HasReceivedFullPointBye(p));
+
+            if (pick is not null) return pick;
+        }
+
+        // Every player has already had a bye — fall back to the
+        // absolute lowest seed.
+        return players
+            .OrderByDescending(p => p.Rating)
+            .ThenBy(p => p.PairNumber)
+            .LastOrDefault();
     }
 
     /// <summary>
@@ -161,15 +262,30 @@ public static class UscfPairer
         return n;
     }
 
+    /// <summary>
+    /// True when the player already received a full-point bye in this
+    /// event (round cell with result <c>'U'</c>). Used by the bye selector
+    /// to enforce USCF 28L4 ("a player should not receive more than one
+    /// full-point bye") across rounds — without this check the lowest
+    /// candidate keeps re-receiving the bye in every odd-field round.
+    /// </summary>
+    private static bool HasReceivedFullPointBye(TrfPlayer p)
+    {
+        foreach (var cell in p.Rounds)
+        {
+            if (cell.Result == 'U') return true;
+        }
+        return false;
+    }
+
     private static UscfPairingResult PairRoundOne(TrfDocument document)
     {
-        // USCF 28C/28E: order players by rating (descending), break ties
-        // alphabetically by last name then first name (names are stored
-        // as "Last, First"), then by pair number as a final deterministic
-        // tiebreaker.
+        // USCF 28C/28E: order players by rating (descending). Tie-break on
+        // PairNumber (entry order) — matching SwissSys's convention so that
+        // unrated or equally-rated players slot into the SLIDE in the same
+        // order SwissSys uses.
         var ordered = document.Players
             .OrderByDescending(p => p.Rating)
-            .ThenBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
             .ThenBy(p => p.PairNumber)
             .ToArray();
 
@@ -178,15 +294,33 @@ public static class UscfPairer
             return new UscfPairingResult(Array.Empty<UscfPairing>(), null);
         }
 
-        // Odd count: the lowest-rated player gets a full-point bye
-        // (USCF 28L: bye assignment in round 1 goes to the lowest-rated
-        // player who has not requested no-bye; we don't yet model bye
-        // requests, so this is "lowest seed").
+        // Odd count: assign a full-point bye. Per USCF 28L:
+        //   - The bye should go to the LOWEST RATED player who hasn't
+        //     already had a bye (28L4 — no double byes). This includes
+        //     past full-point byes the player ALREADY received in this
+        //     event (we check round history), plus any TD-scheduled
+        //     half / zero / future full byes (HasScheduledBye).
+        //   - "But not unrated, if avoidable." Unrated players need
+        //     games to establish a rating; a full-point bye gives no
+        //     rating data, so they're skipped when a rated alternative
+        //     exists.
+        // Fallback ladder when the natural choice is unavailable:
+        //   1) lowest-rated player WITH NO previous full-point bye AND
+        //      no scheduled bye AND Rating > 0
+        //   2) lowest-rated player with no previous full-point bye and
+        //      no scheduled bye (even if unrated)
+        //   3) lowest-rated player with no previous full-point bye
+        //   4) absolute lowest seed (every candidate has had a bye)
         int? byePair = null;
         if (ordered.Length % 2 == 1)
         {
-            byePair = ordered[^1].PairNumber;
-            ordered = ordered[..^1];
+            var byeCandidate =
+                ordered.LastOrDefault(p => !HasReceivedFullPointBye(p) && !p.HasScheduledBye && p.Rating > 0)
+                ?? ordered.LastOrDefault(p => !HasReceivedFullPointBye(p) && !p.HasScheduledBye)
+                ?? ordered.LastOrDefault(p => !HasReceivedFullPointBye(p))
+                ?? ordered[^1];
+            byePair = byeCandidate.PairNumber;
+            ordered = ordered.Where(p => p.PairNumber != byeCandidate.PairNumber).ToArray();
         }
 
         var half = ordered.Length / 2;
@@ -195,10 +329,22 @@ public static class UscfPairer
         var pairings = new List<UscfPairing>(half);
         var annotations = new List<PairingAnnotation>();
 
+        // Build top/bottom halves and find a team-safe matching (avoids
+        // pairing teammates in R1, same logic used in later rounds).
+        var top = ordered[..half];
+        var bot = ordered[half..];
+        var assignment = new TrfPlayer[half];
+
+        if (!TryFindNonRematchMatching(top, bot, assignment))
+        {
+            // No constraint-clean matching exists — fall back to natural slide.
+            for (var i = 0; i < half; i++) assignment[i] = bot[i];
+        }
+
         for (var i = 0; i < half; i++)
         {
-            var topSeed = ordered[i];
-            var bottomSeed = ordered[i + half];
+            var topSeed = top[i];
+            var bottomSeed = assignment[i];
 
             // USCF 29E1: in round 1, half of the top seeds receive white
             // and half receive black, alternating from board 1's assigned
@@ -245,12 +391,16 @@ public static class UscfPairer
         // Group active players by score. We assume the caller has already
         // filtered out anyone who shouldn't be paired this round (withdrawn,
         // pre-flagged half-byes, etc.). Score groups go highest first.
+        // Within a score group, sort by rating desc and break ties on
+        // PairNumber (i.e. entry order) — matching SwissSys's convention.
+        // Equal-rated players (e.g. multiple unrated entries) must keep
+        // their pair-number order so the natural SLIDE pairs them in the
+        // same way SwissSys does.
         var scoreGroups = document.Players
             .GroupBy(ComputeScore)
             .OrderByDescending(g => g.Key)
             .Select(g => g
                 .OrderByDescending(p => p.Rating)
-                .ThenBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(p => p.PairNumber)
                 .ToList())
             .ToList();
@@ -280,10 +430,13 @@ public static class UscfPairer
             floatDown = new List<TrfPlayer>();
 
             // Odd group → drop a player to the next group. Prefer the
-            // natural SLIDE drop (lowest-rated candidate). However, if the
-            // natural SLIDE produces ≥2 color conflicts and an alternative
-            // drop yields 0 conflicts, prefer the color-friendly drop
-            // (matching SwissSys behavior). Floaters don't re-float.
+            // natural SLIDE drop (lowest-rated RATED candidate — unrated
+            // players need games to establish a rating and are not
+            // floated down unless no rated alternative exists). However,
+            // if the natural SLIDE produces ≥2 color conflicts and an
+            // alternative drop yields 0 conflicts, prefer the
+            // color-friendly drop (matching SwissSys behavior). Floaters
+            // don't re-float.
             if (pool.Count % 2 == 1 && gi < scoreGroups.Count - 1)
             {
                 var floaterCount = pool.Count - groupSorted.Count;
@@ -294,12 +447,20 @@ public static class UscfPairer
                 int bestColorIdx = -1;
                 int bestColorConflicts = int.MaxValue;
 
-                for (var di = pool.Count - 1; di >= 0; di--)
-                {
-                    // Skip floater indices (they sit at mergeHalf..mergeHalf+floaterCount-1).
-                    if (di >= mergeHalf && di < mergeHalf + floaterCount)
-                        continue;
+                // Walk drop candidates in "natural" preference order:
+                // rated players from lowest-rated upward (skipping
+                // floater positions), then unrated players as a last
+                // resort. This keeps unrated entries in their natural
+                // score group when a rated player can be floated instead.
+                var dropOrder = Enumerable.Range(0, pool.Count)
+                    .Where(idx => !(idx >= mergeHalf && idx < mergeHalf + floaterCount))
+                    .OrderBy(idx => pool[idx].Rating == 0 ? 1 : 0)  // rated first (0), unrated last (1)
+                    .ThenBy(idx => pool[idx].Rating)                 // lowest-rated first within each tier
+                    .ThenByDescending(idx => idx)                    // stable: prefer trailing slot
+                    .ToList();
 
+                foreach (var di in dropOrder)
+                {
                     var testPool = pool.Where((_, idx) => idx != di).ToList();
                     var testHalf = testPool.Count / 2;
                     var testTop = testPool.Take(testHalf).ToList();
@@ -337,12 +498,17 @@ public static class UscfPairer
                     }
                 }
 
-                // Use the natural SLIDE drop unless a color-friendly
-                // alternative produces strictly fewer color conflicts.
+                // Prefer the natural SLIDE drop (lowest-rated candidate
+                // per USCF 29C). Only switch to a color-friendly alternative
+                // when the natural drop has ≥2 color conflicts AND the
+                // alternative completely eliminates them (0 conflicts).
+                // This matches SwissSys 11: a single natural conflict is
+                // tolerated, but two-or-more is escaped only if a clean
+                // drop exists.
                 int dropIdx;
-                if (naturalIdx >= 0 && naturalConflicts <= bestColorConflicts)
+                if (naturalIdx >= 0 && naturalConflicts < 2)
                     dropIdx = naturalIdx;
-                else if (bestColorIdx >= 0 && bestColorConflicts < naturalConflicts)
+                else if (bestColorIdx >= 0 && bestColorConflicts == 0 && naturalConflicts >= 2)
                     dropIdx = bestColorIdx;
                 else if (naturalIdx >= 0)
                     dropIdx = naturalIdx;
@@ -361,16 +527,41 @@ public static class UscfPairer
                 pool.RemoveAt(dropIdx);
             }
 
+            // USCF 29C / SwissSys 11: if this pool cannot be paired
+            // rematch-free even with cross-half interchanges, float every
+            // member down to the next group rather than committing a
+            // rematch. A 2-player group where the only possible pair has
+            // already played in a prior round is the canonical case.
+            // Skip when we're on the last group (no "next group" to float
+            // into — the rematch fallback is unavoidable there).
+            if (gi < scoreGroups.Count - 1 && pool.Count >= 2 &&
+                CannotPairRematchFree(pool))
+            {
+                annotations.Add(new PairingAnnotation(0, PairingReason.FloaterDropNatural,
+                    $"Forced merge: score group {ComputeScore(pool[0]):F1} has no rematch-free pairing (every internal pairing repeats a prior game); floating all {pool.Count} player(s) down to the next group."));
+                foreach (var p in pool) floatDown.Add(p);
+                pool.Clear();
+                continue;
+            }
+
             board = PairPool(pool, board, pairings, initialColor, annotations, currentFloaterCount);
 
             // If we're on the last group and it's still odd, the leftover
-            // is the bye.
+            // is the bye. Per USCF 28L: lowest-rated player who hasn't
+            // had a bye (28L4 — counts both past full-point byes in this
+            // event AND any TD-scheduled bye) and isn't unrated (28L
+            // "but not unrated, if avoidable").
             if (gi == scoreGroups.Count - 1 && pool.Count % 2 == 1)
             {
                 // PairPool ignored the trailing odd one — now collect it.
-                byePair = pool[^1].PairNumber;
+                var byeCandidate =
+                    pool.LastOrDefault(p => !HasReceivedFullPointBye(p) && !p.HasScheduledBye && p.Rating > 0)
+                    ?? pool.LastOrDefault(p => !HasReceivedFullPointBye(p) && !p.HasScheduledBye)
+                    ?? pool.LastOrDefault(p => !HasReceivedFullPointBye(p))
+                    ?? pool[^1];
+                byePair = byeCandidate.PairNumber;
                 annotations.Add(new PairingAnnotation(0, PairingReason.ByeAssigned,
-                    $"Full-point bye: #{byePair.Value} (lowest-rated in last score group)"));
+                    $"Full-point bye: #{byePair.Value} (lowest-rated rated player in last score group without a prior or scheduled bye)"));
             }
         }
 
@@ -491,48 +682,47 @@ public static class UscfPairer
             .ToList();
 
         var pairablePool = pool.Take(pairableCount).ToList();
-        var scoreCounts = pairablePool
-            .GroupBy(ComputeScore)
-            .OrderByDescending(g => g.Key)
-            .Select(g => g.Count())
-            .ToArray();
-        var isSingleFloaterEightPlayerPool = pairablePool.Count == 8
-            && scoreCounts.Length == 2
-            && scoreCounts[0] == 1;
 
-        // USCF 28F2: color optimizations must preserve floater pairings.
-        // Floaters sit at bot[0..floaterCount-1] paired with top[0..floaterCount-1].
-        if (isSingleFloaterEightPlayerPool &&
-            TryFindColorOptimizedMatching(pairablePool, selectedPairs, initialColor, startBoard, out var colorOptimizedPairs, floaterCount))
-        {
-            selectedPairs = colorOptimizedPairs;
-            matchingKind = PairingReason.ColorOptimizedMatching;
-        }
-        else if (TryReduceColorConflicts(pairablePool, selectedPairs, out var reducedConflictPairs, 0))
+        // USCF 28F2 / 29E: reduce hard colour conflicts where possible.
+        // Floaters are placed at bot[0..floaterCount-1] (top of bot half).
+        // We lock at most ONE floater pair (the highest-rated floater
+        // paired with the highest-rated top player) to honour 28F2's
+        // "primary floater plays top of the lower group" intent. Lower
+        // (secondary) floaters can be swapped during the colour-conflict
+        // search — SwissSys allows this and the curated A2Z corpus
+        // confirms it produces SwissSys-matching pairings (e.g. Inaugural
+        // Open I R2 needs the secondary floater P12 to move from its
+        // natural slot to pair with P11 for colour balance).
+        var primaryFloaterLock = Math.Min(floaterCount, 1);
+        if (TryReduceColorConflicts(pairablePool, selectedPairs, out var reducedConflictPairs, primaryFloaterLock))
         {
             selectedPairs = reducedConflictPairs;
             if (matchingKind == PairingReason.NaturalSlide)
                 matchingKind = PairingReason.ColorConflictReduction;
         }
 
-        // After color optimization the floater pair may have moved away
-        // from position 0. Floaters come from a higher score group and
-        // must retain top-board priority. Move any pair containing a
-        // floater back to the front (preserving relative order among
-        // floater pairs and among non-floater pairs).
+        // After color optimization the floater pair(s) may have moved
+        // away from the front. Floaters come from a higher score group
+        // and must retain top-board priority (USCF 28F2). Move ALL pairs
+        // containing a floater to the front (preserving relative order
+        // among floater pairs and among non-floater pairs). Only re-emit
+        // when the order would actually change.
         if (floaterCount > 0)
         {
             var floaterSet = new HashSet<int>(
                 bot.Take(floaterCount).Select(f => f.PairNumber));
             var floaterPairs = selectedPairs
-                .Where(p => floaterSet.Contains(p.B.PairNumber))
+                .Where(p => floaterSet.Contains(p.B.PairNumber)
+                         || floaterSet.Contains(p.A.PairNumber))
                 .ToList();
             var nonFloaterPairs = selectedPairs
-                .Where(p => !floaterSet.Contains(p.B.PairNumber))
+                .Where(p => !floaterSet.Contains(p.B.PairNumber)
+                         && !floaterSet.Contains(p.A.PairNumber))
                 .ToList();
-            if (floaterPairs.Count > 0 && selectedPairs.IndexOf(floaterPairs[0]) != 0)
+            var reordered = floaterPairs.Concat(nonFloaterPairs).ToList();
+            if (!reordered.SequenceEqual(selectedPairs))
             {
-                selectedPairs = floaterPairs.Concat(nonFloaterPairs).ToList();
+                selectedPairs = reordered;
             }
         }
 
@@ -839,6 +1029,26 @@ public static class UscfPairer
     /// and would warrant a deeper investigation if they ever showed
     /// up in the corpus.
     /// </returns>
+    /// <summary>
+    /// True if the given pool cannot be paired top-half-vs-bottom-half
+    /// without a rematch even after a cross-half interchange. When this
+    /// returns <c>true</c> the caller should float the entire pool down
+    /// to the next score group rather than commit a forced rematch.
+    /// Always returns <c>false</c> for pools smaller than 2 (nothing to
+    /// pair) or odd pools (caller's drop logic handles those).
+    /// </summary>
+    private static bool CannotPairRematchFree(IReadOnlyList<TrfPlayer> pool)
+    {
+        if (pool.Count < 2 || pool.Count % 2 != 0) return false;
+        var half = pool.Count / 2;
+        var top = pool.Take(half).ToList();
+        var bot = pool.Skip(half).Take(half).ToList();
+        var assignment = new TrfPlayer[half];
+        if (TryFindNonRematchMatching(top, bot, assignment)) return false;
+        if (TryCrossHalfInterchange(top, bot, assignment, out _, out _)) return false;
+        return true;
+    }
+
     private static bool TryCrossHalfInterchange(
         IList<TrfPlayer> top, IList<TrfPlayer> bot,
         TrfPlayer[] assignment,
@@ -933,8 +1143,16 @@ public static class UscfPairer
     private static IEnumerable<int> NaturalOrder(int i, int count)
     {
         if (i >= 0 && i < count) yield return i;
-        for (var j = i + 1; j < count; j++) yield return j;
-        for (var j = i - 1; j >= 0; j--) yield return j;
+        // Alternate outward from position i, trying lower indices first
+        // so that the minimal transposition is preferred (matching USCF/SwissSys
+        // convention of sliding up before sliding down).
+        var lo = i - 1;
+        var hi = i + 1;
+        while (lo >= 0 || hi < count)
+        {
+            if (lo >= 0) yield return lo--;
+            if (hi < count) yield return hi++;
+        }
     }
 
     /// <summary>

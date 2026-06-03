@@ -73,6 +73,15 @@ public sealed class RawSection
     [JsonPropertyName("Team pair table items")]
     public int TeamPairTableItems { get; set; }
 
+    /// <summary>
+    /// SwissSys's native "avoid same-team pairings" flag. When <c>true</c>,
+    /// SwissSys tried to avoid pairing players on the same team. Read as a
+    /// fallback for <see cref="FreePairAvoidSameTeam"/> when that FreePair-
+    /// specific key is absent.
+    /// </summary>
+    [JsonPropertyName("Use team pairings")]
+    public bool? UseTeamPairings { get; set; }
+
     [JsonPropertyName("Players")]
     public List<RawPlayer> Players { get; set; } = new();
 
