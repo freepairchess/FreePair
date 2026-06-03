@@ -551,34 +551,46 @@ public static class UscfPairer
 
         var pairablePool = pool.Take(pairableCount).ToList();
 
-        // USCF 28F2 / 29E: reduce hard colour conflicts where possible
-        // while preserving the floater lock (the floater at bot[0..floaterCount-1]
-        // must keep pairing with top[0..floaterCount-1]).
-        if (TryReduceColorConflicts(pairablePool, selectedPairs, out var reducedConflictPairs, floaterCount))
+        // USCF 28F2 / 29E: reduce hard colour conflicts where possible.
+        // Floaters are placed at bot[0..floaterCount-1] (top of bot half).
+        // We lock at most ONE floater pair (the highest-rated floater
+        // paired with the highest-rated top player) to honour 28F2's
+        // "primary floater plays top of the lower group" intent. Lower
+        // (secondary) floaters can be swapped during the colour-conflict
+        // search — SwissSys allows this and the curated A2Z corpus
+        // confirms it produces SwissSys-matching pairings (e.g. Inaugural
+        // Open I R2 needs the secondary floater P12 to move from its
+        // natural slot to pair with P11 for colour balance).
+        var primaryFloaterLock = Math.Min(floaterCount, 1);
+        if (TryReduceColorConflicts(pairablePool, selectedPairs, out var reducedConflictPairs, primaryFloaterLock))
         {
             selectedPairs = reducedConflictPairs;
             if (matchingKind == PairingReason.NaturalSlide)
                 matchingKind = PairingReason.ColorConflictReduction;
         }
 
-        // After color optimization the floater pair may have moved away
-        // from position 0. Floaters come from a higher score group and
-        // must retain top-board priority. Move any pair containing a
-        // floater back to the front (preserving relative order among
-        // floater pairs and among non-floater pairs).
+        // After color optimization the floater pair(s) may have moved
+        // away from the front. Floaters come from a higher score group
+        // and must retain top-board priority (USCF 28F2). Move ALL pairs
+        // containing a floater to the front (preserving relative order
+        // among floater pairs and among non-floater pairs). Only re-emit
+        // when the order would actually change.
         if (floaterCount > 0)
         {
             var floaterSet = new HashSet<int>(
                 bot.Take(floaterCount).Select(f => f.PairNumber));
             var floaterPairs = selectedPairs
-                .Where(p => floaterSet.Contains(p.B.PairNumber))
+                .Where(p => floaterSet.Contains(p.B.PairNumber)
+                         || floaterSet.Contains(p.A.PairNumber))
                 .ToList();
             var nonFloaterPairs = selectedPairs
-                .Where(p => !floaterSet.Contains(p.B.PairNumber))
+                .Where(p => !floaterSet.Contains(p.B.PairNumber)
+                         && !floaterSet.Contains(p.A.PairNumber))
                 .ToList();
-            if (floaterPairs.Count > 0 && selectedPairs.IndexOf(floaterPairs[0]) != 0)
+            var reordered = floaterPairs.Concat(nonFloaterPairs).ToList();
+            if (!reordered.SequenceEqual(selectedPairs))
             {
-                selectedPairs = floaterPairs.Concat(nonFloaterPairs).ToList();
+                selectedPairs = reordered;
             }
         }
 
