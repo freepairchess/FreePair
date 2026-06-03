@@ -1412,10 +1412,25 @@ public static class UscfPairer
         var botPreferred = PreferredColor(bottom);
         if (useSamePreferenceScoreTie && topPreferred != '-' && topPreferred == botPreferred)
         {
-            var topScore = ComputeScore(top);
-            var botScore = ComputeScore(bottom);
-            if (topScore > botScore) return topPreferred == 'w';
-            if (botScore > topScore) return botPreferred == 'b';
+            // Only apply the score-based tiebreak when both players have
+            // an EQUAL colour imbalance. If one player has a stronger
+            // equalisation claim (e.g. 0W vs 1W when both are "due white"),
+            // USCF 29D wants equalisation to decide — fall through to
+            // step (2) below. Without this guard, an upfloater/downfloater
+            // can wrongly steal the equalising colour from the lower-rated
+            // player who has actually never had that colour. (Hellp 2026
+            // U700 R3 bd 5: Vats[2.0,1W-1B] vs Daniel[1.5,0W-1B] — both
+            // are "due white" but Daniel has the harder claim and should
+            // get White; the higher score should not override that.)
+            var topDiffEarly = CountColor(top, 'w') - CountColor(top, 'b');
+            var botDiffEarly = CountColor(bottom, 'w') - CountColor(bottom, 'b');
+            if (topDiffEarly == botDiffEarly)
+            {
+                var topScore = ComputeScore(top);
+                var botScore = ComputeScore(bottom);
+                if (topScore > botScore) return topPreferred == 'w';
+                if (botScore > topScore) return botPreferred == 'b';
+            }
         }
 
         // (2) Equalise: whoever has played more whites gets black.
