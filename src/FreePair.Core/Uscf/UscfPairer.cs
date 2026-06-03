@@ -97,9 +97,66 @@ public static class UscfPairer
             ? document
             : document with { Players = paired };
 
+        // USCF 28L / 28L4 pre-pass for round 2+: when the active field is
+        // odd, the auto-bye must land on a player who hasn't already had
+        // a full-point bye and isn't unrated (when a rated alternative
+        // exists). The score-group loop in PairRoundN naturally byes the
+        // trailing player of the lowest score group; if that natural
+        // candidate is ineligible (already byed, or unrated when better
+        // exists), we pre-remove the correct candidate so the pairing
+        // algorithm structures the remaining (even) field around them.
+        // Critically, we ONLY pre-remove when the natural candidate is
+        // ineligible — when the lowest seed of the lowest score group
+        // is already valid, leave the standard algorithm alone so the
+        // existing score-group / floater behaviour (validated by A2Z
+        // May Open et al.) isn't disturbed.
+        int? preselectedByePair = null;
+        if (maxPlayedRounds > 0 && filteredDoc.Players.Count % 2 == 1)
+        {
+            // The "natural" candidate is the lowest-rated player in the
+            // lowest score group (the trailing slot of the last group's
+            // pool in PairRoundN).
+            var lowestGroup = filteredDoc.Players
+                .GroupBy(ComputeScore)
+                .OrderBy(g => g.Key)
+                .First();
+            var naturalByeCandidate = lowestGroup
+                .OrderByDescending(p => p.Rating)
+                .ThenBy(p => p.PairNumber)
+                .Last();
+
+            var naturalIsEligible =
+                !HasReceivedFullPointBye(naturalByeCandidate) &&
+                !naturalByeCandidate.HasScheduledBye &&
+                naturalByeCandidate.Rating > 0;
+
+            if (!naturalIsEligible)
+            {
+                // The trailing player can't take the bye — pick the best
+                // alternative from the full roster (scoped by lowest
+                // score group first) and exclude them.
+                var byeCandidate = SelectPreAssignedBye(filteredDoc.Players);
+                if (byeCandidate is not null && byeCandidate.PairNumber != naturalByeCandidate.PairNumber)
+                {
+                    preselectedByePair = byeCandidate.PairNumber;
+                    filteredDoc = filteredDoc with
+                    {
+                        Players = filteredDoc.Players
+                            .Where(p => p.PairNumber != byeCandidate.PairNumber)
+                            .ToList(),
+                    };
+                }
+            }
+        }
+
         var inner = maxPlayedRounds > 0
             ? PairRoundN(filteredDoc)
             : PairRoundOne(filteredDoc);
+
+        if (preselectedByePair is int preBye)
+        {
+            inner = inner with { ByePair = preBye };
+        }
 
         // Splice the pre-flagged byes back into the result. The
         // auto-assigned full-point bye (ByePair) remains separate
@@ -108,6 +165,50 @@ public static class UscfPairer
         return requestedByes.Count == 0
             ? inner
             : inner with { RequestedByes = requestedByes };
+    }
+
+    /// <summary>
+    /// Picks the player who should receive the auto-assigned full-point
+    /// bye in round 2+ when the natural lowest-seed candidate is
+    /// ineligible (already byed, scheduled, or unrated when a rated
+    /// alternative exists). USCF 28L tradition: the bye is awarded
+    /// from the LOWEST-SCORED group (not the globally lowest rated),
+    /// so callers should scope the candidate set to that group.
+    /// Selection within the group: lowest-rated rated player with no
+    /// prior or scheduled bye → lowest-rated with no prior/scheduled
+    /// bye (even if unrated) → lowest-rated with no prior bye →
+    /// absolute lowest in the group.
+    /// </summary>
+    private static TrfPlayer? SelectPreAssignedBye(IReadOnlyList<TrfPlayer> players)
+    {
+        // Group by score, walk lowest-score group first. Within the
+        // group, lowest rated is the natural bye candidate.
+        var byScoreAsc = players
+            .GroupBy(ComputeScore)
+            .OrderBy(g => g.Key)
+            .ToArray();
+
+        foreach (var group in byScoreAsc)
+        {
+            var ordered = group
+                .OrderByDescending(p => p.Rating)
+                .ThenBy(p => p.PairNumber)
+                .ToArray();
+
+            var pick =
+                ordered.LastOrDefault(p => !HasReceivedFullPointBye(p) && !p.HasScheduledBye && p.Rating > 0)
+                ?? ordered.LastOrDefault(p => !HasReceivedFullPointBye(p) && !p.HasScheduledBye)
+                ?? ordered.LastOrDefault(p => !HasReceivedFullPointBye(p));
+
+            if (pick is not null) return pick;
+        }
+
+        // Every player has already had a bye — fall back to the
+        // absolute lowest seed.
+        return players
+            .OrderByDescending(p => p.Rating)
+            .ThenBy(p => p.PairNumber)
+            .LastOrDefault();
     }
 
     /// <summary>
@@ -473,74 +574,7 @@ public static class UscfPairer
             board = PairPool(floatDown, board, pairings, initialColor, annotations, 0);
         }
 
-        // USCF 28L4 post-fix: if the auto-assigned bye landed on a player
-        // who has already received a full-point bye in this event, swap
-        // the bye with the lowest-scoring rated paired player who hasn't
-        // had one. The "swap" gives the bye to that player and pairs the
-        // would-be-byed player with whoever was previously paired with
-        // the new bye recipient. This keeps the standard algorithm
-        // intact for the common case (one bye per player) and only
-        // intervenes when the natural choice would violate 28L4.
-        if (byePair is int currentBye)
-        {
-            var currentByePlayer = document.Players
-                .FirstOrDefault(p => p.PairNumber == currentBye);
-            if (currentByePlayer is not null && HasReceivedFullPointBye(currentByePlayer))
-            {
-                // Find the lowest-scoring rated player in the pairings
-                // who hasn't already received a full-point bye. Walk the
-                // pairings in REVERSE (lowest boards) so we swap with the
-                // bottom rather than the top.
-                for (var pi = pairings.Count - 1; pi >= 0; pi--)
-                {
-                    var pair = pairings[pi];
-                    var swapCandidate = SelectSwapBye(document.Players, pair.WhitePair, pair.BlackPair);
-                    if (swapCandidate is null) continue;
-                    var keep = swapCandidate.PairNumber == pair.WhitePair
-                        ? pair.BlackPair
-                        : pair.WhitePair;
-                    // Replace the pair (kept-vs-currentByePlayer) on the
-                    // same board. Color is assigned by TopGetsWhite-style
-                    // logic from the perspective of the higher-rated.
-                    var keepPlayer = document.Players.First(p => p.PairNumber == keep);
-                    var topGetsWhite = TopGetsWhite(keepPlayer, currentByePlayer, initialColor, pair.Board);
-                    var (w, b) = topGetsWhite
-                        ? (keepPlayer.PairNumber, currentBye)
-                        : (currentBye, keepPlayer.PairNumber);
-                    pairings[pi] = pair with { WhitePair = w, BlackPair = b };
-                    byePair = swapCandidate.PairNumber;
-                    annotations.Add(new PairingAnnotation(0, PairingReason.ByeAssigned,
-                        $"Bye swap (USCF 28L4): #{currentBye} already had a full-point bye; reassigned to #{swapCandidate.PairNumber} (paired #{currentBye} with #{keep} on bd {pair.Board})."));
-                    break;
-                }
-            }
-        }
-
         return new UscfPairingResult(pairings, byePair, Annotations: annotations);
-    }
-
-    /// <summary>
-    /// Picks the lowest-scoring rated player in a candidate pair who
-    /// hasn't already received a full-point bye and isn't unrated. Used
-    /// by the 28L4 post-fix to find a swap target when the natural bye
-    /// would violate "no double byes". Returns null when neither member
-    /// of the pair is eligible.
-    /// </summary>
-    private static TrfPlayer? SelectSwapBye(
-        IReadOnlyList<TrfPlayer> players,
-        int whitePair,
-        int blackPair)
-    {
-        var w = players.FirstOrDefault(p => p.PairNumber == whitePair);
-        var b = players.FirstOrDefault(p => p.PairNumber == blackPair);
-        var candidates = new List<TrfPlayer>(2);
-        if (w is not null) candidates.Add(w);
-        if (b is not null) candidates.Add(b);
-
-        return candidates
-            .Where(p => !HasReceivedFullPointBye(p) && !p.HasScheduledBye && p.Rating > 0)
-            .OrderBy(p => p.Rating)
-            .FirstOrDefault();
     }
 
     /// <summary>
