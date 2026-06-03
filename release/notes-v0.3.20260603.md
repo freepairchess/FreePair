@@ -1,4 +1,4 @@
-# FreePair v0.3.0
+# FreePair v0.3.20260603
 
 USCF pairing engine fidelity overhaul, validated against a real-world SwissSys 11 corpus.
 
@@ -49,4 +49,4 @@ A few SwissSys outputs intentionally don't match FreePair:
 
 ## Installer
 
-This release ships a self-contained Windows x64 installer (`FreePair-win-Setup.exe`) — no separate .NET runtime install required. The bundled `bbpPairings.exe` (FIDE Dutch engine) and the separate `FreePair.UscfEngine.exe` (USCF engine) are included so the app works out of the box for both rating systems.
+This release ships a self-contained Windows x64 installer (`FreePair-win-x64-Setup.exe`) — no separate .NET runtime install required. The bundled `bbpPairings.exe` (FIDE Dutch engine) and the separate `FreePair.UscfEngine.exe` (USCF engine) are included so the app works out of the box for both rating systems.
