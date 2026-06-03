@@ -401,6 +401,23 @@ public static class UscfPairer
                 pool.RemoveAt(dropIdx);
             }
 
+            // USCF 29C / SwissSys 11: if this pool cannot be paired
+            // rematch-free even with cross-half interchanges, float every
+            // member down to the next group rather than committing a
+            // rematch. A 2-player group where the only possible pair has
+            // already played in a prior round is the canonical case.
+            // Skip when we're on the last group (no "next group" to float
+            // into — the rematch fallback is unavoidable there).
+            if (gi < scoreGroups.Count - 1 && pool.Count >= 2 &&
+                CannotPairRematchFree(pool))
+            {
+                annotations.Add(new PairingAnnotation(0, PairingReason.FloaterDropNatural,
+                    $"Forced merge: score group {ComputeScore(pool[0]):F1} has no rematch-free pairing (every internal pairing repeats a prior game); floating all {pool.Count} player(s) down to the next group."));
+                foreach (var p in pool) floatDown.Add(p);
+                pool.Clear();
+                continue;
+            }
+
             board = PairPool(pool, board, pairings, initialColor, annotations, currentFloaterCount);
 
             // If we're on the last group and it's still odd, the leftover
@@ -874,6 +891,26 @@ public static class UscfPairer
     /// and would warrant a deeper investigation if they ever showed
     /// up in the corpus.
     /// </returns>
+    /// <summary>
+    /// True if the given pool cannot be paired top-half-vs-bottom-half
+    /// without a rematch even after a cross-half interchange. When this
+    /// returns <c>true</c> the caller should float the entire pool down
+    /// to the next score group rather than commit a forced rematch.
+    /// Always returns <c>false</c> for pools smaller than 2 (nothing to
+    /// pair) or odd pools (caller's drop logic handles those).
+    /// </summary>
+    private static bool CannotPairRematchFree(IReadOnlyList<TrfPlayer> pool)
+    {
+        if (pool.Count < 2 || pool.Count % 2 != 0) return false;
+        var half = pool.Count / 2;
+        var top = pool.Take(half).ToList();
+        var bot = pool.Skip(half).Take(half).ToList();
+        var assignment = new TrfPlayer[half];
+        if (TryFindNonRematchMatching(top, bot, assignment)) return false;
+        if (TryCrossHalfInterchange(top, bot, assignment, out _, out _)) return false;
+        return true;
+    }
+
     private static bool TryCrossHalfInterchange(
         IList<TrfPlayer> top, IList<TrfPlayer> bot,
         TrfPlayer[] assignment,
