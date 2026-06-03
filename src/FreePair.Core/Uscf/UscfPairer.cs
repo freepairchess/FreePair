@@ -163,13 +163,12 @@ public static class UscfPairer
 
     private static UscfPairingResult PairRoundOne(TrfDocument document)
     {
-        // USCF 28C/28E: order players by rating (descending), break ties
-        // alphabetically by last name then first name (names are stored
-        // as "Last, First"), then by pair number as a final deterministic
-        // tiebreaker.
+        // USCF 28C/28E: order players by rating (descending). Tie-break on
+        // PairNumber (entry order) — matching SwissSys's convention so that
+        // unrated or equally-rated players slot into the SLIDE in the same
+        // order SwissSys uses.
         var ordered = document.Players
             .OrderByDescending(p => p.Rating)
-            .ThenBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
             .ThenBy(p => p.PairNumber)
             .ToArray();
 
@@ -178,15 +177,18 @@ public static class UscfPairer
             return new UscfPairingResult(Array.Empty<UscfPairing>(), null);
         }
 
-        // Odd count: the lowest-rated player gets a full-point bye
-        // (USCF 28L: bye assignment in round 1 goes to the lowest-rated
-        // player who has not requested no-bye; we don't yet model bye
-        // requests, so this is "lowest seed").
+        // Odd count: assign a full-point bye. Per USCF 28L, the bye goes
+        // to the lowest-rated player who hasn't already had a bye. We
+        // extend that to "and who isn't already scheduled for a TD-flagged
+        // bye later in the event" (28L4 prevents double-byes). If every
+        // candidate has a scheduled bye, fall back to the lowest-rated.
         int? byePair = null;
         if (ordered.Length % 2 == 1)
         {
-            byePair = ordered[^1].PairNumber;
-            ordered = ordered[..^1];
+            var byeCandidate = ordered.LastOrDefault(p => !p.HasScheduledBye)
+                               ?? ordered[^1];
+            byePair = byeCandidate.PairNumber;
+            ordered = ordered.Where(p => p.PairNumber != byeCandidate.PairNumber).ToArray();
         }
 
         var half = ordered.Length / 2;
@@ -257,12 +259,16 @@ public static class UscfPairer
         // Group active players by score. We assume the caller has already
         // filtered out anyone who shouldn't be paired this round (withdrawn,
         // pre-flagged half-byes, etc.). Score groups go highest first.
+        // Within a score group, sort by rating desc and break ties on
+        // PairNumber (i.e. entry order) — matching SwissSys's convention.
+        // Equal-rated players (e.g. multiple unrated entries) must keep
+        // their pair-number order so the natural SLIDE pairs them in the
+        // same way SwissSys does.
         var scoreGroups = document.Players
             .GroupBy(ComputeScore)
             .OrderByDescending(g => g.Key)
             .Select(g => g
                 .OrderByDescending(p => p.Rating)
-                .ThenBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(p => p.PairNumber)
                 .ToList())
             .ToList();
@@ -381,13 +387,17 @@ public static class UscfPairer
             board = PairPool(pool, board, pairings, initialColor, annotations, currentFloaterCount);
 
             // If we're on the last group and it's still odd, the leftover
-            // is the bye.
+            // is the bye. Per USCF 28L4, prefer a player who isn't already
+            // scheduled for a TD-flagged bye elsewhere in the event; if
+            // every candidate has one, fall back to the natural trailing
+            // (lowest-rated) player.
             if (gi == scoreGroups.Count - 1 && pool.Count % 2 == 1)
             {
                 // PairPool ignored the trailing odd one — now collect it.
-                byePair = pool[^1].PairNumber;
+                var byeCandidate = pool.LastOrDefault(p => !p.HasScheduledBye) ?? pool[^1];
+                byePair = byeCandidate.PairNumber;
                 annotations.Add(new PairingAnnotation(0, PairingReason.ByeAssigned,
-                    $"Full-point bye: #{byePair.Value} (lowest-rated in last score group)"));
+                    $"Full-point bye: #{byePair.Value} (lowest-rated in last score group{(byeCandidate.HasScheduledBye ? "" : ", skipping pre-flagged-bye players")})"));
             }
         }
 

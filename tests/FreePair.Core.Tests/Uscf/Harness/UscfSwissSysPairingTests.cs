@@ -203,7 +203,10 @@ public class UscfSwissSysPairingTests
                 Id: p.UscfId ?? string.Empty,
                 Points: ScoreThroughRound(p, endedRound),
                 Rounds: BuildRoundCells(p, endedRound),
-                Team: includeTeams ? (p.Team ?? string.Empty) : string.Empty))
+                Team: includeTeams ? (p.Team ?? string.Empty) : string.Empty,
+                HasScheduledBye:
+                    (p.RequestedByeRounds?.Count > 0) ||
+                    (p.ZeroPointByeRoundsOrEmpty.Count > 0)))
             .ToList();
 
         return new TrfDocument(

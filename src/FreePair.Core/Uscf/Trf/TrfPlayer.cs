@@ -31,6 +31,15 @@ namespace FreePair.Core.Uscf.Trf;
 /// spec is the team-membership directive but FreePair-USCF doesn't
 /// parse it yet.
 /// </param>
+/// <param name="HasScheduledBye">
+/// True when the TD has pre-flagged this player for at least one
+/// half-point or zero-point bye somewhere in the tournament (past or
+/// future). Per USCF 28L4 ("a player should not receive more than one
+/// bye"), the automatic full-point bye selector should prefer players
+/// without a scheduled bye when picking who plays no game this round.
+/// Defaults to <c>false</c> for callers that don't track this — they
+/// continue to get the previous "lowest-rated takes the bye" behaviour.
+/// </param>
 public sealed record TrfPlayer(
     int PairNumber,
     string Name,
@@ -38,4 +47,5 @@ public sealed record TrfPlayer(
     string Id,
     decimal Points,
     IReadOnlyList<TrfRoundCell> Rounds,
-    string Team = "");
+    string Team = "",
+    bool HasScheduledBye = false);
