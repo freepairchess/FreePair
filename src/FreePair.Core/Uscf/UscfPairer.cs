@@ -349,12 +349,17 @@ public static class UscfPairer
                     }
                 }
 
-                // Use the natural SLIDE drop unless a color-friendly
-                // alternative produces strictly fewer color conflicts.
+                // Prefer the natural SLIDE drop (lowest-rated candidate
+                // per USCF 29C). Only switch to a color-friendly alternative
+                // when the natural drop has ≥2 color conflicts AND the
+                // alternative completely eliminates them (0 conflicts).
+                // This matches SwissSys 11: a single natural conflict is
+                // tolerated, but two-or-more is escaped only if a clean
+                // drop exists.
                 int dropIdx;
-                if (naturalIdx >= 0 && naturalConflicts <= bestColorConflicts)
+                if (naturalIdx >= 0 && naturalConflicts < 2)
                     dropIdx = naturalIdx;
-                else if (bestColorIdx >= 0 && bestColorConflicts < naturalConflicts)
+                else if (bestColorIdx >= 0 && bestColorConflicts == 0 && naturalConflicts >= 2)
                     dropIdx = bestColorIdx;
                 else if (naturalIdx >= 0)
                     dropIdx = naturalIdx;
@@ -520,7 +525,7 @@ public static class UscfPairer
             selectedPairs = colorOptimizedPairs;
             matchingKind = PairingReason.ColorOptimizedMatching;
         }
-        else if (TryReduceColorConflicts(pairablePool, selectedPairs, out var reducedConflictPairs, 0))
+        else if (TryReduceColorConflicts(pairablePool, selectedPairs, out var reducedConflictPairs, floaterCount))
         {
             selectedPairs = reducedConflictPairs;
             if (matchingKind == PairingReason.NaturalSlide)
