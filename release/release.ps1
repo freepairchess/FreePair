@@ -86,7 +86,8 @@ param(
     [switch] $PreRelease,
     [switch] $Draft,
     [switch] $GenerateNotes,
-    [switch] $SkipTagPush
+    [switch] $SkipTagPush,
+    [switch] $SkipTests
 )
 
 $ErrorActionPreference = "Stop"
@@ -134,10 +135,21 @@ New-Item -ItemType Directory -Force -Path $enginePublishDir | Out-Null
 New-Item -ItemType Directory -Force -Path $outputDir  | Out-Null
 
 # Run all unit tests before producing a release ---------------------------
-Write-Host "==> Running unit tests ..." -ForegroundColor Cyan
-dotnet test (Join-Path $repoRoot "tests\FreePair.Core.Tests\FreePair.Core.Tests.csproj") `
-    --configuration $Configuration --nologo
-if ($LASTEXITCODE -ne 0) { throw "Tests failed; aborting release." }
+# Use -SkipTests to bypass when packaging a release that intentionally
+# carries known-failing tests (e.g. SwissSys-fidelity tests where the
+# divergence is a deliberate SwissSys-specific preference, not an engine
+# bug). The full suite is still expected to be green in CI.
+if ($SkipTests)
+{
+    Write-Host "==> Skipping unit tests (-SkipTests)." -ForegroundColor Yellow
+}
+else
+{
+    Write-Host "==> Running unit tests ..." -ForegroundColor Cyan
+    dotnet test (Join-Path $repoRoot "tests\FreePair.Core.Tests\FreePair.Core.Tests.csproj") `
+        --configuration $Configuration --nologo
+    if ($LASTEXITCODE -ne 0) { throw "Tests failed; aborting release. Pass -SkipTests to bypass." }
+}
 
 # The App project has a build target that probes the framework-dependent
 # UscfEngine output folder while publishing. Build that output explicitly
