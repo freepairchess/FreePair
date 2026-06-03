@@ -166,7 +166,8 @@ public class UscfSwissSysPairingTests
     private sealed record RoundActuals(
         IReadOnlyList<UscfPairing> Pairings,
         int? ByePair,
-        IReadOnlyList<UscfRequestedBye> RequestedByes);
+        IReadOnlyList<UscfRequestedBye> RequestedByes,
+        IReadOnlySet<int> UnplayedBoards);
 
     private static RoundActuals ExtractActuals(Round round, int sectionFirstBoard)
     {
@@ -184,7 +185,19 @@ public class UscfSwissSysPairingTests
             .OrderBy(b => b.PairNumber)
             .ToArray();
 
-        return new RoundActuals(pairings, bye?.PlayerPair, requestedByes);
+        // Pairings whose game was never actually played (a TD-marked
+        // withdrawal / forfeit on either side) have arbitrary recorded
+        // colours in the SJSON because no game ever happened. Collect
+        // their board numbers so the board/colour comparison can accept
+        // either orientation for those boards.
+        var unplayedBoards = new HashSet<int>(round.Pairings
+            .Where(p => p.Result == PairingResult.Unplayed
+                     || p.Result == PairingResult.WhiteWinsForfeit
+                     || p.Result == PairingResult.BlackWinsForfeit
+                     || p.Result == PairingResult.DoubleForfeit)
+            .Select(p => p.Board - offset));
+
+        return new RoundActuals(pairings, bye?.PlayerPair, requestedByes, unplayedBoards);
     }
 
     private static TrfDocument BuildTrfDocAtEndOfRound(
@@ -313,8 +326,17 @@ public class UscfSwissSysPairingTests
         var boardsAndColorsMatch =
             actualByBoard.Length == producedByBoard.Length &&
             actualByBoard.Zip(producedByBoard, (a, b) =>
-                a.WhitePair == b.WhitePair &&
-                a.BlackPair == b.BlackPair).All(x => x);
+            {
+                // Standard exact-color match.
+                if (a.WhitePair == b.WhitePair && a.BlackPair == b.BlackPair) return true;
+                // For boards whose SwissSys record was never played
+                // (forfeit / withdrawal on either side), the recorded
+                // colours are arbitrary — accept the reversed orientation
+                // as long as the same two players are paired.
+                if (actual.UnplayedBoards.Contains(a.Board) &&
+                    a.WhitePair == b.BlackPair && a.BlackPair == b.WhitePair) return true;
+                return false;
+            }).All(x => x);
 
         return new ComparisonResult(pairsMatch, byesMatch, boardsAndColorsMatch);
 

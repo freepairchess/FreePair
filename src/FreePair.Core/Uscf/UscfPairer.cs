@@ -177,21 +177,17 @@ public static class UscfPairer
             return new UscfPairingResult(Array.Empty<UscfPairing>(), null);
         }
 
-        // Odd count: assign a full-point bye. Per USCF 28L and TD
-        // tradition, the bye should go to the lowest-RATED player who
-        // (a) hasn't already had a bye (28L4 — no double byes) and
-        // (b) isn't unrated. Unrated players need games to establish
-        // a rating, so even if they're the lowest seed they aren't the
-        // bye recipient when a rated alternative exists. Fallback order:
-        //   1) lowest-rated player with no scheduled bye AND Rating > 0
-        //   2) lowest-rated player with no scheduled bye (even if unrated)
-        //   3) absolute lowest seed (if every candidate has a scheduled bye)
+        // Odd count: assign a full-point bye. Per USCF 28L4 (no double
+        // byes), prefer a player who isn't already scheduled for a
+        // TD-flagged bye elsewhere in the event. SwissSys treats unrated
+        // entrants as rating 0 here, so they're eligible for the bye when
+        // they're the lowest seed and have no scheduled bye — match that
+        // convention rather than special-casing them out.
         int? byePair = null;
         if (ordered.Length % 2 == 1)
         {
             var byeCandidate =
-                ordered.LastOrDefault(p => !p.HasScheduledBye && p.Rating > 0)
-                ?? ordered.LastOrDefault(p => !p.HasScheduledBye)
+                ordered.LastOrDefault(p => !p.HasScheduledBye)
                 ?? ordered[^1];
             byePair = byeCandidate.PairNumber;
             ordered = ordered.Where(p => p.PairNumber != byeCandidate.PairNumber).ToArray();
@@ -421,21 +417,19 @@ public static class UscfPairer
             board = PairPool(pool, board, pairings, initialColor, annotations, currentFloaterCount);
 
             // If we're on the last group and it's still odd, the leftover
-            // is the bye. Per USCF 28L4 (no double byes) and the TD
-            // tradition that unrated players need games to establish a
-            // rating, prefer a candidate who (a) isn't already scheduled
-            // for a TD-flagged bye elsewhere in the event AND (b) is
-            // rated. Fall back through the same ladder as PairRoundOne.
+            // is the bye. Per USCF 28L4 (no double byes), prefer a
+            // candidate who isn't already scheduled for a TD-flagged bye
+            // elsewhere in the event; fall back to the absolute lowest
+            // seed if every candidate has one.
             if (gi == scoreGroups.Count - 1 && pool.Count % 2 == 1)
             {
                 // PairPool ignored the trailing odd one — now collect it.
                 var byeCandidate =
-                    pool.LastOrDefault(p => !p.HasScheduledBye && p.Rating > 0)
-                    ?? pool.LastOrDefault(p => !p.HasScheduledBye)
+                    pool.LastOrDefault(p => !p.HasScheduledBye)
                     ?? pool[^1];
                 byePair = byeCandidate.PairNumber;
                 annotations.Add(new PairingAnnotation(0, PairingReason.ByeAssigned,
-                    $"Full-point bye: #{byePair.Value} (lowest-rated rated player in last score group without a scheduled bye)"));
+                    $"Full-point bye: #{byePair.Value} (lowest-rated in last score group without a scheduled bye)"));
             }
         }
 
