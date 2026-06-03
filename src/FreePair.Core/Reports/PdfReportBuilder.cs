@@ -315,9 +315,10 @@ public static class PdfReportBuilder
                 tbl.ColumnsDefinition(c =>
                 {
                     c.ConstantColumn(40);     // Board
+                    c.ConstantColumn(30);     // White result
                     c.RelativeColumn(2.2f);   // White name
                     c.ConstantColumn(45);     // White rtg
-                    c.ConstantColumn(55);     // Result
+                    c.ConstantColumn(30);     // Black result
                     c.RelativeColumn(2.2f);   // Black name
                     c.ConstantColumn(45);     // Black rtg
                 });
@@ -325,9 +326,10 @@ public static class PdfReportBuilder
                 tbl.Header(h =>
                 {
                     HeaderCell(h, "Bd");
+                    HeaderCell(h, "Res", alignCenter: true);
                     HeaderCell(h, "White");
                     HeaderCell(h, "Rtg");
-                    HeaderCell(h, "Result", alignCenter: true);
+                    HeaderCell(h, "Res", alignCenter: true);
                     HeaderCell(h, "Black");
                     HeaderCell(h, "Rtg");
                 });
@@ -338,9 +340,10 @@ public static class PdfReportBuilder
                     byPair.TryGetValue(p.BlackPair, out var b);
 
                     BodyCell(tbl, p.Board.ToString());
+                    BodyCell(tbl, FormatWhiteScore(p.Result), alignCenter: true);
                     BodyCell(tbl, $"#{p.WhitePair} {w?.Name ?? string.Empty}");
                     BodyCell(tbl, (w?.Rating ?? 0).ToString());
-                    BodyCell(tbl, FormatResult(p.Result), alignCenter: true);
+                    BodyCell(tbl, FormatBlackScore(p.Result), alignCenter: true);
                     BodyCell(tbl, $"#{p.BlackPair} {b?.Name ?? string.Empty}");
                     BodyCell(tbl, (b?.Rating ?? 0).ToString());
                 }
@@ -582,6 +585,28 @@ public static class PdfReportBuilder
         PairingResult.BlackWinsForfeit => "0F – 1",
         PairingResult.DoubleForfeit    => "0F – 0F",
         PairingResult.Draw             => "½ – ½",
+        _ => string.Empty,
+    };
+
+    private static string FormatWhiteScore(PairingResult result) => result switch
+    {
+        PairingResult.WhiteWins        => "1",
+        PairingResult.BlackWins        => "0",
+        PairingResult.WhiteWinsForfeit => "1",
+        PairingResult.BlackWinsForfeit => "0F",
+        PairingResult.DoubleForfeit    => "0F",
+        PairingResult.Draw             => "½",
+        _ => string.Empty,
+    };
+
+    private static string FormatBlackScore(PairingResult result) => result switch
+    {
+        PairingResult.WhiteWins        => "0",
+        PairingResult.BlackWins        => "1",
+        PairingResult.WhiteWinsForfeit => "0F",
+        PairingResult.BlackWinsForfeit => "1",
+        PairingResult.DoubleForfeit    => "0F",
+        PairingResult.Draw             => "½",
         _ => string.Empty,
     };
 }

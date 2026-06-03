@@ -28,7 +28,7 @@ public sealed class UscfExporter
 
     /// <summary>
     /// Writes all three DBFs into <paramref name="folder"/>, with
-    /// names prefixed by <paramref name="filePrefix"/> so multiple
+    /// names like <c>TDEXPORT_{filePrefix}.DBF</c> so multiple
     /// events' exports can coexist in the same directory. Returns
     /// the absolute paths of the files created.
     /// </summary>
@@ -46,9 +46,9 @@ public sealed class UscfExporter
         Directory.CreateDirectory(folder);
         var opts = options.Normalize();
 
-        var header   = Path.Combine(folder, $"{filePrefix}THEXPORT.DBF");
-        var sections = Path.Combine(folder, $"{filePrefix}TSEXPORT.DBF");
-        var details  = Path.Combine(folder, $"{filePrefix}TDEXPORT.DBF");
+        var header   = Path.Combine(folder, $"THEXPORT_{filePrefix}.DBF");
+        var sections = Path.Combine(folder, $"TSEXPORT_{filePrefix}.DBF");
+        var details  = Path.Combine(folder, $"TDEXPORT_{filePrefix}.DBF");
 
         // Sections that don't have any players are skipped — same
         // behaviour SwissSys exhibits, and they wouldn't pass USCF

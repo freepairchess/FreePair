@@ -292,7 +292,7 @@ public partial class TournamentViewModel : ViewModelBase
     /// asking the TD which colour the top seed should receive on board 1.
     /// Returns <c>null</c> if the user cancelled.
     /// </summary>
-    public Func<bool, Task<Views.InitialColorResult?>>? PromptInitialColorAsync { get; set; }
+    public Func<string, bool, Task<Views.InitialColorResult?>>? PromptInitialColorAsync { get; set; }
 
     /// <summary>
     /// Callback opened before every "Pair next round" action so the
@@ -981,7 +981,10 @@ public partial class TournamentViewModel : ViewModelBase
 
         var folder = System.IO.Path.GetDirectoryName(CurrentFilePath)
                      ?? System.IO.Directory.GetCurrentDirectory();
-        var prefix = System.IO.Path.GetFileNameWithoutExtension(CurrentFilePath) + "_";
+        // USCF rater expects filenames like TDEXPORT_{EventName}.DBF
+        var eventName = Tournament!.Title ?? System.IO.Path.GetFileNameWithoutExtension(CurrentFilePath) ?? "Event";
+        // Sanitize for filesystem: replace invalid chars with underscore
+        var prefix = string.Concat(eventName.Select(c => System.IO.Path.GetInvalidFileNameChars().Contains(c) ? '_' : c));
 
         try
         {
@@ -2013,7 +2016,7 @@ public partial class TournamentViewModel : ViewModelBase
             var initialColor = InitialColor.White;
             if (sectionSnapshot.Rounds.Count == 0 && PromptInitialColorAsync is not null)
             {
-                var picked = await PromptInitialColorAsync(sectionSnapshot.AvoidSameTeam).ConfigureAwait(true);
+                var picked = await PromptInitialColorAsync(sectionSnapshot.Name, sectionSnapshot.AvoidSameTeam).ConfigureAwait(true);
                 if (picked is null)
                 {
                     // User cancelled the dialog — abort without an error.
