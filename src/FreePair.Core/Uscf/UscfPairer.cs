@@ -470,21 +470,34 @@ public static class UscfPairer
                     if (!TryFindNonRematchMatching(testTop, testBot, testAssign))
                         continue;
 
-                    // Count color conflicts for this matching.
+                    // Count color conflicts for the SLIDE matching this
+                    // matcher returned…
                     var pairs = new List<(TrfPlayer A, TrfPlayer B)>(testHalf);
                     for (var k = 0; k < testHalf; k++)
                         pairs.Add((testTop[k], testAssign[k]));
                     var colorConflicts = CountColorConflictPairs(pairs);
 
-                    // Check if the solution is natural SLIDE.
-                    var isNatural = true;
-                    for (var k = 0; k < testHalf; k++)
+                    // …but the SLIDE isn't necessarily the best-color
+                    // rematch-free matching available after this drop. Ask
+                    // the color reducer for the true minimum so we don't
+                    // wrongly reject a lowest-rated drop just because its
+                    // SLIDE happens to be colour-stacked. (Helli 2026 U700 R3:
+                    // dropping the lowest-rated 2.0 player yields a SLIDE
+                    // with 4 conflicts but a transposed 0-conflict matching
+                    // exists; without this, we'd float a higher-rated
+                    // player whose SLIDE was already clean.)
+                    if (colorConflicts > 0 &&
+                        TryReduceColorConflicts(testPool, pairs, out var reducedPairs))
                     {
-                        if (testAssign[k].PairNumber != testBot[k].PairNumber)
-                        { isNatural = false; break; }
+                        var reducedConflicts = CountColorConflictPairs(reducedPairs);
+                        if (reducedConflicts < colorConflicts)
+                            colorConflicts = reducedConflicts;
                     }
 
-                    if (isNatural && naturalIdx == -1)
+                    // "Natural" drop = lowest-rated rated candidate per the
+                    // ordering above. The first one we hit IS the natural
+                    // drop; record its best achievable conflict count.
+                    if (naturalIdx == -1)
                     {
                         naturalIdx = di;
                         naturalConflicts = colorConflicts;
