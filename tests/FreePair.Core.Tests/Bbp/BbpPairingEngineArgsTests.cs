@@ -57,17 +57,20 @@ public class BbpPairingEngineArgsTests
     [Fact]
     public async Task Mapper_maps_Coin_toss_to_InitialColor()
     {
-        // The sample's Coin toss field is 0 (white) — confirm pass-through.
+        // The sample's Coin toss field is 0 → lower-half gets white →
+        // top-half gets Black in our convention.
         var section = await LoadOpenISectionAsync();
-        Assert.Equal(InitialColor.White, section.InitialColor);
+        Assert.Equal(InitialColor.Black, section.InitialColor);
     }
 
     [Fact]
     public void MapCoinToss_0_is_White_and_1_is_Black()
     {
-        Assert.Equal(InitialColor.White, SwissSysMapper.MapCoinToss(0));
-        Assert.Equal(InitialColor.Black, SwissSysMapper.MapCoinToss(1));
-        // Unknown values fall back to bbpPairings' own default.
-        Assert.Equal(InitialColor.White, SwissSysMapper.MapCoinToss(99));
+        // CoinToss 0 = lower-half gets white = top-half gets Black.
+        Assert.Equal(InitialColor.Black, SwissSysMapper.MapCoinToss(0));
+        // CoinToss 1 = lower-half gets black = top-half gets White.
+        Assert.Equal(InitialColor.White, SwissSysMapper.MapCoinToss(1));
+        // Unknown values fall back to Black (lower-half white).
+        Assert.Equal(InitialColor.Black, SwissSysMapper.MapCoinToss(99));
     }
 }

@@ -195,10 +195,22 @@ public static class UscfPairer
         var pairings = new List<UscfPairing>(half);
         var annotations = new List<PairingAnnotation>();
 
+        // Build top/bottom halves and find a team-safe matching (avoids
+        // pairing teammates in R1, same logic used in later rounds).
+        var top = ordered[..half];
+        var bot = ordered[half..];
+        var assignment = new TrfPlayer[half];
+
+        if (!TryFindNonRematchMatching(top, bot, assignment))
+        {
+            // No constraint-clean matching exists — fall back to natural slide.
+            for (var i = 0; i < half; i++) assignment[i] = bot[i];
+        }
+
         for (var i = 0; i < half; i++)
         {
-            var topSeed = ordered[i];
-            var bottomSeed = ordered[i + half];
+            var topSeed = top[i];
+            var bottomSeed = assignment[i];
 
             // USCF 29E1: in round 1, half of the top seeds receive white
             // and half receive black, alternating from board 1's assigned
@@ -933,8 +945,16 @@ public static class UscfPairer
     private static IEnumerable<int> NaturalOrder(int i, int count)
     {
         if (i >= 0 && i < count) yield return i;
-        for (var j = i + 1; j < count; j++) yield return j;
-        for (var j = i - 1; j >= 0; j--) yield return j;
+        // Alternate outward from position i, trying lower indices first
+        // so that the minimal transposition is preferred (matching USCF/SwissSys
+        // convention of sliding up before sliding down).
+        var lo = i - 1;
+        var hi = i + 1;
+        while (lo >= 0 || hi < count)
+        {
+            if (lo >= 0) yield return lo--;
+            if (hi < count) yield return hi++;
+        }
     }
 
     /// <summary>

@@ -117,8 +117,9 @@ public class UscfSwissSysPairingTests
             trf = trf with { RequestedByes = requestedByesDict };
         }
 
-        // For round 1, use the section's initial colour setting
-        if (round == 1 && section.InitialColor is InitialColor ic)
+        // Use the section's initial colour setting so the engine assigns
+        // colours consistently with what SwissSys recorded.
+        if (section.InitialColor is InitialColor ic)
         {
             trf = trf with { InitialColor = ic == InitialColor.Black ? 'b' : 'w' };
         }
