@@ -174,7 +174,7 @@ public static class SwissSysMapper
             InitialColor: MapCoinToss(raw.CoinToss),
             SoftDeleted: raw.FreePairSoftDeleted ?? false,
             PairingEngine: raw.FreePairPairingEngine,
-            AvoidSameTeam: raw.FreePairAvoidSameTeam ?? false,
+            AvoidSameTeam: raw.FreePairAvoidSameTeam ?? raw.UseTeamPairings ?? false,
             AvoidSameClub: raw.FreePairAvoidSameClub ?? false);
     }
 

@@ -1,0 +1,492 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.79,
+    "VersionString": "11.79.8",
+    "Tournament title": "9th Massachusetts Senior Open",
+    "Tournament time controls": "40/90, SD/30; d10",
+    "Starting date": "4/25/2026",
+    "Ending date": "4/25/2026",
+    "NACH event ID": "f06c02bf-49d6-4c8d-902f-20f3855aba30",
+    "NACH passcode": "c30fdcce-2099-4f75-8d7a-4f7b73965e90",
+    "ChessRoster tournament ID": "cmodflx2k000004jsh8c4ztwz",
+    "ChessRoster last sync": "2026-04-27T13:12:58Z",
+    "ChessRoster client sync time": "2026-04-27T09:12:58",
+    "ChessRoster auto sync enabled": true,
+    "ChessRoster sync interval minutes": 5,
+    "Trace": "1.3.7.1.1.3.7.1.7.4."
+  },
+  "Sections": [
+    {
+      "Section name": "Open",
+      "Type": 0,
+      "Section title": "Open",
+      "Section time control": "40/90, SD/30, d10",
+      "Number of players": 22,
+      "Number of teams": 0,
+      "Rounds paired": 4,
+      "Rounds played": 4,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 3,
+      "Need search options": false,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 14,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Castaneda, Nelson",
+          "ID": "12564228",
+          "Rating": 2249,
+          "Exp1": "06/30/2026",
+          "Club": "CT",
+          "Player title": "FM",
+          "State": "CT",
+          "Phone": "8609777366",
+          "Email": "1958nelsonmil958@gmail.com",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;13;B;1;13;13;0",
+            "=;6;W;1;6;6;0",
+            "+;9;W;2;9;9;0",
+            "+;4;B;1;4;4;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Terrie, Henry L",
+          "ID": "10025265",
+          "Rating": 2204,
+          "Exp1": "00/00/LIFE",
+          "Club": "NH",
+          "State": "NH",
+          "Phone": "6038582728",
+          "Email": "halterrie@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;14;W;2;14;14;0",
+            "+;8;B;2;8;8;0",
+            "-;4;W;1;4;4;0",
+            "+;6;W;2;6;6;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Barnakov, Yury Anatolievich",
+          "ID": "12964843",
+          "Rating": 2158,
+          "Exp1": "08/31/2026",
+          "Club": "MA",
+          "State": "MA",
+          "Phone": "7573520105",
+          "Email": "ybarnakov66@gmail.com",
+          "Reserved byes": "4z ",
+          "Current result": "0",
+          "Results": [
+            "-;15;B;3;15;15;0",
+            "+;16;W;8;16;16;0",
+            "-;12;B;5;12;12;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Farfel, Vlad",
+          "ID": "13713073",
+          "Rating": 2087,
+          "Provisional": true,
+          "Exp1": "09/30/2026",
+          "Club": "MA",
+          "State": "MA",
+          "Phone": "7816032097",
+          "Email": "vfarfel@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "+;16;W;4;16;16;0",
+            "+;11;B;3;11;11;0",
+            "+;2;B;1;2;2;0",
+            "-;1;W;1;1;1;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Carey, Michael P",
+          "ID": "10120560",
+          "Rating": 2070,
+          "Exp1": "00/00/LIFE",
+          "Club": "RI",
+          "State": "RI",
+          "Phone": "3152437120",
+          "Email": "mike.carey@me.com",
+          "Current result": "1",
+          "Results": [
+            "=;17;B;5;17;17;0",
+            "+;22;W;4;22;22;0",
+            "=;10;W;3;10;10;0",
+            "+;12;B;3;12;12;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "Sage, J Timothy",
+          "ID": "10146712",
+          "Rating": 2066,
+          "Exp1": "00/00/LIFE",
+          "Club": "MA",
+          "State": "MA",
+          "Phone": "8575264847",
+          "Email": "jtsage@neu.edu",
+          "Current result": "0",
+          "Results": [
+            "+;18;W;6;18;18;0",
+            "=;1;B;1;1;1;0",
+            "+;15;W;4;15;15;0",
+            "-;2;B;2;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Russell, Hanon",
+          "ID": "10036917",
+          "Rating": 2054,
+          "Exp1": "00/00/LIFE",
+          "Club": "NH",
+          "State": "NH",
+          "Phone": "12037107663",
+          "Email": "hanon.russell@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "=;19;B;7;19;19;0",
+            "=;12;W;5;12;12;0",
+            "-;13;B;6;13;13;0",
+            "+;18;W;8;18;18;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Vaughan, John P",
+          "ID": "12481292",
+          "Rating": 2013,
+          "Exp1": "00/00/LIFE",
+          "Club": "MA",
+          "State": "MA",
+          "Phone": "7812727829",
+          "Email": "johnphilv@aol.com",
+          "Current result": "0",
+          "Results": [
+            "+;20;W;8;20;20;0",
+            "-;2;W;2;2;2;0",
+            "=;22;B;7;20;22;0",
+            "-;15;B;5;13;13;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "Secino, Robert T",
+          "ID": "10005434",
+          "Rating": 1990,
+          "Exp1": "00/00/LIFE",
+          "Club": "MA",
+          "State": "MA",
+          "Phone": "5088688957",
+          "Email": "rsecino@gmail.com",
+          "Reserved byes": "1 ",
+          "Current result": "1",
+          "Results": [
+            "H;-1;-;0;-1;-1;0",
+            "+;17;W;6;17;17;0",
+            "-;1;B;2;1;1;0",
+            "+;13;W;4;17;20;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Pearson, Frederick Kemp",
+          "ID": "12223060",
+          "Rating": 1937,
+          "Exp1": "09/30/2026",
+          "Club": "MA",
+          "State": "MA",
+          "Phone": "5089078065",
+          "Email": "pearson.fred@verizon.net",
+          "Reserved byes": "1 4z ",
+          "Current result": "0",
+          "Results": [
+            "H;-1;-;0;-1;-1;0",
+            "+;19;W;7;19;19;0",
+            "=;5;B;3;5;5;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "Shea, Christopher E",
+          "ID": "12489615",
+          "Rating": 1916,
+          "Exp1": "06/30/2026",
+          "Club": "MA",
+          "State": "MA",
+          "Phone": "3512361449",
+          "Email": "20cs23@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;21;B;9;21;21;0",
+            "-;4;W;3;4;4;0",
+            "=;20;B;8;22;20;0",
+            "+;22;W;6;20;17;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "Ross, Alonzo H",
+          "ID": "10481376",
+          "Rating": 1900,
+          "Exp1": "00/00/LIFE",
+          "Club": "MA",
+          "State": "MA",
+          "Phone": "5088421452",
+          "Email": "alonzoross1@mac.com",
+          "Reserved byes": "1 ",
+          "Current result": "0",
+          "Results": [
+            "H;-1;-;0;-1;-1;0",
+            "=;7;B;5;7;7;0",
+            "+;3;W;5;3;3;0",
+            "-;5;W;3;5;5;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "Carnevale, Christopher",
+          "ID": "12608782",
+          "Rating": 1898,
+          "Exp1": "05/31/2026",
+          "Club": "MA",
+          "State": "MA",
+          "Phone": "9785902560",
+          "Email": "chriscarnevale16@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "-;1;W;1;1;1;0",
+            "+;18;B;9;18;18;0",
+            "+;7;W;6;7;7;0",
+            "-;9;B;4;8;8;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "Commisso, Michael",
+          "ID": "12525099",
+          "Rating": 1874,
+          "Exp1": "00/00/LIFE",
+          "Club": "NH",
+          "State": "NH",
+          "Phone": "6035339992",
+          "Email": "mike.commisso17@gmail.com",
+          "Reserved byes": "4z ",
+          "Current result": "0",
+          "Results": [
+            "-;2;B;2;2;2;0",
+            "-;20;W;10;20;20;0",
+            "-;16;B;10;16;16;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "Malinin, Sergey",
+          "ID": "30302734",
+          "Rating": 1871,
+          "Exp1": "10/31/2027",
+          "Club": "MA",
+          "State": "MA",
+          "Phone": "6177507161",
+          "Email": "bella.malinin@gmail.com",
+          "Reserved byes": "2 ",
+          "Current result": "1",
+          "Results": [
+            "+;3;W;3;3;3;0",
+            "H;-1;-;0;-1;-1;0",
+            "-;6;B;4;6;6;0",
+            "+;8;W;5;22;22;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "Dame, Erin",
+          "ID": "12533685",
+          "Rating": 1871,
+          "Exp1": "00/00/LIFE",
+          "Club": "NH",
+          "State": "NH",
+          "Phone": "0000000000",
+          "Email": "zenpawn@gmail.com",
+          "Reserved byes": "4 ",
+          "Current result": "½",
+          "Results": [
+            "-;4;B;4;4;4;0",
+            "-;3;B;8;3;3;0",
+            "+;14;W;10;14;14;0",
+            "H;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "Zhaurov, Yuriy",
+          "ID": "14256202",
+          "Rating": 1852,
+          "Exp1": "09/30/2026",
+          "Club": "MA",
+          "State": "MA",
+          "Phone": "6179211167",
+          "Email": "yzhaurov@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "=;5;W;5;5;5;0",
+            "-;9;B;6;9;9;0",
+            "+;19;W;9;19;19;0",
+            "+;20;B;7;9;11;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "Gradijan, Stephen",
+          "ID": "12454998",
+          "Rating": 1821,
+          "Exp1": "04/30/2027",
+          "Club": "MA",
+          "State": "MA",
+          "Phone": "5088616799",
+          "Email": "sgradijan@msn.com",
+          "Current result": "0",
+          "Results": [
+            "-;6;B;6;6;6;0",
+            "-;13;W;9;13;13;0",
+            "B;-1;-;0;-1;-1;0",
+            "-;7;B;8;7;7;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "Brassard, Gary",
+          "ID": "11156665",
+          "Rating": 1797,
+          "Rating2": 1700,
+          "Exp1": "2027-01-31",
+          "State": "MA",
+          "Current result": "1",
+          "Results": [
+            "=;7;W;7;7;7;0",
+            "-;10;B;7;10;10;0",
+            "-;17;B;9;17;17;0",
+            "B;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "Urbonas, Michael",
+          "ID": "11015328",
+          "Rating": 1794,
+          "Exp1": "03/31/2028",
+          "Club": "MA",
+          "State": "MA",
+          "Phone": "6174544550",
+          "Email": "mike@urbonas.com",
+          "Current result": "0",
+          "Results": [
+            "-;8;B;8;8;8;0",
+            "+;14;B;10;14;14;0",
+            "=;11;W;8;8;11;0",
+            "-;17;W;7;11;9;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "Smith, Stephen E",
+          "ID": "12451370",
+          "Rating": 1778,
+          "Exp1": "10/31/2026",
+          "Club": "MA",
+          "State": "MA",
+          "Phone": "7742792378",
+          "Email": "stephen.edward.smith@gmail.com",
+          "Reserved byes": "3z 4z ",
+          "Current result": "0",
+          "Results": [
+            "-;11;W;9;11;11;0",
+            "B;-1;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0",
+            "U;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 22,
+          "Name": "Tsakiris, Todd",
+          "ID": "12523634",
+          "Rating": 1772,
+          "Exp1": "06/30/2026",
+          "Club": "MA",
+          "State": "MA",
+          "Phone": "9782575063",
+          "Email": "todd.tsakiris@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "B;-1;-;0;-1;-1;0",
+            "-;5;B;4;5;5;0",
+            "=;8;W;7;11;8;0",
+            "-;11;B;6;15;15;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+          {
+            "Value": 250,
+            "Description": ""
+          },
+          {
+            "Value": 125,
+            "Description": ""
+          }
+        ],
+        "Class prizes": [
+          {
+            "Top": 2210,
+            "Bottom": 0,
+            "Name": "U2210",
+            "Details": [
+              {
+                "Value": 100,
+                "Description": "",
+                "Priority": 0
+              }
+            ]
+          },
+          {
+            "Top": 2010,
+            "Bottom": 0,
+            "Name": "U2010",
+            "Details": [
+              {
+                "Value": 100,
+                "Description": "",
+                "Priority": 0
+              }
+            ]
+          }
+        ]
+      },
+      "Ladder": {
+      }
+    }
+  ]
+}

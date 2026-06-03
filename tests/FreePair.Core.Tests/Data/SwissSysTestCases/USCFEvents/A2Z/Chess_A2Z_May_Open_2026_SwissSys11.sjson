@@ -1,0 +1,2013 @@
+{
+  "Overview": {
+    "Program": "SwissSys",
+    "Version": 11.79,
+    "VersionString": "11.79.8",
+    "Tournament title": "Chess A2Z May Open 2026",
+    "Tournament time controls": "G/45;d5",
+    "Starting date": "2026-05-16",
+    "Ending date": "2026-05-16",
+    "NACH event ID": "0a9e8aa0-88e3-48fd-9fdf-2bff8850a7b9",
+    "NACH passcode": "fb4177b5-c7e3-4095-8a49-dd83f3317825",
+    "ChessRoster auto sync enabled": true,
+    "ChessRoster sync interval minutes": 30,
+    "Trace": "1.3.7.1.3.7.1.3.7.1."
+  },
+  "Sections": [
+    {
+      "Section name": "Open I",
+      "Type": 0,
+      "Section title": "Open",
+      "Section time control": "G/45;d5",
+      "Number of players": 24,
+      "Number of teams": 2,
+      "Rounds paired": 3,
+      "Rounds played": 3,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 2,
+      "Need search options": false,
+      "Lower rating limit": 815,
+      "Final round": 3,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 14,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Maokhampio, Lucas",
+          "ID": "31368597",
+          "Rating": 1968,
+          "Club": "OR",
+          "Team": "Maokhampio",
+          "State": "OR",
+          "Phone": "8189354408",
+          "Email": "lucas.maokhampio@gmail.com",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;13;B;1;13;13;0",
+            "+;8;W;1;8;8;0",
+            "+;4;B;1;4;4;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Arunkumar, Pragit",
+          "ID": "30562931",
+          "Rating": 1732,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "6127355886",
+          "Email": "arun6040@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "-;14;W;2;14;14;0",
+            "+;18;B;7;18;18;0",
+            "-;9;W;4;9;9;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Shukla, Weg",
+          "ID": "30853222",
+          "Rating": 1725,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "2094700334",
+          "Email": "urja.narayan@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;15;B;3;15;15;0",
+            "+;10;W;2;9;9;0",
+            "+;6;B;2;6;6;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Arun, Axl",
+          "ID": "31884150",
+          "Rating": 1629,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "2073471471",
+          "Email": "arunrajpr@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "+;16;W;4;16;16;0",
+            "+;9;B;3;10;10;0",
+            "-;1;W;1;1;1;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Kesavan, Vihaan",
+          "ID": "31471845",
+          "Rating": 1607,
+          "Club": "OR",
+          "Team": "Kesavan",
+          "State": "OR",
+          "Phone": "6142187677",
+          "Email": "vshome2013@gmail.com",
+          "Reserved byes": "3 ",
+          "Current result": "½",
+          "Results": [
+            "+;17;B;5;17;17;0",
+            "=;12;W;4;12;12;0",
+            "H;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "Cheng, Tyler",
+          "ID": "32037910",
+          "Rating": 1571,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "3473023470",
+          "Email": "markwcheng@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "+;18;W;6;18;18;0",
+            "+;14;B;5;14;14;0",
+            "-;3;W;2;3;3;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Mallapu, Mokshith Kumar",
+          "ID": "32069722",
+          "Rating": 1542,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "9714199376",
+          "Email": "mokshith.nlr@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "+;19;B;7;19;19;0",
+            "-;23;W;6;23;23;0",
+            "=;10;B;5;10;10;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Rahul, Rihaan",
+          "ID": "31619668",
+          "Rating": 1537,
+          "Club": "OR",
+          "Team": "RAHUL",
+          "State": "OR",
+          "Phone": "9718952908",
+          "Email": "Rahulkishor013@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;20;W;8;20;20;0",
+            "-;1;B;1;1;1;0",
+            "+;14;W;6;14;14;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "Randall, Dylan",
+          "ID": "31475872",
+          "Rating": 1474,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5032600214",
+          "Email": "shanna.randall@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;21;B;9;21;21;0",
+            "-;4;W;3;3;3;0",
+            "+;2;B;4;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Tare, Eevie",
+          "ID": "31610593",
+          "Rating": 1462,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "4438520930",
+          "Email": "taresam12@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "+;22;W;10;22;22;0",
+            "-;3;B;2;4;4;0",
+            "=;7;W;5;7;7;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "Kesavan, Suhaan",
+          "ID": "31471881",
+          "Rating": 1393,
+          "Club": "OR",
+          "Team": "KESAVAN",
+          "State": "OR",
+          "Phone": "6142187677",
+          "Email": "sowmya129@gmail.com",
+          "Reserved byes": "3 ",
+          "Current result": "½",
+          "Results": [
+            "-;23;B;11;23;23;0",
+            "+;19;W;8;19;19;0",
+            "H;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "Maokhampio, Olivia",
+          "ID": "31368540",
+          "Rating": 1338,
+          "Club": "OR",
+          "Team": "Maokhampio",
+          "State": "OR",
+          "Phone": "8189354408",
+          "Email": "oliviamaokhampio@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;24;W;12;24;24;0",
+            "=;5;B;4;5;5;0",
+            "+;23;B;3;23;23;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "Ranjit, Nimay",
+          "ID": "30292365",
+          "Rating": 1312,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "9176672412",
+          "Email": "venugopal.ranjit@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "-;1;W;1;1;1;0",
+            "=;20;B;9;20;20;0",
+            "=;24;W;7;24;24;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "Adzhigirey, Philip",
+          "ID": "31806658",
+          "Rating": 1256,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5038533555",
+          "Email": "iadzhigirey@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "+;2;B;2;2;2;0",
+            "-;6;W;5;6;6;0",
+            "-;8;B;6;8;8;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "James, Basil",
+          "ID": "30982659",
+          "Rating": 1250,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "4125768649",
+          "Email": "u.basiljames@gmail.com",
+          "Reserved byes": "3 ",
+          "Current result": "½",
+          "Results": [
+            "-;3;W;3;3;3;0",
+            "+;22;B;10;21;21;0",
+            "H;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "Dian, Shashin",
+          "ID": "32175890",
+          "Rating": 1243,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5738236428",
+          "Email": "dineshprt@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "-;4;B;4;4;4;0",
+            "=;21;W;11;22;22;0",
+            "-;20;B;8;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "Paul, Riana",
+          "ID": "31701754",
+          "Rating": 1230,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "3234434782",
+          "Email": "ayanendp@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "-;5;W;5;5;5;0",
+            "-;24;B;12;24;24;0",
+            "-;21;B;9;21;21;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "PDhar, Aarna M",
+          "ID": "30614574",
+          "Rating": 1230,
+          "Club": "OR",
+          "Team": "Dhar",
+          "State": "OR",
+          "Phone": "9712545710",
+          "Email": "pka62.mad@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "-;6;B;6;6;6;0",
+            "-;2;W;7;2;2;0",
+            "+;19;B;10;19;19;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "Yenduri, Daivik",
+          "ID": "32517889",
+          "Rating": 1226,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "9715051734",
+          "Email": "daivikyenduri@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "-;7;W;7;7;7;0",
+            "-;11;B;8;11;11;0",
+            "-;18;W;10;18;18;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "Balasubramanian, Prakrithi",
+          "ID": "31649217",
+          "Rating": 1217,
+          "Club": "OR",
+          "Team": "Bala",
+          "State": "OR",
+          "Phone": "5036622527",
+          "Email": "hiprabala@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "-;8;B;8;8;8;0",
+            "=;13;W;9;13;13;0",
+            "+;16;W;8;16;16;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "Peddireddy, Bbhuvan K",
+          "ID": "31188143",
+          "Rating": 1205,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "6129917621",
+          "Email": "rpeddireddi@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "-;9;W;9;9;9;0",
+            "=;16;B;11;15;15;0",
+            "+;17;W;9;17;17;0"
+          ]
+        },
+        {
+          "Pair number": 22,
+          "Name": "Khan, Beatrix",
+          "ID": "30507316",
+          "Rating": 1182,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5412211577",
+          "Email": "mschiq@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "-;10;B;10;10;10;0",
+            "-;15;W;10;16;16;0",
+            "B;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 23,
+          "Name": "Balasubramanian, Pranav",
+          "ID": "31685074",
+          "Rating": 1163,
+          "Club": "OR",
+          "Team": "Bala",
+          "State": "OR",
+          "Phone": "5036622527",
+          "Email": "prabalajis@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "+;11;W;11;11;11;0",
+            "+;7;B;6;7;7;0",
+            "-;12;W;3;12;12;0"
+          ]
+        },
+        {
+          "Pair number": 24,
+          "Name": "Rahul, Vihaan",
+          "ID": "32163892",
+          "Rating": 1152,
+          "Club": "OR",
+          "Team": "RAHUL",
+          "State": "OR",
+          "Phone": "9718952908",
+          "Email": "vihaanrahul001@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "-;12;B;12;12;12;0",
+            "+;17;W;12;17;17;0",
+            "=;13;B;7;13;13;0"
+          ]
+        }
+      ],
+      "Teams": [
+        {
+          "Pair number": 1,
+          "Full name": "RAHUL",
+          "Team code": "RAHUL",
+          "Rating": 0,
+          "Current result": " ",
+          "Results": [
+            "~;0;-;0;0;0;0",
+            "~;0;-;0;0;0;0",
+            "~;0;-;0;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Full name": "Kesavan",
+          "Team code": "KESAVAN",
+          "Rating": 0,
+          "Current result": " ",
+          "Results": [
+            "U;0;-;0;0;0;0",
+            "U;0;-;0;0;0;0",
+            "\u0000;0;-;0;0;0;0"
+          ]
+        }
+      ],
+      "Prizes": {
+        "Place prizes": [
+          {
+            "Value": 50,
+            "Description": ""
+          },
+          {
+            "Value": 30,
+            "Description": ""
+          },
+          {
+            "Value": 20,
+            "Description": ""
+          }
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "Open II",
+      "Type": 0,
+      "Section title": "Open II",
+      "Section time control": "G/45;d5",
+      "Number of players": 24,
+      "Number of teams": 2,
+      "Rounds paired": 3,
+      "Rounds played": 3,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 0,
+      "Need search options": false,
+      "First board": 13,
+      "Lower rating limit": 815,
+      "Final round": 3,
+      "Coin toss": 1,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 12,
+      "Team pair table items": 0,
+      "Use team pairings": true,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Dhar, Kavish",
+          "ID": "30569498",
+          "Rating": 1149,
+          "Club": "OR",
+          "Team": "Dhar",
+          "State": "OR",
+          "Phone": "9712545710",
+          "Email": "pka62.mad@gmail.com",
+          "Current result": "0",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "+;13;W;13;13;13;0",
+            "-;7;B;13;7;7;0",
+            "-;24;B;16;24;24;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Dasari, Vasishta Sai",
+          "ID": "32072740",
+          "Rating": 1142,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "9712588690",
+          "Email": "bharathkumar.dasari@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;14;B;14;14;14;0",
+            "+;9;W;14;9;9;0",
+            "+;5;B;13;5;5;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Hu, Tim",
+          "ID": "32234172",
+          "Rating": 1125,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5033305464",
+          "Email": "newicharlie@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "+;15;W;15;15;15;0",
+            "=;11;B;15;11;11;0",
+            "=;7;W;14;7;7;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Chien, Evan",
+          "ID": "32013734",
+          "Rating": 1102,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "4698260214",
+          "Email": "evanchienb@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "=;16;B;16;16;16;0",
+            "=;24;W;17;24;24;0",
+            "=;17;B;17;15;15;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Saju, Angel Leann",
+          "ID": "32270837",
+          "Rating": 1095,
+          "Club": "OR",
+          "Team": "Angel and Kester",
+          "State": "OR",
+          "Phone": "9712228630",
+          "Email": "angleasaj@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "+;17;W;17;17;17;0",
+            "+;22;B;16;22;22;0",
+            "-;2;W;13;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "Dokania, Vihaan",
+          "ID": "32443289",
+          "Rating": 1080,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "6073515942",
+          "Email": "vihaandokania7@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "=;18;B;18;18;18;0",
+            "=;16;W;18;16;16;0",
+            "-;20;B;18;16;17;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Jamil, Matisse Aaryan",
+          "ID": "30890124",
+          "Rating": 1068,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5127435910",
+          "Email": "fferdousi1@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "+;19;W;19;19;19;0",
+            "+;1;W;13;1;1;0",
+            "=;3;B;14;3;3;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Le, Alicia",
+          "ID": "31184129",
+          "Rating": 1054,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5032675745",
+          "Email": "anhle1026@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "=;20;B;20;20;20;0",
+            "+;18;W;19;18;18;0",
+            "=;11;W;15;11;11;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "Earl, Marissa",
+          "ID": "32785490",
+          "Rating": 1046,
+          "Phone": "9716452914",
+          "Email": "marissajoyearl@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;21;W;21;21;21;0",
+            "-;2;B;14;2;2;0",
+            "+;15;W;19;17;16;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Saju, Kester Anton",
+          "ID": "32317435",
+          "Rating": 1033,
+          "Club": "OR",
+          "Team": "Angel and Kester",
+          "State": "OR",
+          "Phone": "9712228630",
+          "Email": "kesantsaj@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "-;22;B;22;22;22;0",
+            "=;20;W;20;20;20;0",
+            "=;18;B;22;18;18;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "Murthy, Atharv",
+          "ID": "32501164",
+          "Rating": 1021,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5082028895",
+          "Email": "vaddymurthy@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "+;23;W;23;23;23;0",
+            "=;3;W;15;3;3;0",
+            "=;8;B;15;8;8;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "James, Ryan",
+          "ID": "31878257",
+          "Rating": 1003,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "4144298469",
+          "Email": "leena.peter1@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "-;24;B;24;24;24;0",
+            "-;17;W;21;17;17;0",
+            "-;23;B;23;21;21;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "Das, Rajvi",
+          "ID": "31316627",
+          "Rating": 994,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "4699959010",
+          "Email": "priyamdas.2016@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "-;1;B;13;1;1;0",
+            "+;19;W;22;19;19;0",
+            "=;16;B;20;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "Sureshkumar, Subram",
+          "ID": "32584703",
+          "Rating": 989,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "4133139655",
+          "Email": "sunarts.r@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "-;2;W;14;2;2;0",
+            "+;21;B;23;21;21;0",
+            "-;22;W;21;22;22;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "Kadali, Amartya Benegal",
+          "ID": "31711477",
+          "Rating": 976,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5032098252",
+          "Email": "shyam.benegal@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "-;3;B;15;3;3;0",
+            "+;23;W;24;23;23;0",
+            "-;9;B;19;4;4;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "Pingale, Sharanya",
+          "ID": "31180471",
+          "Rating": 963,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "3317011828",
+          "Email": "priyanka.korade@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "=;4;W;16;4;4;0",
+            "=;6;B;18;6;6;0",
+            "=;13;W;20;6;9;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "Chandramohan, Dhivyan",
+          "ID": "32621303",
+          "Rating": 954,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "9714442475",
+          "Email": "dhivyan.chandramohan@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "-;5;B;17;5;5;0",
+            "+;12;B;21;12;12;0",
+            "=;4;W;17;9;6;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "Salvi, Ekansh",
+          "ID": "31907972",
+          "Rating": 953,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "3148985771",
+          "Email": "srutigupta@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "=;6;W;18;6;6;0",
+            "-;8;B;19;8;8;0",
+            "=;10;W;22;10;10;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "Maokhampio, Corina",
+          "ID": "31368613",
+          "Rating": 947,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "8189354408",
+          "Email": "corinamaokhampio@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "-;7;B;19;7;7;0",
+            "-;13;B;22;13;13;0",
+            "-;21;W;24;23;23;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "Bogle, Jack",
+          "ID": "31536887",
+          "Rating": 936,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5038015114",
+          "Email": "anya0708@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "=;8;W;20;8;8;0",
+            "=;10;B;20;10;10;0",
+            "+;6;W;18;13;13;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "Alok, Aditya",
+          "ID": "31621099",
+          "Rating": 910,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5033146311",
+          "Email": "deoraj.alok@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "-;9;B;21;9;9;0",
+            "-;14;W;23;14;14;0",
+            "+;19;B;24;12;12;0"
+          ]
+        },
+        {
+          "Pair number": 22,
+          "Name": "Johnson, Daxton",
+          "ID": "31665698",
+          "Rating": 863,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5037244235",
+          "Email": "jwags51@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;10;W;22;10;10;0",
+            "-;5;W;16;5;5;0",
+            "+;14;B;21;14;14;0"
+          ]
+        },
+        {
+          "Pair number": 23,
+          "Name": "Astekar, Nikhil",
+          "ID": "31882354",
+          "Rating": 834,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5038049467",
+          "Email": "chhayakhannukar@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "-;11;B;23;11;11;0",
+            "-;15;B;24;15;15;0",
+            "+;12;W;23;19;19;0"
+          ]
+        },
+        {
+          "Pair number": 24,
+          "Name": "Ramesh, Abhiram",
+          "ID": "32197328",
+          "Rating": 815,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5037083125",
+          "Email": "aparnab82@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;12;W;24;12;12;0",
+            "=;4;B;17;4;4;0",
+            "+;1;W;16;1;1;0"
+          ]
+        }
+      ],
+      "Teams": [
+        {
+          "Pair number": 1,
+          "Full name": "Dhar",
+          "Team code": "DHAR",
+          "Rating": 0,
+          "Current result": " ",
+          "Results": [
+            "~;0;-;0;0;0;0",
+            "~;0;-;0;0;0;0",
+            "~;0;-;0;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Full name": "Angel and Kester",
+          "Team code": "ANGEL AND KESTER",
+          "Rating": 0,
+          "Current result": " ",
+          "Results": [
+            "~;0;-;0;0;0;0",
+            "~;0;-;0;0;0;0",
+            "~;0;-;0;0;0;0"
+          ]
+        }
+      ],
+      "Prizes": {
+        "Place prizes": [
+          {
+            "Value": 50,
+            "Description": ""
+          },
+          {
+            "Value": 30,
+            "Description": ""
+          },
+          {
+            "Value": 20,
+            "Description": ""
+          }
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "Under_1000",
+      "Type": 0,
+      "Section title": "Under 1000",
+      "Section time control": "G/25;+5",
+      "Number of players": 28,
+      "Number of teams": 2,
+      "Rounds paired": 4,
+      "Rounds played": 4,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 3,
+      "Need search options": false,
+      "First board": 25,
+      "Upper rating limit": 999,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 14,
+      "Team pair table items": 0,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Mishra, Sniksha",
+          "ID": "32063135",
+          "Rating": 969,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5038209360",
+          "Email": "nikkimishra88@gmail.com",
+          "Current result": "1",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "=;14;B;25;14;14;0",
+            "+;17;W;30;17;17;0",
+            "+;13;B;27;13;13;0",
+            "+;25;W;26;25;25;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Xie, Vincent",
+          "ID": "31210338",
+          "Rating": 964,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "9719983781",
+          "Email": "huaiyu@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "+;15;W;26;15;15;0",
+            "+;16;B;25;16;16;0",
+            "+;11;W;25;11;11;0",
+            "=;20;B;25;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Burra, Surya Manidhar",
+          "ID": "32363747",
+          "Rating": 957,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "8157645030",
+          "Email": "maruthidevi@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "-;16;B;27;16;16;0",
+            "+;15;W;34;15;15;0",
+            "+;10;B;30;10;10;0",
+            "=;8;W;27;8;8;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Puligundla, Viraaj Sai",
+          "ID": "32059114",
+          "Rating": 913,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "9717775404",
+          "Email": "nnbvonline2020@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "+;18;W;28;17;18;0",
+            "+;19;B;26;19;19;0",
+            "-;20;W;26;20;20;0",
+            "-;11;B;28;11;11;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Hao, Tristan",
+          "ID": "31871866",
+          "Rating": 898,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "8056377055",
+          "Email": "cristinamzhang@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "=;17;B;29;18;17;0",
+            "+;28;W;31;23;23;0",
+            "=;24;B;28;24;24;0",
+            "=;16;W;29;16;16;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "Smith, Emilia",
+          "ID": "31563000",
+          "Rating": 873,
+          "Club": "OR",
+          "Team": "SMITH",
+          "State": "OR",
+          "Phone": "5417401844",
+          "Email": "craig_r_smith@hotmail.com",
+          "Current result": "1",
+          "Results": [
+            "-;19;W;30;19;19;0",
+            "+;18;B;35;18;18;0",
+            "-;16;W;31;16;16;0",
+            "+;28;W;33;28;28;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Javali, Suhas",
+          "ID": "32187099",
+          "Rating": 865,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5032105599",
+          "Email": "savitha.jayappak@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "-;20;B;31;20;20;0",
+            "+;21;W;36;21;21;0",
+            "+;22;B;32;19;19;0",
+            "=;24;W;30;24;24;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Adzhigirey, Michael",
+          "ID": "32230664",
+          "Rating": 849,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5038533555",
+          "Email": "michaeladzhigirey@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "+;21;W;32;21;21;0",
+            "-;20;B;27;20;20;0",
+            "+;19;W;33;22;22;0",
+            "=;3;B;27;3;3;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "Tare, Reya",
+          "ID": "31993103",
+          "Rating": 846,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "4438520930",
+          "Email": "indorichess@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "-;22;B;33;22;22;0",
+            "-;26;W;37;26;26;0",
+            "-;28;B;36;28;28;0",
+            "+;21;W;38;21;21;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Gordon, Elise Petra",
+          "ID": "31872029",
+          "Rating": 839,
+          "Club": "WA",
+          "State": "WA",
+          "Phone": "3602138399",
+          "Email": "capsuna1@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "-;24;W;34;24;24;0",
+            "+;27;B;38;27;27;0",
+            "-;3;W;30;3;3;0",
+            "-;19;B;34;19;19;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "Zalavadiya, Om",
+          "ID": "32063877",
+          "Rating": 832,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "7149266493",
+          "Email": "dilip.zalavadiya@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;26;B;35;26;26;0",
+            "+;22;W;28;22;22;0",
+            "-;2;B;25;2;2;0",
+            "+;4;W;28;4;4;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "Burbank, Isaiah",
+          "ID": "31469754",
+          "Rating": 828,
+          "Club": "OR",
+          "Team": "Sherman County",
+          "State": "OR",
+          "Phone": "5417057442",
+          "Email": "kstuart@sherman.k12.or.us",
+          "Current result": "0",
+          "Results": [
+            "+;27;W;36;27;27;0",
+            "=;24;B;29;24;24;0",
+            "-;25;W;29;25;25;0",
+            "-;14;B;31;14;14;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "Bhendigeri, Syon",
+          "ID": "31816034",
+          "Rating": 790,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "3175259758",
+          "Email": "swethapraj@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "=;28;B;37;28;28;0",
+            "+;23;W;32;25;25;0",
+            "-;1;W;27;1;1;0",
+            "-;17;B;32;17;17;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "Yadav, Gautam",
+          "ID": "32067436",
+          "Rating": 772,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "4848093896",
+          "Email": "manishay1985@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "=;1;W;25;1;1;0",
+            "-;25;B;33;28;28;0",
+            "+;26;B;34;26;26;0",
+            "+;12;W;31;12;12;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "Stine, Crow Dmitry",
+          "ID": "33006428",
+          "Rating": 765,
+          "Exp1": "03/31/2027",
+          "State": "OR",
+          "Current result": "1",
+          "Results": [
+            "-;2;B;26;2;2;0",
+            "-;3;B;34;3;3;0",
+            "=;27;W;37;21;21;0",
+            "+;26;W;36;26;26;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "Freitas Zanoni, Raul",
+          "ID": "32545486",
+          "Rating": 760,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "9713306299",
+          "Email": "przanoni@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "+;3;W;27;3;3;0",
+            "-;2;W;25;2;2;0",
+            "+;6;B;31;6;6;0",
+            "=;5;B;29;5;5;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "Puligundla, Bhoomi",
+          "ID": "32059092",
+          "Rating": 757,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "9717775404",
+          "Email": "naveen385@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "=;5;W;29;4;5;0",
+            "-;1;B;30;1;1;0",
+            "+;23;B;35;23;23;0",
+            "+;13;W;32;13;13;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "Orendorff, Stephen",
+          "ID": "31436802",
+          "Rating": 753,
+          "Club": "OR",
+          "Team": "Sherman County",
+          "State": "OR",
+          "Phone": "5417057447",
+          "Email": "kstuart@sherman.k12.or.us",
+          "Current result": "0",
+          "Results": [
+            "-;4;B;28;5;4;0",
+            "-;6;W;35;6;6;0",
+            "+;21;B;38;27;27;0",
+            "-;22;W;35;22;22;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "Madina, Srithan Krishna Dev",
+          "ID": "32225820",
+          "Rating": 746,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "9713176838",
+          "Email": "sandeep.dev.22@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;6;B;30;6;6;0",
+            "-;4;W;26;4;4;0",
+            "-;8;B;33;7;7;0",
+            "+;10;W;34;10;10;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "Burbank, Olivia",
+          "ID": "31613734",
+          "Rating": 733,
+          "Club": "OR",
+          "Team": "Sherman County",
+          "State": "OR",
+          "Phone": "5417057436",
+          "Email": "kstuart@sherman.k12.or.us",
+          "Current result": "½",
+          "Results": [
+            "+;7;W;31;7;7;0",
+            "+;8;W;27;8;8;0",
+            "+;4;B;26;4;4;0",
+            "=;2;W;25;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "To, Andrew",
+          "ID": "31184066",
+          "Rating": 693,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "9093317486",
+          "Email": "bluesc13@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "-;8;B;32;8;8;0",
+            "-;7;B;36;7;7;0",
+            "-;18;W;38;15;15;0",
+            "-;9;B;38;9;9;0"
+          ]
+        },
+        {
+          "Pair number": 22,
+          "Name": "Smith, Isabel",
+          "ID": "31563013",
+          "Rating": 687,
+          "Club": "OR",
+          "Team": "SMITH",
+          "State": "OR",
+          "Phone": "5417401844",
+          "Email": "craig_r_smith@hotmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;9;W;33;9;9;0",
+            "-;11;B;28;11;11;0",
+            "-;7;W;32;8;8;0",
+            "+;18;B;35;18;18;0"
+          ]
+        },
+        {
+          "Pair number": 23,
+          "Name": "Tumati, Nishitha",
+          "ID": "32131309",
+          "Rating": 677,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "8185192238",
+          "Email": "ramkimon@gmail.com",
+          "Reserved byes": "1 ",
+          "Current result": "1",
+          "Results": [
+            "H;-1;-;0;-1;-1;0",
+            "-;13;B;32;5;5;0",
+            "-;17;W;35;17;17;0",
+            "+;27;B;37;27;27;0"
+          ]
+        },
+        {
+          "Pair number": 24,
+          "Name": "Dokania, Ishaan",
+          "ID": "32443261",
+          "Rating": 658,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5032004377",
+          "Email": "ishaandokania1@gmail.com",
+          "Current result": "½",
+          "Results": [
+            "+;10;B;34;10;10;0",
+            "=;12;W;29;12;12;0",
+            "=;5;W;28;5;5;0",
+            "=;7;B;30;7;7;0"
+          ]
+        },
+        {
+          "Pair number": 25,
+          "Name": "Kadali, Aadya Benegal",
+          "ID": "31715178",
+          "Rating": 621,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5032098252",
+          "Email": "shyam.benegal@gmail.com",
+          "Reserved byes": "1 ",
+          "Current result": "0",
+          "Results": [
+            "H;-1;-;0;-1;-1;0",
+            "+;14;W;33;13;13;0",
+            "+;12;B;29;12;12;0",
+            "-;1;B;26;1;1;0"
+          ]
+        },
+        {
+          "Pair number": 26,
+          "Name": "Basil, Neil",
+          "ID": "32368763",
+          "Rating": 612,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "4125768649",
+          "Email": "ubasil.james@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "-;11;W;35;11;11;0",
+            "+;9;B;37;9;9;0",
+            "-;14;W;34;14;14;0",
+            "-;15;B;36;15;15;0"
+          ]
+        },
+        {
+          "Pair number": 27,
+          "Name": "Shekhar, Stavya",
+          "ID": "32810827",
+          "Rating": 548,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5035194159",
+          "Email": "prabhanshushekhar@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "-;12;B;36;12;12;0",
+            "-;10;W;38;10;10;0",
+            "=;15;B;37;18;18;0",
+            "-;23;W;37;23;23;0"
+          ]
+        },
+        {
+          "Pair number": 28,
+          "Name": "Cranston, Kennan James",
+          "ID": "31613564",
+          "Rating": 541,
+          "Club": "OR",
+          "Team": "SHERMAN COUNTY",
+          "State": "OR",
+          "Phone": "5417057433",
+          "Email": "kstuart@sherman.k12.or.us",
+          "Current result": "0",
+          "Results": [
+            "=;13;W;37;13;13;0",
+            "-;5;B;31;14;14;0",
+            "+;9;W;36;9;9;0",
+            "-;6;B;33;6;6;0"
+          ]
+        }
+      ],
+      "Teams": [
+        {
+          "Pair number": 1,
+          "Full name": "Sherman County",
+          "Team code": "SHERMAN COUNTY",
+          "Rating": 0,
+          "Current result": " ",
+          "Results": [
+            "~;0;-;0;0;0;0",
+            "~;0;-;0;0;0;0",
+            "~;0;-;0;0;0;0",
+            "~;0;-;0;0;0;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Full name": "SMITH",
+          "Team code": "SMITH",
+          "Rating": 0,
+          "Current result": " ",
+          "Results": [
+            "~;0;-;0;0;0;0",
+            "~;0;-;0;0;0;0",
+            "~;0;-;0;0;0;0",
+            "~;0;-;0;0;0;0"
+          ]
+        }
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    },
+    {
+      "Section name": "Under_700",
+      "Type": 0,
+      "Section title": "Under 700",
+      "Section time control": "G/25;+5",
+      "Number of players": 28,
+      "Number of teams": 0,
+      "Rounds paired": 4,
+      "Rounds played": 4,
+      "Rating to use": 0,
+      "Engine": 4,
+      "Last unrestricted round": 0,
+      "Need search options": false,
+      "First board": 39,
+      "Upper rating limit": 699,
+      "Final round": 4,
+      "Coin toss": 0,
+      "Team cut": 0,
+      "Acceleration": 0,
+      "Blitz": false,
+      "Got logic": true,
+      "Pair table items": 15,
+      "Team pair table items": 0,
+      "Use team pairings": true,
+      "Players": [
+        {
+          "Pair number": 1,
+          "Name": "Dian, Sharvi",
+          "ID": "32405099",
+          "Rating": 682,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5738236428",
+          "Email": "dineshprt@gmail.com",
+          "Current result": "0",
+          "Note": "Result coding is Result; Op.; Clr; Brd; Logical ops. 1 & 2; Game pnts",
+          "Results": [
+            "-;15;B;39;15;15;0",
+            "+;16;W;48;16;16;0",
+            "=;18;W;43;21;21;0",
+            "-;20;B;45;20;20;0"
+          ]
+        },
+        {
+          "Pair number": 2,
+          "Name": "Zhang, Dennis",
+          "ID": "32035483",
+          "Rating": 648,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "9713265018",
+          "Email": "athenazy2019@gmail.com",
+          "Reserved byes": "1 2 ",
+          "Current result": "1",
+          "Results": [
+            "H;-1;-;0;-1;-1;0",
+            "H;-1;-;0;-1;-1;0",
+            "+;24;W;44;15;15;0",
+            "+;18;B;41;12;12;0"
+          ]
+        },
+        {
+          "Pair number": 3,
+          "Name": "Mody, Jacksen",
+          "ID": "32416745",
+          "Rating": 641,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "4089648313",
+          "Email": "bmody36@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;16;W;40;16;16;0",
+            "+;26;B;39;15;15;0",
+            "+;11;W;39;11;11;0",
+            "+;10;B;39;10;10;0"
+          ]
+        },
+        {
+          "Pair number": 4,
+          "Name": "Bhendigeri, Smayan",
+          "ID": "32196328",
+          "Rating": 636,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "3175259758",
+          "Email": "swethapraj@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "-;17;B;41;17;17;0",
+            "+;23;W;49;23;23;0",
+            "+;15;B;45;24;24;0",
+            "-;12;W;42;14;14;0"
+          ]
+        },
+        {
+          "Pair number": 5,
+          "Name": "Cattone, Jocelyn",
+          "ID": "30460759",
+          "Rating": 619,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5033327771",
+          "Email": "alissa.cattone@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "=;18;W;42;18;18;0",
+            "+;20;B;45;18;20;0",
+            "+;21;W;42;19;19;0",
+            "-;8;B;40;8;8;0"
+          ]
+        },
+        {
+          "Pair number": 6,
+          "Name": "Earl, Micah",
+          "ID": "32272240",
+          "Rating": 607,
+          "Club": "OR",
+          "Team": "Sherman County",
+          "State": "OR",
+          "Phone": "5417057454",
+          "Email": "kstuart@sherman.k12.or.us",
+          "Current result": "1",
+          "Results": [
+            "-;19;B;43;19;19;0",
+            "+;25;W;50;24;24;0",
+            "+;26;B;46;26;26;0",
+            "+;14;W;43;18;18;0"
+          ]
+        },
+        {
+          "Pair number": 7,
+          "Name": "Burnett, Arian",
+          "ID": "32037459",
+          "Rating": 594,
+          "Club": "OR",
+          "Team": "Sherman County",
+          "State": "OR",
+          "Phone": "5417157423",
+          "Email": "kevinestuart@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "=;20;W;44;20;20;0",
+            "-;18;B;44;20;18;0",
+            "+;22;B;49;20;22;0",
+            "+;21;W;46;21;21;0"
+          ]
+        },
+        {
+          "Pair number": 8,
+          "Name": "Ingram, Roper Wade",
+          "ID": "32048445",
+          "Rating": 586,
+          "Club": "OR",
+          "Team": "Sherman County",
+          "State": "OR",
+          "Phone": "5417057444",
+          "Email": "kstuart@sherman.k12.or.us",
+          "Current result": "1",
+          "Results": [
+            "=;21;B;45;21;21;0",
+            "+;22;W;46;21;22;0",
+            "+;19;B;41;18;18;0",
+            "+;5;W;40;5;5;0"
+          ]
+        },
+        {
+          "Pair number": 9,
+          "Name": "Holliday, Colton",
+          "ID": "32036823",
+          "Rating": 584,
+          "Club": "OR",
+          "Team": "Sherman County",
+          "State": "OR",
+          "Phone": "5417057443",
+          "Email": "kstuart@sherman.k12.or.us",
+          "Current result": "0",
+          "Results": [
+            "=;22;W;46;22;22;0",
+            "-;21;B;47;22;21;0",
+            "-;20;W;50;22;20;0",
+            "-;25;B;50;22;25;0"
+          ]
+        },
+        {
+          "Pair number": 10,
+          "Name": "Mannam, Sumanjali",
+          "ID": "32420992",
+          "Rating": 576,
+          "Provisional": true,
+          "Rating2": 290,
+          "Exp1": "05/31/2027",
+          "State": "OR",
+          "Current result": "0",
+          "Results": [
+            "+;23;B;47;23;23;0",
+            "+;15;W;40;17;17;0",
+            "+;17;B;40;17;17;0",
+            "-;3;W;39;3;3;0"
+          ]
+        },
+        {
+          "Pair number": 11,
+          "Name": "Nagamine, Haruto",
+          "ID": "32893451",
+          "Rating": 573,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5625564236",
+          "Email": "tkng1218@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "+;24;W;48;24;24;0",
+            "+;28;B;41;19;19;0",
+            "-;3;B;39;3;3;0",
+            "-;19;W;44;19;19;0"
+          ]
+        },
+        {
+          "Pair number": 12,
+          "Name": "Bapat, Aneesh",
+          "ID": "32789584",
+          "Rating": 571,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5039859307",
+          "Email": "shraddha821@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;25;B;49;25;25;0",
+            "-;17;W;42;26;26;0",
+            "+;27;W;47;27;27;0",
+            "+;4;B;42;2;2;0"
+          ]
+        },
+        {
+          "Pair number": 13,
+          "Name": "Malcolm, Trapper",
+          "ID": "31436792",
+          "Rating": 538,
+          "Club": "OR",
+          "Team": "Sherman County",
+          "State": "OR",
+          "Phone": "5417057441",
+          "Email": "kstuart@sherman.k12.or.us",
+          "Current result": "1",
+          "Results": [
+            "-;26;W;50;26;26;0",
+            "-;24;B;51;25;25;0",
+            "=;25;W;51;23;25;0",
+            "+;22;B;51;25;22;0"
+          ]
+        },
+        {
+          "Pair number": 14,
+          "Name": "Babian, Logan",
+          "ID": "31617042",
+          "Rating": 524,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5037843351",
+          "Email": "jesscastillo.art@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "+;27;B;51;27;27;0",
+            "-;19;W;43;28;28;0",
+            "+;28;W;48;28;28;0",
+            "-;6;B;43;4;4;0"
+          ]
+        },
+        {
+          "Pair number": 15,
+          "Name": "Saha, Nora",
+          "ID": "32198222",
+          "Rating": 517,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "4139927261",
+          "Email": "krish.saha365@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;1;W;39;1;1;0",
+            "-;10;B;40;3;3;0",
+            "-;4;W;45;2;2;0",
+            "+;27;B;47;26;26;0"
+          ]
+        },
+        {
+          "Pair number": 16,
+          "Name": "Nguyen, Janelle",
+          "ID": "31784942",
+          "Rating": 514,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5032539141",
+          "Email": "music.i.love@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "-;3;B;40;3;3;0",
+            "-;1;B;48;1;1;0",
+            "-;23;W;52;25;23;0",
+            "B;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 17,
+          "Name": "Sharma, Vardaan V",
+          "ID": "31999609",
+          "Rating": 513,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "4124780771",
+          "Email": "kalyanivaranasi@gmail.com",
+          "Reserved byes": "4 ",
+          "Current result": "½",
+          "Results": [
+            "+;4;W;41;4;4;0",
+            "+;12;B;42;10;10;0",
+            "-;10;W;40;10;10;0",
+            "H;-1;-;0;-1;-1;0"
+          ]
+        },
+        {
+          "Pair number": 18,
+          "Name": "Vaidyanathan, Ishaan K",
+          "ID": "32071161",
+          "Rating": 487,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5035237650",
+          "Email": "sugibss@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "=;5;B;42;5;5;0",
+            "+;7;W;44;5;7;0",
+            "=;1;B;43;8;8;0",
+            "-;2;W;41;6;6;0"
+          ]
+        },
+        {
+          "Pair number": 19,
+          "Name": "Shah, Saaz",
+          "ID": "31821489",
+          "Rating": 479,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5035446510",
+          "Email": "sachinshah05@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "+;6;W;43;6;6;0",
+            "+;14;B;43;11;11;0",
+            "-;8;W;41;5;5;0",
+            "+;11;B;44;11;11;0"
+          ]
+        },
+        {
+          "Pair number": 20,
+          "Name": "Khandwe, Ansh",
+          "ID": "32557436",
+          "Rating": 478,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "4088392356",
+          "Email": "sonarupasinha@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "=;7;B;44;7;7;0",
+            "-;5;W;45;7;5;0",
+            "+;9;B;50;7;9;0",
+            "+;1;W;45;1;1;0"
+          ]
+        },
+        {
+          "Pair number": 21,
+          "Name": "Singh, Ayaan",
+          "ID": "32111144",
+          "Rating": 465,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "9176988324",
+          "Email": "icour01@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "=;8;W;45;8;8;0",
+            "+;9;W;47;8;9;0",
+            "-;5;B;42;1;1;0",
+            "-;7;B;46;7;7;0"
+          ]
+        },
+        {
+          "Pair number": 22,
+          "Name": "Zalavadiya, Riya",
+          "ID": "32063892",
+          "Rating": 454,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "7144884491",
+          "Email": "dilip.zalavadiya@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "=;9;B;46;9;9;0",
+            "-;8;B;46;9;8;0",
+            "-;7;W;49;9;7;0",
+            "-;13;W;51;9;13;0"
+          ]
+        },
+        {
+          "Pair number": 23,
+          "Name": "Burbank, Sebastian",
+          "ID": "31469738",
+          "Rating": 441,
+          "Club": "OR",
+          "Team": "Sherman County",
+          "State": "OR",
+          "Phone": "5417057451",
+          "Email": "kstuart@sherman.k12.or.us",
+          "Current result": "1",
+          "Results": [
+            "-;10;W;47;10;10;0",
+            "-;4;B;49;4;4;0",
+            "+;16;B;52;13;16;0",
+            "+;26;W;48;27;28;0"
+          ]
+        },
+        {
+          "Pair number": 24,
+          "Name": "Kale, Aarav",
+          "ID": "32367822",
+          "Rating": 433,
+          "Provisional": true,
+          "Rating2": 248,
+          "Exp1": "04/30/2027",
+          "State": "OR",
+          "Current result": "1",
+          "Results": [
+            "-;11;B;48;11;11;0",
+            "+;13;W;51;6;6;0",
+            "-;2;B;44;4;4;0",
+            "+;28;W;49;28;27;0"
+          ]
+        },
+        {
+          "Pair number": 25,
+          "Name": "Bestha, Vinisha",
+          "ID": "31873687",
+          "Rating": 431,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "2036285879",
+          "Email": "kidschess219@gmail.com",
+          "Current result": "1",
+          "Results": [
+            "-;12;W;49;12;12;0",
+            "-;6;B;50;13;13;0",
+            "=;13;B;51;16;13;0",
+            "+;9;W;50;13;9;0"
+          ]
+        },
+        {
+          "Pair number": 26,
+          "Name": "Chilakamarri, Divi",
+          "ID": "32487554",
+          "Rating": 418,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "4083344206",
+          "Email": "apedapudi@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "+;13;B;50;13;13;0",
+            "-;3;W;39;12;12;0",
+            "-;6;W;46;6;6;0",
+            "-;23;B;48;15;15;0"
+          ]
+        },
+        {
+          "Pair number": 27,
+          "Name": "Wells, Drake",
+          "ID": "32563466",
+          "Rating": 405,
+          "Club": "OR",
+          "Team": "Sherman County",
+          "State": "OR",
+          "Phone": "5417057423",
+          "Email": "kevinestuart@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "-;14;W;51;14;14;0",
+            "B;-1;-;0;-1;-1;0",
+            "-;12;B;47;12;12;0",
+            "-;15;W;47;23;24;0"
+          ]
+        },
+        {
+          "Pair number": 28,
+          "Name": "Sinha, Saisha",
+          "ID": "32799725",
+          "Rating": 381,
+          "Club": "OR",
+          "State": "OR",
+          "Phone": "5039155241",
+          "Email": "aapka.mahesh@gmail.com",
+          "Current result": "0",
+          "Results": [
+            "B;-1;-;0;-1;-1;0",
+            "-;11;W;41;14;14;0",
+            "-;14;B;48;14;14;0",
+            "-;24;B;49;24;23;0"
+          ]
+        }
+      ],
+      "Teams": [
+      ],
+      "Prizes": {
+        "Place prizes": [
+        ],
+        "Class prizes": [
+        ]
+      },
+      "Ladder": {
+      }
+    }
+  ]
+}
