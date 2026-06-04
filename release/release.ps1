@@ -109,7 +109,19 @@ $enginePublishDir = Join-Path $repoRoot "release\publish-uscfengine"
 $outputDir  = Join-Path $repoRoot "release\output\$Version"
 $rid        = "win-x64"
 
+# Derive the .NET AssemblyVersion / FileVersion (4-part System.Version, each
+# part 0-65535) from our date-stamped $Version (e.g. "0.4.20260604"). The
+# date-stamped patch part is too big for System.Version, so we collapse it
+# to 0.<minor>.0.0 for the binary-compat AssemblyVersion / FileVersion.
+# The user-facing InformationalVersion keeps the full date-stamped string,
+# which is what UI / "Check now" / file Explorer "Product version" all show.
+$versionParts = $Version -split '\.'
+if ($versionParts.Length -lt 2) { throw "Version must be at least 'major.minor' (got '$Version')." }
+$assemblyVersion = "$($versionParts[0]).$($versionParts[1]).0.0"
+
 Write-Host "==> FreePair release $Version  ($Configuration / $rid)" -ForegroundColor Cyan
+Write-Host "    AssemblyVersion / FileVersion: $assemblyVersion" -ForegroundColor DarkGray
+Write-Host "    InformationalVersion:          $Version" -ForegroundColor DarkGray
 
 # Sanity checks -----------------------------------------------------------
 if (-not (Test-Path $bbpExe))
@@ -181,7 +193,10 @@ dotnet publish $engineProj `
     /p:PublishSingleFile=true `
     /p:PublishReadyToRun=true `
     /p:DebugType=None `
-    /p:DebugSymbols=false
+    /p:DebugSymbols=false `
+    /p:Version=$assemblyVersion `
+    /p:InformationalVersion=$Version `
+    /p:IncludeSourceRevisionInInformationalVersion=false
 if ($LASTEXITCODE -ne 0) { throw "dotnet publish USCF engine failed." }
 
 Write-Host "==> dotnet publish app ..." -ForegroundColor Cyan
@@ -193,7 +208,10 @@ dotnet publish $appProj `
     /p:PublishSingleFile=true `
     /p:PublishReadyToRun=true `
     /p:DebugType=None `
-    /p:DebugSymbols=false
+    /p:DebugSymbols=false `
+    /p:Version=$assemblyVersion `
+    /p:InformationalVersion=$Version `
+    /p:IncludeSourceRevisionInInformationalVersion=false
 if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed." }
 
 # Replace the framework-dependent UscfEngine files copied by the App project
