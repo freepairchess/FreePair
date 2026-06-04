@@ -1510,43 +1510,19 @@ public static class UscfPairer
         }
 
         // (4) Neither player has any colour history (both had byes or
-        //     forfeits in all prior rounds). When their scores differ the
-        //     higher-scored player's "due colour" takes priority — it is
-        //     inferred from the initial-colour pattern of their score
-        //     group (matching SwissSys behaviour). The higher-scored
-        //     player is treated as top-half of their natural score group
-        //     and assigned the board-1 colour for the CURRENT round
-        //     (which alternates each round from the initial colour).
-        var topPts = ComputeScore(top);
-        var botPts = ComputeScore(bottom);
-        if (topPts != botPts)
-        {
-            // Current round = number of prior rounds + 1.
-            var currentRound = top.Rounds.Count + 1;
-            // In odd rounds top-half gets initialColor on board 1;
-            // in even rounds top-half gets the opposite.
-            var topHalfGetsWhiteThisRound = (initialColor == 'w') ^ (currentRound % 2 == 0);
-            var higherIsTop = topPts > botPts;
-            // If the higher-scored player IS "top" → they get topHalfGetsWhiteThisRound.
-            // Otherwise flip.
-            return higherIsTop == topHalfGetsWhiteThisRound;
-        }
-
-        // (5) Both have equal score and no colour history. SwissSys
-        //     consistently gives White to the higher-rated player here
-        //     (i.e. the top-half player in the natural slide), regardless
-        //     of the section's initial-colour setting or the board
-        //     number. This matches USCF 29D's spirit ("between two
-        //     players with equal due colour, higher-rated gets White")
-        //     when due colour is unknown for both. (MCC April Open R2
-        //     bd 5: Davis 2022 vs Bird 1728, both R1-bye, same 0.5
-        //     score, section initialColor='b' — without this rule
-        //     FreePair would flip Davis to Black via the R1-alternation
-        //     fallback on an even board.)
+        //     forfeits in all prior rounds). SwissSys treats these
+        //     pairings the same way regardless of score: higher-rated
+        //     gets White (the natural top-half-of-bd-1 assignment
+        //     ignoring the section's TD-chosen InitialColor, since
+        //     neither player has expressed a colour preference yet).
+        //     This unifies the equal-score case (MCC April Open R2 bd 5,
+        //     Inaugural U700 R2) and the unequal-score downfloater case
+        //     (MCC May Open R2 bd 4: #1 0.5pts R1-HPB vs #24 1.0pts
+        //     R1-FPB; SwissSys gives White to higher-rated #1).
         if (top.Rating != bottom.Rating)
             return top.Rating > bottom.Rating;
 
-        return InitialColorOnBoard(initialColor, board); // (6) R1 fallback for true ties
+        return InitialColorOnBoard(initialColor, board); // (5) R1 fallback for true ties
     }
 
     /// <summary>
