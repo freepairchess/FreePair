@@ -17,6 +17,20 @@ as accepted and move on.
 | Hellp 2026 | Under_700 | R3 | USCF 29C (lowest-rated floats) | 1.0-group floater: SwissSys floats player rated 478; FreePair floats lowest-rated 473 (who also has the stronger color claim — `WW` absolute B due). FreePair is more 29C-correct AND gives a better color outcome on the cross-group pair. |
 | A2Z April Open 2026 | Under_1000 | R4 | USCF 29C (lowest-rated floats) | 1.0-group floater: SwissSys floats player rated 689 (second-lowest); FreePair floats lowest-rated 684. Color quality is identical either way (0 internal conflicts + 1 unavoidable cross-group conflict in both); SwissSys's choice has no rule justification (its own natural-pairings tool reports the same "4 bad alternations" before and after, so it wasn't color-driven). |
 
+## Deferred — engine could improve, not yet safe to change
+
+Cases where SwissSys's choice is *better* than FreePair's by a clear
+rule (typically USCF 29E colour quality) but the obvious fix to our
+drop-selection heuristic regresses other passing cases in the corpus.
+Tracked here so we don't lose them, but **do not attempt a narrow fix
+without expanding the regression coverage first** — every attempted
+patch so far has shifted the failing-test set rather than shrinking
+it.
+
+| Event | Section | Round | Issue | Why deferred |
+|---|---|---|---|---|
+| A2Z April Open 2026 | Open I | R3 | 1.0-group drop: SwissSys floats second-lowest (Mallapu 1437) for 0-conflict internal SLIDE; FreePair floats lowest (Kesavan 1411) which leaves 1 unavoidable internal conflict AND 1 cross-group conflict (W-due vs Randall W-due). SwissSys's pick is strictly better on USCF 29E colour grounds. | Adding cross-group cost or loosening the "natural < 2 conflicts" threshold fixes this case but regresses 3–8 others (Open II R2, multiple MCC rounds, Hellp later rounds). The current `CountColorConflictPairs` weights all conflicts equally and ignores absolute-vs-mild colour preferences (`WW`/`BB` absolutes count the same as a mild `w`/`b` preference). A proper fix needs a weighted conflict-cost model that distinguishes preference strength and applies cross-group cost only when the drop's downfloat is forced into a specific opponent. |
+
 ## How to add a new entry
 
 1. Investigate the mismatch via the manual-testing workflow (compare
