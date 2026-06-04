@@ -120,6 +120,27 @@
                        Watermark="https://github.com/freepairchess/FreePair"/>
         </Grid>
 
+        <Grid ColumnDefinitions="160,*,Auto" RowDefinitions="Auto" Margin="0,8,0,0">
+            <TextBlock Grid.Column="0" Text="Current version"
+                       VerticalAlignment="Center" FontWeight="SemiBold"
+                       Margin="0,0,12,0"/>
+            <TextBlock Grid.Column="1"
+                       VerticalAlignment="Center"
+                       FontFamily="Consolas, Menlo, monospace">
+                <Run Text="FreePair v"/>
+                <Run Text="{Binding CurrentVersion, Mode=OneTime}"/>
+            </TextBlock>
+            <Button   Grid.Column="2"
+                      Content="Check now"
+                      Command="{Binding CheckForUpdatesNowCommand}"
+                      ToolTip.Tip="Polls GitHub Releases on demand. Shows result inline below. Available only in installed builds — dev / portable runs report 'Updater not available'."/>
+        </Grid>
+        <TextBlock Text="{Binding UpdateCheckStatus}"
+                   IsVisible="{Binding UpdateCheckStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                   Foreground="Gray" FontSize="11"
+                   TextWrapping="Wrap"
+                   Margin="0,4,0,0"/>
+
         <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
             <Button Content="Save" Command="{Binding SaveCommand}"/>
         </StackPanel>

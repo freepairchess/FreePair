@@ -66,6 +66,11 @@ public partial class MainWindow : Window
             githubRepoUrl:        vm.Settings.UpdateFeedRepoUrl,
             includePreReleases:   vm.Settings.UpdateIncludePreReleases);
         vm.AttachUpdateService(updateService);
+        // Settings page also gets the same service so its "Check now"
+        // button drives an on-demand check with inline status; the
+        // host-check delegate keeps the main-window banner in sync
+        // with whatever the Settings result was.
+        vm.Settings.AttachUpdateService(updateService, vm.CheckForUpdatesAsync);
         if (vm.Settings.CheckForUpdatesOnStartup)
         {
             _ = vm.CheckForUpdatesAsync();

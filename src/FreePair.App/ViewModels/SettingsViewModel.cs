@@ -1,11 +1,13 @@
 using System;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FreePair.Core.Bbp;
 using FreePair.Core.Formatting;
 using FreePair.Core.Settings;
+using FreePair.Core.Updates;
 
 namespace FreePair.App.ViewModels;
 
@@ -63,6 +65,91 @@ public partial class SettingsViewModel : ViewModelBase
     /// by default — stable-channel TDs don't want preview builds.
     /// </summary>
     [ObservableProperty] private bool _updateIncludePreReleases;
+
+    /// <summary>
+    /// Current FreePair build version, surfaced in the Settings UI so
+    /// TDs can confirm what's installed before / after an update.
+    /// Read from the assembly's <see cref="AssemblyInformationalVersionAttribute"/>
+    /// (set by Velopack at build time) with a fallback to
+    /// <see cref="AssemblyFileVersionAttribute"/> for dev builds.
+    /// </summary>
+    public string CurrentVersion { get; } =
+        typeof(SettingsViewModel).Assembly
+            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
+        ?? typeof(SettingsViewModel).Assembly
+            .GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version
+        ?? "dev";
+
+    /// <summary>
+    /// Status / result of the most recent manual update check fired
+    /// from the Settings page. Empty until the user clicks "Check now".
+    /// </summary>
+    [ObservableProperty] private string? _updateCheckStatus;
+
+    /// <summary>
+    /// True while an on-demand update check is in flight, so the
+    /// Settings UI can disable the button and show a "Checking..."
+    /// affordance instead of leaving it click-spammable.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CheckForUpdatesNowCommand))]
+    private bool _isCheckingForUpdates;
+
+    private IUpdateService? _updateService;
+    private Func<Task>? _hostCheckForUpdates;
+
+    /// <summary>
+    /// Wires the platform-specific update service so the Settings page
+    /// can drive its "Check now" button. Called once from the host
+    /// after the same service is attached to <see cref="MainWindowViewModel"/>.
+    /// The <paramref name="hostCheck"/> delegate is invoked alongside
+    /// the local check so the main-window banner stays in sync with
+    /// what the Settings status shows.
+    /// </summary>
+    public void AttachUpdateService(IUpdateService service, Func<Task>? hostCheck = null)
+    {
+        _updateService = service ?? throw new ArgumentNullException(nameof(service));
+        _hostCheckForUpdates = hostCheck;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanCheckForUpdatesNow))]
+    private async Task CheckForUpdatesNowAsync()
+    {
+        if (_updateService is null)
+        {
+            UpdateCheckStatus = "Updater not available in this build (dev / portable run).";
+            return;
+        }
+
+        IsCheckingForUpdates = true;
+        try
+        {
+            UpdateCheckStatus = "Checking GitHub Releases...";
+            var result = await _updateService.CheckAsync().ConfigureAwait(true);
+            UpdateCheckStatus = result switch
+            {
+                UpdateCheckResult.Available a    => $"Update available: v{a.Version}. See the banner at the top of the window.",
+                UpdateCheckResult.UpToDate       => $"FreePair is up to date (v{CurrentVersion}).",
+                UpdateCheckResult.NotInstalled   => "Updater not available in this build (dev / portable run).",
+                UpdateCheckResult.Failed f       => $"Update check failed: {f.Message}",
+                _                                => "Unknown update-check result.",
+            };
+
+            // Keep the main-window banner in sync — the host check uses
+            // the same service so it'll see the same Available / UpToDate
+            // outcome and surface the banner / clear it accordingly.
+            if (_hostCheckForUpdates is not null)
+            {
+                await _hostCheckForUpdates().ConfigureAwait(true);
+            }
+        }
+        finally
+        {
+            IsCheckingForUpdates = false;
+        }
+    }
+
+    private bool CanCheckForUpdatesNow() => !IsCheckingForUpdates;
 
     // ============ Tournament file layout ============
 
