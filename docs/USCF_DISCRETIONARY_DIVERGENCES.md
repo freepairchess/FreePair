@@ -16,6 +16,7 @@ as accepted and move on.
 |---|---|---|---|---|
 | Hellp 2026 | Under_700 | R3 | USCF 29C (lowest-rated floats) | 1.0-group floater: SwissSys floats player rated 478; FreePair floats lowest-rated 473 (who also has the stronger color claim — `WW` absolute B due). FreePair is more 29C-correct AND gives a better color outcome on the cross-group pair. |
 | A2Z April Open 2026 | Under_1000 | R4 | USCF 29C (lowest-rated floats) | 1.0-group floater: SwissSys floats player rated 689 (second-lowest); FreePair floats lowest-rated 684. Color quality is identical either way (0 internal conflicts + 1 unavoidable cross-group conflict in both); SwissSys's choice has no rule justification (its own natural-pairings tool reports the same "4 bad alternations" before and after, so it wasn't color-driven). |
+| A2Z April Open 2026 | Under_700 | R4 | USCF 28L ("not unrated if avoidable") | Bye selection in the 0.0 group: SwissSys gives the full-point bye to the unrated player (#16 Saripalli); FreePair gives it to the lowest-rated *rated* player (#14 Thompson, 198). FreePair correctly follows 28L's "lowest-rated, but not unrated if avoidable" preference. The downstream bd 3–4 transposition difference is a side-effect of which player is removed from the pool — color-conflict counts are identical either way. |
 
 ## Deferred — engine could improve, not yet safe to change
 
