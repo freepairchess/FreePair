@@ -1532,7 +1532,21 @@ public static class UscfPairer
             return higherIsTop == topHalfGetsWhiteThisRound;
         }
 
-        return InitialColorOnBoard(initialColor, board); // (5) R1 fallback
+        // (5) Both have equal score and no colour history. SwissSys
+        //     consistently gives White to the higher-rated player here
+        //     (i.e. the top-half player in the natural slide), regardless
+        //     of the section's initial-colour setting or the board
+        //     number. This matches USCF 29D's spirit ("between two
+        //     players with equal due colour, higher-rated gets White")
+        //     when due colour is unknown for both. (MCC April Open R2
+        //     bd 5: Davis 2022 vs Bird 1728, both R1-bye, same 0.5
+        //     score, section initialColor='b' — without this rule
+        //     FreePair would flip Davis to Black via the R1-alternation
+        //     fallback on an even board.)
+        if (top.Rating != bottom.Rating)
+            return top.Rating > bottom.Rating;
+
+        return InitialColorOnBoard(initialColor, board); // (6) R1 fallback for true ties
     }
 
     /// <summary>
