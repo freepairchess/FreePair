@@ -509,3 +509,6 @@ Thumbs.db
 !/tools/**
 
 release/publish-uscfengine/
+
+# Local backups created when rebuilding the app icon
+src/FreePair.App/Assets/*.bak
