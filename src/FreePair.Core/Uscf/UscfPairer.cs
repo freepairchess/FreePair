@@ -1444,7 +1444,57 @@ public static class UscfPairer
         var botLast = LastColor(bottom);
         if (topLast != '-' && botLast != '-')
         {
-            // Both have history — alternate based on top's last.
+            // Both have history. When their last actual-game colours
+            // differ the standard alternation rule (top's last decides)
+            // is unambiguous. When they're the SAME, we need a
+            // tiebreaker: prefer giving White to whoever has gone the
+            // longest without White (USCF 29D "alternation" intent).
+            // This handles cases where both players had Black last but
+            // one had a bye in between (their LAST-W is further in the
+            // past). Without this tiebreaker FreePair always gives the
+            // top-seed the alternating colour, ignoring round-recency.
+            // (MCC March Open R4 bd 9: Kaprielian and Liu both have
+            //  1W-1B and last=B but Liu's B was R3 vs Kaprielian's R2 —
+            //  Liu has gone longer without W and gets it; same shape
+            //  in U1700 R4 bd 8 where Matthews has never had W.)
+            if (topLast == botLast)
+            {
+                // Tiebreaker between players with identical W/B totals
+                // and last-actual-game colour. Two signals:
+                //   (a) "rounds since due colour" — whoever has gone
+                //       longest without the due colour has the stronger
+                //       claim. Includes "never played due colour"
+                //       (returned as int.MaxValue), which dominates.
+                //   (b) "rounds since non-due colour" — whoever played
+                //       the non-due colour MOST RECENTLY has the
+                //       stronger alternation claim (their B was R3 not
+                //       R2). Tiebreaks (a).
+                // (MCC March U1700 R4 bd 8: Krishnamurthy 1.0/-1 last=B
+                //  vs Matthews unrated last=B; Matthews has never had W
+                //  so signal (a) makes Matthews due W → Matthews White.
+                //  MCC March Open R4 bd 9: Kaprielian 1.0/0 last=B vs
+                //  Liu 1.0/0 last=B; both played W in R1 so signal (a)
+                //  ties; Liu had B in R3, Kaprielian had B in R2, so
+                //  signal (b) → Liu White.)
+                var dueColor = topLast == 'w' ? 'b' : 'w';
+                var nonDueColor = dueColor == 'w' ? 'b' : 'w';
+                // Signal (a): whoever has played the NON-due colour
+                // most recently has the strongest alternation pressure
+                // for due. The player whose nonDue is MORE RECENT
+                // should NOT get nonDue again — they get due.
+                var topSinceNonDue = RoundsSinceColor(top, nonDueColor);
+                var botSinceNonDue = RoundsSinceColor(bottom, nonDueColor);
+                if (topSinceNonDue < botSinceNonDue) return dueColor == 'w';
+                if (botSinceNonDue < topSinceNonDue) return dueColor != 'w';
+                // Signal (b): when nonDue recency is tied (or both
+                // identical), whoever has gone LONGEST without the due
+                // colour (including "never had it" = int.MaxValue)
+                // gets it.
+                var topSinceDue = RoundsSinceColor(top, dueColor);
+                var botSinceDue = RoundsSinceColor(bottom, dueColor);
+                if (topSinceDue > botSinceDue) return dueColor == 'w';
+                if (botSinceDue > topSinceDue) return dueColor != 'w';
+            }
             return topLast == 'w' ? false : true;
         }
         if (topLast != '-')
@@ -1536,6 +1586,22 @@ public static class UscfPairer
             if (c is 'w' or 'b') return c;
         }
         return '-';
+    }
+
+    /// <summary>
+    /// Number of rounds since the player last played <paramref name="color"/>,
+    /// measured from the most recent round backwards. Byes / forfeits
+    /// (non-w/b colour cells) DO count as rounds — they delay alternation
+    /// without satisfying it. Returns <c>int.MaxValue</c> when the player
+    /// has never played that colour.
+    /// </summary>
+    private static int RoundsSinceColor(TrfPlayer p, char color)
+    {
+        for (var i = p.Rounds.Count - 1; i >= 0; i--)
+        {
+            if (p.Rounds[i].Color == color) return p.Rounds.Count - 1 - i;
+        }
+        return int.MaxValue;
     }
 
     private static char PreferredColor(TrfPlayer p)
