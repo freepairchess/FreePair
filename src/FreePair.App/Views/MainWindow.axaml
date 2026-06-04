@@ -7,6 +7,7 @@
         x:Class="FreePair.App.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/freepair.ico"
+        WindowState="Maximized"
         Title="{Binding WindowTitle}">
 
     <Design.DataContext>

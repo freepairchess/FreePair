@@ -11,6 +11,8 @@
         <vm:SettingsViewModel/>
     </Design.DataContext>
 
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Auto">
     <StackPanel Margin="16" Spacing="8">
         <TextBlock Text="Pairing engines" FontWeight="SemiBold"/>
         <TextBlock TextWrapping="Wrap" Foreground="Gray">
@@ -146,5 +148,6 @@
         </StackPanel>
         <TextBlock Text="{Binding StatusMessage}" Foreground="Gray"/>
     </StackPanel>
+    </ScrollViewer>
 
 </UserControl>
