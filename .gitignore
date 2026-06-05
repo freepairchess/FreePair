@@ -1,0 +1,15 @@
+# FreePair public mirror — release artifacts only.
+# Anything not whitelisted here is presumed to be a mistake.
+
+# Editor / OS noise
+.vs/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Build output (should never land here — staging only commits docs + release-notes)
+bin/
+obj/
+*.user
+*.suo

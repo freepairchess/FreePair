@@ -1,0 +1,3 @@
+# Force markdown to LF on disk in the public mirror so anchors render
+# consistently when end users browse on GitHub from any platform.
+*.md text eol=lf
