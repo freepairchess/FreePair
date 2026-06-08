@@ -90,7 +90,7 @@ Click any rule number to jump to the full entry.
 | [22C3](#rule-22c3) | Byes and class prizes | ?? TD discretion | � | � |
 | [22C4](#rule-22c4) | Irrevocable byes | ?? TD discretion | � | � |
 | [22C5](#rule-22c5) | Cancellation of irrevocable byes | ?? TD discretion | � | � |
-| [22C6](#rule-22c6) | Full-point byes after half-point byes (? 28L4) | ? partial | `UscfPairer` bye picker (basic HPB block) | � |
+| [22C6](#rule-22c6) | Full-point byes after half-point byes (? 28L4) | ? enforced | `UscfPairer` bye picker (HPB exclusion + escape) | `28L4` |
 | [27A1](#rule-27a1) | Avoid players meeting twice (highest priority) | ? | `UscfPairer.HasPlayed` / `IsForbiddenPair` | `29B` (wrong ? `27A1`) |
 | [27A2](#rule-27a2) | Equal scores | ? | `UscfPairer.PairRoundN` score-group enumeration | � |
 | [27A3](#rule-27a3) | Upper half vs. lower half | ? | `UscfPairer.PairPool` SLIDE | `28C` (wrong ? `27A3` / `28J`) |
@@ -117,8 +117,8 @@ Click any rule number to jump to the full entry.
 | [28L1](#rule-28l1) | Explanation and display | ? | `Round.Byes` + wall-chart rendering | � |
 | [28L2](#rule-28l2) | Determination (who gets the bye) | ? | `UscfPairer.PairRoundN` bye picker | `28L` (over-general ? `28L2`) |
 | [28L2a](#rule-28l2a) | Variation: bye to higher-rated for colour | ? planned | � | � |
-| [28L3](#rule-28l3) | Players ineligible for full-point byes | ? partial | bye picker (no double FPB only � forfeit-win not checked) | � |
-| [28L4](#rule-28l4) | Full-point byes after half-point byes (? 22C6) | ? partial | bye picker (HPB blocker is not "unless all others have byed") | � |
+| [28L3](#rule-28l3) | Players ineligible for full-point byes | ? enforced | bye picker (no double FPB + no FPB after forfeit win) | `28L3` |
+| [28L4](#rule-28l4) | Full-point byes after half-point byes (? 22C6) | ? enforced | bye picker (HPB exclusion + "unless all others byed" escape) | `28L4` |
 | [28L5](#rule-28l5) | New players in four-round events | ? planned | � | � |
 | [28M](#rule-28m) | Alternatives to byes | ?? TD discretion | � | � |
 | [28M1](#rule-28m1) | The house player | ?? TD discretion | � | � |
@@ -144,7 +144,7 @@ Click any rule number to jump to the full entry.
 | [29C2](#rule-29c2) | Other adjustments (transpositions / interchanges) | ? | `UscfPairer.TryFindNonRematchMatching` + `TryCrossHalfInterchange` | `28L1` / `28L3` (wrong ? `29C2`) |
 | [29D](#rule-29d) | The odd player | ? | `UscfPairer.PairRoundN` drop-selection | � |
 | [29D1](#rule-29d1) | Determination | ? | `UscfPairer.PairRoundN` drop loop | `29C` (over-general ? `29D1a`) |
-| [29D2](#rule-29d2) | Multiple drop downs | ? partial | drop-down accumulator carries floaters forward | � |
+| [29D2](#rule-29d2) | Multiple drop downs | ? enforced | single-player-drop accumulator + forced-merge | `29D1a`/`27A1` |
 | [29E](#rule-29e) | Color allocation (chapter umbrella) | ? | `UscfPairer.TopGetsWhite` + `TryReduceColorConflicts` | `29E` (over-general ? specific sub-rule) |
 | [29E1](#rule-29e1) | Unplayed games (don't count for colour) | ? | `TopGetsWhite` ignores bye / forfeit cells | � |
 | [29E2](#rule-29e2) | First-round colors | ? | `UscfPairer.PairRoundOne` initial-colour rule | `29E1` (wrong ? `29E2`) |
@@ -155,16 +155,16 @@ Click any rule number to jump to the full entry.
 | [29E4b](#rule-29e4b) | Variation: alternating priority | ? planned | � | � |
 | [29E4c](#rule-29e4c) | Variation: priority based on lot (last round) | ?? TD discretion | � | � |
 | [29E4d](#rule-29e4d) | Variation: priority based on rank (old rule) | ? deferred | � | � |
-| [29E5](#rule-29e5) | Colors vs. ratings (umbrella) | ? partial | `TryReduceColorConflicts` (no rating cap) | `29E` (over-general ? `29E5`) |
-| [29E5a](#rule-29e5a) | **The 80-point rule** | ? planned | � | � |
-| [29E5b](#rule-29e5b) | **The 200-point rule** | ? planned | � | � |
+| [29E5](#rule-29e5) | Colors vs. ratings (umbrella) | ? enforced | `IsRatingCapCompliant` (80/200 caps) | `29E5` |
+| [29E5a](#rule-29e5a) | **The 80-point rule** | ? enforced | `IsRatingCapCompliant` | `29E5a` |
+| [29E5b](#rule-29e5b) | **The 200-point rule** | ? enforced | `IsRatingCapCompliant` | `29E5b` |
 | [29E5b1](#rule-29e5b1) | Variation: 200pt for two-extra-blacks | ? planned | � | � |
-| [29E5c](#rule-29e5c) | Evaluating transpositions (smaller of two diffs) | ? planned | � | � |
+| [29E5c](#rule-29e5c) | Evaluating transpositions (smaller of two diffs) | ? enforced | `IsRatingCapCompliant` | `29E5c` |
 | [29E5d](#rule-29e5d) | Evaluating interchanges (one diff; prefer transposition) | ? partial | `TryReduceColorConflicts` two-pass (interchange pass gated off; rematch interchange live) | � |
-| [29E5e](#rule-29e5e) | Comparing transpositions to interchanges | ? planned | � | � |
+| [29E5e](#rule-29e5e) | Comparing transpositions to interchanges | ? partial | interchange pass gated off | � |
 | [29E5f](#rule-29e5f) | Colors in a series (no three in a row) | ? partial | `TopGetsWhite` (no hard cap; alternation only) | � |
 | [29E5f1](#rule-29e5f1) | Variation: last-round exception | ?? TD discretion | � | � |
-| [29E5g](#rule-29e5g) | Unrateds and color switches (exempt from 80/200) | ? planned | � | � |
+| [29E5g](#rule-29e5g) | Unrateds and color switches (exempt from 80/200) | ? enforced | `IsRatingCapCompliant` | `29E5g` |
 | [29E5h](#rule-29e5h) | Variation: equalization priority over ratings | ?? TD discretion | � | � |
 | [29E6](#rule-29e6) | Color adjustment technique | ? | `TryReduceColorConflicts` (branch-and-bound) | � |
 | [29E6a](#rule-29e6a) | The Look Ahead method | ? partial | `TryReduceColorConflicts` minimises conflicts globally | � |
@@ -340,7 +340,7 @@ elsewhere.
 
 ### Rule 22C6 � Full-point byes after half-point byes  <a id="rule-22c6"></a>
 
-**Status.** ? partial (verbatim duplicate of [28L4](#rule-28l4))
+**Status.** ? enforced (verbatim duplicate of [28L4](#rule-28l4))
 
 **Plain statement.** A full-point bye should **not** be assigned to a
 player who has previously taken or committed to a half-point bye
@@ -350,15 +350,17 @@ USCF rule book � here as 22C6 and again as [28L4](#rule-28l4) � with
 identical text. Treat them as one rule.
 
 **FreePair coverage today.** The `UscfPairer.PairRoundN` bye-picker
-preference order is `rated + no prior FPB + no scheduled bye` ? `no
-prior + no scheduled` ? `no prior` ? `absolute lowest`. This honours
-the **"no prior or scheduled bye"** half of 22C6 but does **not**
-honour the **"unless all others have already had a bye"** escape
-hatch � meaning in degenerate cases (every other low-group player
-already byed) FreePair may refuse to assign the bye to a half-point-
-bye holder where USCF would allow it. The fallback `pool[^1]`
-ensures *someone* still receives the bye, but it may not be the USCF-
-preferred choice. Phase C will refine.
+now excludes **every** prior-bye holder from the preferred tiers via
+`HadAnyBye` � which covers a prior full-point bye, a forfeit win, a
+**taken** half-point bye in round history (`Result == 'H'`, previously
+invisible to the picker), and a TD-scheduled bye. When no never-byed
+player remains, the **escape clause** fires: the bye falls to the
+lowest-rated half-point-bye holder, still honouring 28L3 (no second
+full-point bye, no forfeit-win holder). This implements both halves
+of 22C6 � the HPB-holder exclusion AND the "unless all others have
+already had a bye" escape. The change is corpus-neutral: no corpus
+round byes an HPB-holder, so the escape path is covered by unit tests
+rather than the SwissSys-fidelity harness.
 
 **See also.** [28L4](#rule-28l4) (the same rule under chapter 28).
 
@@ -830,10 +832,10 @@ five bye-assignment rules 28L1�28L5. The substantive rules are
 [28L4](#rule-28l4) (who's ineligible).
 
 **FreePair coverage today.** The engine now cites the specific
-sub-rule per Phase B � `"28L2"` for the picker (was `"28L"`); the
-`"28L3"` / `"28L4"` ineligibility-check citations will land alongside
-the Phase C work that adds the missing forfeit-win and "unless all
-others have already had a bye" checks.
+sub-rule per Phase B � `"28L2"` for the picker (was `"28L"`). The
+`"28L3"` ineligibility check has landed (forfeit-win recipients are
+now disqualified from the full-point bye); the `"28L4"` "unless all
+others have already had a bye" escape clause is still pending.
 
 ---
 
@@ -902,7 +904,7 @@ rules being enforced.
 
 ### Rule 28L3 � Players ineligible for full-point byes  <a id="rule-28l3"></a>
 
-**Status.** ? partial
+**Status.** ? enforced
 
 **Plain statement.** Two ineligibility conditions:
 
@@ -916,18 +918,19 @@ The rule book's TD TIP explicitly warns that *not all pairing
 software enforces this automatically* � TDs are advised to check
 each round.
 
-**FreePair coverage today.** The first condition is honoured via
-the `HasReceivedFullPointBye` filter in the bye picker. The
-**second condition is not** � FreePair does not currently
-disqualify a forfeit-win recipient from also receiving a full-point
-bye. Phase C target: add a `HasReceivedForfeitWin` filter to the
-bye picker preference chain.
+**FreePair coverage today.** Both conditions are honoured in the
+bye picker. The first via the `HasReceivedFullPointBye` filter; the
+second via the `HasReceivedForfeitWin` filter, which disqualifies a
+forfeit-win recipient from also receiving a full-point bye. The bye
+is selected (and removed from the pool) before the rest of the
+score group is paired, so an eligibility shift never double-books a
+player. Citation is now `"28L3"`.
 
 ---
 
 ### Rule 28L4 � Full-point byes after half-point byes  <a id="rule-28l4"></a>
 
-**Status.** ? partial (verbatim duplicate of [22C6](#rule-22c6))
+**Status.** ? enforced (verbatim duplicate of [22C6](#rule-22c6))
 
 **Plain statement.** A full-point bye should **not** be awarded to
 a player who has previously taken or committed to a half-point bye,
@@ -935,11 +938,18 @@ a player who has previously taken or committed to a half-point bye,
 no-show forfeit win**. The rule book's TD TIP again warns TDs to
 verify their software enforces this.
 
-**FreePair coverage today.** Same coverage as [22C6](#rule-22c6) �
-the bye picker honours the "no scheduled bye" preference but does
-**not** implement the "unless all others have already had a bye"
-escape clause. In degenerate cases the fallback `pool[^1]` ensures
-*someone* gets the bye but it may not be the USCF-preferred choice.
+**FreePair coverage today.** Implemented in the `UscfPairer.PairRoundN`
+bye picker. The preferred tiers exclude every prior-bye holder via
+`HadAnyBye` (prior full-point bye, forfeit win, **taken** half-point
+bye in round history, or TD-scheduled bye); `HasTakenHalfPointBye`
+closes the gap where a half-point bye recorded in a played round was
+previously invisible (only scheduled byes were checked). The escape
+clause is explicit: when no never-byed player remains, the bye falls
+to the lowest-rated half-point-bye holder, still excluding 28L3
+ineligibles (no second full-point bye, no forfeit-win holder). The
+annotation distinguishes the normal case from the escape case. The
+change is corpus-neutral (no corpus round byes a half-point-bye
+holder); the escape path is covered by unit tests.
 
 **See also.** [22C6](#rule-22c6) (identical text under chapter 22),
 [28L3](#rule-28l3) (the other half of ineligibility).
@@ -1458,7 +1468,7 @@ exception), [29D2](#rule-29d2) (multi-group drops).
 
 ### Rule 29D2 � Multiple drop downs  <a id="rule-29d2"></a>
 
-**Status.** ? partial
+**Status.** ? enforced
 
 **Plain statement.** Sometimes the floater must jump **multiple
 score groups** to find a valid opponent. Rule preferences:
@@ -1476,14 +1486,21 @@ whole next group; two odd players in group 1 who've already met;
 two odd players from separate groups (the higher-score floater is
 paired first).
 
-**FreePair coverage today.** `floatDown` accumulator carries
-floaters into the next group. The "prefer dropping one player
-multiple groups over multiple players one group" heuristic is
-**not** explicit � drops happen one group at a time and accumulate.
-The two-odd-players-have-already-met pattern triggers `forced
-merge` (whole group floats), which honours the spirit but with
-broader effect than the rule specifies. Phase C target: a
-dedicated "multi-group drop" path with explicit preference logic.
+**FreePair coverage today.** The drop design already honours 29D2's
+primary preference. Each odd score group drops exactly **one**
+player (the lowest-rated, per 29D1a) into a `floatDown` accumulator;
+that single floater is merged into the next group, and if it still
+cannot be paired rematch-free it **re-floats hop-by-hop**, so a lone
+floater can jump multiple groups while only one player ever drops.
+The two-odd-players-have-already-met pattern is handled by the
+forced-merge path (USCF 27A1), which floats the residual group only
+on a genuine rematch deadlock. This is verified by the regression
+test `Floater_drops_multiple_score_groups_when_next_group_is_all_rematches`
+(a lone 2.0 floater that has played the whole 1.0 group drops all the
+way into the 0.0 group). The remaining nuance � forced-merge floating
+a whole residual group is slightly broader than the rule strictly
+requires � only fires when no legal rematch-free pairing exists, so
+it does not violate the preference in practice.
 
 ---
 
@@ -1746,7 +1763,7 @@ driven sub-cases when the rating-cap rules land.
 
 ### Rule 29E5a � The 80-point rule  <a id="rule-29e5a"></a>
 
-**Status.** ? planned (Phase C: branch `uscf-80-200-rating-rules`)
+**Status.** ? enforced (`IsRatingCapCompliant`; pinned by `Rating_cap_29E5a_*`)
 
 **Plain statement.** Transpositions and interchanges made for the
 purpose of **maximising the number of players who receive their
@@ -1779,7 +1796,7 @@ over interchange), [29E5g](#rule-29e5g) (unrated exemption).
 
 ### Rule 29E5b � The 200-point rule  <a id="rule-29e5b"></a>
 
-**Status.** ? planned (Phase C: branch `uscf-80-200-rating-rules`)
+**Status.** ? enforced (`IsRatingCapCompliant`; pinned by `Rating_cap_29E5b_*`)
 
 **Plain statement.** Transpositions and interchanges made for the
 purpose of **minimizing the number of players who receive one
@@ -1826,7 +1843,7 @@ prerequisite; this is a refinement on top.
 
 ### Rule 29E5c � Evaluating transpositions  <a id="rule-29e5c"></a>
 
-**Status.** ? planned (depends on 29E5a / 29E5b)
+**Status.** ? enforced (`IsRatingCapCompliant`; pinned by `Rating_cap_29E5c_*`)
 
 **Plain statement.** All transpositions are evaluated based on the
 **smaller of the two rating differences** involved.
@@ -1896,7 +1913,7 @@ SwissSys.
 
 ### Rule 29E5e � Comparing transpositions to interchanges  <a id="rule-29e5e"></a>
 
-**Status.** ? planned (depends on 29E5a / 29E5b)
+**Status.** ? partial — blocked on the gated cross-half interchange pass
 
 **Plain statement.** **Decision rule:**
 
@@ -2007,7 +2024,7 @@ separate round-number switch is needed.
 
 ### Rule 29E5g � Unrateds and color switches  <a id="rule-29e5g"></a>
 
-**Status.** ? planned
+**Status.** ? enforced (`IsRatingCapCompliant`; pinned by `Rating_cap_29E5g_*`)
 
 **Plain statement.** If a player is **switched to or from an
 unrated opponent** to improve colour allocation, this is **not in
