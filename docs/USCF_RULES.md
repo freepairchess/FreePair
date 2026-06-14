@@ -123,8 +123,8 @@ Click any rule number to jump to the full entry.
 | [28M](#rule-28m) | Alternatives to byes | ?? TD discretion | � | � |
 | [28M1](#rule-28m1) | The house player | ?? TD discretion | � | � |
 | [28M2](#rule-28m2)�[28M4](#rule-28m4) | Cross-round / cross-section / extra-rated alternatives | ? deferred | � | � |
-| [28N](#rule-28n) | Combined individual-team tournaments | ? partial | `UscfPairer.ShareTeam` (binary avoidance) | � |
-| [28N1](#rule-28n1) | Plus-two method | ? planned | � | � |
+| [28N](#rule-28n) | Combined individual-team tournaments | ? partial | `UscfPairer.ShareTeam` + plus-two escape | � |
+| [28N1](#rule-28n1) | Plus-two method | ? enforced | `IsPlusTwoOrAbove` + `PairPool` two-pass | � |
 | [28N2](#rule-28n2)�[28N4](#rule-28n4) | Variations (never-pair / point-threshold / TD discretion) | ?? TD discretion | � | � |
 | [28O](#rule-28o) | Scoring | ?? TD discretion | `Round.PairingResult` + wall chart | � |
 | [28O1](#rule-28o1) | Computer wall charts | ? | `WallChartViewModel` + `PdfReportBuilder` | � |
@@ -1047,38 +1047,47 @@ but an absolute prohibition can unfairly advantage strong-team
 players. The [28N1](#rule-28n1) plus-two method codifies a graceful
 approach.
 
-**FreePair coverage today.** `UscfPairer.ShareTeam` provides binary
-team avoidance: when the "Avoid pairing players from the same team"
+**FreePair coverage today.** `UscfPairer.ShareTeam` provides team
+avoidance: when the "Avoid pairing players from the same team"
 TD setting is on, teammates are treated as forbidden pairs in the
 same cascade as rematches (transposition ? interchange ? forced
-merge). This is **stronger** than USCF's "should try" and lacks the
-[28N1](#rule-28n1) score-threshold escape.
+merge) **below plus-two**. At plus-two or above the
+[28N1](#rule-28n1) score-threshold escape applies, so an
+unavoidable teammate pairing is accepted in-group rather than
+distorting the pairings.
 
 **Annotation today.** `TranspositionAvoidSameTeam` when the
-avoidance fires a swap; `UscfRule: "29C2"` (Phase B fixed `"28L1"`,
-which is "bye explanation and display").
+avoidance fires a swap; `SameTeamPairingAccepted` (`UscfRule:
+"28N1c"`) when a plus-two teammate pairing is accepted; otherwise
+`UscfRule: "29C2"` (Phase B fixed `"28L1"`, which is "bye
+explanation and display").
 
 ---
 
 ### Rule 28N1 � Plus-two method  <a id="rule-28n1"></a>
 
-**Status.** ? planned
+**Status.** ? enforced
 
 **Plain statement.** Three sub-rules:
 
-- **(a)** If a score group **can** be paired internally without
+- **(a)** <a id="rule-28n1a"></a>If a score group **can** be paired internally without
   teammates facing each other, **always do so**.
-- **(b)** For score groups **below plus-two** (less than two more
+- **(b)** <a id="rule-28n1b"></a>For score groups **below plus-two** (less than two more
   wins than losses), if no teammate-free pairing exists, **raise
   or lower** teammates into the nearest appropriate score group.
-- **(c)** For score groups **at plus-two or above**, **do not**
+- **(c)** <a id="rule-28n1c"></a>For score groups **at plus-two or above**, **do not**
   remove players from their score group just to avoid teammates.
 
-**FreePair coverage today.** Not implemented. The current
-implementation treats team avoidance as absolute � it never lets a
-teammate pairing through, even in the high-score-group case where
-[28N1c] says it should. Phase C target: add the plus-two threshold
-check and a `TranspositionAvoidSameTeam_RuleAware` reason.
+**FreePair coverage today.** Implemented (Phase C). Same-team
+avoidance is the 28N1 preference, not an absolute. A teammate-free
+pairing is always preferred (28N1a); below plus-two an unavoidable
+teammate pairing is escaped by floating into the nearest group
+(28N1b); at plus-two or above the teammate pairing is accepted
+in-group rather than removing players from the group (28N1c). The
+plus-two test is `2*score - roundsElapsed >= 2`; an accepted
+teammate board is tagged `SameTeamPairingAccepted` (cite `28N1c`).
+Gated behind a per-group `allowSameTeam` flag (off below plus-two
+and for non-team events), so it is corpus-neutral.
 
 ---
 
@@ -2389,9 +2398,10 @@ as a rematch.
 The cascade emits `TranspositionAvoidSameTeam` /
 `CrossHalfInterchange` annotations.
 
-**Known limitation.** The [28N1](#rule-28n1) plus-two threshold is
-not implemented � FreePair treats team avoidance as absolute even
-in high-score-group cases where the rule book allows the pairing.
+**Known limitation.** None for 28N1 itself. The plus-two threshold
+is fixed at the rule-book default of 2; the 28N3 TD-variable
+threshold and the 28N2 last-round exception are not yet exposed as
+configurable variations.
 
 ### Same-club avoidance
 
