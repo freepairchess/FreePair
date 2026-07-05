@@ -123,8 +123,8 @@ Click any rule number to jump to the full entry.
 | [28M](#rule-28m) | Alternatives to byes | ?? TD discretion | � | � |
 | [28M1](#rule-28m1) | The house player | ?? TD discretion | � | � |
 | [28M2](#rule-28m2)�[28M4](#rule-28m4) | Cross-round / cross-section / extra-rated alternatives | ? deferred | � | � |
-| [28N](#rule-28n) | Combined individual-team tournaments | ? partial | `UscfPairer.ShareTeam` + plus-two escape | � |
-| [28N1](#rule-28n1) | Plus-two method | ? enforced | `IsPlusTwoOrAbove` + `PairPool` two-pass | � |
+| [28N](#rule-28n) | Combined individual-team tournaments | ? partial | `UscfPairer.ShareTeam` + plus/minus-two escape | � |
+| [28N1](#rule-28n1) | Plus-two method (+ minus-two mirror) | ? enforced | `IsPlusTwoOrAbove` / `IsMinusTwoOrBelow` + `PairPool` two-pass | � |
 | [28N2](#rule-28n2)�[28N4](#rule-28n4) | Variations (never-pair / point-threshold / TD discretion) | ?? TD discretion | � | � |
 | [28O](#rule-28o) | Scoring | ?? TD discretion | `Round.PairingResult` + wall chart | � |
 | [28O1](#rule-28o1) | Computer wall charts | ? | `WallChartViewModel` + `PdfReportBuilder` | � |
@@ -1080,14 +1080,17 @@ explanation and display").
 
 **FreePair coverage today.** Implemented (Phase C). Same-team
 avoidance is the 28N1 preference, not an absolute. A teammate-free
-pairing is always preferred (28N1a); below plus-two an unavoidable
-teammate pairing is escaped by floating into the nearest group
-(28N1b); at plus-two or above the teammate pairing is accepted
-in-group rather than removing players from the group (28N1c). The
-plus-two test is `2*score - roundsElapsed >= 2`; an accepted
-teammate board is tagged `SameTeamPairingAccepted` (cite `28N1c`).
-Gated behind a per-group `allowSameTeam` flag (off below plus-two
-and for non-team events), so it is corpus-neutral.
+pairing is always preferred (28N1a); in the "middle" groups (between
+minus-two and plus-two) an unavoidable teammate pairing is escaped by
+floating into the nearest group (28N1b); at plus-two or above — and,
+symmetrically, at minus-two or below (matching SwissSys's "Plus 2" /
+"Minus 2" options) — the teammate pairing is accepted in-group rather
+than removing players from the group (28N1c). The plus-two test is
+`2*score - roundsElapsed >= 2` and the minus-two mirror is
+`2*score - roundsElapsed <= -2`; an accepted teammate board is tagged
+`SameTeamPairingAccepted` (cite `28N1c`). Gated behind a per-group
+`allowSameTeam` flag (off in the middle groups and for non-team
+events), so it is corpus-neutral.
 
 ---
 
@@ -2398,10 +2401,13 @@ as a rematch.
 The cascade emits `TranspositionAvoidSameTeam` /
 `CrossHalfInterchange` annotations.
 
-**Known limitation.** None for 28N1 itself. The plus-two threshold
-is fixed at the rule-book default of 2; the 28N3 TD-variable
-threshold and the 28N2 last-round exception are not yet exposed as
-configurable variations.
+**Known limitation.** None for 28N1 itself. Both the plus-two escape
+(28N1c) and its symmetric minus-two mirror (SwissSys's "Minus 2") are
+applied; the threshold magnitude is fixed at the rule-book default of
+2 for both sides. The 28N3 TD-variable threshold and the 28N2
+last-round exception are not yet exposed as configurable variations,
+and the plus/minus-two escapes are applied together (there is no
+separate on/off toggle per side as SwissSys offers).
 
 ### Same-club avoidance
 
