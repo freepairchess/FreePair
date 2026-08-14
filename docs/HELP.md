@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.69.20260813**
+**Applies to FreePair v0.70.20260814**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It imports SwissSys event files, pairs Swiss and round-robin sections,
@@ -147,6 +147,11 @@ columns with no data are hidden so the grid stays readable; turn on the
 "show empty columns" option when you are about to fill them in. The
 choice is saved with the section.
 
+**Title** is shown by default. On a FIDE-rated section it decides the
+order of players on equal ratings, so it is worth seeing next to the
+pair numbers rather than having to go looking for it. Untitled players
+leave the cell blank. Turn it off in the chooser if you do not want it.
+
 ### Check-in
 
 Some events pair only players who have physically arrived. Turn on
@@ -187,6 +192,39 @@ For the first round you may be asked who plays White on board 1, and how
 the field should be seeded. Later rounds are determined by the pairing
 rules and need no input.
 
+The seeding prompt offers **Re-sort** — marked *(Recommended)* and
+pre-selected, so pressing Enter takes it — or **Keep current order**.
+Take the re-sort. The pairing rules assume the engine's own seeding
+order, and the button names which one applies: *Re-sort (FIDE order)* or
+*Re-sort (USCF order)*. Let FreePair number the field from the rules
+rather than adjusting pair numbers by hand; a hand-edited order can
+produce boards the rules would not have chosen, and it is the order the
+engine is given. **Keep current order** exists for the narrow case where
+the numbers were assigned elsewhere and must be reproduced exactly —
+matching an arbiter-assigned starting list on an imported event, for
+instance.
+
+If you accept the re-seed, players are numbered strongest first — and
+what breaks a tie between players on the **same** rating depends on the
+section's engine:
+
+- **USCF sections** fall straight to alphabetical order by name
+  (USCF 28E).
+- **FIDE sections** put **title** in between: GM, IM, WGM, FM, WIM, CM,
+  WFM, WCM, then untitled, and only then alphabetical
+  (FIDE C.04.2 2.2). The women's titles genuinely do interleave with the
+  open ones — a WGM seeds above an FM — which looks odd but is what the
+  rule says.
+
+Only FIDE titles count for that ordering. A national title such as **NM**
+is kept and shown on the roster, but seeds as untitled, because the FIDE
+rule does not rank it and inventing a position for it would change who
+plays whom.
+
+This matters more than it sounds: in round 1 everyone is on zero and
+nobody is owed a colour, so the seeding order is the **only** thing
+deciding the boards.
+
 ### Reviewing before you commit
 
 Pairings are shown for review before they become final. In this preview
@@ -196,6 +234,11 @@ you can:
 - Swap colours on a board.
 - Convert a pairing to a half-point bye.
 - Force a specific pairing, or forbid one.
+
+Each player's title is shown in front of their name — "GM Smith" — on
+screen and on the printed pairing sheet. It is part of the player cell
+rather than a column of its own, so it costs no extra width. The
+pairing-columns chooser can turn it off per side.
 
 Nothing is written to the event until you accept.
 
@@ -209,9 +252,75 @@ dialog, which explains the board in plain language:
 - The **round context** — floats, byes and anything else that shaped the
   round.
 
-Each line ends with the USCF rule that drove the decision, as a clickable
+Each line ends with the rule that drove the decision, as a clickable
 citation that opens the rules reference at that exact rule. This is the
 fastest way to answer a player who is questioning their pairing.
+
+**Which rule book you see depends on how the section is paired.** USCF
+sections cite the USCF *Official Rules of Chess* and open the USCF
+reference; FIDE sections cite the FIDE Handbook's Dutch system (C.04.3)
+and open the FIDE reference. The citation says which — `(USCF 29E5 — …)`
+or `(FIDE 5.2.1 — …)` — so there is no doubt which book you are quoting.
+Both are installed with FreePair and work with no internet.
+
+For a FIDE section the dialog explains:
+
+- which score group each player was in, and whether the pair crossed
+  groups — and if so, who floated up and who floated down;
+- what colour each player was due and how strongly (absolute, strong or
+  mild), and whether they got it;
+- who received the pairing-allocated bye, and who was not allowed one
+  because they had already had it;
+- whether a player is floating in the same direction they floated in a
+  recent round.
+
+**One honest limitation for FIDE sections.** FreePair pairs them with the
+bbpPairings engine, which reports each player's situation and the pairing
+it chose, but not its internal search. So the dialog can tell you why a
+player was in a particular group, why they got a particular colour, and
+why they floated — but it cannot tell you why they were paired against
+*that particular opponent* rather than another player on the same score.
+Nothing FreePair could say about that would be more than a guess, so it
+does not say it.
+
+It is also worth knowing that some FIDE rules are *preferences*, not
+hard limits. The rules ask the engine to keep unmet colour preferences
+and repeated floats to a minimum, not to eliminate them. So a line
+saying a preference was not granted, or that a player downfloated twice
+running, is reporting a deliberate decision where something of higher
+priority took precedence — not a mistake.
+
+### The pairing bracket diagram
+
+Below the explanation, a FIDE board shows the **pairing bracket** it was
+paired in — the group of players the engine was working with at that
+point, and the pairs it made from them.
+
+- Players are listed **in the engine's seeding order** — strongest first.
+  That is how the Dutch system assigns pairing numbers before round 1, and
+  it is what the engine pairs from. It usually matches the order of the
+  pair numbers you see on the roster, but not always: a player added
+  mid-event takes the next free pair number rather than the one their
+  rating would earn, so they appear in the bracket at their playing
+  strength, not at the end.
+- **S1** and **S2** are the two subgroups the Dutch system splits a
+  bracket into.
+- Players shown in **brown moved down** from a higher score group,
+  with the score they brought with them. This is what explains a board
+  where the two players are not on the same score.
+- The badge after each rating is the colour that player was due:
+  `W`/`B` absolute, `(W)`/`(B)` strong, `w`/`b` mild, `A` none yet.
+- Any player who took the bye out of this bracket is named underneath.
+
+**Every line is drawn the same way, and that is deliberate.** The engine
+does not report how it chose between the possible opponents inside a
+bracket, so the diagram shows you which pairs were made — not which were
+"expected" and which were not. Any such marking would be a guess dressed
+up as a fact.
+
+USCF sections show a different diagram, the score-group switch diagram,
+which reflects how the USCF engine pairs. The two are not
+interchangeable.
 
 ### Adjusting pairings
 
@@ -274,10 +383,18 @@ than the displayed text.
 Half-point and zero-point byes appear in their own columns, so you can
 check them against your written list at a glance.
 
+A **Title** column sits beside the rating, matching the roster.
+
 ### Wall chart
 
 The **Wall Chart** tab shows the traditional cross-table: every player's
-round-by-round result, opponent and colour.
+round-by-round result, opponent and colour. It carries the same
+**Title** column as the standings.
+
+On the printed versions of both sheets the title column appears only
+when somebody in the section actually has a title — these tables are
+already wide, and a column of blanks would squeeze the round codes for
+nothing.
 
 ### Prizes
 
@@ -427,7 +544,7 @@ first.
 
 ## About this guide
 
-This guide describes FreePair **v0.69.20260813**. It is updated whenever a
+This guide describes FreePair **v0.70.20260814**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
