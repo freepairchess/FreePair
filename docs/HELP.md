@@ -152,6 +152,23 @@ order of players on equal ratings, so it is worth seeing next to the
 pair numbers rather than having to go looking for it. Untitled players
 leave the cell blank. Turn it off in the chooser if you do not want it.
 
+### The roster sorts itself before round 1
+
+Until the first round is paired, the roster keeps itself in seeding
+order. Add a player and they drop into their proper place rather than
+onto the end; correct someone's rating, or give them a title, and they
+move accordingly. Equal ratings are broken by the section's own rules —
+including the title step on FIDE sections — so what you see is the
+order the event will actually pair on.
+
+Refreshing ratings re-sorts the roster the same way.
+
+**Once a round is paired this stops**, and pair numbers are fixed for
+the rest of the event. They have to be: the rounds already played refer
+to players by those numbers, so renumbering would change who is
+recorded as having played whom. Editing a player after that point still
+works — the number just stays put.
+
 ### Check-in
 
 Some events pair only players who have physically arrived. Turn on
@@ -224,6 +241,24 @@ plays whom.
 This matters more than it sounds: in round 1 everyone is on zero and
 nobody is owed a colour, so the seeding order is the **only** thing
 deciding the boards.
+
+### Pairing as quads
+
+**Pair as quads** divides a section into four-player round-robin groups,
+seeded by rating: the top four, the next four, and so on. Each quad is
+paired immediately — all three rounds at once, since in a four-player
+all-play-all every game is known from the start. Any remainder becomes a
+Swiss group you pair normally.
+
+**A section of exactly four players is simply converted into a quad.**
+It keeps its name, no new sections appear, and nothing is deleted — the
+section already *is* the quad, so there is nothing to divide. Larger
+sections do get split, and the original is kept but soft-deleted so its
+players do not count twice; you can undo that by restoring it and
+removing the generated sections.
+
+Either way the players are re-seeded by rating first, because the
+round-robin schedule is built around the top seed.
 
 ### Reviewing before you commit
 
@@ -395,6 +430,41 @@ On the printed versions of both sheets the title column appears only
 when somebody in the section actually has a title — these tables are
 already wide, and a column of blanks would squeeze the round codes for
 nothing.
+
+### Crosstable
+
+Round robin, double round robin and quad sections get a **📄 Print
+crosstable** button, on both the **Pairings** and **Wall Chart** tabs.
+It produces the traditional all-play-all grid: one row and one column
+per player, where the cell where a row meets a column is what that
+row's player scored against that column's player — **1**, **½** or
+**0** — followed by score and tiebreaks.
+
+- **Rows and columns are both in pairing-number order**, and the
+  opponent columns are headed by those same numbers, so the grid is
+  read number against number.
+- **The diagonal is shaded**, because a player cannot meet themselves.
+  That is different from a blank cell, which means the game has not
+  been played yet.
+- **A double round robin shows both games in one cell**, in round
+  order — so `1 ½` means a win in the first meeting and a draw in the
+  second.
+- **Title, name and rating share one column** — "GM He, Anthony 2500" —
+  as on the pairing sheet. Whether the title and rating appear follows
+  your pairing-column settings, so the two reports describe a player the
+  same way. The score, colour and due-colour options are ignored here:
+  colours vary by opponent on a crosstable, and the total already has
+  its own column.
+
+The button does not appear on Swiss sections. In a Swiss the players
+never all meet, so a crosstable would be mostly empty; the wall chart
+is the report for that format.
+
+**The crosstable also shows in a window.** Open the Pairings or Wall
+Chart tab in a window (**⧉ Open in Window**) and the crosstable appears
+above the grid, with a **Show crosstable** tick box to hide it. It is on
+by default for round robin and quad sections, because for those formats
+it is usually the view you want — the round below is one slice of it.
 
 ### Prizes
 
