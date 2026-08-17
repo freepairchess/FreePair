@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.70.20260814**
+**Applies to FreePair v0.71.20260817**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It imports SwissSys event files, pairs Swiss and round-robin sections,
@@ -42,10 +42,16 @@ runtime and both pairing engines. There is nothing to install
 separately.
 
 FreePair can check for new versions on startup. Turn this on or off
-under **Settings → Auto-update → Check for updates on startup**, or use
+under **Settings → Updates → Check for updates on startup**, or use
 **Check now** at any time. If you want early builds, tick **Include
 pre-release builds (beta channel)** — otherwise you only see stable
 releases.
+
+When an update is found, a banner appears across the top of the window.
+**Release notes** opens that release's page in your browser, so you can
+read the whole thing and keep it open while you decide. **Update now**
+downloads it and restarts FreePair. There is nothing to save first —
+FreePair writes your event as you work.
 
 Your current version is shown in Settings, and in the main window title
 bar.
@@ -182,6 +188,110 @@ For team events, **Team section** enables team handling, and
 **Team Setup** and **Team Lineup** define the teams and board order.
 FreePair can avoid pairing teammates against each other; where the rules
 require it, that preference is relaxed rather than broken.
+
+### Merging sections
+
+Large opens often run one event on two schedules — a 3-day and a 2-day
+that starts a day later and plays its early rounds faster — and join them
+into a single field partway through. **⚖ Merge Sections** does that. It
+is on **Event Operations**, and on a section's **Pairing Operations**
+where that section starts already ticked.
+
+The dialog lists every section with its pairing engine, pairing rule,
+scheduled rounds, rounds paired so far and player count. Tick the ones to
+combine.
+
+Sections can only merge when they agree on the things that would
+otherwise contradict each other: the same pairing engine, the same
+pairing rule, the same number of scheduled rounds, and — once any of them
+has been paired — the same number of rounds played. If a combination is
+refused the dialog says exactly which differences are in the way, so you
+can see whether it is fixable.
+
+**Every result must be in.** A section with a game still unscored cannot
+be merged, and the dialog names the section and the rounds concerned. The
+merged section pairs its next round straight away, and that pairing reads
+scores, colours and float history from the rounds before it — so one
+missing result does not simply leave a gap on the wall chart, it pairs
+somebody against the wrong opponent. A forfeit counts as a result;
+an unplayed game does not. The **Results** column shows each section's
+state before you tick anything.
+
+**Different time controls are fine.** A 2-day schedule playing quicker
+early rounds is the reason this exists.
+
+Everything is carried across: rosters, pairings, results and byes.
+Pairing numbers are re-issued across the combined field, and every
+reference to them moves too, so games stay attached to the players who
+played them.
+
+**Players entered on more than one schedule** are found for you, matched
+by USCF or FIDE ID where they have one and by exact name otherwise — a
+nine-round open on three schedules can have the same player entered three
+times, having lost their way through the first, re-entered on the second
+and finally started the third.
+
+They are listed in a table: one row per player, one column per section
+being merged. The row shows their **name, ID and rating** so you can
+satisfy yourself these really are one person before withdrawing anybody.
+**Matched on** tells you what the match rests on — an ID is good
+evidence, a name alone is a guess and is flagged.
+
+In each section's column you will see either:
+
+- **Not in this section** — they never entered it; or
+- a **Withdrawn** tick box.
+
+**Tick Withdrawn until exactly one section is left unticked.** That is
+the section they carry on in. The last column, **How to continue**, says
+what the ticks currently mean:
+
+- _Continues in merged section as a player from {Section}_ — settled.
+- _Will withdraw from merged section_ — every section ticked. Right for
+  someone who withdrew from every schedule and never came back.
+- _Can't continue — active in multiple sections_ — more than one section
+  is unticked. Merge stays blocked until you resolve it, because two
+  active records would put the same person on two boards in the next
+  round, against two different opponents.
+- _They are different players_ — the **Different people** box is ticked.
+
+**These tick boxes read one way.** They describe the merged section and
+nothing else. A box starts ticked where that section already has the
+player withdrawn, because that is your own most recent statement about
+them and is nearly always still what you want — but it is only a starting
+point. Unticking it carries that appearance forward into the merged
+section **without** reinstating them in the section they left; ticking a
+box withdraws them from the merged field **without** touching their
+record in the section they played. The original sections are kept
+untouched and marked deleted, and the merge never writes back to them.
+
+Because the file usually already says which appearance is live, most rows
+in this table need nothing from you.
+
+If the match is wrong — two juniors who share a name, or two players
+issued one ID — tick **Different people**. They then all carry on as
+normal players, and nobody is withdrawn. The Withdrawn boxes on that row
+grey out, because with no duplicate to resolve there is nothing left for
+them to say.
+
+Every appearance that is not carrying on is renamed
+`{Player}-{Section}-Withdrew` and marked withdrawn. **Nothing is lost
+either way**: every appearance stays in the merged section and keeps the
+games it played, so those games still count and still rate.
+
+The suffix is only for players who appear more than once — it exists to
+explain why one person has several rows. Somebody who simply withdrew
+from a single section keeps their name unchanged.
+
+The merged section takes its settings — tiebreaks, prizes, time control,
+first board, acceleration — from whichever source section you choose,
+defaulting to the first.
+
+**The original sections are kept but marked deleted.** They stay
+available to look at and to restore, but they are left out of the USCF
+and FIDE rating reports and out of publishing, because their games are
+now being reported by the merged section and would otherwise be counted
+twice.
 
 ### Moving players between sections
 
@@ -373,6 +483,25 @@ Deleting pairings for the whole event at once is possible, and is
 deliberately harder to do by accident: the confirmation is red, and
 **Cancel** is the default button, so pressing Enter backs out.
 
+### PGN headers for recording games
+
+**♟ PGN headers** on the Pairings tab writes a `.PGN` file containing the
+game headers with **no moves** — choose **This round** or **All rounds**.
+Open the file in a chess program, find the game, and type the moves in.
+
+The point is that everything tedious is already filled in: event name,
+section, date, time control, board number, both players' names, titles,
+ratings, and their USCF, FIDE and CFC IDs. That metadata is identical for
+every game of a round, and nobody should key it eighty times.
+
+Files are named `{Event}_{Section}_Round{x}_Header.PGN`, or `AllRounds`
+in place of the round for the whole-event file.
+
+Games that have not been played yet carry a result of `*`, so you can
+export before the round starts and fill games in as they finish. Byes are
+not included — there is no game to record. A player with no rating gets
+no rating tag rather than a zero, which would read as a rating of nought.
+
 ### Round-robin sections
 
 Round-robin sections are scheduled rather than paired: every player meets
@@ -420,11 +549,38 @@ check them against your written list at a glance.
 
 A **Title** column sits beside the rating, matching the roster.
 
+**Round codes name the opponent's place in the standings.** `W7B` means
+a win with Black against whoever is standing 7th — the row numbered 7 in
+the **#** column, on the same sheet. That column is always shown, and is
+deliberately separate from **Place**: places tie, so Place reads "2-6"
+against the first of five players and is blank against the rest, while an
+opponent reference has to name exactly one row. The filter box searches
+it too, so typing `7` finds the player a code points at.
+
+This is how US Chess prints its published crosstable and how NA Chess Hub
+shows standings, so a player comparing the three sees the same number in
+all of them.
+
+**Team standings** carry the same **#** column, for the same reason: team
+places tie just as player places do, and four teams level on match points
+all show "1-4".
+
 ### Wall chart
 
 The **Wall Chart** tab shows the traditional cross-table: every player's
 round-by-round result, opponent and colour. It carries the same
 **Title** column as the standings.
+
+**Here the round codes name the opponent's pair number**, not their
+standing. The wall chart is ordered by pair number and shows that column,
+so a reference points at a row you can find on the page; the standings
+are ordered by score, where a pair number would point at nothing visible.
+The games are the same on both sheets — only the way the opponent is
+identified differs.
+
+Pair numbers are what the pairing engine and the rating report use, so
+they are what appears in the file you send to US Chess. Nothing about
+this display choice changes what is submitted.
 
 On the printed versions of both sheets the title column appears only
 when somebody in the section actually has a title — these tables are
@@ -488,6 +644,30 @@ column too wide for the page.
 Under **Settings → Printing**, **Use ASCII-only output** replaces the ½
 glyph with plain text for printers and downstream systems that cannot
 render it.
+
+### The event QR code
+
+When the event has NA Chess Hub details filled in, pairings, standings
+and wall chart reports print a small QR code in the top-right corner,
+labelled **Scan for pairings**. It opens the event's page on a phone, so
+a player can check where they are sitting without pushing to the front
+of the crowd around the wall chart. The page needs no sign-in.
+
+The QR appears **only** when the event has both a hub event ID and a
+passcode. Strictly the page needs just the ID, but an ID with no
+passcode is usually one typed in and never linked to a real hub event —
+printing a code that leads nowhere is worse than printing none, because
+the player has walked away before finding out. Local events simply get
+no QR, which is not an error.
+
+Roster, prizes, byes and the crosstable do not carry the QR. Those are
+your documents rather than the ones players crowd around.
+
+The same code appears in the **popped-out Pairings, Standings and Wall
+Chart windows**, with a **Show event QR** tick box to hide it. TDs often
+throw those windows onto a projector or a large screen, and a QR on the
+big screen can be scanned from across the hall by a dozen people at
+once.
 
 ---
 
@@ -569,23 +749,65 @@ affiliate and TD details it cannot infer.
 
 ---
 
+## Filing the FIDE rating report
+
+**🌍 Export FIDE Rating Report** writes a TRF report for the selected
+section, ready to send for FIDE rating. FreePair fills in everything the
+event already knows and asks you for the rest: host city, federation,
+chief arbiter and any deputies. Those are remembered for next time.
+
+**This is not the same as "Export Sections to TRF."** Both write a
+`.trf` file, but that one is *engine input* — what FreePair hands to the
+pairing engine — and it contains only the players still being paired,
+numbered the way the engine wants them. The rating report contains every
+player who played a game, including those who withdrew, numbered the way
+your wall chart numbers them, and carries the FIDE IDs, federations,
+titles and birth dates FIDE rates people by.
+
+If any player has no FIDE ID, the dialog lists them before you export.
+You can still export — their games appear in the report — but **FIDE
+cannot rate a player it cannot identify**, so it is worth fixing the IDs
+first if you can.
+
+FreePair knows which ID column is which. Event files store a player's
+`ID` and sometimes `ID2` without recording which federation each belongs
+to, so FreePair works it out during ID verification. The FIDE report
+takes the FIDE ID from whichever column actually holds it, and the USCF
+report does the same in reverse. Neither will guess: if verification has
+not established what a column holds, the ID is left out rather than
+filed against a stranger's record.
+
+The dialog separates two things that look the same in the finished file:
+
+- **No FIDE ID** — the player genuinely has none, or verification has
+  confirmed their IDs are not FIDE ones. Nothing to fix in FreePair.
+- **IDs not verified** — the player has an ID, but FreePair has not
+  established what kind it is, so it will not be reported. **Cancel, run
+  Verify IDs and ratings on the roster, then export again.** These
+  players may well have a FIDE ID sitting in the file.
+
+Ratings reported are FIDE ratings. If a player has a FIDE rating
+recorded, that is what is sent; a player's USCF rating is never reported
+to FIDE, and a player with no FIDE rating is reported as unrated.
+
+---
+
 ## Settings
 
-Settings apply to the application, not to one event.
+Settings apply to the application, not to one event. They are split
+across tabs:
 
-- **Display** — theme, and the size of app text and grid text.
-- **Tournament files** — where events are saved, and whether you are
-  prompted for a folder each time.
-- **Pairing** — pairing-engine behaviour, and re-showing the
-  pairing-engine notice.
-- **Pairing Engines** — the USCF and FIDE engine binaries. These are
+- **Files** — where events are saved, and whether you are prompted for
+  a folder each time.
+- **Pairing** — pairing-engine behaviour, re-showing the pairing-engine
+  notice, and the USCF and FIDE engine binaries. The binaries are
   bundled with the installer and normally need no attention.
-- **Online player database** — the service used to verify IDs and
-  ratings.
-- **Online publishing** and **NA Chess Hub URL** — publishing defaults
-  and the service address.
-- **Printing** — ASCII-only output.
-- **Auto-update** — update checks and the release channel.
+- **Display** — theme, the size of app text and grid text, and
+  ASCII-only output for printing.
+- **Online** — publishing defaults, the NA Chess Hub address, and the
+  service used to verify IDs and ratings.
+- **Updates** — update checks, the release channel, and your current
+  version.
 
 ---
 
@@ -614,7 +836,7 @@ first.
 
 ## About this guide
 
-This guide describes FreePair **v0.70.20260814**. It is updated whenever a
+This guide describes FreePair **v0.71.20260817**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
