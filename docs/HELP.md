@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.71.20260817**
+**Applies to FreePair v0.72.20260818**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It imports SwissSys event files, pairs Swiss and round-robin sections,
@@ -97,6 +97,20 @@ and the defaults new sections inherit. Time control and location appear
 on printed reports, so they are worth filling in even though pairing does
 not use them.
 
+These settings are grouped into tabs, because there are more of them than
+fit comfortably on one screen:
+
+- **Basic** — title, dates and venue; the format, time control, rounds,
+  half-point byes allowed, rating system, pairing rule and pairing
+  engine; and the organizer's name and ID.
+- **Team Event** — team and match size and the default board order. Turn
+  on **Team Event** first; the rest of the tab stays hidden until you do.
+- **Results Publishing** — the NA Chess Hub event ID and passcode, and
+  whether to check NA Chess Hub for roster changes before pairing.
+- **Starting Boards** — the first physical board number for each section.
+
+Everything saves as you type, on whichever tab you are on.
+
 ### Sections
 
 Each section is paired independently and has its own roster, rounds,
@@ -112,9 +126,20 @@ standings and prizes.
   watch two sections side by side.
 
 Sections are laid out so that no two share a physical board number.
-FreePair recommends starting board numbers automatically; you can
-override them on the section's Overview tab or with **Renumber section
-starting boards**.
+FreePair works out each section's starting board from the ones before it
+and **uses that recommendation automatically** — pairing a round does not
+stop to ask. Sections therefore stack cleanly with no setup at all, which
+is what most events want.
+
+If you do set a board yourself — on the section's Overview tab, on the
+event page's **Starting Boards** tab, or with **Renumber section starting
+boards** — that number is yours and FreePair will not move it. A section
+put in a different room on board 40 stays on board 40 for the rest of the
+event. This is the distinction that matters: FreePair fills in the blanks
+and never overrules a number you typed.
+
+To be asked once per section each round instead, turn off **Always use
+the recommended starting board** in Settings.
 
 ---
 
@@ -711,11 +736,27 @@ Clicking a section's badge opens the review for that section; clicking
 the header total opens the whole event. You review every change before
 anything is applied.
 
-Only changes you can act on are counted. A walk-up entrant who is not on
-NA Chess Hub is a permanent difference, not a pending change, so it does
-not sit there pinning the badge on forever. If a check fails, the last
-known counts stay on screen rather than resetting to zero — "no changes"
-and "could not check" are not the same thing.
+Most of what is counted is something you can act on. A walk-up entrant
+who is not on NA Chess Hub is a permanent difference, not a pending
+change, so it does not sit there pinning the badge on forever. If a
+check fails, the last known counts stay on screen rather than resetting
+to zero — "no changes" and "could not check" are not the same thing.
+
+**Bye requests that arrive too late** are the exception. If a player
+asks on NA Chess Hub for a bye in a round you have already paired, it
+cannot be granted as asked — the pairings for that round already exist.
+FreePair reports it anyway, marked **Too late** and with no Apply
+checkbox, because you need to know the player asked. The note tells you
+what the player actually got for that round, which is often not the same
+thing: a player who asks for a half-point bye after the round is paired
+may already have been given a full-point bye by the pairing, or may have
+played a game. Your options are to delete the round and pair it again,
+or to tell the player the request came in after pairing.
+
+A request that the file already satisfied is **not** reported. If the
+player asked for a half-point bye and got exactly that, the two agree,
+even though the request itself may no longer appear in the roster's HPB
+column once the round has been scored.
 
 Turn the alerts on or off, and set how often they run, under
 **Settings → Alert when NA Chess Hub roster has updates to sync**.
@@ -836,7 +877,7 @@ first.
 
 ## About this guide
 
-This guide describes FreePair **v0.71.20260817**. It is updated whenever a
+This guide describes FreePair **v0.72.20260818**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
