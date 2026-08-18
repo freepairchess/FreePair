@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.72.20260818**
+**Applies to FreePair v0.73.20260818**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It imports SwissSys event files, pairs Swiss and round-robin sections,
@@ -89,6 +89,16 @@ browse events published to NA Chess Hub.
 FreePair reads SwissSys files and writes them back in the same format,
 preserving anything it does not itself manage. An event created in
 SwissSys can be opened in FreePair and vice versa.
+
+### Events from an online registry
+
+Creating an event from an online registry, and opening a cloud-saved
+one, both ask for an **Event ID** and a **Passcode**. Once you have
+entered the event ID, the **Passcode** caption becomes a link to that
+event's own page, where the passcode is shown — click it if you do not
+have the passcode to hand, and copy it from there rather than hunting
+through email. Both fields also have a 📋 button to paste from the
+clipboard.
 
 ### Event details
 
@@ -338,7 +348,9 @@ much less disruptive to get the pool right first.
 
 **Pairing Operations** pairs the next round for the section. To pair
 every section at once, use the pair-all-sections action from the event
-page.
+page. **Sync Roster with NACH** is on this menu as well as the Roster
+tab's **Roster Update** menu, since checking for late entries is
+normally the step just before pairing.
 
 For the first round you may be asked who plays White on board 1, and how
 the field should be seeded. Later rounds are determined by the pairing
@@ -411,6 +423,32 @@ rather than a column of its own, so it costs no extra width. The
 pairing-columns chooser can turn it off per side.
 
 Nothing is written to the event until you accept.
+
+### Pairing sheet columns
+
+Which columns appear, in what order and under what heading, is yours to
+set. Open it from **Pairing Operations → Advanced options** to configure
+the on-screen grid and the printed sheet side by side, or from
+**Page setup → Columns…** when the report is the pairing sheet, to
+adjust the printed sheet alone.
+
+The two views want opposite things of the result columns, and FreePair
+sets them up that way:
+
+- **On screen** the **Result / Score Selector** is shown. That is the
+  dropdown you enter results with.
+- **On paper** the two **write-in** columns are shown instead — a blank
+  box flanking each player, for the scorer to fill in by hand. The
+  selector is left off, because on a blank sheet it prints a third,
+  empty result column that belongs to neither side.
+
+If you tick or untick one of those three against the recommendation,
+FreePair explains why it is unusual and asks you to confirm. Every other
+column is a matter of taste and is never questioned.
+
+**Copy from grid** copies the grid's arrangement to the printed sheet,
+but deliberately leaves the result columns as they are, so copying a
+layout across cannot cost you the write-in boxes.
 
 ### Why this pairing?
 
@@ -501,12 +539,15 @@ to the current session.
 ### Unpairing a round
 
 A round can be deleted if you paired it too early or the roster was
-wrong. FreePair tells you how many recorded results you are about to
-lose, and takes a checkpoint first so the round can be recovered.
+wrong. The confirmation is deliberately hard to dismiss by accident: it
+is red, **Cancel** is the default button so pressing Enter backs out,
+and the button that goes ahead is red too. If results have already been
+entered for that round, the warning says how many — those have to be
+typed in again from the score sheets if you re-pair. A checkpoint is
+taken first, so the round can still be recovered from **Earlier
+versions**.
 
-Deleting pairings for the whole event at once is possible, and is
-deliberately harder to do by accident: the confirmation is red, and
-**Cancel** is the default button, so pressing Enter backs out.
+Deleting pairings for the whole event at once works the same way.
 
 ### PGN headers for recording games
 
@@ -761,6 +802,13 @@ column once the round has been scored.
 Turn the alerts on or off, and set how often they run, under
 **Settings → Alert when NA Chess Hub roster has updates to sync**.
 
+**Play a sound when the count changes** sits under that option and is
+off until you turn it on. It uses your computer's own notification
+sound, so it follows the system volume and Do Not Disturb — handy when
+you are working on pairings and not watching the badge. It plays in
+either direction, since an entry being withdrawn is worth hearing about
+too, and it stays quiet when your own sync clears the count.
+
 ### Publishing pairings and results
 
 Publishing puts pairings and results on the event's public page so
@@ -877,7 +925,7 @@ first.
 
 ## About this guide
 
-This guide describes FreePair **v0.72.20260818**. It is updated whenever a
+This guide describes FreePair **v0.73.20260818**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
