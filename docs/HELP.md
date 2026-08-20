@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.73.20260818**
+**Applies to FreePair v0.74.20260819**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It imports SwissSys event files, pairs Swiss and round-robin sections,
@@ -217,6 +217,23 @@ Some events pair only players who have physically arrived. Turn on
 **Check-In Player** and **Undo Check-In**. Players who have not checked
 in are left out of the pairing pool.
 
+**Checking in on site and checking in online.** If your event is on NA
+Chess Hub, players can check themselves in there, and a roster sync
+brings those check-ins across. Most players still check in with you at
+the desk, and the website has no way of knowing that.
+
+So a sync **never clears a check-in you made**. It reports the
+difference — "checked in here, but not on NA Chess Hub" — as a note you
+cannot apply, in the same way it reports a walk-up entrant the site has
+never heard of. Your desk is the authority on who is standing in the
+room.
+
+If somebody is genuinely not there, clear their check-in on the roster.
+That stays a deliberate click, because the two mistakes are not equal: a
+player wrongly marked present is spotted at the board and costs a
+minute, while a player wrongly marked absent is not paired at all, and
+usually nobody finds out why until the round has started.
+
 ### Teams
 
 For team events, **Team section** enables team handling, and
@@ -423,6 +440,67 @@ rather than a column of its own, so it costs no extra width. The
 pairing-columns chooser can turn it off per side.
 
 Nothing is written to the event until you accept.
+
+### Checking a round, a section, or the event
+
+There are three ways in, all doing the same job at different sizes:
+
+- **🔍 Check this round** — in the pairing preview, on the round you are
+  about to accept.
+- **🔍 Check Section** — Pairings tab → *Pairing Operations*. Every round
+  this section has, plus the things no single round can answer.
+- **🔍 Check Event** — *Event Operations*. Every section, plus the checks
+  that compare them. Worth a click before you print or publish.
+
+It looks for:
+
+- The same player on two boards, or both paired and given a bye.
+- A withdrawn or deleted player who still has a game.
+- A pairing against somebody who is not on the section's roster, or a
+  player paired with himself.
+- An active player with neither a game nor a bye this round.
+- A **rematch** — it names the round the two already met.
+- A **third game in a row with the same colour** (USCF 29E5f). A bye in
+  between does not break the run, because a bye is not a game.
+- Two games on one board, or a board below the section's own range.
+- A **second full-point bye**, or more half-point byes than the event
+  allows.
+- A pairing your section is set to avoid — same team, same club, or a
+  do-not-pair request the engine could not honour.
+- A round still missing results, and results entered for a later round
+  while an earlier one is unfinished.
+- The **same person entered in two sections** and still active in both.
+- A section that has fallen behind the rest of the event.
+
+#### It shows what it checked, not just what it found
+
+The panel has two tabs. **Found** lists the problems, ranked **Must
+fix**, **Check** and **Note**, worst first. **Checked** lists *every*
+check with what it examined — "Clear — 24 pairings checked", "2 found —
+48 colour assignments checked".
+
+That second tab is the point on a healthy event. "No issues found" asks
+you to take the software's word for it; it also hides the case that
+should worry you most, which is a check that never ran. Each line says
+so plainly when it did not apply — "Not checked — this section does not
+require check-in", "Not checked — the event has only one section" — and
+a count far smaller than the round in front of you is how you catch a
+check that quietly did nothing.
+
+The severity bands are meant honestly: "Must fix" is for things that
+cannot be played as written, not for anything unusual. A list that
+shouts about everything is one you would learn to ignore.
+
+**It never blocks you, and it never changes anything.** Even with a
+"Must fix" on screen you can commit the round and publish it — you may
+have a good reason, and there is no time to argue with software at
+9:02am with a room waiting. FreePair reports; you decide. Equally,
+nothing is repaired for you: no colour is flipped and no pairing is
+rewritten behind your back.
+
+**Copy report** puts the verdict, everything found and the full list of
+checks on the clipboard, which is the quickest way to send it to another
+TD or keep it with your notes.
 
 ### Pairing sheet columns
 
@@ -711,6 +789,166 @@ Under **Settings → Printing**, **Use ASCII-only output** replaces the ½
 glyph with plain text for printers and downstream systems that cannot
 render it.
 
+### The wallboard
+
+**🖥 Wallboard** at the top right of the window, beside **Help** — or
+**Event Operations → 🖥 Wallboard** — opens a full-screen display for a
+projector or a spare monitor — the screen in the skittles room that
+stops players crowding round the paper on the wall.
+
+**Setting it up.** A short dialog opens first, and what you choose is
+remembered for next time:
+
+- **Sections** — which sections appear, and whether each shows pairings,
+  standings, or both. Untick a side-game or a one-round exhibition to
+  keep it off the screen entirely.
+- **Pairing columns** — the wallboard's own, separate from the grid and
+  the printed sheet. A projector read across a room has far less width
+  than a sheet of paper, so fewer columns and larger type. **Rule lines
+  between cells** is on by default and can be turned off here.
+- **Standings columns** — place, player, rating, score, optionally a cell
+  per round, and optionally the section's own tiebreaks. Both of the last
+  two are off by default: at this size they crowd out the names for
+  numbers most of the room is not reading.
+
+  **Round results** put `W18W`, `D7B`, `H---` on the screen, the same
+  cells as the Standings grid, with opponents cited by their *standings
+  position* so a player can find the row they point at. It is the most
+  expensive thing you can add — one narrow column per round, growing all
+  event, on the screen with the longest names. Worth it in a four- or
+  five-round event, where players read across their own row to check the
+  board agrees with them; think twice in a nine-rounder.
+
+  **Rule lines between cells** is on this tab too, and on by default.
+- **Display** — rows on each screen, text size, and typeface.
+- **Timing** — seconds on each screen.
+
+**About the rule lines.** Each column tab carries its own tick, and both
+start on. A wallboard is read from a distance and at an angle by
+somebody hunting one name among sixty; ruled cells keep the eye on a row
+all the way across a wide screen, which is why paper pairing sheets have
+been ruled for a century. They matter more on standings than pairings,
+and more again once round results are shown. Turn them off if you want a
+cleaner board — it does photograph better — but check from the back of
+the room first. **Restore default columns** puts them back.
+
+Both column tabs have a **Restore default columns** button. Worth knowing
+if the screen does not look the way this guide describes: your saved
+choices are remembered from last time, and they win over any default
+FreePair ships later. That button is how you get back.
+
+**Closing the panel keeps your settings.** It says at the top that they
+are remembered, and they are — **Close**, Escape and the window's own
+close button all keep what you have ticked; the only difference is that
+no wallboard opens. **Restore default columns** is the way to undo.
+
+Set the text size by walking to the back of the room and reading the
+screen from there — it is the only test that matters. A condensed
+typeface fits a long name that would otherwise be cut, and a heavier one
+survives a washed-out bulb; leave it on **System default** unless the
+screen tells you otherwise.
+
+If your choices would leave the screen blank — every section switched
+off, or no pairing columns ticked — the dialog says so before you start,
+rather than leaving you looking at an empty projector.
+
+It then cycles by itself, updating as you pair and score, and needs no
+attention once it is up.
+
+A long section is split across several screens rather than shrunk or
+scrolled, and the header says **Screen 2 of 3** so a player who arrives
+part-way through knows to wait rather than assuming their name is
+missing. Byes are listed with the boards, since a player with a bye is
+looking for their name too.
+
+**It uses columns you choose.** The wallboard has its own pairing and
+standings columns, set in the dialog — deliberately not shared with the
+printed sheet, because a projector read at thirty feet and a sheet of A4
+read at arm's length have very different amounts of room.
+
+**Pairings read outward from the result.** White's detail is printed
+backwards — `[2.0 WB w] 1850 Stone, Andrew` — so that with the column
+right-aligned it is the *name* that sits next to the result, not the
+bracket. Black is printed the usual way on the other side. The row then
+reads the way a pairing sounds when it is called: the two names either
+side of the score, with ratings and colour history trailing off towards
+the edges of the screen. The result column is given extra room on both
+sides for the same reason — a score squeezed against a long name gets
+read as part of it.
+
+While it is open you can carry on pairing and scoring in the main
+window. At the screen itself:
+
+- **Esc** closes it.
+- **Space** pauses, to leave a section up while people copy it down.
+- **← →** step back and forward a screen.
+- **F11** switches between full screen and an ordinary window.
+
+**Two screens or one.** If you have a second display, the wallboard
+opens full screen on it and leaves your working window alone. If you
+have only one, it opens as an ordinary window you can move and resize —
+a full-screen display covering the grid you are trying to enter results
+into would be no use to anybody. Press **F11** when you are ready to go
+full screen, and again to come back.
+
+Standings only appear once a round is complete — before that they would
+be a list of zeroes in seeding order.
+
+### Putting the wallboard on a TV or on phones
+
+**📺 Share…** — next to the Wallboard button at the top right — turns the
+board into a web page that anything on the same network can open. It is
+read-only: people can look, and cannot change the event.
+
+Press **Start sharing** and FreePair shows an address like
+`http://192.168.1.50:8080/` with a QR code beside it. Sharing stays on
+until you turn it off or close FreePair, and the page updates itself as
+you pair and score — nobody needs to refresh anything.
+
+**It is the same board as the projector.** The shared page and the
+full-screen wallboard read one set of settings, so they always show the
+same sections, the same columns and the same rotation. **⚙ Wallboard
+settings…** in this window opens the same setup panel described above.
+Changes reach anyone watching within a few seconds; nobody has to
+reload, and you do not need to stop and restart sharing.
+
+What to do with the address depends on the screen:
+
+- **A smart TV or a Fire TV stick** — open the TV's own web browser
+  (Silk on a Fire TV, *Internet* on a Samsung, *Web Browser* on an LG)
+  and type the address. Nothing to install.
+- **A Chromecast, or a TV with Chromecast built in** — press **Open in
+  my browser**, then use **Chrome or Edge's own Cast button** (⋮ menu →
+  Cast) and pick the Chromecast. The browser does the casting; FreePair
+  only supplies the page. This is also the route for Google TV and
+  Android TV boxes, which have Chromecast built in but no browser.
+- **Players' phones** — print the QR code and tape it up, or put it on
+  the projector. Anyone on the network can then read the pairings from
+  where they are sitting instead of crowding the wall.
+
+**Why FreePair does not have its own Cast button.** Casting to a
+Chromecast from a desktop program is not something the Chromecast
+permits — Google publishes the necessary kit for phones and for Chrome,
+and for nothing else. Amazon abandoned its equivalent years ago, and a
+Fire TV was never a cast target in the first place. A web address, on
+the other hand, is opened by Fire TV, Samsung, LG, every phone in the
+room, *and* by Chrome, which then casts it for you. Handing you a URL
+reaches more screens than a Cast button could.
+
+**If nothing can reach it.** Most hotel and venue Wi-Fi deliberately
+stops guests seeing each other, which blocks this — and blocks casting
+too, so it is not something FreePair can work around. The reliable fix
+is to stop using their network: turn on the laptop's own hotspot
+(Windows: **Settings → Network & Internet → Mobile hotspot**) and join
+the TV or the Chromecast to that. A phone hotspot does just as well. The
+first time you start sharing, Windows may ask whether to allow FreePair
+through the firewall — say yes, or nothing outside the laptop will
+connect.
+
+If the first address does not work, the window lists the others. A
+laptop that is on Wi-Fi *and* in a dock has more than one, and only one
+of them is on the same network as the TV.
+
 ### The event QR code
 
 When the event has NA Chess Hub details filled in, pairings, standings
@@ -745,14 +983,33 @@ There is no "unsaved changes" state to worry about. Every change is
 written to your event file as you make it, and the **Save event** dialog
 exists mainly to tell you where that file is.
 
-That dialog also offers:
+The dialog is split into three tabs, because a save and a backup are
+different things and mixing them in one list is what made TDs unsure
+which file they were still working in:
 
-- **Rename (Save As)…** — give the event a new file name or folder. From
-  then on every change goes to the new file; the old one is left exactly
-  as it is.
-- **Save a copy…** — write a frozen snapshot elsewhere while you keep
-  working in the current file.
-- **Earlier versions…** — open a checkpoint.
+- **Save** — where the event file is, and **Rename (Save As)…** if you
+  want the event to carry on in a different file. Renaming leaves the old
+  file exactly as it is; from then on every change goes to the new one.
+- **Backup** — write a frozen snapshot, either to a folder on this
+  computer or to NA Chess Hub. A backup never becomes the file you are
+  working in.
+- **Earlier Versions** — open one of the checkpoints FreePair takes
+  automatically.
+
+Every backup confirms what it did with **two links**: the backup it just
+wrote, and the file you are *still working in*. Click either one and
+FreePair shows it in its folder, or — for a cloud backup — opens the
+event's file list on NA Chess Hub. Two links rather than one because the
+question a backup raises is "which file am I in now?", and naming only
+the backup answers half of it.
+
+The backup link carries the caveat that matters: the snapshot is frozen
+at the moment you took it and will not follow later changes.
+
+Two things to know about the NA Chess Hub link: the copy there is a
+backup, not a publish — it does not show pairings to spectators — and you
+have to be **signed in as the event organizer or a TD for that event** to
+see the file at all.
 
 ### Earlier versions and undo
 
@@ -761,6 +1018,76 @@ players, deleting a section — FreePair quietly saves a checkpoint. You
 can open one to compare against your current event, or go back to it.
 
 **↶ Undo** and **↷ Redo** cover ordinary editing within a session.
+
+### The decision log
+
+**Event Operations → 📓 Decision Log** keeps a record of the
+discretionary calls you make, with the reason you gave. It covers:
+
+- Everything you change in the **pairing preview** — swapping colours,
+  swapping boards, moving a player between seats, moving the full-point
+  bye, turning a pairing into byes. A swap you made by overriding the
+  rematch warning is recorded as exactly that.
+- A **withdrawal** or a **reinstatement**.
+- A **result changed after one had already been entered**.
+- **Byes** granted, removed or changed.
+- **Moving players** to another section.
+- **Deleting** a round, a section's rounds, or a section.
+- **Renumbering** starting boards.
+
+When you make one of these calls FreePair asks you why. **You can always
+skip.** A prompt you cannot dismiss only ever gets nonsense typed into
+it, which is worse than a blank, and a reason can be added later: any
+entry without one shows *"No reason given — click to add one"*, and
+clicking it opens the box.
+
+For the pairing preview, the note you type into the **TD manual
+override** box *is* the reason — it is not asked twice. If you skipped
+that note, or changed something that does not raise it, you are asked
+once when you accept the round, covering everything still unexplained.
+If you **cancel** the preview, nothing is recorded, because the round
+never existed.
+
+Ordinary work is deliberately not recorded. Entering a result for the
+first time, editing a phone number, checking a player in — none of that
+appears. A log of everything is a log nobody reads.
+
+The log is **saved inside your event file**, so it survives closing the
+event, a restart, or a crash — which is exactly when you would want it.
+
+**Entries go away with the thing they describe.** Undo removes an entry
+along with the change it undid, and deleting a round removes the
+decisions you made about that round — the entry recording the deletion
+says how many went with it. The log always tells you what your event
+actually contains, and never claims something that is no longer there. A
+log that is confidently wrong is worse at a hearing than no log at all.
+
+**Copy log** puts the whole thing on the clipboard, and **Save as PDF…**
+writes it beside your event file — the version to attach to an appeal,
+send to a rating official, or keep with your own records. The PDF names
+every decision, its time and place, and either the reason you gave or
+"No reason given", so a reader can tell a decision you chose not to
+explain from one the printout left out.
+
+#### Turning the log off
+
+It is on by default. To switch it off, either untick **Record my
+decisions, and ask why** in **Event Details → Options**, or tick **Stop
+recording decisions for this event** on any of the "why?" prompts — the
+moment you decide you would rather not be asked is usually the moment
+you are being asked.
+
+Turning it off stops **every** "why?" prompt, including the one for a
+hand-edited pairing, and removes **Decision Log** from Event Operations.
+Hand-edited boards are still marked as a TD override in "Why this
+pairing?", just without a note of your own.
+
+It **does not delete anything already recorded**: turn it back on in
+Event Details and your earlier decisions are still there.
+
+The setting belongs to the event, not to FreePair, so it travels with the
+file — a club that never wants the prompts sets it once per event, and an
+event handed to another TD keeps whatever you chose.
 
 ---
 
@@ -820,6 +1147,9 @@ automatically under **Settings → Online publishing**.
 **Save a copy (backup) to NA Chess Hub** stores a copy of the event file
 in the cloud so you can open it from another computer. It is a backup,
 not a publish — it does not make pairings visible to spectators.
+
+To see the file on NA Chess Hub you must be signed in as the event
+organizer or a TD for that event; it is not on the public event page.
 
 It is a snapshot: if you keep working after saving one, the cloud copy is
 out of date until you save another.
@@ -925,11 +1255,10 @@ first.
 
 ## About this guide
 
-This guide describes FreePair **v0.73.20260818**. It is updated whenever a
+This guide describes FreePair **v0.74.20260819**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
 version. An online copy is published with each release; if you are
 reading that one, check the version above matches the FreePair you are
 running.
-
