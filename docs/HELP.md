@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.74.20260819**
+**Applies to FreePair v0.75.20260821**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It imports SwissSys event files, pairs Swiss and round-robin sections,
@@ -169,6 +169,14 @@ and shows you the result before you commit.
 
 **ID and Rating** verifies USCF and FIDE IDs against the online player
 database and fills in the current ratings.
+
+**Only national IDs are checked.** US Chess, FIDE and CFC IDs are digits
+only, so an ID carrying letters is not one of them and is never looked
+up as one — it is left unchecked and labelled as such rather than
+guessed at. An ID with the shape of an NWSRS one is recognised and the
+column is labelled **NWSRS**; use **Roster Update** to check those
+against the NWSRS database instead. If a section was previously
+mislabelled this way, running the check again corrects it.
 
 **Roster Update** re-pulls live ratings for the whole section. Two
 warnings exist here on purpose:
@@ -351,6 +359,157 @@ twice.
 history with them. This is the correct way to handle a player who was
 entered in the wrong section.
 
+### Scholastic events rated by NWSRS
+
+NWSRS is the NorthWest Scholastic Rating System used across Washington,
+Oregon and Idaho. FreePair opens events rated `NW`, and events rated on
+NWSRS alongside a national system (`USCF_NW`, `USCF_FIDE_NW`,
+`CFC_FIDE_NW`, `USCF_CFC_FIDE_NW`).
+
+**An NWSRS rating is on its own scale.** It is not a US Chess rating, not
+a FIDE rating, and there is no conversion between them — the same child
+is usually rated several hundred points lower on the NWSRS scale than on
+the USCF one. FreePair never mixes them and never converts. The Roster
+columns are named **NWSRS Rating**, **NWSRS ID**, **NWSRS School** and
+**NWSRS Grade** for exactly this reason, and on an NWSRS-paired section
+the pairing rating column reads **Rating [NWSRS]** so you can see at a
+glance which scale you are looking at.
+
+**Two forms of the ID, and only one of them is the player.** A child's
+permanent NWSRS ID is four characters — `9717`. What coaches, wall
+charts and the event file usually hand you is an eight-character form,
+`TSTN9717`, made of the school code (`TST`), the grade letter (`N`) and
+the permanent ID. **The first two parts change** — the school when a
+child transfers, the grade every single school year — so the long form
+is only good for one season. FreePair shows the last four as the ID and
+matches players on them, which is why the same child appears once and
+not twice when you open files from two different years.
+
+**The grade is a letter, not an age.** `A` is kindergarten, `B` is grade
+1, and so on up to `N`, which means beyond grade 12. FreePair shows it
+the way you would say it — `K`, `1` to `12`, or `Adult`. A letter
+outside `A`–`N` leaves the grade blank rather than guessing, because a
+guessed grade puts a child in the wrong section.
+
+**Most players have no NWSRS record, and that is normal.** Nobody is
+held out of a pairing for it, and no warning is raised.
+
+**Clicking an NWSRS ID opens that player's profile.** The ID cell is a
+link to the player's page on the NA Chess Hub player database, the same
+way a US Chess ID links to its ratings page. This is the quickest way to
+confirm you have the right child when two of them share a name.
+
+#### Which rating a section is paired on
+
+Every section has a **Rating System** setting on its **Overview** tab.
+It starts on **Inherit from event**, and the grey text beside it tells
+you what that currently resolves to, so an inheriting section still
+states what it inherits.
+
+**A file that names a rating system per section shows it.** Newer
+SwissSys files record a rating system on each section as well as on the
+event. When yours does, the section opens showing that value rather
+than **Inherit from event**, and the grey text reads **Pinned** — the
+combo reports what is in the file, not what FreePair would have guessed.
+Earlier versions ignored the per-section entry entirely, so a section
+could state NWSRS in the file and still be seeded from US Chess ratings
+without saying so. Choose **Inherit from event** if you would rather the
+section follow the event setting from here on; that also clears the
+entry from the file, so it stays cleared next time you open it.
+
+**Set it per section when the sections differ.** A scholastic weekend
+routinely runs NWSRS-only novice sections beside USCF-rated championship
+ones. Before this setting existed FreePair had one answer for the whole
+file, which meant one of those groups was seeded on the wrong numbers.
+
+**The section list and the event list are the same list.** Whatever you
+can choose for the event on **Event Config**, or when creating an event,
+you can choose for a section — same systems, same order, same names. The
+two used to disagree, with the event screen showing raw codes like
+`USCF_CFC_FIDE_NW` and sections showing a shorter list of friendlier
+names, which made it hard to tell you were even looking at the same
+setting. The only difference now is the first row: an event can be
+**Not recorded**, a section can **Inherit from event**.
+
+**Choosing "NWSRS only" moves the columns.** Each player's NWSRS ID and
+rating move into the pairing **ID** and **Rating** columns, and their
+national ID and rating move out to **ID2** and **Rating2**. This is not
+cosmetic: the Rating column is what the engine seeds and pairs on, so
+until the NWSRS number is in it, an event advertised as NWSRS-rated is
+being run on US Chess ratings. Nothing is lost by the move — pick a
+different rating system and the national values come back.
+
+You will most often not have to touch this at all. An event whose rating
+type is `NW` arranges its columns this way when you open it, because the
+file itself usually arrives with the national pair in front.
+
+Two details worth knowing:
+
+- **A player with no NWSRS ID yet keeps the rating they have.** Mid-season
+  there are always children waiting on one. Emptying their pairing rating
+  to make the section tidy would seed them bottom board for a clerical
+  reason, so their existing values stay put and **Check Section** reports
+  the mixed scale instead.
+- **A player who has an NWSRS ID but no NWSRS rating is unrated**, and
+  shows a rating of 0. They are genuinely unrated on the scale this
+  section is run on, and their US Chess number cannot stand in for it.
+
+**Dual-rated sections move nothing.** `USCF_NW` and the other
+combinations pair on the national rating; their NWSRS values stay in the
+secondary columns for display, which is all they are for.
+
+**The setting locks once round 1 is paired.** It decides the ratings the
+existing pairings were seeded from, and those cannot be retro-fitted —
+you would be left with a wall chart whose first round was computed from
+numbers the file no longer contains.
+
+#### What Check Section and Check Event look for
+
+Run **Check Section** or **Check Event** after opening an NWSRS file.
+The audit reports and never blocks — every one of these is survivable,
+and none of them stops you pairing:
+
+- **NWSRS ids are the right shape** — an ID that is neither 4 nor 8
+  characters. The warning quotes the four characters FreePair used, so
+  you can see what it assumed.
+- **NWSRS ids agree with school and grade** — the school and grade
+  inside an 8-character ID disagreeing with the ones recorded beside it.
+  This means the file was built from a previous school year. FreePair
+  uses the entry's own school and grade for sectioning and the last four
+  characters for identity, so nothing is lost — but the file disagrees
+  with itself and you should hear that from us rather than from a
+  parent.
+- **NWSRS grades are readable** — a missing or out-of-range grade
+  letter.
+- **Ids are in the column they belong to** — an NWSRS ID sitting in a US
+  Chess column, or the reverse. This is the classic symptom of a
+  mis-built file, and it matters: left alone, that value would be
+  submitted to US Chess as a member number.
+- **One rating scale per section** — a rating from one system seeding a
+  section measured on another. This is the one worth reading carefully,
+  because it is invisible on the pairing sheet: every number still looks
+  like a rating, but the seeding order means nothing.
+- **Each NWSRS player entered once** — the same permanent ID on two
+  entries, including when the two carry different eight-character forms.
+
+One case is deliberately **not** warned about. If your event was set up
+to seed on the higher of a player's two ratings and the NWSRS one is
+higher, the seed will equal the NWSRS number — which is what you asked
+for, and is indistinguishable from a mistake. Warning about it would
+train you to click past this check.
+
+#### Refreshing NWSRS ratings
+
+**Refresh ratings** on the Roster tab now reaches NWSRS sections, which
+it previously skipped entirely. The NWSRS rating is written only to a
+column the file says is NWSRS, so it can never land in a US Chess, FIDE
+or CFC seeding.
+
+Unlike US Chess, there is no second place to look a child up: if their
+ID is not in the imported NWSRS rating file, the answer is simply "no
+record". The rating already on file is left exactly as it was, the
+player is noted as skipped, and nothing is erased.
+
 ---
 
 ## Pairing rounds
@@ -368,6 +527,23 @@ every section at once, use the pair-all-sections action from the event
 page. **Sync Roster with NACH** is on this menu as well as the Roster
 tab's **Roster Update** menu, since checking for late entries is
 normally the step just before pairing.
+
+**If "Pair Next Round" is greyed out, hover over it.** The tooltip names
+the specific thing standing in the way and where to fix it, rather than
+leaving you to guess. The usual answers are:
+
+- **The section is scheduled for 0 rounds.** Set **Rounds** on the
+  section's **Overview** tab. An imported file can arrive with this
+  unset, which is easy to miss because nothing else looks wrong — the
+  players are all there and no round has been paired.
+- **A round still has results outstanding.** Finish entering them on the
+  **Pairings** tab; the tooltip says which round.
+- **All the scheduled rounds are complete.** Raise **Rounds** on the
+  **Overview** tab if the event is playing another.
+- **The roster is empty, or has one player.** Add players on the
+  **Roster** tab.
+- **A player is soft-deleted.** Restore them or delete them permanently
+  before round 1.
 
 For the first round you may be asked who plays White on board 1, and how
 the field should be seeded. Later rounds are determined by the pairing
@@ -608,6 +784,77 @@ USCF sections show a different diagram, the score-group switch diagram,
 which reflects how the USCF engine pairs. The two are not
 interchangeable.
 
+### Pairing quality
+
+*Why this pairing?* explains one board. **📊 Pairing Quality** does the
+same job for a whole round, a whole section, or the whole event — the
+numbers you need when a player is unhappy and "the computer did it" is
+not going to be enough.
+
+Two ways in:
+
+- **📊 Pairing Quality** — Pairings tab → *Pairing Operations*, for this
+  section.
+- **📊 Pairing Quality** — *Event Operations*, for every section at once.
+  You get event-wide totals first, then each section underneath.
+
+It reports on:
+
+- **Colours.** How many players got the colour they were due, how many
+  are level on colours, and how many are on a second or a third game of
+  the same colour.
+- **Floats.** Who was paired above their score and who below, and who
+  floated the same way two rounds running.
+- **Repeat pairings.** Any that had to be allowed, and how many were
+  steered around.
+- **Score groups.** How many boards were paired inside their own score
+  group rather than across two.
+- **Constraints relaxed.** The point of the whole thing — the rules that
+  had to give, one by one, with the player names and the board.
+
+**A zero here means measured and zero.** Each figure is shown against
+what it was drawn from — "12 of 14 got the colour they were due", not
+just "12" — so you can tell a clean round from a measurement that never
+ran. Where something genuinely does not apply, you get a dash and a
+reason rather than a nought: a round-robin section reports no floats,
+because the schedule was fixed before a move was played and nobody
+floated.
+
+#### "Steered around" is a narrow count on purpose
+
+The repeat-pairings figure counts pairs of players who went into the
+round **on the same score**, had already played each other, and were not
+paired together. Those are the repeats that were genuinely on the cards.
+Two players who met in round 1 and are now three points apart were never
+going to be paired anyway, and counting them would turn a useful number
+into a meaningless one.
+
+#### Where each figure came from
+
+This is the part worth understanding before you quote the report at
+anyone.
+
+FreePair's pairing engines write notes as they pair — "no rematch-free
+pairing existed in this score group", and so on — and those notes are
+saved inside the event file. When a note is there, the report shows it
+and marks the line **engine recorded**.
+
+When it is not there, the report works the fact out from the pairings
+themselves and marks the line **worked out afterwards**. Both are true;
+one is the engine's own word and one is FreePair's reconstruction, and
+the report will not blur them. You will see *worked out afterwards* on
+everything in an event imported from other software, because another
+program's reasons were never in the file to begin with. That is normal
+and does not mean anything is wrong.
+
+**It reports and nothing else.** It changes no pairing and stops you
+doing nothing. A relaxed constraint is usually the rules working as
+intended when something had to give — not a mistake.
+
+**📄 Print as PDF** writes the whole report — totals, every round, and
+every relaxed constraint — and **Copy report** puts the same text on the
+clipboard for an email.
+
 ### Adjusting pairings
 
 After a round is paired you can still swap colours, force or forbid
@@ -680,6 +927,21 @@ You can also assign a bye mid-event once a round is already paired.
 
 Results are entered on the **Pairings** tab, board by board. Standings,
 tiebreaks and the wall chart update immediately.
+
+**The Round list tells you where each round stands.** Every entry in the
+**Round:** drop-down carries a mark:
+
+- **✅** — every game in that round has a result.
+- **⏳** — the round being played: some results are in, or none are yet
+  but everything before it has finished.
+- *no mark* — a round still ahead, waiting on the one before it.
+
+This matters most in a round robin or quad, where the whole schedule is
+paired at once and the list shows every round from the start. The
+hourglass is the round to print, to call, and to collect results for;
+the unmarked ones have not come round yet. Exactly one round is ever
+marked with the hourglass, and once the last round is ticked the section
+is done.
 
 ### Standings and tiebreaks
 
@@ -789,6 +1051,54 @@ Under **Settings → Printing**, **Use ASCII-only output** replaces the ½
 glyph with plain text for printers and downstream systems that cannot
 render it.
 
+### Printing the whole event at once
+
+Four items on **Event Operations** print every section in one go, so a
+ten-quad scholastic does not mean ten trips through the section tabs and
+ten save dialogs:
+
+- **🖨 Print All Pairings**
+- **🖨 Print All Standings**
+- **🖨 Print All Wall Charts**
+- **🖨 Print All Crosstables**
+
+Each opens a chooser listing every section, ticked to start with. Untick
+anything you do not want on the wall — the side-game, the practice
+group. A section that cannot go in this particular report is listed but
+disabled, with the reason under its status, so you can see FreePair left
+it out on purpose rather than wondering where it went.
+
+**Continue** then shows the same **Page setup** you get from any other
+print button, on the same report — so an orientation or font size you
+tuned on a section tab is the one the event-wide sheet uses. Cancel
+there abandons the print but keeps any adjustment you made, because page
+settings save as they change.
+
+The file is written next to your event file, named after it — for example
+`MyEvent-all-pairings.pdf` — and opens in your PDF viewer, where your
+printer's own dialog takes over. Printing again overwrites it, since the
+report is rebuilt from the event each time.
+
+**Which round gets printed.** Sections in a mixed event are rarely on the
+same round number: the quads may be on 3 while the Swiss is on 2. So the
+pairings print defaults to **each section's latest paired round**, which
+is what goes on the wall. Choosing a specific round number instead prints
+that same round everywhere, and quietly skips any section that has not
+reached it yet.
+
+**Several crosstables per page.** A quad's crosstable is four rows, so one
+to a page wastes most of the sheet — ten quads costs ten sheets. Set
+**Crosstables per page** to 2, 3 or 4 and they stack down each landscape
+page instead. The type is sized so the fullest page still fits, which
+means asking for more per page gives you smaller print and less room to
+write results in by hand. That is the trade; if you want the write-in
+room, print one per page.
+
+Only round robins, double round robins and quads have a crosstable at
+all. A Swiss field never meets everyone, so those sections are listed as
+unavailable here — print their **wall charts** instead, which show the
+same games.
+
 ### The wallboard
 
 **🖥 Wallboard** at the top right of the window, beside **Help** — or
@@ -860,6 +1170,20 @@ scrolled, and the header says **Screen 2 of 3** so a player who arrives
 part-way through knows to wait rather than assuming their name is
 missing. Byes are listed with the boards, since a player with a bye is
 looking for their name too.
+
+**Which round it shows.** For a Swiss section, the round you last paired
+— those are the board numbers the room is looking for, and an earlier
+round still missing a result from a game that ran long must not pull the
+screen backwards.
+
+Round robins, double round robins and quads are different, because their
+whole schedule is paired in one go. There the wallboard shows **the
+first round that is not finished** — round 1 the moment the quad is
+paired, then round 2 as soon as every round-1 result is in, and so on by
+itself. Once the last round is complete it stays there, showing that
+round with its results. Before, it showed the final round from the
+moment the section was paired, which sent players to boards they were
+not due at for another two hours.
 
 **It uses columns you choose.** The wallboard has its own pairing and
 standings columns, set in the dialog — deliberately not shared with the
@@ -1160,20 +1484,66 @@ event looks and prints the same on another machine.
 
 ---
 
+## Choosing which sections to report
+
+All three rating exports — USCF, FIDE and NWSRS — start by asking which
+sections to include.
+
+**This is there so a rating report contains the event and nothing else.**
+Most events collect a section or two that are not part of what is being
+rated: a side-game for players knocked out early, a practice group, a
+section you made to try a setting out. Before, the only way to keep those
+out of a submission was to delete them first, which meant losing them
+from your own records too.
+
+**Everything that can be reported starts ticked**, so if you have nothing
+to leave out, press Continue and you are done. Untick anything that
+should not be submitted. Nothing is deleted and your event file is not
+touched — the choice applies to this one export.
+
+Sections you cannot tick are shown with the reason under their status:
+
+- **Deleted** — its games are already being reported by whatever replaced
+  it, such as the quads it was split into or the section it was merged
+  with. Including it would submit those games twice.
+- **No players** — there is nothing to report.
+
+A section with **no results yet** can be included, but you will be warned
+before you continue, because it is usually the practice group you meant
+to leave out.
+
+The FIDE report covers one section, so its chooser lets you pick exactly
+one. It starts on the section you had open.
+
+---
+
 ## Filing the USCF rating report
 
 When the event is over, the USCF export produces the rating report.
-FreePair fills in what it knows from the event and asks you for the
-affiliate and TD details it cannot infer.
+FreePair asks which sections to include, fills in what it knows from the
+event, and asks you for the affiliate and TD details it cannot infer.
+
+The ID check that runs before the export looks only at the sections you
+chose, so leaving a section out also stops it warning you about IDs in
+it.
+
+It writes **three files** next to your `.sjson`: `THEXPORT` (the event),
+`TSEXPORT` (the sections) and `TDEXPORT` (the players and their games).
+Each is a `.DBF` with your event name added on the end — for example
+`TDEXPORT_Spring Open.DBF` — so several events can be exported into the
+same folder without overwriting one another. Send all three; the rating
+office reads them together, and the names before the underscore are what
+it recognises them by, so do not rename them.
 
 ---
 
 ## Filing the FIDE rating report
 
-**🌍 Export FIDE Rating Report** writes a TRF report for the selected
-section, ready to send for FIDE rating. FreePair fills in everything the
-event already knows and asks you for the rest: host city, federation,
-chief arbiter and any deputies. Those are remembered for next time.
+**🌍 Export FIDE Rating Report** writes a TRF report for one section,
+ready to send for FIDE rating. FreePair asks which section, fills in
+everything the event already knows and asks you for the rest: host city,
+federation, chief arbiter and any deputies. Those are remembered for next
+time.
 
 **This is not the same as "Export Sections to TRF."** Both write a
 `.trf` file, but that one is *engine input* — what FreePair hands to the
@@ -1208,6 +1578,86 @@ The dialog separates two things that look the same in the finished file:
 Ratings reported are FIDE ratings. If a player has a FIDE rating
 recorded, that is what is sent; a player's USCF rating is never reported
 to FIDE, and a player with no FIDE rating is reported as unrated.
+
+---
+
+## Filing the NWSRS rating report
+
+**🎒 Export NWSRS Report** on **Event Operations** writes the file NWSRS
+needs to rate your event. It appears only when something in the event is
+NWSRS-rated, so on a purely US Chess or FIDE event you will not see it.
+
+**NWSRS rates from the event file itself.** There is no separate report
+format to fill in, so the export asks you two things only: which sections
+to include, and where to put the file. FreePair saves your event first,
+then writes the report wherever you choose.
+
+**The report is written in SwissSys's own format, and opens in SwissSys.**
+It is not simply a copy of your event file. FreePair's file carries
+things SwissSys does not use and does not expect, and a file with those
+in it is refused outright — *File error: Program. (Unrecognized file
+structure)*, or *Unable to load tournament file (section 1)*. So the
+report is rebuilt to the shape SwissSys itself writes, and carries only
+what SwissSys writes.
+
+What that leaves out is everything that is FreePair's business rather
+than the rating system's: your decision log, your column layouts, your
+USCF affiliate details, the display settings, your tiebreak order, your
+half-point-bye allowance. The decision log in particular is your own
+reasoning about calls you made during the event, which is nobody's
+business outside the tournament.
+
+What it keeps is the event, the players and every game: each player's
+ID, rating, club, grade and contact details, and their result in every
+round exactly as recorded — same opponent, same colour, same board,
+same result. Nothing about the games is recalculated on the way out.
+
+**Your NWSRS IDs are put where NWSRS reads them.** When a section is
+paired on NWSRS ratings, FreePair keeps the NWSRS ID and rating in the
+main **ID** and **Rating** columns, because those are the numbers it
+pairs from. SwissSys files are arranged the other way round — the US
+Chess ID in **ID**, the NWSRS ID in **ID2** — and that second column is
+the only place NWSRS looks for it. The report swaps them back for you.
+You do not need to do anything about this, and your event file is not
+changed; but it is worth knowing that the report and your event will
+show those two columns the other way round.
+
+**FreePair will not export a report with no games in it.** If no section
+has a completed round, the export stops and says so rather than writing
+a file full of players and empty results. That file would look right —
+correct size, correct name, opens fine — and would tell NWSRS nothing.
+If a section will not pair, hover **Pair Next Round** to see why; a
+section scheduled for 0 rounds is the usual reason.
+
+**A save dialog opens with the name already filled in.** The report is
+named `NWSRSReport_<your event name>.sjson`, and the dialog starts in
+your event's own folder, so pressing Save without changing anything puts
+it beside the event. Spaces in your event name become underscores so the
+file survives being mailed and unzipped. Afterwards FreePair opens the
+folder with the file selected, ready to attach to an email.
+
+**Keep the name FreePair suggests.** You can rename it in the dialog,
+but the name is how NWSRS matches the submission to your event, so
+changing it makes more work at their end, not less. The part worth
+changing is the folder.
+
+**The report is a `.sjson`, the same as your event, and opens in
+SwissSys like any other tournament file.** That is what NWSRS expects to
+receive. It does mean the submission and the working event look alike,
+so take the moment to notice which one you have open — if you find
+yourself entering results into `NWSRSReport_…`, you are in the snapshot,
+and the real event has not moved. Saving the report somewhere other than
+your working folder is the simplest way to avoid the question.
+
+Export it after the last result is in. The report is a snapshot: if you
+enter another result afterwards, export again — the file already written
+will not update itself.
+
+**Withdrawals still show, but not as a flag.** A player who withdrew is
+in the report with the games they played and the byes they took, exactly
+as your wall chart shows them. FreePair's own "withdrawn" marking is one
+of the private entries that is left out, so the results tell the story
+rather than a separate field.
 
 ---
 
@@ -1255,7 +1705,7 @@ first.
 
 ## About this guide
 
-This guide describes FreePair **v0.74.20260819**. It is updated whenever a
+This guide describes FreePair **v0.75.20260821**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
