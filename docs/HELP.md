@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.79.20260823**
+**Applies to FreePair v0.80.20260823**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -72,6 +72,11 @@ read the whole thing and keep it open while you decide. **Update
 options** takes you straight to the update preferences. **Update now**
 downloads it and restarts FreePair. There is nothing to save first —
 FreePair writes your event as you work.
+
+You can also install from **⚙ Settings → Updates**: press **Check now**,
+and if there is an update an **Install update and restart** button
+appears beside the result. Useful if you dismissed the banner, or if you
+came here to deal with updates in the first place.
 
 **✕** at the end of the banner puts the notice away for the rest of the
 session. It is not a permanent answer: the banner comes back if a newer
@@ -255,6 +260,19 @@ FreePair opens event files written by other programs and writes the same
 format back, preserving anything it does not itself manage. See
 [Compatibility with SwissSys](#compatibility-with-swisssys) for what does
 and does not travel in each direction.
+
+**An event reopens where you left it.** If you were on the U1200
+section's Pairings tab when you closed, that is what you get back — no
+navigating to the same place after every lunch break. Because it is
+stored in the event file rather than on the computer, it also follows the
+event to a second machine at the other end of the table.
+
+It is written only when you actually moved. Open an event, read
+something, close it again, and the file is left exactly as it was — its
+contents and its timestamp both. Browsing is not editing.
+
+If the section you were on has since been renamed, merged or deleted,
+the event simply opens normally.
 
 ### Events from an online registry
 
@@ -1920,8 +1938,9 @@ They are split across tabs:
   ASCII-only output for printing.
 - **Online** — publishing defaults, the NA Chess Hub address, and the
   service used to verify IDs and ratings.
-- **Updates** — update checks, the release channel, and your current
-  version.
+- **Updates** — update checks, the release channel, your current
+  version, and — when a check finds one — a button to install it without
+  leaving the page. Also lists any crash reports.
 - **Shortcuts** — a reference card for the keyboard shortcuts. It is the
   only tab that changes nothing; it is here so the list is available
   without leaving the application, which matters in a hall with no
@@ -1930,6 +1949,18 @@ They are split across tabs:
 ---
 
 ## Troubleshooting
+
+**FreePair closed unexpectedly.** It writes a crash report each time that
+happens. The quickest way to them is **⚙ Settings → Updates**, which says
+how many there are and when the most recent was, with a button to open
+the folder. They live in **`%AppData%\FreePair\CrashReports`**.
+
+The report holds the error, the FreePair version, your operating system,
+and the file name of whichever event was open. It holds **no player
+names, ratings, contact details or results**, and FreePair never sends it
+anywhere. Whether it leaves your machine is entirely your decision;
+attaching the newest one to a bug report is the single most useful thing
+you can do. The twenty most recent are kept and older ones are discarded.
 
 **A dialog is too tall for my screen.** Dialogs scroll and can be
 resized. The action buttons stay visible at the bottom.
@@ -1954,7 +1985,7 @@ first.
 
 ## About this guide
 
-This guide describes FreePair **v0.79.20260823**. It is updated whenever a
+This guide describes FreePair **v0.80.20260823**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
