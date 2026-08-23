@@ -1,17 +1,26 @@
 # FreePair user guide
 
-**Applies to FreePair v0.77.20260821**
+**Applies to FreePair v0.78.20260822**
 
 FreePair is a chess tournament pairing program for tournament directors.
-It imports SwissSys event files, pairs Swiss and round-robin sections,
-tracks results and standings, prints the paperwork, and produces the
-USCF rating report at the end.
+It opens and saves `.sjson` event files, pairs Swiss and round-robin
+sections, tracks results and standings, prints the paperwork, and
+produces the USCF rating report at the end.
 
 This guide describes what you see on screen and the order you are likely
 to do things in. If you are looking for *why* the pairing engine made a
 particular decision, that is a different document: open the **Why this
 pairing?** dialog on any board and follow the rule citation, or read the
 USCF rules reference that ships alongside this guide.
+
+**To find something quickly, click the search box above the contents list
+and start typing.** The contents narrow to the sections that mention what
+you typed, so you can see where the answer lives before reading any of
+it, and every occurrence is highlighted. **Enter** steps through the
+matches, **Shift+Enter** goes back, and **Esc** clears. If your hands are
+already on the keyboard, pressing **/** anywhere on the page jumps
+straight to the box. Searching changes nothing about your event; it only
+looks through this page.
 
 ---
 
@@ -35,6 +44,16 @@ USCF-rated Swiss events and is the default. The **FIDE (BBP) engine**
 implements the FIDE Dutch system for FIDE-rated events. Round-robin
 sections use FreePair's own scheduler and neither engine.
 
+Each event picks its engine from its rating type, and a section can
+override that choice on the **Event configuration** form or in the
+section's own header. The override is only available until round 1 is
+paired; after that the engine is locked for the rest of the event, so the
+pairings you file in a rating report can always be reproduced. For a
+USCF-rated event either engine's crosstable is accepted for rating
+submission — the two differ only on edge cases such as colour repeats,
+last-round prize protection and swap selection, and most weekend Swisses
+pair identically.
+
 ### Installing and updating
 
 The installer bundles everything FreePair needs, including the .NET
@@ -42,32 +61,171 @@ runtime and both pairing engines. There is nothing to install
 separately.
 
 FreePair can check for new versions on startup. Turn this on or off
-under **Settings → Updates → Check for updates on startup**, or use
-**Check now** at any time. If you want early builds, tick **Include
+under **⚙ Settings → Updates → Check for updates on startup**, or
+use **Check now** at any time. If you want early builds, tick **Include
 pre-release builds (beta channel)** — otherwise you only see stable
 releases.
 
 When an update is found, a banner appears across the top of the window.
 **Release notes** opens that release's page in your browser, so you can
-read the whole thing and keep it open while you decide. **Update now**
+read the whole thing and keep it open while you decide. **Update
+options** takes you straight to the update preferences. **Update now**
 downloads it and restarts FreePair. There is nothing to save first —
 FreePair writes your event as you work.
+
+**✕** at the end of the banner puts the notice away for the rest of the
+session. It is not a permanent answer: the banner comes back if a newer
+version turns up later, so closing it during a round cannot leave you
+unaware of some future release. If you want the checks themselves
+stopped, that is **Check for updates on startup**, under Update options.
 
 Your current version is shown in Settings, and in the main window title
 bar.
 
 ### The main window
 
-The window has two tabs:
+There are no tabs. The window shows the event you have open, and a single
+toolbar runs across the top of it.
 
-- **Tournament** — everything to do with the event you have open.
-- **Settings** — application-wide preferences that apply to every event.
+The event commands — **New Event**, **Open Event**, **Save Event**,
+**Close Event**, **Event Operations**, **Undo** and **Redo** — run from
+the left. The controls that belong to the program rather than to the
+event sit at the right-hand end of the same row:
 
-The **Theme** picker sits at the top right and applies immediately. The
-**Help** button beside it opens this guide.
+- **🖥** and **📺** put pairings and standings on a projector, a TV or
+  people's phones.
+- **🖨** prints the whole event: **All Pairings**, **All Standings**,
+  **All Wall Charts** or **All Crosstables**, one PDF with a section to
+  a page. These are the same four reports as **Event Operations →
+  Print**; they are also up here because printing the pairings is the
+  most repeated action of a round, and three levels of menu is a lot for
+  something done every forty minutes. To print one section rather than
+  the whole event, use the **Print as PDF** button on that section's
+  tab.
+- Those three are icons only, to keep the row narrow; hover any of them
+  and the tooltip names it. All three are also in **Event Operations**
+  under their full names — **Wallboard (full screen)**, **Share
+  Wallboard to Phones and TVs** and **Print** — if you would rather find
+  them by name.
+- **⚙ Settings** opens the application preferences in a window of
+  their own. See [Settings](#settings).
+- **❓ Help** opens this guide. So does F1.
+- **Theme** applies immediately. It is left out here rather than filed
+  away in Settings because it is the one display choice you are
+  likely to change on the spot, usually because of the light in the
+  playing hall.
+
+Wallboard, Share and Print appear only once an event is open; Settings,
+Help and Theme are always there.
+
+**On a narrow window the toolbar drops the labels and keeps the icons.**
+It does this rather than taking a second row, because the row it would
+take comes out of the pairing grid — and the machines narrow enough to
+trigger it are the same 11-inch laptops that have the least room to
+spare. Nothing is removed: hover any icon and the tooltip names it, and
+every button keeps its place, so a button you have learned the position
+of is still in that position. Widen the window and the labels come back.
 
 If an event is open, the title bar shows the event name and the file it
 is saved to.
+
+### Keyboard shortcuts
+
+The commands used most often during a round have keys. The full list is
+in **⚙ Settings → Shortcuts**, which is worth knowing about because
+the moment you want it is usually the moment you are in a playing hall
+with no internet.
+
+| Key | What it does |
+|---|---|
+| `Ctrl+N` | Create a new event |
+| `Ctrl+Shift+N` | Browse events on NA Chess Hub and create one from them |
+| `Ctrl+O` | Open a saved event from this computer |
+| `Ctrl+R` | Open a recent event |
+| `Ctrl+Shift+O` | Browse your cloud-saved events |
+| `Ctrl+S` | Save the event |
+| `Ctrl+W` | Close the event |
+| `Ctrl+Z` | Undo the last change |
+| `Ctrl+Y` | Redo it (`Ctrl+Shift+Z` does the same) |
+| `F5` | Pair the next round of the selected section |
+| `Shift+F5` | Pair the next round of every ready section |
+| `Ctrl+Shift+Delete` | Delete that section's last round — asks first |
+| `F6` | Sync all rosters with NA Chess Hub |
+| `F7` | Publish pairings and results to NA Chess Hub |
+| `F8` | Check the event over |
+| `F9` | Pairing quality |
+| `Ctrl+B` | Open the full-screen wallboard |
+| `Ctrl+Shift+B` | Share the wallboard to phones and TVs |
+| `Ctrl+P` | Print what you are looking at |
+| `Ctrl+Shift+P` | Print every section's pairings |
+| `Ctrl+Shift+D` | Print every section's standings |
+| `Ctrl+Shift+L` | Print every section's wall charts |
+| `Ctrl+,` | Open Settings |
+| `F11` | Focus mode — give the table the whole window |
+| `Esc` | Leave focus mode |
+| `F1` | Open this guide |
+
+A few of these are worth a sentence:
+
+- **`Ctrl+W` closes the event, not the window.** FreePair runs one
+  window, and the event is the thing you open and close all day.
+- **Opening has three keys, because it has three routes.** `Ctrl+O`
+  browses this computer, `Ctrl+R` offers the events you had open
+  recently, and `Ctrl+Shift+O` lists the events you have backed up to
+  the cloud. One key could not have chosen between them.
+- **`Ctrl+Shift+N` is for starting an event from a registration list**,
+  not for opening one you already have — it browses NA Chess Hub and
+  builds a new event from what it finds, which is why it sits beside
+  `Ctrl+N` rather than beside the opening keys.
+- **`Ctrl+P` follows the tab you are on.** On Pairings it prints the
+  pairings, on Standings the standings, and so on — the same PDF as the
+  **Print as PDF** button on that tab. On Overview it does nothing,
+  because there is nothing there to print.
+- **The `Shift` versions widen a key to the whole event.** `F5` pairs
+  the section you have selected; `Shift+F5` pairs every section that is
+  ready. `Ctrl+P` prints the tab in front of you; `Ctrl+Shift+P` prints
+  every section's pairings. That is a real difference in scope, so check
+  which one you are reaching for during a round.
+- **Only the operations repeated during a round have keys.** Event
+  Operations holds a good deal more — merging sections, renumbering
+  boards, rating reports. Those stay one click away in the menu, because
+  a shortcut list long enough to need scrolling is a list nobody learns.
+  Every key that does exist is printed beside its item in the menu.
+- **`Ctrl+Shift+Delete` is deliberately awkward**, and it still asks
+  before deleting. It is the same confirmation the button shows; a
+  keystroke is never a shorter route to throwing pairings away than the
+  click it stands in for.
+- **A shortcut that needs something does nothing until it has it.**
+  `F5` with no section selected, or `Ctrl+S` with no event open, is
+  silent rather than broken. The Shortcuts tab says what each one needs.
+
+Keys cannot be reassigned in this release.
+
+### Focus mode
+
+A round of twenty boards does not fit on a laptop screen underneath a
+toolbar, a divider, a tab strip and a round selector — so entering
+results means scrolling between the scoresheet in your hand and the row
+you are filling in.
+
+**Focus mode shows the table and nothing else** — no toolbar, no
+section list, no tabs, and none of the setup controls. Press **F11**, or
+the **Focus (F11)** button on the header of the table you are looking
+at. **Esc** brings everything back, as does F11 again or the button in
+the strip along the top.
+
+Every tab except Overview offers it: Roster, Pairings, Standings, Wall
+Chart, Prizes, and Byes & Withdrawals. It keeps the tab you are on;
+from Overview — a form rather than a table — it takes you to Pairings.
+
+That strip along the top is the one piece of chrome it keeps. It names
+the section you are in and says how to leave, because an application
+that has silently shed its toolbar looks broken rather than focused.
+
+Nothing else changes: the same grid, the same editing, the same
+shortcuts. It is not remembered between sessions — it is a posture for
+a few minutes at the scoring table, not a preference, and finding the
+toolbar gone the next morning would be alarming rather than helpful.
 
 ---
 
@@ -75,20 +233,21 @@ is saved to.
 
 ### Creating a new event
 
-Use **➕ Create New Event**. You will be asked for the event name, dates
+Use **➕ New Event**. You will be asked for the event name, dates
 and location, and then for at least one section. An event with no
 sections cannot be paired, so it is normal to create the first section
 immediately.
 
 ### Opening an existing event
 
-**🔁 Re-Open Saved Event** offers the events you have worked on recently.
-You can also browse the file system for a SwissSys `.sjson` file, or
+**📂 Open Event** offers the events you have worked on recently.
+You can also browse the file system for an `.sjson` event file, or
 browse events published to NA Chess Hub.
 
-FreePair reads SwissSys files and writes them back in the same format,
-preserving anything it does not itself manage. An event created in
-SwissSys can be opened in FreePair and vice versa.
+FreePair opens event files written by other programs and writes the same
+format back, preserving anything it does not itself manage. See
+[Compatibility with SwissSys](#compatibility-with-swisssys) for what does
+and does not travel in each direction.
 
 ### Events from an online registry
 
@@ -406,9 +565,9 @@ It starts on **Inherit from event**, and the grey text beside it tells
 you what that currently resolves to, so an inheriting section still
 states what it inherits.
 
-**A file that names a rating system per section shows it.** Newer
-SwissSys files record a rating system on each section as well as on the
-event. When yours does, the section opens showing that value rather
+**A file that names a rating system per section shows it.** Some event
+files record a rating system on each section as well as on the
+event.
 than **Inherit from event**, and the grey text reads **Pinned** — the
 combo reports what is in the file, not what FreePair would have guessed.
 Earlier versions ignored the per-section entry entirely, so a section
@@ -1047,24 +1206,27 @@ section, time control, location, dates, a page number and a timestamp.
 be adjusted independently, which is useful when a wall chart is one
 column too wide for the page.
 
-Under **Settings → Printing**, **Use ASCII-only output** replaces the ½
-glyph with plain text for printers and downstream systems that cannot
-render it.
+Under **⚙ Settings → Display**, **Use ASCII-only output** replaces
+the ½ glyph with plain text for printers and downstream systems that
+cannot render it.
 
 ### Printing the whole event at once
 
-Four items on **Event Operations** print every section in one go, so a
+The **🖨** icon at the top right of the window — or **Event Operations →
+🖨 Print** — holds four items that print every section in one go, so a
 ten-quad scholastic does not mean ten trips through the section tabs and
 ten save dialogs:
 
-- **🖨 Print All Pairings**
-- **🖨 Print All Standings**
-- **🖨 Print All Wall Charts**
-- **🖨 Print All Crosstables**
+- **All Pairings**
+- **All Standings**
+- **All Wall Charts**
+- **All Crosstables**
 
-Each opens a chooser listing every section, ticked to start with. Untick
-anything you do not want on the wall — the side-game, the practice
-group. A section that cannot go in this particular report is listed but
+Each opens a chooser listing every section. **Sections that have been
+paired start ticked**; one that has not started yet is listed but left
+unticked, because it would only add a page of empty rows. Untick anything
+else you do not want on the wall — the side-game, the practice group. A
+section that cannot go in this particular report at all is listed but
 disabled, with the reason under its status, so you can see FreePair left
 it out on purpose rather than wondering where it went.
 
@@ -1101,10 +1263,10 @@ same games.
 
 ### The wallboard
 
-**🖥 Wallboard** at the top right of the window, beside **Help** — or
-**Event Operations → 🖥 Wallboard** — opens a full-screen display for a
-projector or a spare monitor — the screen in the skittles room that
-stops players crowding round the paper on the wall.
+The **🖥** icon at the top right of the window — or **Event Operations →
+Wallboard (full screen)** — opens a full-screen display for a projector
+or a spare monitor — the screen in the skittles room that stops players
+crowding round the paper on the wall.
 
 **Setting it up.** A short dialog opens first, and what you choose is
 remembered for next time:
@@ -1220,7 +1382,8 @@ be a list of zeroes in seeding order.
 
 ### Putting the wallboard on a TV or on phones
 
-**📺 Share…** — next to the Wallboard button at the top right — turns the
+The **📺** icon — next to the wallboard icon at the top right, or
+**Event Operations → Share Wallboard to Phones and TVs** — turns the
 board into a web page that anything on the same network can open. It is
 read-only: people can look, and cannot change the event.
 
@@ -1415,6 +1578,64 @@ event handed to another TD keeps whatever you chose.
 
 ---
 
+## Compatibility with SwissSys
+
+### Why the file is called `.sjson`
+
+Your whole event lives in one file whose name ends `.sjson`, and the name
+is literal. It is **JSON** — a plain-text data format used across the
+software industry — describing a **Swiss**-system tournament. Swiss
+JSON. The "S" is the pairing system the file describes, not the name of
+any program.
+
+That matters mainly because it tells you what you are holding. An
+`.sjson` file is data, not a document belonging to one piece of software.
+You can open one in a text editor and read it: the sections, the players,
+the rounds and the results are all in there as readable text. On the day
+something goes wrong at an event, being able to look inside the file and
+see what it actually says is worth a great deal.
+
+### Opening events made in SwissSys
+
+**FreePair opens events created in SwissSys.** Browse to the file with
+**📂 Open Event → Re-Open Locally Saved Event**, and it opens
+like any other event: players, sections, pairings, results and
+standings.
+
+**Anything FreePair does not manage is kept, not discarded.** When you
+save, FreePair rewrites only the parts of the file it understands and
+leaves everything else exactly as it found it. Settings written by
+another program survive a trip through FreePair even though FreePair
+never shows them to you.
+
+### Taking an event back the other way
+
+**SwissSys opens events FreePair has saved.** Your players, sections,
+pairings, results and standings are all recorded in the ordinary way, so
+the event carries on there as you would expect and pairing is unaffected.
+
+**What does not travel is the part FreePair added.** A few things have no
+standard place in the format — your decision log, accelerated-pairing
+settings, display preferences and similar — so FreePair records them
+under entries of its own. Another program ignores entries it does not
+recognise. Nothing is corrupted and nothing is lost from your file; those
+features are simply not available while the event is open elsewhere, and
+anything that depends on them is not there to see.
+
+The practical version: the event moves in both directions, and what you
+give up going out of FreePair is FreePair's own conveniences, not your
+tournament.
+
+### A note on names
+
+SwissSys is a separate commercial product, and FreePair is not affiliated
+with it, endorsed by it, or derived from it. FreePair reads and writes
+the same file format so that directors are not locked into one program by
+their own event data. Product names are mentioned here only to describe
+that compatibility.
+
+---
+
 ## NA Chess Hub
 
 ### Roster sync
@@ -1451,7 +1672,8 @@ even though the request itself may no longer appear in the roster's HPB
 column once the round has been scored.
 
 Turn the alerts on or off, and set how often they run, under
-**Settings → Alert when NA Chess Hub roster has updates to sync**.
+**⚙ Settings → Online → Alert when NA Chess Hub roster has updates
+to sync**.
 
 **Play a sound when the count changes** sits under that option and is
 off until you turn it on. It uses your computer's own notification
@@ -1464,7 +1686,7 @@ too, and it stays quiet when your own sync clears the count.
 
 Publishing puts pairings and results on the event's public page so
 players can follow along. You can set new events to publish
-automatically under **Settings → Online publishing**.
+automatically under **⚙ Settings → Online**.
 
 ### Cloud backup
 
@@ -1496,10 +1718,16 @@ section you made to try a setting out. Before, the only way to keep those
 out of a submission was to delete them first, which meant losing them
 from your own records too.
 
-**Everything that can be reported starts ticked**, so if you have nothing
-to leave out, press Continue and you are done. Untick anything that
-should not be submitted. Nothing is deleted and your event file is not
-touched — the choice applies to this one export.
+**For the USCF and NWSRS reports, everything that can be reported starts
+ticked**, so if you have nothing to leave out, press Continue and you are
+done. Untick anything that should not be submitted. Nothing is deleted and
+your event file is not touched — the choice applies to this one export.
+
+**The FIDE report and the TRF export are stricter**, because they take one
+section rather than the whole event. They tick a section only when it is
+FIDE-rated *and* every round has its results in. If none qualifies, nothing
+is ticked and you choose for yourself — deliberately, because a default
+that is wrong on a submission is the one a busy director accepts.
 
 Sections you cannot tick are shown with the reason under their status:
 
@@ -1539,13 +1767,22 @@ it recognises them by, so do not rename them.
 
 ## Filing the FIDE rating report
 
-**🌍 Export FIDE Rating Report** writes a TRF report for one section,
+**Event Operations → 📤 Export Report → FIDE Rating Report** writes a TRF
+report for one section,
 ready to send for FIDE rating. FreePair asks which section, fills in
 everything the event already knows and asks you for the rest: host city,
 federation, chief arbiter and any deputies. Those are remembered for next
 time.
 
-**This is not the same as "Export Sections to TRF."** Both write a
+You do not need a section selected first. The chooser lists every section
+with its rating type, player count and round status, so you can see which
+one is actually FIDE-rated before you file it. Nothing is ticked unless a
+section is both FIDE-rated and has every round fully scored — if none
+qualifies you pick one yourself, which is deliberate: a default that is
+wrong on a submission dialog is worse than no default.
+
+**This is not the same as "Sections to TRF (engine input)"** lower down
+the same submenu, which now asks which section in the same way. Both write a
 `.trf` file, but that one is *engine input* — what FreePair hands to the
 pairing engine — and it contains only the players still being paired,
 numbered the way the engine wants them. The rating report contains every
@@ -1583,7 +1820,7 @@ to FIDE, and a player with no FIDE rating is reported as unrated.
 
 ## Filing the NWSRS rating report
 
-**🎒 Export NWSRS Report** on **Event Operations** writes the file NWSRS
+**🎒 NWSRS Report** on **Event Operations → 📤 Export Report** writes the file NWSRS
 needs to rate your event. It appears only when something in the event is
 NWSRS-rated, so on a purely US Chess or FIDE event you will not see it.
 
@@ -1592,20 +1829,16 @@ format to fill in, so the export asks you two things only: which sections
 to include, and where to put the file. FreePair saves your event first,
 then writes the report wherever you choose.
 
-**The report is written in SwissSys's own format, and opens in SwissSys.**
-It is not simply a copy of your event file. FreePair's file carries
-things SwissSys does not use and does not expect, and a file with those
-in it is refused outright — *File error: Program. (Unrecognized file
-structure)*, or *Unable to load tournament file (section 1)*. So the
-report is rebuilt to the shape SwissSys itself writes, and carries only
-what SwissSys writes.
+**The report is a clean copy, not simply your event file renamed.**
+FreePair's file carries entries that are FreePair's business rather than
+the rating system's, and the report is rebuilt without them so that
+nothing but the event itself reaches NWSRS.
 
-What that leaves out is everything that is FreePair's business rather
-than the rating system's: your decision log, your column layouts, your
-USCF affiliate details, the display settings, your tiebreak order, your
-half-point-bye allowance. The decision log in particular is your own
-reasoning about calls you made during the event, which is nobody's
-business outside the tournament.
+What that leaves out is exactly that: your decision log, your column
+layouts, your USCF affiliate details, the display settings, your tiebreak
+order, your half-point-bye allowance. The decision log in particular is
+your own reasoning about calls you made during the event, which is
+nobody's business outside the tournament.
 
 What it keeps is the event, the players and every game: each player's
 ID, rating, club, grade and contact details, and their result in every
@@ -1615,7 +1848,7 @@ same result. Nothing about the games is recalculated on the way out.
 **Your NWSRS IDs are put where NWSRS reads them.** When a section is
 paired on NWSRS ratings, FreePair keeps the NWSRS ID and rating in the
 main **ID** and **Rating** columns, because those are the numbers it
-pairs from. SwissSys files are arranged the other way round — the US
+pairs from. SwissSys arranges them the other way round — the US
 Chess ID in **ID**, the NWSRS ID in **ID2** — and that second column is
 the only place NWSRS looks for it. The report swaps them back for you.
 You do not need to do anything about this, and your event file is not
@@ -1663,8 +1896,13 @@ rather than a separate field.
 
 ## Settings
 
-Settings apply to the application, not to one event. They are split
-across tabs:
+Settings apply to the application, not to one event. Open them with
+**⚙ Settings** at the top right of the toolbar. They open in a
+window of their own; there is no Save button, because every change is
+written as you make it. **Close** is the only way out, and Escape does
+the same thing.
+
+They are split across tabs:
 
 - **Files** — where events are saved, and whether you are prompted for
   a folder each time.
@@ -1677,6 +1915,10 @@ across tabs:
   service used to verify IDs and ratings.
 - **Updates** — update checks, the release channel, and your current
   version.
+- **Shortcuts** — a reference card for the keyboard shortcuts. It is the
+  only tab that changes nothing; it is here so the list is available
+  without leaving the application, which matters in a hall with no
+  internet. See [Keyboard shortcuts](#keyboard-shortcuts).
 
 ---
 
@@ -1705,7 +1947,7 @@ first.
 
 ## About this guide
 
-This guide describes FreePair **v0.77.20260821**. It is updated whenever a
+This guide describes FreePair **v0.78.20260822**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
