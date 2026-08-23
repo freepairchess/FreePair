@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.78.20260822**
+**Applies to FreePair v0.79.20260823**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -211,12 +211,19 @@ you are filling in.
 **Focus mode shows the table and nothing else** — no toolbar, no
 section list, no tabs, and none of the setup controls. Press **F11**, or
 the **Focus (F11)** button on the header of the table you are looking
-at. **Esc** brings everything back, as does F11 again or the button in
-the strip along the top.
+at. The same button then reads **Exit Focus Mode (F11)**. **Esc** leaves
+too, as does the button in the strip along the top.
 
 Every tab except Overview offers it: Roster, Pairings, Standings, Wall
 Chart, Prizes, and Byes & Withdrawals. It keeps the tab you are on;
 from Overview — a form rather than a table — it takes you to Pairings.
+
+**Pairing a round brings its pairings to the front.** If you press `F5`
+from the Roster, or use the Pair button beside a section, the section
+switches to Pairings once the round is made — the round you just asked
+for is the thing to look at, and staying put with nothing visibly
+different is hard to tell from nothing having happened. If you were in
+focus mode you stay in it.
 
 That strip along the top is the one piece of chrome it keeps. It names
 the section you are in and says how to leave, because an application
@@ -1947,7 +1954,7 @@ first.
 
 ## About this guide
 
-This guide describes FreePair **v0.78.20260822**. It is updated whenever a
+This guide describes FreePair **v0.79.20260823**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
