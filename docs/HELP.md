@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.80.20260823**
+**Applies to FreePair v0.81.20260823**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -220,7 +220,25 @@ at. The same button then reads **Exit Focus Mode (F11)**. **Esc** leaves
 too, as does the button in the strip along the top.
 
 Every tab except Overview offers it: Roster, Pairings, Standings, Wall
-Chart, Prizes, and Byes & Withdrawals. It keeps the tab you are on;
+Chart and Prizes. Where a tab shows **two** tables it has two Focus
+buttons, one on each — the Roster tab always does, because of the **Byes
+& Withdrawals** panel, and in a team event so do Pairings, Standings and
+Wall Chart, which show the team table above the individual one. Each
+button fills the window with its own table and hides the other, and
+focusing the byes panel opens it if it was folded away.
+
+**The focused table takes the whole window**, not just the space it
+happened to occupy. That is the point of the mode: a bye list that stops
+a third of the way down the screen has not given you any more room to
+work in.
+
+The strip along the top names what you are looking at, and on the
+Pairings tab it names the **round** as well — "Focus mode — Open —
+Round 3 Pairings". Focus mode takes the round selector away with
+everything else, so that line is the only thing left telling you which
+round you are typing results into.
+
+It keeps the tab you are on;
 from Overview — a form rather than a table — it takes you to Pairings.
 
 **Pairing a round brings its pairings to the front.** If you press `F5`
@@ -316,7 +334,7 @@ standings and prizes.
   how many rounds and results you are about to lose.
 - **Copy section** duplicates a section's setup, which is useful when an
   event has several similarly configured sections.
-- **⧉ Open in Window** pops a section out into its own window, so you can
+- **🪟 Open in Window** pops a section out into its own window, so you can
   watch two sections side by side.
 
 Sections are laid out so that no two share a physical board number.
@@ -1035,7 +1053,7 @@ and does not mean anything is wrong.
 doing nothing. A relaxed constraint is usually the rules working as
 intended when something had to give — not a mistake.
 
-**📄 Print as PDF** writes the whole report — totals, every round, and
+**🖨 Print as PDF** writes the whole report — totals, every round, and
 every relaxed constraint — and **Copy report** puts the same text on the
 clipboard for an email.
 
@@ -1087,7 +1105,12 @@ pairing engines are not involved.
 
 ## Byes and withdrawals
 
-The **Byes & Withdrawals** tab is where absences are managed.
+**Byes & Withdrawals** sits at the top of the **Roster** tab, folded away
+until you open it. The heading carries the count, so you can see whether
+there is anything to look at without opening it. It used to be a tab of
+its own; it moved because it is a short list you consult while working on
+the roster, and having it elsewhere meant leaving the roster to answer a
+question about the roster.
 
 - **Half-point byes** are requested in advance by the player. Record them
   and the player is withheld from that round's pairing pool.
@@ -1179,7 +1202,7 @@ nothing.
 
 ### Crosstable
 
-Round robin, double round robin and quad sections get a **📄 Print
+Round robin, double round robin and quad sections get a **🖨 Print
 crosstable** button, on both the **Pairings** and **Wall Chart** tabs.
 It produces the traditional all-play-all grid: one row and one column
 per player, where the cell where a row meets a column is what that
@@ -1207,7 +1230,7 @@ never all meet, so a crosstable would be mostly empty; the wall chart
 is the report for that format.
 
 **The crosstable also shows in a window.** Open the Pairings or Wall
-Chart tab in a window (**⧉ Open in Window**) and the crosstable appears
+Chart tab in a window (**🪟 Open in Window**) and the crosstable appears
 above the grid, with a **Show crosstable** tick box to hide it. It is on
 by default for round robin and quad sections, because for those formats
 it is usually the view you want — the round below is one slice of it.
@@ -1222,7 +1245,7 @@ standings, and **🗑 Clear prizes** starts over.
 
 ## Printing and reports
 
-**📄 Print** produces a PDF of whatever you are looking at — pairings,
+**🖨 Print** produces a PDF of whatever you are looking at — pairings,
 standings, wall chart, roster or prizes. Reports are landscape by default
 because tournament tables are wide, and each carries the event name,
 section, time control, location, dates, a page number and a timestamp.
@@ -1299,6 +1322,17 @@ remembered for next time:
 - **Sections** — which sections appear, and whether each shows pairings,
   standings, or both. Untick a side-game or a one-round exhibition to
   keep it off the screen entirely.
+
+**A team event shows its team tables too.** Before the board pairings
+for a team section, the rotation puts up the round's team match-ups —
+match number, the two teams with their seeds, and the board score as it
+stands. Before the player standings it puts up the **team standings** —
+place, team, match points, board points, which is what the event is
+actually decided on. That is the question a captain and a spectator are asking; the
+boards that follow are how a player finds their own game. A running
+match shows its score part-finished, because that is what a room
+watches; one where nobody has finished a board shows a dash rather than
+0–0, which would read as a set of draws.
 - **Pairing columns** — the wallboard's own, separate from the grid and
   the printed sheet. A projector read across a room has far less width
   than a sheet of paper, so fewer columns and larger type. **Rule lines
@@ -1985,7 +2019,7 @@ first.
 
 ## About this guide
 
-This guide describes FreePair **v0.80.20260823**. It is updated whenever a
+This guide describes FreePair **v0.81.20260823**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
