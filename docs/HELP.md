@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.81.20260823**
+**Applies to FreePair v0.82.20260823**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -86,6 +86,37 @@ stopped, that is **Check for updates on startup**, under Update options.
 
 Your current version is shown in Settings, and in the main window title
 bar.
+
+### Going back to an earlier version
+
+If a new version causes trouble, you do not have to live with it until
+the next release. **⚙ Settings → Updates → Change version** lists every
+FreePair release published for your platform — older ones included — and
+will install any of them.
+
+Press **List versions**, then pick one from the menu. Each entry says
+where it stands: *running now*, *newer*, or *older*. Releases you have
+used on this computer also show the date you last ran them, which is
+usually how you will recognise the one you want — "the version I had
+yesterday" is easier to remember than a number. FreePair starts keeping
+that record the first time you run it, so the list fills up as you go.
+
+A version you once ran that has since been withdrawn is still listed,
+marked **no longer published**, but cannot be installed. It is shown so
+you are told it is gone rather than left looking for it.
+
+Going **back** asks you to confirm first, and the reason is worth
+reading rather than clicking past. An older FreePair may not understand
+an event file a newer one has saved. Anything the newer version added to
+your event can be ignored, or lost, the next time the older one writes
+the file. **Copy your `.sjson` somewhere safe before going back**,
+especially part-way through an event. Moving *forward* again has no such
+risk and asks nothing extra.
+
+The download is a full one either way — going back does not reuse what
+is already installed — so it needs the same connection an update does.
+FreePair restarts into the version you chose. There is nothing to save
+first.
 
 ### The main window
 
@@ -1974,7 +2005,8 @@ They are split across tabs:
   service used to verify IDs and ratings.
 - **Updates** — update checks, the release channel, your current
   version, and — when a check finds one — a button to install it without
-  leaving the page. Also lists any crash reports.
+  leaving the page. Also where you go back to an earlier release, and
+  where any crash reports are listed.
 - **Shortcuts** — a reference card for the keyboard shortcuts. It is the
   only tab that changes nothing; it is here so the list is available
   without leaving the application, which matters in a hall with no
@@ -2019,7 +2051,7 @@ first.
 
 ## About this guide
 
-This guide describes FreePair **v0.81.20260823**. It is updated whenever a
+This guide describes FreePair **v0.82.20260823**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
