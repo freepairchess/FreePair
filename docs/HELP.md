@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.82.20260823**
+**Applies to FreePair v0.83.20260825**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -269,6 +269,22 @@ Round 3 Pairings". Focus mode takes the round selector away with
 everything else, so that line is the only thing left telling you which
 round you are typing results into.
 
+**On the Pairings tab it also puts away the bye list and the colour-due
+legend.** Both sit under the board grid and take as much room as they
+need, so a late round with a lot of players paired out can leave you
+four boards to look at above a screenful of byes — the opposite of what
+you pressed F11 for. The panel header still says how many were paired
+out, so you can see that byes exist; the roll call itself is a keystroke
+away on leaving focus mode, and the Byes tab has it in full.
+
+**The round's byes are a table of their own**, further down the Pairings
+tab, with the same sorting, resizing and font control as any other. They
+have their own **Focus (F11)** button too, so you can give the byes the
+whole window when you are checking who is sitting out — the banner then
+reads "Round 3 Byes" rather than "Round 3 Pairings", so there is no
+doubt which table you are looking at. Requested byes for a future round
+are tinted green, the same as on the wall chart.
+
 It keeps the tab you are on;
 from Overview — a form rather than a table — it takes you to Pairings.
 
@@ -323,6 +339,13 @@ contents and its timestamp both. Browsing is not editing.
 If the section you were on has since been renamed, merged or deleted,
 the event simply opens normally.
 
+**FreePair reopens your last event on startup — but only if it was still
+open when you quit.** If you close the event first and then close
+FreePair, it starts up empty next time. Closing an event is how you say
+you are finished with it, and an event that came back on its own would
+make the close look as though it had not taken. The event stays in
+**Open Recent…** either way, so it is still one click from returning.
+
 ### Events from an online registry
 
 Creating an event from an online registry, and opening a cloud-saved
@@ -332,6 +355,82 @@ event's own page, where the passcode is shown — click it if you do not
 have the passcode to hand, and copy it from there rather than hunting
 through email. Both fields also have a 📋 button to paste from the
 clipboard.
+
+### Web events
+
+**➕ New Event → Create New Web Event …** builds an event from one that is
+already published online. Paste the event's address and FreePair reads the
+entry list and any rounds that have been played.
+
+What you get is an ordinary event file — players with their IDs and
+ratings, and a round history — so it opens, pairs and reports like any
+other. **The event's own details come across too** where the source
+publishes them: the dates, the city, state, ZIP and country, the
+organizing affiliate, and the chief TD and assistant. They land in
+**Event Configuration**, already filled in.
+
+Where an event lists a different chief for each section, it is the
+event's own pair that is taken — the ones its page prints at the top —
+not whoever happens to run the first section. It is most useful for having a realistic finished event to look at,
+which is exactly what the Norms tab wants.
+
+**Every section is imported**, each under its own name, so a multi-section
+event arrives whole and you do not have to run it once per group. If two
+sections happen to share a name, the second is given a number, because
+elsewhere in FreePair a section's name is how it is identified.
+
+A large event is a lot to read, so the dialog stays open and tells you
+which section it is on. **Cancel** stops a read in progress.
+
+Three other things to expect. Ratings come in on the scale the source
+publishes — a US Chess crosstable brings US Chess ratings, and FreePair
+records them as such rather than filing them as FIDE ratings. Colours are
+recorded only where the source records them; where a crosstable gives the
+result and the opponent but not who had White, FreePair leaves the colour
+blank rather than inventing one that would look identical to a real one.
+And an address FreePair cannot read is refused before anything is fetched.
+
+**Some addresses are entry lists rather than results.** A registration page
+knows who is playing but not what they played, so what you get is a roster
+with no rounds — you pair round one yourself. That is still most of the
+setting-up done for you, and an entry list often carries more than names:
+requested byes, membership expiry dates, and which section and schedule each
+player entered.
+
+**Where an event runs the same section on more than one schedule** — a
+2-day and a 3-day entry into the same Under 1800 — those arrive as separate
+sections, named for both. They are separate pairing groups until the
+schedules merge, and putting them together would pair players against
+opponents they are not yet due to meet.
+
+Some entry lists sit behind an interface that only answers requests
+coming from the event's own page. FreePair supplies that page — the one
+you pasted — and still identifies itself as FreePair, so the site can see
+what is calling. Use this only for sites you organise on or have
+permission to read.
+
+**An entry list is counted before it is accepted.** These pages state how
+many entrants they hold, and FreePair compares that against what it actually
+read. If the two disagree the import is refused rather than completed. A
+roster that is quietly short is the worst outcome available: nothing looks
+wrong, the event opens, and the missing players are discovered when they
+turn up to play.
+
+Where such a roster carries both a scholastic
+(NWSRS) and a US Chess rating, FreePair works out per section which one the
+section is actually run on, from the IDs the entrants have rather than from
+which columns exist, and seeds on that. A section where nobody has a US
+Chess ID is not a US Chess section, and seeding it on an empty column would
+put the whole field at zero.
+
+A rating of 0 on a roster means **unrated**, and FreePair keeps it that way
+rather than treating it as a rating of zero — a player seeded at zero would
+be paired bottom board against the field for want of a number nobody has
+issued yet.
+
+Titles and withdrawals are sometimes printed into the player's name. Both
+are lifted out, so the name is a name, the title is a title, and a player
+listed as withdrawn arrives withdrawn rather than in the pairing pool.
 
 ### Event details
 
@@ -403,6 +502,46 @@ and shows you the result before you commit.
 **ID and Rating** verifies USCF and FIDE IDs against the online player
 database and fills in the current ratings.
 
+**On a FIDE-rated section it also fills in the FIDE half of the roster.**
+Plenty of events arrive with national IDs and national ratings and nothing
+else — an event imported from a national source usually does. For every
+player still missing FIDE details, FreePair looks up their **FIDE ID,
+rating, federation and title** and fills in whatever was blank. Without
+them the Norms tab sees a field of unrated, untitled, federation-less
+players and reports that nobody is near a norm, which looks like an answer
+rather than missing data.
+
+Three things it deliberately does not do. It never overwrites a value you
+typed — if you corrected a federation by hand it stays corrected. It never
+puts the FIDE rating in the pairing rating column, because a US Chess event
+pairs on US Chess numbers and reseeding on a different scale would reorder
+the whole field. And a player with no ID at all is skipped rather than
+matched by name, since two players share a name often enough that guessing
+would eventually attach the wrong title to somebody in a norm report.
+
+The FIDE ID is written into the **ID2** column and the FIDE rating into
+**Rating2**, which is where a dual-rated event keeps them and how they
+travel back out to a SwissSys file. Both columns are then
+labelled with the federation they hold — **ID2 [FIDE]** and **Rating2
+[FIDE]** — so the FIDE export and the rating refresh will use them, and so
+two ratings side by side cannot be mistaken for the same scale. Turn ID2 and
+Rating2 on under **Optional Columns** if you do not already show them.
+
+An ID2 already holding another federation's ID is never overwritten — the
+FIDE ID is still recorded, just not in that column. And on a FIDE-only
+event, where the first column already is the FIDE ID, nothing is copied to
+ID2: it would show the same number twice.
+
+A large section is one lookup per player, so it runs behind a progress
+window you can cancel — one for the ID check, then one for the FIDE
+lookup, each saying which it is. Cancelling keeps whatever had already
+been found.
+
+**Every name in the roster is a link.** Clicking one opens the player
+database in your browser, searched for that name. It is a search rather
+than a jump to one profile, because a name can match nobody, one person
+or several — the identification is yours to make, not FreePair's.
+
 **Only national IDs are checked.** US Chess, FIDE and CFC IDs are digits
 only, so an ID carrying letters is not one of them and is never looked
 up as one — it is left unchecked and labelled as such rather than
@@ -411,8 +550,14 @@ column is labelled **NWSRS**; use **Roster Update** to check those
 against the NWSRS database instead. If a section was previously
 mislabelled this way, running the check again corrects it.
 
-**Roster Update** re-pulls live ratings for the whole section. Two
-warnings exist here on purpose:
+**Roster Update** re-pulls live ratings for the whole section. It first
+checks that every ID column holding data has a known federation, because
+otherwise it cannot tell whether the number it is about to overwrite is a
+USCF rating or a FIDE one. That classification is saved in the event file,
+so once a section has been through **ID and Rating** it stays classified —
+closing and reopening the event does not send you back to square one.
+
+Two warnings exist here on purpose:
 
 - Once a round has been paired, refreshing ratings can change the
   pairing basis mid-event, so FreePair asks first.
@@ -1152,6 +1297,20 @@ question about the roster.
 - **Withdrawing** a player removes them from future rounds while keeping
   the games they have already played.
 
+**A zero-point bye is one round; withdrawing is the rest of the event.**
+For the last round the two amount to the same thing, and FreePair pairs
+them identically — the player stays in the record and is not paired. They
+differ earlier on: give somebody a zero-point bye in round 2 and they are
+paired again in round 3 as normal, whereas a withdrawal keeps them out
+until you reinstate them.
+
+FreePair also works out who has withdrawn from the shape of the
+crosstable, for files that do not carry the marking — a player who
+played and has been absent ever since. **Coming back ends it**: a player
+who missed a round and then played again is not withdrawn, however the
+missed round was recorded. Only an absence that runs to the last scored
+round counts.
+
 Byes are shown on the Roster, on the Pairings tab with a count, and on
 the Standings, so a bye is hard to miss.
 
@@ -1758,8 +1917,15 @@ or to tell the player the request came in after pairing.
 
 A request that the file already satisfied is **not** reported. If the
 player asked for a half-point bye and got exactly that, the two agree,
-even though the request itself may no longer appear in the roster's HPB
-column once the round has been scored.
+and the roster's HPB column shows that round whether the bye is still a
+pending request or has already been played out.
+
+**The HPB and 0-PB columns show every bye on record**, not only the ones
+a player asked for in advance. A bye you grant when adding somebody
+mid-event — a half point for the rounds they missed — appears there too,
+alongside the requested ones. Before this, those byes showed on the Byes
+& Withdrawals panel but left the roster cell blank, so the same player
+appeared to have a bye in one place and none in another.
 
 Turn the alerts on or off, and set how often they run, under
 **⚙ Settings → Online → Alert when NA Chess Hub roster has updates
@@ -1908,6 +2074,328 @@ to FIDE, and a player with no FIDE rating is reported as unrated.
 
 ---
 
+## FIDE title norms
+
+The **Norms** tab appears on FIDE-rated sections, and on any section you
+have set to pair with the FIDE engine. Everywhere else it is not shown at
+all — norms are a FIDE title matter, and a US-Chess-only event cannot
+produce one, so there is nothing for the tab to say.
+
+The tab answers three questions: does this event qualify for the large
+Swiss exemption, who is in line for a norm, and what does the arbiter
+still have to confirm before signing anything.
+
+**Everything here is read-only.** Nothing on this tab changes your event.
+
+### What FreePair can and cannot decide
+
+FreePair checks all of Article 1.4 of the FIDE Title Regulations — the
+part that is arithmetic over your crosstable. Counted games, the opponent
+rating floor, the average opponent rating, the performance rating, the
+titled-opponent requirements, the federation rules: all of it, with the
+article number against each check.
+
+It cannot check most of Article 1.1, and neither could any program.
+Whether the event was registered with FIDE thirty days ahead, whether the
+chief arbiter held the right licence and was in the venue — none of that
+is in an event file. Those are listed at the bottom of the tab as a
+checklist for you to answer, and your answers print on every certificate.
+**Anything you leave unanswered prints as outstanding, not as a pass**,
+which is deliberate: a signed certificate should never claim something
+was checked when nobody looked.
+
+For the rules themselves, **📖 Norm rules** opens FreePair's full norms
+reference — what each norm requires, worked through, per event type. It
+works offline.
+
+### Event requirements
+
+The first panel checks the two things that belong to the event rather
+than to any one player.
+
+**Rounds scheduled** against the nine games Article 1.4.1.1 asks for. A
+shorter schedule is not fatal on its own — a player can still reach nine
+games across two events — but it tells you at a glance that no norm will
+be earned here alone.
+
+**Time control** against Article 1.1.3, which wants each player to have
+at least two hours for sixty moves. FreePair reads what you typed and
+does the arithmetic, **and increments count**: `G/90;+30` is 90 + 60×0.5
+= exactly 120 minutes and qualifies, while the same 90 minutes without
+the increment does not. That thirty seconds is the whole difference
+between a norm event and a nice tournament, and it is easy to miss.
+
+Time controls are free text, so this one has three answers rather than
+two. If FreePair cannot read what is written, or if the notation is
+genuinely ambiguous about whether an increment runs from move one, the
+result is **?** and the note under the 1.1.3 checklist item says what it
+made of it. **It never ticks the box for you.** Calling an unreadable
+control compliant would let an ineligible event look eligible; calling it
+too fast would deny a norm somebody earned. The answer stays yours.
+
+### Setting the host federation
+
+FreePair fills this in from the event's own country, using **FIDE's**
+three-letter code rather than the more familiar ISO one — they disagree
+for a long list of chess countries, and it is FIDE's that players carry.
+Germany is `GER` and not `DEU`, Switzerland `SUI`, the Netherlands `NED`.
+
+Change it if the organising federation is not the one the event is being
+held in. If FreePair leaves the box empty it could not place the country
+with confidence and would rather you typed it than have it guess — the
+United Kingdom is the common case, because FIDE has separate codes for
+England, Scotland, Wales and Northern Ireland and none for the whole.
+
+The large Swiss test counts rated players who are *not* from the host
+federation, so nothing about it can be decided until this is set, and the
+tab says as much until you do.
+
+This is remembered for the session but is not saved into the event file.
+
+**If every count reads zero,** the roster has no FIDE federations in it.
+The whole rule is about which federation each player belongs to, so
+without that FreePair can only report nobody. Run **Verify IDs** on the
+Roster tab for a FIDE-rated section and it fills in each player's FIDE
+id, rating, federation and title, and those are saved with the event.
+
+Files saved by FreePair before this was fixed lost the federation and the
+FIDE rating when they were closed — the ids and ratings in the ID2 and
+Rating2 columns survived, but the federation was not written. Re-run
+**Verify IDs** once on such an event and it will be right from then on.
+
+### Is this a "Super Swiss"?
+
+The panel at the top checks your section against **Article 1.4.3d**. It
+needs, in every round, at least 20 FIDE-rated players who are not from
+the host federation, from at least 3 federations, at least 10 of them
+holding GM, IM, WGM or WIM. Players only count if they missed at most one
+round — a pairing-allocated bye is not a missed round, since that was the
+tournament's doing rather than the player's.
+
+Each threshold is listed with what it needs and what you have, so a
+section that just misses tells you by how much.
+
+**The field, round by round.** Under the thresholds is a row per round
+showing how many of the qualifying rated non-host players were in the
+field that round, how many federations they came from and how many were
+titled, and whether that round on its own cleared all three.
+
+Two rules decide who is in the field for a round, and both come straight
+from 1.4.3d. First, only players who count for the *event* appear at all
+— someone who missed two or more rounds is excluded from every round,
+**including the ones he played**, because the rule counts players rather
+than seats. So one player with two requested byes takes a round of 20
+down to 19 even in a round he sat down for.
+
+Second, **a pairing-allocated bye still counts as being in the field**.
+That is the rule's own parenthesis: a bye the pairing system handed out
+because there was nobody to pair him with is the tournament's doing, not
+the player's, and 1.4.3d declines to hold it against him. A requested
+half-point bye or a TD-assigned zero-point bye is his own absence and
+does reduce the round.
+
+A round that falls below any of the three thresholds is shown **in red**
+and **fails the whole section**. Article 1.4.3d asks for the field "in
+every round", and FreePair reads that literally: one thin round is enough
+to withhold the exemption, and the thresholds table carries a fourth row
+saying which rounds were short.
+
+This is the strict reading, and it is worth knowing that it bites. A
+field of exactly twenty has no slack at all — a single player taking his
+one permitted bye leaves nineteen at the board that round, and the
+section fails on it. If you would rather that were advisory, say so; the
+looser reading counts the qualifying players once across the event and
+ignores which rounds they sat out.
+
+Two things never put a round in the red. A **pairing-allocated bye** is
+not an absence — that is the rule's own parenthesis. And a player who
+missed more than one round is already out of the field entirely, so he
+cannot make a round short by being absent again.
+
+**Players who do not count.** Below the rounds is the list that makes the
+totals auditable: every rated player from outside the host federation who
+would have swelled the count and did not, with the reason and the number
+of rounds they missed.
+
+This is where "why is it 20 and not 24?" gets answered. A player who
+missed more than one round is out of the field **entirely** — including
+the rounds he did play — so a single name here can take a round of 20
+down to 19 even in a round he sat down for. That is the rule's own
+wording, and it surprises people, which is why the reason column says it
+outright.
+
+Two things are deliberately kept off this list. **Host-federation players
+are not shown**: they are excluded by the rule's design rather than by
+anything going wrong, and on a typical open they are most of the entry —
+listing them would bury the handful of names worth reading. And a
+**pairing-allocated bye is not a missed round**, so it never puts anybody
+here.
+
+If somebody appears with "No FIDE federation recorded" or "No FIDE rating
+recorded", that is a gap in the roster rather than a verdict on the
+player — he might be the twentieth. **Verify IDs** on the Roster tab
+fills those in.
+
+**If it qualifies, read what that actually buys you.** It waives one
+requirement: that a norm-seeker face opponents from at least two
+federations other than their own. It waives nothing else. The limits on
+how many opponents may share one federation still apply, the
+titled-opponent requirements still apply, and the average-rating and
+performance thresholds still apply. This is the most commonly
+misunderstood rule in the title regulations, and believing it relaxes
+everything is how a director ends up promising a player a norm they
+cannot earn. The panel says so on screen and on the printed summary.
+
+### Who is in line for a norm
+
+The candidates table lists each player against the norms **they are
+actually chasing** — not all four. A grandmaster needs no norm at all and
+is left out entirely; a male international master is only shown the GM
+norm, because IM is already behind him.
+
+The rule is two ladders, and a player is offered a title only if it
+stands above what they already hold:
+
+- **Open ladder** — GM above IM above FM. Only open titles count here, so
+  a WGM is still shown the IM norm.
+- **Women's ladder** — WGM above WIM above WFM. An open title counts at
+  its own rank, so a female IM is shown WGM but not WIM: she is already
+  past the WIM title.
+
+So a female FM, a WFM and an untitled woman are all shown all four; an
+untitled man and a male FM are shown GM and IM; a WIM is shown GM, IM and
+WGM.
+
+**Only women can earn WGM and WIM norms**, so those rows appear only for
+players FreePair knows are female. A women's title is proof on its own —
+nobody holds a WIM by accident — and otherwise it comes from the sex
+recorded on the roster.
+
+If that is blank, the tab says so above the table rather than quietly
+omitting the rows, because a woman with no sex recorded looks exactly
+like a man to the filter and the norm she may have earned would simply
+never appear. **Verify IDs** on the Roster tab fills it in from the
+player's FIDE record.
+
+By default the table shows only players who either have a norm or can
+still get one; tick **Show every player** to see the rest.
+
+For each row you get the games counted, the score, the average opponent
+rating, the performance rating, and a verdict of **Norm**, **Possible**
+or **No**, with what is still outstanding beside it.
+
+**What "Possible" means.** It means the norm has not been earned yet but
+can still be, arithmetically, in the rounds that remain — the score is
+reachable, and the opponent mix can still be supplied by the pairings to
+come. It is a live prospect, not a prediction: nothing about it says the
+player will get there.
+
+Once a section has no rounds left, nothing is Possible any more. Every
+row is either **Norm** or **No**, because there is nothing left to
+change. Some requirements can also be lost outright before the last
+round — the 1.4.4 caps are maximums, so once a player has faced too many
+opponents from one federation, further games cannot undo it and the
+verdict turns to **No** immediately.
+
+Select a row and the panel underneath explains where that player stands.
+Mid-event that means what they still need: how many points from the
+remaining rounds, how many more titled opponents, how many more
+federations. If a norm has become impossible it says which requirement
+can no longer be met, and it says so as early as the arithmetic allows —
+telling a player on the last morning is kinder than telling them
+afterwards.
+
+**The full breakdown.** Double-click any row — or press **🔍 Full norm
+breakdown…** — for the whole calculation in one window: the player's
+score, Ra and Rp against what the title needs, every requirement of
+Article 1.4 with its verdict, and every game the calculation counted,
+with each opponent's title, federation, rating, colour and result.
+
+This is the view to open when somebody asks *why*. The candidates table
+has room for one phrase, which is enough to sort the list but not enough
+to defend a decision. A norm is refused on a specific article with a
+specific number, and both the director signing the certificate and the
+player being turned away are entitled to see which one.
+
+Three things in it are worth knowing about.
+
+A requirement marked **exempt** in purple was **waived, not met**. That
+happens when the event qualifies as a large Swiss under 1.4.3d, which
+excuses the applicant from needing opponents of two other federations —
+and excuses nothing else. It is shown as its own outcome rather than as a
+tick because Article 1.4.3e requires at least one norm in a title
+application to be earned *without* an exemption, so this is the first
+thing a federation will query.
+
+A game may be annotated **raised to floor (1.4.6.3)**. Exactly one
+opponent — the lowest-rated — may be lifted to the title's rating floor
+for the calculation, so the number shown is not that opponent's real
+rating.
+
+Byes and forfeits are absent from the games list on purpose. Only games
+actually played count towards a norm, and a point awarded because an
+opponent did not arrive says nothing about anybody's strength.
+
+**Copy** puts the whole breakdown on the clipboard as text, for an email
+to a rating officer or a note in the event file.
+
+**Print norm report…** writes the signable norm certificate for that
+player as a PDF — the same document as the **📄 Norm certificate…**
+button on the tab toolbar, so there is only ever one norm report and it
+cannot drift. It contains the verdict, the event and applicant details,
+every counted game with the opponent's FIDE ID and the rating actually
+used, the Ra / dp / Rp working, the requirements table, your Article 1.1
+answers and signature blocks for the chief arbiter and the federation's
+rating officer.
+
+It prints for a player who **missed** a norm too, with a red banner and
+the failing requirement named. That is deliberate: the commonest use of a
+norm report is explaining a refusal, and a player who came close is
+entitled to the same worked calculation as one who got there.
+
+The PDF lands in the event folder and opens in your usual viewer, which
+is where you print it on paper from.
+
+**Treat the score figures as a guide, not a promise.** The remaining
+opponents are not known yet, so the projection assumes the average
+opponent rating stays where it is. In a Swiss a norm-chaser is usually
+near the top and will meet stronger players than average, so what they
+actually need often eases as the event goes on.
+
+One difference worth knowing: in a **Swiss**, a norm once secured cannot
+be lost — a player may ignore every game after a title result. In a
+**round robin** it can, because a norm there must be based on all the
+scheduled rounds. The panel tells you which case you are in.
+
+### Printing
+
+**🖨 Print summary** writes the whole picture for the section: the
+1.4.3d verdict with each threshold, then a row per candidate with the
+calculation and the outstanding requirements.
+
+**📄 Norm certificate…** produces the signable document for the selected
+player and norm. It carries the event and player details, every counted
+game with both the published rating and the rating actually used in the
+average, the Ra / dp / Rp calculation, every requirement with its article
+and its numbers, your Article 1.1 answers, and signature blocks for you
+and for your federation's rating officer.
+
+The certificate shows its working on purpose. Where one opponent's rating
+was raised to the norm's floor, that player is marked and named in a
+footnote — only one opponent may ever be raised, and it must be the
+lowest-rated, so it matters that you can see which one it was. Unrated
+opponents are shaded and footnoted with the rating they were credited
+with.
+
+**It is not FIDE's IT1 form.** It carries every field the regulations
+require, but the official form's layout is not reproduced, and it says so
+at the foot of the page. Where your federation wants the IT1, use this as
+the worked calculation to copy from and file alongside it.
+
+Ctrl+P on the Norms tab prints the summary.
+
+---
+
 ## Filing the NWSRS rating report
 
 **🎒 NWSRS Report** on **Event Operations → 📤 Export Report** writes the file NWSRS
@@ -2051,7 +2539,7 @@ first.
 
 ## About this guide
 
-This guide describes FreePair **v0.82.20260823**. It is updated whenever a
+This guide describes FreePair **v0.83.20260825**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
