@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.86.20260826**
+**Applies to FreePair v0.87.20260826**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -3017,7 +3017,7 @@ first.
 
 ## About this guide
 
-This guide describes FreePair **v0.86.20260826**. It is updated whenever a
+This guide describes FreePair **v0.87.20260826**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
