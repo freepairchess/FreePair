@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.85.20260826**
+**Applies to FreePair v0.86.20260826**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -164,6 +164,19 @@ of is still in that position. Widen the window and the labels come back.
 
 If an event is open, the title bar shows the event name and the file it
 is saved to.
+
+**The big tables scroll inside the tab, not with the page.** On Roster,
+Pairings, Standings and Wall Chart the table stretches to the bottom of
+the window and scrolls within itself, so the filter box and the toolbar
+above it stay put while you work down a long list. Make the window
+bigger — or move it to a larger monitor — and the table grows to use the
+extra room rather than stopping at a fixed size.
+
+This is also why those tabs stay quick on a large event. The table only
+draws the rows you can actually see, so a section with three hundred
+players opens and switches as fast as one with thirty. Overview, Prizes
+and Norms are stacks of cards rather than one big table, so those pages
+still scroll as a whole.
 
 ### Keyboard shortcuts
 
@@ -2975,6 +2988,12 @@ anywhere. Whether it leaves your machine is entirely your decision;
 attaching the newest one to a bug report is the single most useful thing
 you can do. The twenty most recent are kept and older ones are discarded.
 
+**The mouse pointer turned into an hourglass.** FreePair is working on
+something that takes a moment — opening an event, or running the pairing
+engine. The pointer goes back to normal on its own when the work
+finishes. Opening a large event is the usual cause; nothing is wrong and
+there is nothing to click.
+
 **A dialog is too tall for my screen.** Dialogs scroll and can be
 resized. The action buttons stay visible at the bottom.
 
@@ -2998,7 +3017,7 @@ first.
 
 ## About this guide
 
-This guide describes FreePair **v0.85.20260826**. It is updated whenever a
+This guide describes FreePair **v0.86.20260826**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
