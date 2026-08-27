@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.84.20260826**
+**Applies to FreePair v0.85.20260826**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -1554,9 +1554,255 @@ it is usually the view you want — the round below is one slice of it.
 
 ### Prizes
 
-The **Prizes** tab handles the prize fund. **✏ Edit prizes…** defines the
-prizes, **🧮 Calculate prizes** distributes them according to the
-standings, and **🗑 Clear prizes** starts over.
+The **Prizes** tab is where the prize fund is declared, awarded, and
+argued about. It handles place prizes, class and under prizes, and
+special prizes — biggest upset, top female, top junior, top senior, top
+unrated, top player from a named club or state, and director's awards
+such as best game.
+
+Its contents are grouped into collapsible panels — **Prize winners**,
+**Not awarded**, **Prize projection**, **Prize fund**, and in a team
+section **Team medals** and **Board prizes**. A panel appears only when
+it has something to say, so a section before its prizes are calculated
+shows just the fund. Each panel header carries the same controls as
+every other tab: a **Focus** button, a **Filter** box with **Clear**, and
+the **A- / A+** font stepper.
+
+The filters are per panel rather than shared, since the tables answer
+different questions — filtering the winners for a player should not
+quietly narrow the fund you are reading beside it. Each searches every
+column of its own table, anywhere in the text and ignoring case, so
+"Under 1600", "trophy" and a surname all work.
+
+**Focus** fills the window with one panel, and each panel has its own
+button, so you can put the winners on the screen for the room without
+the fund and the projection underneath. **F11** from the keyboard cannot
+say which panel you meant, so it takes the winners.
+
+#### Declaring the fund
+
+**✏ Edit prizes…** opens the prize editor. The fund is built out of
+**groups**, and a group is one *ladder* of prizes: a set of places open to
+exactly the same players, awarded in the order they are listed. "1st
+Under 1600" and "2nd Under 1600" are two places on one ladder; "1st
+Place", "2nd Place" and "3rd Place" are three places on another.
+
+Press **➕ Add prizes** and pick what you want from the menu:
+
+- **Place prizes** — 1st, 2nd, 3rd, open to everyone in the section.
+- **Class prizes** — Class A through E, each arriving with the right
+  US Chess rating band already set.
+- **Under prizes** — Under 2200 down to Under 1000, plus **Under …** if
+  you need a ceiling that is not on the list.
+- **Special prizes** — Biggest Upset, Top Female, Top Junior, Top Senior,
+  Top Unrated, Top Club player, Top State player.
+- **Director's awards** — Best Game, Brilliancy, Sportsmanship, and
+  Other.
+
+Each one arrives complete except for the money, which is the only part
+that varies by event. Adding **Class B** sets the 1600–1799 window for
+you; you never type a rating band, and so you never mistype one.
+
+Most groups arrive with **three places** ready for amounts, because that
+is what an event usually announces. The ones that cannot be ranked —
+Best Game, Brilliancy, Sportsmanship, Other, and Biggest Upset — arrive
+with **one**, since "2nd Best Game" is not a prize.
+
+#### Inside a group
+
+Each group is a panel you can collapse. The header always shows what the
+ladder is, who can win it and what it costs in total, so a fund with
+every group collapsed still reads as a prize list.
+
+Open a group and you can:
+
+- Fill in the **amount** for each place. The ordinals are labels, not
+  fields — 1st is whatever is at the top — so rank and order can never
+  disagree.
+- **➕ Add place** for a 4th place, a 2nd Under 1600, and so on. **✕**
+  next to a place removes it. The last place cannot be removed; use
+  **🗑 Remove group** to delete the ladder.
+- Adjust **who can win it**, which is entered once for the whole ladder
+  rather than repeated on every place:
+  - **Name** — what the places are called. With more than one place they
+    become "1st …", "2nd …"; a single place uses the name as it stands,
+    so a lone Top Female prize is called exactly that.
+  - **Rating ≥ / Rating ≤** — inclusive at both ends. "Under 1600" means
+    a ceiling of 1599. Shown only where a rating window means something.
+  - **Unrated eligible** — whether unrated players may win a
+    *rating-restricted* prize. Off by default, because US Chess treats
+    unrated players as eligible for place and unrated prizes only. A
+    prize with no rating window admits everybody regardless.
+  - **Age ≥ / Age ≤** — measured on the event's last day, not today, so
+    a file reopened after somebody's birthday still shows the same
+    winner. A player whose roster row has no date of birth is not
+    eligible for an age-restricted prize; FreePair will not guess.
+  - **Club / state** — which one, for those two prizes.
+  - **Trophy or medal — not cash** — tick this for a prize that is an
+    *object* rather than money: a trophy, a medal, a plaque, a title. It
+    changes three things. There is no amount to fill in, so the amount
+    boxes disappear and the group contributes nothing to the declared
+    fund. A tie for it is settled by the section's **tiebreaks** instead
+    of being shared, because an object cannot be cut in half (US Chess
+    32C) — this is the one place in the whole prize system where
+    tiebreaks decide anything. And winning it does **not** use up the
+    player's one cash prize, so the same player can take the champion's
+    trophy and the first-place money.
+
+#### What you can only have one of
+
+Some entries in the menu grey out once you have used them, with a note
+saying why. The rules come from what the prizes mean:
+
+- **One place ladder per section.** "1st place" is a fact about the
+  section — a second place ladder would be a second first place. If you
+  want more places, add them *inside* the group.
+- **One ladder per class or under band.** Two Under 1600 groups would
+  admit exactly the same players, so each would award its own prizes and
+  the same money would go out twice.
+- **Club, state and director's awards can repeat**, because something
+  the menu cannot know tells them apart: which club, which state, which
+  award. Add one Top Club player group per club.
+
+A trophy and a cash prize for the same players are *not* duplicates and
+both are allowed — a championship trophy beside a $500 first prize is an
+ordinary prize list, and FreePair treats them as the separate things they
+are.
+
+These rules follow the eligibility, not the button you pressed, so they
+keep working if you edit a rating window by hand. If you edit two groups
+until they admit the same players, Save will refuse and name both.
+
+#### How the prizes are shared out
+
+Three checkboxes at the bottom of the editor control this, and the
+shipped settings are the US Chess ones. Change them only if your
+tournament announcement said something different — that is the condition
+the rulebook itself puts on them.
+
+- **A player wins only one cash prize — the largest they are eligible
+  for.** With this on, a player who is top Under 1600 *and* wins the
+  section outright takes first place, and the Under 1600 prize passes
+  down to the next eligible player. That roll-down is the behaviour most
+  directors are looking for.
+- **Players tied on score add their prizes together and divide
+  equally.** Tiebreaks are never used for cash. Two players tied for
+  first with prizes of $500 and $300 take $400 each.
+- **Within a shared pool, nobody takes more than the largest prize they
+  personally qualify for.** This is what stops a class player drawing a
+  share of a pool larger than the biggest prize they were ever eligible
+  for; anything the cap frees up goes to the others in the tie.
+
+When a group of tied players can reach more prizes than there are players
+in the tie, FreePair chooses the combination that pays out the most,
+which is what US Chess asks a director to do by hand.
+
+**Biggest upset** is computed from the games: the largest rating gap in a
+decisive win by the lower-rated player. Draws do not count, wins by
+forfeit do not count, and a game involving an unrated player on either
+side does not count — an unrated player has no rating to be upset by, and
+counting a blank as zero would win every upset prize ever offered.
+
+#### Checking the fund before the event
+
+The **Prize fund** table on the Prizes tab lists everything you have
+declared, and its **Eligible** column is worth a glance the moment you
+finish setting the prizes up. It counts the players in the section who
+could actually win each prize.
+
+A prize reading **0 — nobody** is one no player in the section can win:
+usually a rating window with a digit wrong, or an age prize in a section
+where nobody has a date of birth on the roster. FreePair also names those
+prizes in an orange line above the table, because a zero in a column only
+helps somebody who is already looking at that column.
+
+This is worth catching early. A prize nobody can win looks exactly like a
+correct one — it has a name, an amount and a place in the list — and
+nothing else will ever tell you otherwise. Without this check you find
+out at the prize-giving, in front of whoever thought they had won it.
+
+Director's awards are not counted, since nothing can work out who is
+eligible for a best-game prize; a blank there means it is waiting for
+you, not that it is wrong.
+
+#### Awarding them
+
+**🧮 Calculate prizes** works the fund out against the standings. It is
+meant to be run once every round is complete; if the event is not over
+you will be warned and can still go ahead, and the result is marked
+provisional.
+
+The **Prize winners** table lists one row per recipient, with the prize,
+the amount, and a note saying why it is what it is — "Pooled and divided
+equally", the upset that won an upset prize, or your own words on an
+award you made by hand.
+
+Below it, **Not awarded** lists every declared prize that nobody
+received, and why: nobody in the section qualifies, there are fewer
+eligible players than there are prizes in that group, no upset was
+played, or it is a director's award waiting for you. A prize that quietly
+vanished is money nobody notices until an entrant asks about it, so
+FreePair shows them rather than hiding them.
+
+#### Changing an award by hand
+
+Select a row in either table and press **✍ Edit award…**. You can name
+different recipients, change how the money is split, or press
+**Withhold** to record that the prize is deliberately not being awarded.
+Whatever you write in the note prints beside the award.
+
+This is the escape hatch, and it is meant to be used. No rulebook decides
+a best-game prize, a player who has gone home, or a residency condition
+that was in the entry form. Withhold is a separate button from Cancel on
+purpose: cancelling changes nothing, while withholding is a decision that
+appears on the sheet the room reads.
+
+**↩ Undo hand edits** drops every hand-made award in the section and
+returns it to what the rules produce. **🗑 Clear prizes** discards the
+calculation entirely but keeps the fund.
+
+#### Prize projection
+
+While rounds remain, the tab shows a **Prize projection** below the fund:
+what the prize list looks like on the scores so far, and for each player
+still in the money, three figures.
+
+- **Projected** — what they would take if the event ended right now.
+- **Best case** — if they win every remaining game and nobody else gains
+  a point.
+- **Worst case** — if they gain nothing and everybody else wins out.
+
+The **Status** column turns those into a word. *Guaranteed* means the
+worst case is still above zero, so they are in the money whatever
+happens — which is the question players actually ask at the desk before
+the last round. *In contention* means it depends on the games. Players
+who cannot win anything under any result are left off the table
+entirely, because in a large section they are most of it.
+
+Best and worst case are **bounds, not forecasts**. They are not jointly
+possible — everybody cannot win out, because they play each other — but
+no real result can take a player above their best case or below their
+worst. FreePair does not calculate odds, because it does not know any,
+and a percentage it invented would be quoted back at it by somebody who
+lost money.
+
+Once the event is over the projection disappears. At that point the
+winners table is the answer, and a "projection" sitting beside it would
+only invite you to wonder whether the two might differ.
+
+#### On the wallboard and in print
+
+The wallboard has a prize screen, on by default and switchable per
+section in **Wallboard setup**. Until you press Calculate it shows the
+prize **fund** — each prize, who can win it, and the amount — and after
+you calculate it shows the winners. It will not name a winner before you
+have, because a projector saying "1st Place — Ada Lovelace — $500" in
+round four is read by a hall as a result, and players act on what it
+says.
+
+**🖨 Print** produces the whole thing as a PDF: winners, unawarded
+prizes with their reasons, the fund with its eligibility column, and a
+footnote stating the sharing rules that produced the numbers.
 
 ---
 
@@ -2752,7 +2998,7 @@ first.
 
 ## About this guide
 
-This guide describes FreePair **v0.84.20260826**. It is updated whenever a
+This guide describes FreePair **v0.85.20260826**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
