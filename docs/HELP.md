@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.87.20260826**
+**Applies to FreePair v0.88.20260827**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -145,7 +145,13 @@ event sit at the right-hand end of the same row:
   them by name.
 - **⚙ Settings** opens the application preferences in a window of
   their own. See [Settings](#settings).
-- **❓ Help** opens this guide. So does F1.
+- **📖 Help** opens a short menu:
+  - **About FreePair** — what the program is, **the version you are
+    running**, and the address to send a feature request or a bug report
+    to. If anyone ever asks you which version of FreePair you have, this
+    is the answer, and you can select the line and copy it.
+  - **User Guide** — this guide. F1 still opens it directly, without
+    going through the menu.
 - **Theme** applies immediately. It is left out here rather than filed
   away in Settings because it is the one display choice you are
   likely to change on the spot, usually because of the light in the
@@ -361,13 +367,22 @@ make the close look as though it had not taken. The event stays in
 
 ### Events from an online registry
 
-Creating an event from an online registry, and opening a cloud-saved
-one, both ask for an **Event ID** and a **Passcode**. Once you have
-entered the event ID, the **Passcode** caption becomes a link to that
+If you are **signed in to NA Chess Hub** (see
+[Signing in to NA Chess Hub](#signing-in-to-na-chess-hub)), the quickest
+route is **➕ New Event → Create New Event Using Online Registry → My
+Events on NA Chess Hub…**. That lists the events your account runs and
+opens the one you pick straight away — **no passcode at all**.
+
+Otherwise, creating an event from an online registry and opening a
+cloud-saved one both ask for an **Event ID** and a **Passcode**. Once you
+have entered the event ID, the **Passcode** caption becomes a link to that
 event's own page, where the passcode is shown — click it if you do not
 have the passcode to hand, and copy it from there rather than hunting
 through email. Both fields also have a 📋 button to paste from the
 clipboard.
+
+Passcodes keep working whether or not you sign in, and you will still need
+one for an event somebody else runs and has shared with you.
 
 ### Web events
 
@@ -377,6 +392,14 @@ entry list and any rounds that have been played. There is a 📋 button
 beside the address box, as there is on the Event ID and Passcode fields:
 the address always comes from somewhere else — a browser, an email, a
 message — so pasting it is the only way it ever gets there.
+
+**This one needs you signed in to NA Chess Hub.** The **Create** button
+stays greyed out until you are, and the dialog offers the sign-in itself
+so you do not have to go to Settings and come back. If you have no
+account there is a **Create a free account** button beside it — an
+account at nachesshub.com costs nothing and takes about a minute. See
+[Signing in to NA Chess Hub](#signing-in-to-na-chess-hub) for what
+signing in does and does not involve.
 
 What you get is an ordinary event file — players with their IDs and
 ratings, and a round history — so it opens, pairs and reports like any
@@ -2273,6 +2296,77 @@ that compatibility.
 
 ## NA Chess Hub
 
+### Signing in to NA Chess Hub
+
+**⚙ Settings → Online → NA Chess Hub sign-in.** Signing in once lets you
+reach every event your NA Chess Hub account runs without typing a
+passcode for each one.
+
+Click **Sign in to NA Chess Hub** and your browser opens on NA Chess
+Hub's own sign-in page. You sign in there, exactly as you would on their
+website — **FreePair never sees your password**, and any two-factor step
+stays between you and them. When it finishes, the browser says so and you
+come back to FreePair, which shows which account is connected — by its NA
+Chess Hub name, such as **PNW Chess Center (PNWCC - Organizer)**, rather
+than the email address it was registered with. Worth a glance if you hold
+both a personal login and a club one.
+
+Once signed in, two menus list your own events, each with its own search
+box that remembers what you last typed:
+
+- **➕ New Event → Create New Event Using Online Registry → My Events on
+  NA Chess Hub…** — start a *new* event from its NA Chess Hub entry list.
+- **📂 Open Event → My Events Saved on NA Chess Hub…** — re-open an event
+  you have already been running and saved to NA Chess Hub, with its
+  pairings and results as you left them.
+
+Both open the event you pick with no passcode, and both list events
+delegated to you as well as ones you registered yourself.
+
+The two are easy to mix up, so it is worth being clear about the
+difference: the first builds a fresh tournament from the people who
+signed up, and the second returns you to work already in progress. If
+you are in the middle of an event, you want the second one.
+
+Each list shows only your **current** events. Tick **Show all my events
+on NA Chess Hub** to include finished ones too — useful for looking
+something up after the fact, but left off by default so that a club with
+years of history does not have to scroll past all of it to find
+tonight's tournament.
+
+**Uploading always uses the event passcode, however the event was
+opened.** Publishing pairings and results, cloud backup and roster sync
+are unchanged by signing in. This is deliberate: an upload works or
+fails for the same reason every time, whether you are signed in or not.
+Nothing is lost by it, because an event you downloaded by signing in
+brings its passcode with it — FreePair already has what it needs.
+
+**Signing in is optional and changes nothing else.** Per-event passcodes
+work exactly as before, which is what you still want when somebody hands
+you a single event to run for them.
+
+**Signing out removes the sign-in from this computer.** It does not
+cancel it at NA Chess Hub — there is no way to do that from FreePair yet
+— but it expires on their side on its own within two weeks. On a shared
+or borrowed machine, sign out when you are done.
+
+**Signing out does not let you sign in as somebody else, and this
+surprises people.** If your browser is signed in to NA Chess Hub, so is
+FreePair: clicking Sign in hands you that account instantly, with no page
+shown, and signing out of FreePair and back in gives you the same account
+again. That is because NA Chess Hub remembers you in the *browser*, and
+signing out of FreePair only removes the sign-in from this computer.
+
+To change accounts, use **Use a different account…** next to the sign-in
+buttons. It signs your browser out of NA Chess Hub and opens their
+sign-in page so you can pick the account you want — one click, nothing to
+do by hand. It is worth knowing this if you hold both a personal login
+and a club one.
+
+You may occasionally be asked to sign in again. The sign-in lasts about a
+fortnight, so coming back to a tournament after a few weeks away is the
+usual reason.
+
 ### Roster sync
 
 If your event is registered on NA Chess Hub, FreePair can pull the entry
@@ -3013,11 +3107,29 @@ reporting.
 **I paired the wrong round.** Delete the round. A checkpoint is taken
 first.
 
+### Reporting a bug or asking for a feature
+
+FreePair is shaped by what directors report, and both are welcome at
+**FreePairChess@Gmail.com**.
+
+**Help → About FreePair** has the address as a link, a **Copy address**
+button for machines with no mail program set up, and — more importantly
+— the version you are running. Include that version in anything you
+send. Nearly every report that cannot be acted on is one where the
+version is missing, because the first question is always whether the
+behaviour still happens in the current build.
+
+Also worth including: what you expected to happen and what happened
+instead, the newest crash report if FreePair closed on you, and — for
+anything about a pairing — the event file itself. A pairing question
+without the file is usually unanswerable; with the file it is usually
+answerable in minutes.
+
 ---
 
 ## About this guide
 
-This guide describes FreePair **v0.87.20260826**. It is updated whenever a
+This guide describes FreePair **v0.88.20260827**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
