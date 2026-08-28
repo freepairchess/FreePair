@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.88.20260827**
+**Applies to FreePair v0.89.20260828**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -195,6 +195,10 @@ with no internet.
 |---|---|
 | `Ctrl+N` | Create a new event |
 | `Ctrl+Shift+N` | Browse events on NA Chess Hub and create one from them |
+| `Ctrl+Shift+R` | Create an event from an online registry by ID and passcode |
+| `Ctrl+Shift+W` | Create an event from a published one at a web address |
+| `Ctrl+Shift+H` | Create an event from one your NA Chess Hub account runs |
+| `Ctrl+Shift+V` | Re-open one of your events saved on NA Chess Hub |
 | `Ctrl+O` | Open a saved event from this computer |
 | `Ctrl+R` | Open a recent event |
 | `Ctrl+Shift+O` | Browse your cloud-saved events |
@@ -215,6 +219,7 @@ with no internet.
 | `Ctrl+Shift+P` | Print every section's pairings |
 | `Ctrl+Shift+D` | Print every section's standings |
 | `Ctrl+Shift+L` | Print every section's wall charts |
+| `Ctrl+Shift+T` | Print every round-robin and quad section's crosstable |
 | `Ctrl+,` | Open Settings |
 | `F11` | Focus mode — give the table the whole window |
 | `Esc` | Leave focus mode |
@@ -228,6 +233,19 @@ A few of these are worth a sentence:
   browses this computer, `Ctrl+R` offers the events you had open
   recently, and `Ctrl+Shift+O` lists the events you have backed up to
   the cloud. One key could not have chosen between them.
+- **Starting an event has five, for the same reason.** `Ctrl+N` for an
+  empty one, `Ctrl+Shift+N` to browse a registration list,
+  `Ctrl+Shift+R` for an event ID and passcode, `Ctrl+Shift+W` for a
+  published event's web address, and `Ctrl+Shift+H` for one your own NA
+  Chess Hub account runs. That looks like a lot of keys for one menu, and
+  it is — but which route you use is decided by how your club registers
+  players and then never changes, so in practice you learn the one you
+  use every week and ignore the rest.
+- **`Ctrl+Shift+V` is the odd one out and worth knowing.** It re-opens an
+  event of yours already saved on NA Chess Hub, pairings and results
+  intact. Every other key above *starts* an event; this one returns you
+  to work in progress, which is why it sits under **Open Event** rather
+  than **New Event**.
 - **`Ctrl+Shift+N` is for starting an event from a registration list**,
   not for opening one you already have — it browses NA Chess Hub and
   builds a new event from what it finds, which is why it sits beside
@@ -1210,10 +1228,13 @@ TD or keep it with your notes.
 ### Pairing sheet columns
 
 Which columns appear, in what order and under what heading, is yours to
-set. Open it from **Pairing Operations → Advanced options** to configure
-the on-screen grid and the printed sheet side by side, or from
+set. Open it from **Pairing Operations → Display & Print Columns…** to
+configure the on-screen grid and the printed sheet side by side, or from
 **Page setup → Columns…** when the report is the pairing sheet, to
 adjust the printed sheet alone.
+
+**This one applies to every section**, unlike its neighbour on the same
+menu — see below.
 
 The two views want opposite things of the result columns, and FreePair
 sets them up that way:
@@ -1232,6 +1253,24 @@ column is a matter of taste and is never questioned.
 **Copy from grid** copies the grid's arrangement to the printed sheet,
 but deliberately leaves the result columns as they are, so copying a
 layout across cannot cost you the write-in boxes.
+
+### Advanced pairing options
+
+**Pairing Operations → Advanced Pairing Options…** holds the two settings
+that change how a section is *paired*, rather than how it is displayed:
+**Accelerate pairings** and **Avoid pairing teammates**, each with the
+number of opening rounds it covers.
+
+These are per-section, and they used to share a window with the column
+layout above, which made it easy to miss that one applies to the section
+in front of you and the other applies to every section. They are now two
+menu entries.
+
+**The on/off switches lock once round 1 is paired.** Both change what
+round 1 does, so switching either one on afterwards would describe a
+tournament that had not been run. The round windows stay adjustable
+until the rounds they cover have been paired, so you can shorten or
+extend acceleration mid-event.
 
 ### Why this pairing?
 
@@ -1464,6 +1503,17 @@ round counts.
 
 Byes are shown on the Roster, on the Pairings tab with a count, and on
 the Standings, so a bye is hard to miss.
+
+**Double-click any bye to edit that player's bye requests.** It works in
+both lists — the Byes & Withdrawals panel on the Roster, and Byes this
+round on the Pairings tab — and opens the player straight on their **Bye
+Requests** tab. These lists are what you read just before changing
+somebody's byes, so they now do something about it rather than sending
+you back to the roster to find the player by hand.
+
+It is a double-click, not a single one, because a single click selects
+and selection follows the arrow keys — reading down the list would
+otherwise open a dialog on every row.
 
 **A requested bye survives unpairing the round.** Pair a round, look at
 it, decide you want it again — the requests that were honoured the first
@@ -3129,7 +3179,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.88.20260827**. It is updated whenever a
+This guide describes FreePair **v0.89.20260828**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
