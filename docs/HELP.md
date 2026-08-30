@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.89.20260828**
+**Applies to FreePair v0.90.20260829**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -85,7 +85,11 @@ unaware of some future release. If you want the checks themselves
 stopped, that is **Check for updates on startup**, under Update options.
 
 Your current version is shown in Settings, and in the main window title
-bar.
+bar. **Release notes**, beside **Check now**, shows what changed in the
+version you are running — useful when a behaviour surprises you and you
+want to know whether it was deliberate. The notes come from the published
+releases feed, so the first press needs a connection; after that they are
+already to hand.
 
 ### Going back to an earlier version
 
@@ -101,9 +105,18 @@ usually how you will recognise the one you want — "the version I had
 yesterday" is easier to remember than a number. FreePair starts keeping
 that record the first time you run it, so the list fills up as you go.
 
+**Every entry has its own Notes button.** Press it to read what changed
+in that release without selecting it or installing anything. This is the
+usual way to find the version you want: "the one before boards were
+renumbered" is a better description of the release you are after than
+any date, and you should not have to install a version to find out
+whether it is the one.
+
 A version you once ran that has since been withdrawn is still listed,
 marked **no longer published**, but cannot be installed. It is shown so
-you are told it is gone rather than left looking for it.
+you are told it is gone rather than left looking for it. Its **Notes**
+button still works, but says only that the release has been withdrawn —
+the notes went with it.
 
 Going **back** asks you to confirm first, and the reason is worth
 reading rather than clicking past. An older FreePair may not understand
@@ -140,8 +153,8 @@ event sit at the right-hand end of the same row:
   tab.
 - Those three are icons only, to keep the row narrow; hover any of them
   and the tooltip names it. All three are also in **Event Operations**
-  under their full names — **Wallboard (full screen)**, **Share
-  Wallboard to Phones and TVs** and **Print** — if you would rather find
+  under their full names — **Live Score Board (full screen)**, **Share
+  Live Score Board** and **Print** — if you would rather find
   them by name.
 - **⚙ Settings** opens the application preferences in a window of
   their own. See [Settings](#settings).
@@ -149,7 +162,9 @@ event sit at the right-hand end of the same row:
   - **About FreePair** — what the program is, **the version you are
     running**, and the address to send a feature request or a bug report
     to. If anyone ever asks you which version of FreePair you have, this
-    is the answer, and you can select the line and copy it.
+    is the answer — press **📋 Copy** beside it and paste. **📝 Change
+    log** opens the list of every published release, newest first, in
+    your browser.
   - **User Guide** — this guide. F1 still opens it directly, without
     going through the menu.
 - **Theme** applies immediately. It is left out here rather than filed
@@ -157,7 +172,7 @@ event sit at the right-hand end of the same row:
   likely to change on the spot, usually because of the light in the
   playing hall.
 
-Wallboard, Share and Print appear only once an event is open; Settings,
+Live Score Board, Share and Print appear only once an event is open; Settings,
 Help and Theme are always there.
 
 **On a narrow window the toolbar drops the labels and keeps the icons.**
@@ -213,8 +228,8 @@ with no internet.
 | `F7` | Publish pairings and results to NA Chess Hub |
 | `F8` | Check the event over |
 | `F9` | Pairing quality |
-| `Ctrl+B` | Open the full-screen wallboard |
-| `Ctrl+Shift+B` | Share the wallboard to phones and TVs |
+| `Ctrl+B` | Open the full-screen Live Score Board |
+| `Ctrl+Shift+B` | Share the Live Score Board |
 | `Ctrl+P` | Print what you are looking at |
 | `Ctrl+Shift+P` | Print every section's pairings |
 | `Ctrl+Shift+D` | Print every section's standings |
@@ -383,6 +398,196 @@ you are finished with it, and an event that came back on its own would
 make the close look as though it had not taken. The event stays in
 **Open Recent…** either way, so it is still one click from returning.
 
+### Quick Event from a roster file
+
+**➕ New Event → Quick Event from a Roster File …** is the fast route
+when you already have the entry list as a spreadsheet. It reads the file,
+makes one section, puts everybody in it, and hands you an event that is
+ready to pair. A club night can go from a CSV to round one in well under
+a minute.
+
+**It is also the way in when nothing else works.** Reading an event
+straight off a web address only works for sites FreePair knows how to
+read. If your registration site is not one of them — or it is, and the
+site has changed — this is how you get the roster in anyway, without
+typing it. See [When FreePair cannot read your
+site](#when-freepair-cannot-read-your-site) below.
+
+**This one needs you signed in to NA Chess Hub.** The menu item stays
+greyed out until you are; its tooltip says so. See [Signing in to NA
+Chess Hub](#signing-in-to-na-chess-hub).
+
+**Two ways in**, on two tabs:
+
+- **From a file** takes a `.csv`, a `.tsv`, or a `.txt` that is really a
+  table. The separator is worked out from what is inside the file, not
+  from its name, so a `.txt` full of commas is read correctly.
+- **Paste the roster** gives you a box. Paste into it — or press **Paste
+  from clipboard** — then press **Check this roster**. If an AI tool
+  wrote the table its answer is already on the clipboard, and saving it
+  to a file first is a detour through a text editor for no reason.
+
+**The box can be edited before you check it**, and that is most of the
+point of it: fix a name, delete a player who withdrew that morning, or
+type the whole list yourself. Nothing is read until you press **Check
+this roster**, so FreePair will not complain about a line you are still
+halfway through typing. Edit after checking and the preview clears — it
+belonged to the old text, and leaving it there would invite you to press
+Create on something you are no longer looking at.
+
+The event and section settings below the tabs are the same either way.
+
+Either way, only these columns are read, and the header names are
+matched loosely, so `Player`, `Name` and `Full Name` all work:
+
+| Column | Needed? | Notes |
+|---|---|---|
+| **Player** | Yes | The only column that must be there. A row with a blank name is skipped. |
+| **ID** | No | The US Chess ID. |
+| **Rating** | No | Anyone without one comes in unrated, which pairs correctly. |
+| **Byes** | No | Rounds the player has asked off. |
+
+Anything else in the file is ignored, and FreePair says which columns it
+ignored — so a registration export with thirty columns can be used as it
+is, without editing.
+
+**Copy generously; it sorts the rest out.** You do not have to select
+exactly the table. FreePair finds the row that names the columns, throws
+away anything above it, and drops the conversation underneath —
+"Here is the roster you asked for", the ``` fences an AI tool wraps its
+answer in, "Let me know if you would like me to adjust anything". It
+tells you what it discarded, so you can check nothing of yours went with
+it.
+
+**There does not have to be a header row at all.** If the text is just
+player rows, FreePair works out what the columns are from the values in
+them, and says what it decided so you can check it:
+
+```
+"Tom Smith",7654321,1789,
+"Jerry Jackson",6543217,2209,1
+```
+
+It can do this because the three numbers on a chess roster live in
+ranges that do not overlap — a bye is a round number, a rating runs to
+about 3000, and a US Chess ID is eight digits. **The order does not
+matter**, so a site that puts the rating first is read just as well. A
+column it cannot place confidently is left out rather than guessed at,
+because an unread column costs you one edit and a wrongly-read one costs
+you a pairing.
+
+Two shorter forms work too:
+
+- **Just names**, one per line. Everyone comes in unrated, which pairs
+  correctly, and you can add ratings on the Players tab.
+- **Name then rating**, as in `Tom Smith 1789` — the way most people
+  type a list. The rating is only lifted off the end when *every* line
+  has one; a half-filled column is more likely to be names that happen
+  to contain a number.
+
+The one thing to watch is a line that is a name and nothing else, with
+no commas after it. FreePair keeps those, on the grounds that losing a
+player is far worse than gaining a stray row — a missing player is not
+obviously missing until they ask why they have no game, whereas a row
+called "Thanks!" is plain to see in the preview.
+
+**What it should look like.** The dialog shows this example under *"What
+the file should look like"*, with a button to copy it — building a
+spreadsheet from a worked example is quicker than reading a table of
+rules:
+
+```
+Player,ID,Rating,Byes
+"Tom Smith","7654321",1789,""
+"Jerry Jackson","6543217",2209,"1"
+"Jason Lee","4376521",1678,"2,3"
+```
+
+Tom has asked for no byes, Jerry wants round 1 off, and Jason wants
+rounds 2 and 3. Quotes are only needed around a cell that contains a
+comma, but they never hurt.
+
+**The Byes column** takes round numbers and is not fussy about how they
+are written: `1,3`, `1 3`, `1;3`, `R1 R3` and `round 1` all mean the same
+thing. They become **half-point byes**, because a bye asked for in
+advance on an entry form is a request, and that is what a request earns.
+If a cell cannot be read at all, FreePair says so rather than quietly
+dropping it — a bye that goes missing is a player who turns up to a game
+they asked not to have.
+
+**What it asks you.** Three things, all with defaults:
+
+- **Event name** — filled in from the file's own name, so
+  `Tuesday Swiss.csv` becomes *Tuesday Swiss*. Type over it and your
+  version sticks, even if you then pick a different file.
+- **Section** — name (**Open**), pairing (**Swiss**), rounds (**4**) and
+  an optional time control. Round-robin, double round-robin and quad are
+  also offered.
+- Nothing else. Dates, location, prizes, ratings and the rest are all
+  editable afterwards in the usual places.
+
+**Check the names before you press Create.** The dialog lists the first
+few players with their ratings and byes. This is worth two seconds: a
+file with the wrong separator reads as one player with a very strange
+name, and nothing else in the process would catch it.
+
+**It does not ask where to save.** The event goes into your tournaments
+folder under its own name — choosing a folder is the slowest part of
+making an event and the part you care least about at five to seven. Use
+**Save As** afterwards on the rare occasion it matters.
+
+**Warnings you might see afterwards.** A bye for a round the section
+does not have is dropped and named — usually it means the round count is
+wrong, which is much better caught now than in round three. A name
+appearing twice is kept, both times, and reported: two players really can
+share a name, and only you know whether this is that or a double entry.
+
+### When FreePair cannot read your site
+
+If **Create New Web Event** fails — the site is not one FreePair knows,
+or it is a PDF, or the roster only exists on paper — the dialog now
+offers a way round it instead of stopping there. You do **not** have to
+type the entry list in by hand.
+
+1. **Screenshot or photograph the roster.** A phone picture of a printed
+   sheet is fine. So is a screenshot of a web page that FreePair could
+   not read.
+2. **Press "Copy the instructions"** in the failure message. That puts a
+   short, plain-English brief on your clipboard.
+3. **Paste it into an AI tool along with the picture** — ChatGPT,
+   Copilot, Claude and Gemini all do this, and all have a free tier that
+   is more than enough. The panel has a link to each, so you can open one
+   without going to find the address. It will reply with a table.
+4. **Press "Open Quick Event"** in the same message. That closes the Web
+   Event window and takes you straight there — you do not have to go
+   back to the menu.
+5. **Bring the roster in**, whichever way is easier:
+   - The instructions ask the tool to produce a **downloadable
+     `roster.csv`**. If it does, use the **From a file** tab.
+   - Otherwise **copy its reply**, open the **Paste the roster** tab,
+     paste, and press **Check this roster**. You do not need to select
+     carefully — the fences, the "here you go" and the sign-off are all
+     discarded.
+
+The failure message in the Web Event window spells these four steps out,
+so you do not have to remember them.
+
+The same **Copy the instructions** button is at the top of the Quick
+Event dialog, under *"No spreadsheet? Turn a photo of your roster into
+one"* — so you can start there if you already know the site will not
+work. The full text is shown on screen next to the button, and the box
+grows with the window if you maximise it. It is worth reading once
+before you send it anywhere, since you are about to hand a list of
+players' names and ratings to somebody else's service.
+
+**The instructions tell the tool not to guess.** Anything it cannot
+actually read in the picture is left blank, because a plausible invented
+rating is much worse than a missing one — it changes who plays whom, and
+nothing downstream would catch it. That is also why the last step is
+yours: **check the names and ratings against the original before you
+pair.** The tool is doing the typing, not taking responsibility for the
+event.
+
 ### Events from an online registry
 
 If you are **signed in to NA Chess Hub** (see
@@ -418,6 +623,10 @@ account there is a **Create a free account** button beside it — an
 account at nachesshub.com costs nothing and takes about a minute. See
 [Signing in to NA Chess Hub](#signing-in-to-na-chess-hub) for what
 signing in does and does not involve.
+
+**If the address will not read**, the failure message offers a way round
+it rather than leaving you stuck — see [When FreePair cannot read your
+site](#when-freepair-cannot-read-your-site).
 
 What you get is an ordinary event file — players with their IDs and
 ratings, and a round history — so it opens, pairs and reports like any
@@ -611,6 +820,41 @@ whole roster from NA Chess Hub.
 Adding a player after the event has started is supported. FreePair works
 out what the late entrant should be scored for the rounds already played
 and shows you the result before you commit.
+
+### Working on several players at once
+
+**Ctrl-click or shift-click** rows in the roster to select more than one,
+then use **Roster Update** — the menu shows how many you have selected,
+so it is never a guess about what it will touch.
+
+- **Edit selected players…** — changes the fields a group can genuinely
+  share.
+- **Delete selected players** — soft-deletes them all. They stay in the
+  file and can be brought back until the section is paired.
+- **Restore selected players** — brings back the ones that were deleted.
+  Deleted players stay listed in the roster, so you can select them the
+  same way.
+
+**Only the fields you tick are changed.** The edit window has a tick-box
+beside each field, and anything you do not tick is left exactly as it is.
+That is what makes it safe to set the club for eleven players without
+disturbing the three of them who are on a team.
+
+**A ticked field with an empty box clears it.** That is deliberate — it
+is how you empty a placeholder that came in with an import.
+
+**Byes replace rather than add.** Everyone selected ends up with exactly
+the rounds you list, which is what "these six are all away on Saturday"
+means. If you want to add a round to byes people already have, edit them
+individually.
+
+**Names, ratings and IDs are not offered.** They identify a player.
+Applying one value across a selection would not be an edit, it would be
+losing eleven players' details at once.
+
+**Nothing is half-done.** If any part of the change cannot be applied,
+none of it is, and FreePair says so. You never end up with the first four
+players changed and the rest not.
 
 ### Verifying IDs and ratings
 
@@ -1272,6 +1516,37 @@ tournament that had not been run. The round windows stay adjustable
 until the rounds they cover have been paired, so you can shorten or
 extend acceleration mid-event.
 
+**Turning either one on fills in its round window for you.** A ticked box
+above a round count of 0 would be a setting that is switched on and does
+nothing at all, so **Accelerate pairings** starts at 1 round and **Avoid
+pairing teammates** starts at the whole event. Both are only defaults —
+change the number to whatever the event needs. If a round count is already
+set, it is left alone.
+
+**The same two settings appear in three places, and they are the same
+settings.** Changing one changes all of them:
+
+- **Pairing Operations → Advanced Pairing Options…** — the window
+  described above.
+- **The section's Overview tab**, under *Advanced Pairing*. This is
+  where to look when you want to know how a section is set up without
+  starting to pair it.
+- **The Edit Section dialog** (the pencil beside a section name), so the
+  options are in front of you while you are setting the section up
+  rather than something to remember afterwards.
+
+**All three read the same way.** Same order — acceleration first — the
+same two labels, and the same explanations underneath, including the
+plus-two / minus-two note describing exactly when FreePair will accept a
+teammate pairing rather than distort the standings. Wherever you happen
+to open the setting, you get the same answer.
+
+Once a section has started pairing, the Overview tab and the Edit
+Section dialog still *show* both settings — greyed out, with a note
+saying the section has started — rather than hiding them. "Is this
+section accelerated?" is a fair question mid-event, and it deserves an
+answer rather than an empty space.
+
 ### Why this pairing?
 
 Every board has a **?** button. It opens the **Why this pairing?**
@@ -1876,10 +2151,10 @@ Once the event is over the projection disappears. At that point the
 winners table is the answer, and a "projection" sitting beside it would
 only invite you to wonder whether the two might differ.
 
-#### On the wallboard and in print
+#### On the Live Score Board and in print
 
-The wallboard has a prize screen, on by default and switchable per
-section in **Wallboard setup**. Until you press Calculate it shows the
+The Live Score Board has a prize screen, on by default and switchable per
+section in **Live Score Board setup**. Until you press Calculate it shows the
 prize **fund** — each prize, who can win it, and the amount — and after
 you calculate it shows the winners. It will not name a winner before you
 have, because a projector saying "1st Place — Ada Lovelace — $500" in
@@ -1958,10 +2233,10 @@ all. A Swiss field never meets everyone, so those sections are listed as
 unavailable here — print their **wall charts** instead, which show the
 same games.
 
-### The wallboard
+### The Live Score Board
 
 The **🖥** icon at the top right of the window — or **Event Operations →
-Wallboard (full screen)** — opens a full-screen display for a projector
+Live Score Board (full screen)** — opens a full-screen display for a projector
 or a spare monitor — the screen in the skittles room that stops players
 crowding round the paper on the wall.
 
@@ -1982,7 +2257,7 @@ boards that follow are how a player finds their own game. A running
 match shows its score part-finished, because that is what a room
 watches; one where nobody has finished a board shows a dash rather than
 0–0, which would read as a set of draws.
-- **Pairing columns** — the wallboard's own, separate from the grid and
+- **Pairing columns** — the Live Score Board's own, separate from the grid and
   the printed sheet. A projector read across a room has far less width
   than a sheet of paper, so fewer columns and larger type. **Rule lines
   between cells** is on by default and can be turned off here.
@@ -2004,7 +2279,7 @@ watches; one where nobody has finished a board shows a dash rather than
 - **Timing** — seconds on each screen.
 
 **About the rule lines.** Each column tab carries its own tick, and both
-start on. A wallboard is read from a distance and at an angle by
+start on. A Live Score Board is read from a distance and at an angle by
 somebody hunting one name among sixty; ruled cells keep the eye on a row
 all the way across a wide screen, which is why paper pairing sheets have
 been ruled for a century. They matter more on standings than pairings,
@@ -2020,7 +2295,7 @@ FreePair ships later. That button is how you get back.
 **Closing the panel keeps your settings.** It says at the top that they
 are remembered, and they are — **Close**, Escape and the window's own
 close button all keep what you have ticked; the only difference is that
-no wallboard opens. **Restore default columns** is the way to undo.
+no Live Score Board opens. **Restore default columns** is the way to undo.
 
 Set the text size by walking to the back of the room and reading the
 screen from there — it is the only test that matters. A condensed
@@ -2047,7 +2322,7 @@ round still missing a result from a game that ran long must not pull the
 screen backwards.
 
 Round robins, double round robins and quads are different, because their
-whole schedule is paired in one go. There the wallboard shows **the
+whole schedule is paired in one go. There the Live Score Board shows **the
 first round that is not finished** — round 1 the moment the quad is
 paired, then round 2 as soon as every round-1 result is in, and so on by
 itself. Once the last round is complete it stays there, showing that
@@ -2055,7 +2330,7 @@ round with its results. Before, it showed the final round from the
 moment the section was paired, which sent players to boards they were
 not due at for another two hours.
 
-**It uses columns you choose.** The wallboard has its own pairing and
+**It uses columns you choose.** The Live Score Board has its own pairing and
 standings columns, set in the dialog — deliberately not shared with the
 printed sheet, because a projector read at thirty feet and a sheet of A4
 read at arm's length have very different amounts of room.
@@ -2078,7 +2353,7 @@ window. At the screen itself:
 - **← →** step back and forward a screen.
 - **F11** switches between full screen and an ordinary window.
 
-**Two screens or one.** If you have a second display, the wallboard
+**Two screens or one.** If you have a second display, the Live Score Board
 opens full screen on it and leaves your working window alone. If you
 have only one, it opens as an ordinary window you can move and resize —
 a full-screen display covering the grid you are trying to enter results
@@ -2088,12 +2363,14 @@ full screen, and again to come back.
 Standings only appear once a round is complete — before that they would
 be a list of zeroes in seeding order.
 
-### Putting the wallboard on a TV or on phones
+### Putting the Live Score Board on a TV or on phones
 
-The **📺** icon — next to the wallboard icon at the top right, or
-**Event Operations → Share Wallboard to Phones and TVs** — turns the
+The **📺** icon — next to the Live Score Board icon at the top right, or
+**Event Operations → Share Live Score Board** — turns the
 board into a web page that anything on the same network can open. It is
-read-only: people can look, and cannot change the event.
+read-only: people can look, and cannot change the event. The same window
+can also share the board publicly on NA Chess Hub — see *Sharing
+the Live Score Board on NA Chess Hub* below.
 
 Press **Start sharing** and FreePair shows an address like
 `http://192.168.1.50:8080/` with a QR code beside it. Sharing stays on
@@ -2101,8 +2378,8 @@ until you turn it off or close FreePair, and the page updates itself as
 you pair and score — nobody needs to refresh anything.
 
 **It is the same board as the projector.** The shared page and the
-full-screen wallboard read one set of settings, so they always show the
-same sections, the same columns and the same rotation. **⚙ Wallboard
+full-screen Live Score Board read one set of settings, so they always show the
+same sections, the same columns and the same rotation. **⚙ Live Score Board
 settings…** in this window opens the same setup panel described above.
 Changes reach anyone watching within a few seconds; nobody has to
 reload, and you do not need to stop and restart sharing.
@@ -2143,6 +2420,156 @@ connect.
 If the first address does not work, the window lists the others. A
 laptop that is on Wi-Fi *and* in a dock has more than one, and only one
 of them is on the same network as the TV.
+
+### Sharing the Live Score Board on NA Chess Hub
+
+Below the address, the same window has **Share Live Score Board on NA Chess Hub**.
+This puts the same board on a public web page — one anybody can open,
+from anywhere, without being on the venue Wi-Fi at all.
+
+It is available only when the event has an **NA Chess Hub event ID and
+passcode** filled in on the Event tab. Those are what prove to the hub
+that it is you sending the board. A local club night has neither, which
+is not an error: the address above is the whole feature for those
+events.
+
+Press **Start sharing on NA Chess Hub**. FreePair sends the board straight away, then
+keeps sending it as you pair and score. Once the first copy has landed
+you get the public link and a QR code for it, and **Open in my browser**
+to check it looks right.
+
+**It is not either/or.** Sharing on the hub and sharing on the local
+network are separate switches and you can run both. They solve different
+problems — the local address is the only thing that works when the venue
+has no internet, and the hub is the only thing that works when the venue
+Wi-Fi refuses to let devices see each other, which most hotel and school
+Wi-Fi does.
+
+**Why the page says when it was last updated.** A board that has stopped
+updating but still looks perfectly normal is the worst thing this
+feature could do: it will seat twenty players at the wrong tables and
+nobody will question it, because boards do not usually lie. So FreePair
+keeps telling the hub it is still there, even when nothing has changed,
+and the hub marks the page as no longer live within a few minutes of
+FreePair going quiet — you closing the laptop, the internet dropping, or
+the event simply being over. The page says so in words rather than
+carrying on.
+
+That is also why the window shows you a timestamp rather than a green
+light. "Last sent at 14:52" is something you can check against your
+watch.
+
+**Going quiet does not take the board down.** This is worth knowing
+before it happens to you. If FreePair stops sending — a closed lid over
+a lunch break, a venue Wi-Fi drop between rounds — the hub adds a "not
+updating, last updated …" notice after about five minutes, and **keeps
+showing the pairings**. They stay readable for about six hours after the
+last update. So a break does not clear the screen in the playing hall;
+it only stamps what is on it as possibly out of date, which is exactly
+what a player standing in front of it needs to know.
+
+**Turning it off.** **Stop sharing on NA Chess Hub** takes the board down
+there and then. Closing the window does not — sharing carries on,
+deliberately, because it is something you switch on in the morning and
+forget. Closing FreePair also leaves the board up: it stops being marked
+live within minutes, and the hub removes it a few hours later. If you
+want it gone immediately, press **Stop sharing** rather than just
+quitting.
+
+**If it will not send.** Three messages are worth knowing:
+
+- *Rejected the event passcode* — this is the event's **upload
+  passcode** from its page on the hub, not your account password. Fix it
+  under Event Setup.
+- *No event with this ID* — check the Event ID under Event Setup.
+- *Too large for NA Chess Hub to accept* — showing fewer sections, or
+  fewer rows per screen, in **Live Score Board settings** brings it down.
+- *Not accepting the Live Score Board at this address* — nothing you have
+  done, and nothing you can fix. NA Chess Hub is refusing the board, and
+  the feature may not be live on their site yet. Sharing on the local
+  network, above, is unaffected and is the thing to use meanwhile.
+- *The live board was removed on NA Chess Hub* — somebody with access to
+  the event pressed **Delete Live Board** on its page there. That might
+  have been you, or another director. FreePair stops rather than putting
+  it straight back; press **Start sharing on NA Chess Hub** again if it
+  was not meant.
+
+FreePair stops trying after any of those, because none of them fix
+themselves and retrying a wrong passcode every few seconds all day is
+not a polite thing to do to somebody else's server. A dropped network,
+by contrast, it simply keeps trying through.
+
+**What is on the page.** Exactly what the projector shows: names,
+ratings, boards, results, standings. The same information that is pinned
+to the wall. Nothing from the roster that is not — no email addresses,
+no phone numbers — and never your passcode.
+
+### QR codes for the live board
+
+Once you are sharing the board — either way — FreePair puts a QR code
+where people can get at it, so nobody has to read a web address aloud
+across a room.
+
+**In the app.** Small codes appear at the right-hand end of the tab row —
+beside *Overview / Roster / Pairings / …* on a section, and beside
+*Basic / Team Event / Results Publishing / …* on **Event Configuration**.
+Click one for a large, properly scannable copy with the address written
+underneath. They appear only while you are actually sharing, so the row
+is unchanged if you never use the feature.
+
+The Event Configuration copy is there because setting the event up is
+when somebody is most likely to lean over and ask for the address, and
+you should not have to click away from the page you are working on to
+answer.
+
+**Open in browser.** The enlarged code has a button that opens the same
+address on this computer. Useful for checking the board looks right
+before the round starts, or for putting it on a projector — not everyone
+who wants the board has a phone in their hand.
+
+**On every printed sheet.** Pairings, standings, wall charts, prize
+lists — all of them carry the codes in the header, beside the event QR.
+Tape a pairing sheet to the wall and a player can scan it and watch the
+rest of the round from their phone.
+
+**There are two codes because they fail in opposite situations**, and a
+player has no way of knowing which situation they are in:
+
+- **"on this network"** — served from your laptop. The only one that
+  works when the venue has no internet at all. Useless to somebody on
+  mobile data.
+- **"anywhere"** — the NA Chess Hub page. The only one that works when
+  the venue Wi-Fi refuses to let devices see each other, which most hotel
+  and school networks do.
+
+Share both when you can, and let people scan whichever works. If you are
+only sharing one, only that code appears.
+
+**The printed codes are a snapshot.** The laptop's address stops working
+once you leave the venue or join a different network — by which time the
+sheet is last round's pairings anyway.
+
+### Tidying up the name order
+
+After **Verify IDs**, FreePair may offer to rewrite names as **"Last,
+First"**. It only offers this for players whose ID verified — a name on
+its own cannot say which word is the surname, but the record behind a
+confirmed ID can.
+
+`Gledura Benjamin` becomes `Gledura, Benjamin`. That is the form US Chess
+and FIDE publish, the form SwissSys stores, and the form reports and the
+wall chart sort by, so a roster typed the other way round sorts oddly
+next to players entered conventionally.
+
+**Only the order changes.** If the database spells a name differently
+from you — `Illya` where you wrote `Illia` — your spelling is kept.
+Reordering is a small, reversible tidy-up; replacing what you typed with
+a foreign transliteration is a much larger decision, and not one FreePair
+makes for you.
+
+The prompt says how many players would change and shows the first few, so
+you can decline if the order is deliberate. Nothing happens unless you
+say yes.
 
 ### The event QR code
 
@@ -2474,6 +2901,15 @@ Publishing puts pairings and results on the event's public page so
 players can follow along. You can set new events to publish
 automatically under **⚙ Settings → Online**.
 
+**This is not the same as sharing the Live Score Board.** Publishing
+uploads *files* — the pairing sheet, the standings, the event file — to
+the event's page, where they sit until you publish again. Sharing the
+Live Score Board sends the *live rotating display*, the one on the
+projector, and keeps sending it so the page can say whether it is still
+current. They are separate switches and neither replaces the other; see
+[Sharing the Live Score Board on NA Chess
+Hub](#sharing-the-live-score-board-on-na-chess-hub).
+
 ### Cloud backup
 
 **Save a copy (backup) to NA Chess Hub** stores a copy of the event file
@@ -2540,6 +2976,33 @@ event, and asks you for the affiliate and TD details it cannot infer.
 The ID check that runs before the export looks only at the sections you
 chose, so leaving a section out also stops it warning you about IDs in
 it.
+
+### Checking the affiliate and TD IDs
+
+The affiliate ID and the two TD IDs are bare codes copied from somewhere
+else, and a wrong one is invisible — the export succeeds and the rating
+office rejects the submission days later, by which time you are running a
+different event.
+
+Click the **🔎** beside any of those three fields and FreePair names who
+or what the ID belongs to, right there in the row: the club for an
+affiliate ID, the director for a USCF ID. Reading a name you recognise
+takes a second and settles it.
+
+- **Nothing is checked for you automatically.** Each lookup is a click,
+  because it goes out to the network and you may well be offline at the
+  venue. The ID you typed is what gets exported either way.
+- **Editing an ID clears the name.** That is deliberate. A name left
+  sitting beside a number you have since changed is worse than no name,
+  because it looks like the new number was checked.
+- **"Not active" is not a typo.** If an affiliate comes back named but
+  marked not active, the ID is right and the affiliation needs renewing
+  before the report will be accepted.
+- **"Couldn't reach…" is not a verdict.** It means the lookup failed,
+  not that the ID is wrong. Try again when you have a connection.
+
+The **🔗** button beside each field still opens the full US Chess page
+for that ID in your browser.
 
 It writes **three files** next to your `.sjson`: `THEXPORT` (the event),
 `TSEXPORT` (the sections) and `TDEXPORT` (the players and their games).
@@ -3164,10 +3627,11 @@ FreePair is shaped by what directors report, and both are welcome at
 
 **Help → About FreePair** has the address as a link, a **Copy address**
 button for machines with no mail program set up, and — more importantly
-— the version you are running. Include that version in anything you
-send. Nearly every report that cannot be acted on is one where the
-version is missing, because the first question is always whether the
-behaviour still happens in the current build.
+— the version you are running, with its own **📋 Copy** button so you can
+paste it rather than transcribe a date-stamp. Include that version in
+anything you send. Nearly every report that cannot be acted on is one
+where the version is missing, because the first question is always
+whether the behaviour still happens in the current build.
 
 Also worth including: what you expected to happen and what happened
 instead, the newest crash report if FreePair closed on you, and — for
@@ -3179,7 +3643,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.89.20260828**. It is updated whenever a
+This guide describes FreePair **v0.90.20260829**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
