@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.91.20260830**
+**Applies to FreePair v0.92.20260831**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -790,6 +790,11 @@ standings and prizes.
   event has several similarly configured sections.
 - **🪟 Open in Window** pops a section out into its own window, so you can
   watch two sections side by side.
+
+Each row in the sections list collapses with the chevron on its right, so
+a long list stays scannable. A collapsed row still carries the two
+numbers you are usually scanning for, in brackets after the name —
+`Open [123, 3/9]` is 123 players, 3 rounds played of 9.
 
 Sections are laid out so that no two share a physical board number.
 FreePair works out each section's starting board from the ones before it
@@ -2178,6 +2183,40 @@ section, time control, location, dates, a page number and a timestamp.
 be adjusted independently, which is useful when a wall chart is one
 column too wide for the page.
 
+### A quad prints on one sheet
+
+A quad is four players and three rounds of two boards, so a sheet per
+round is three pages carrying six lines between them. FreePair prints the
+whole quad on **one** page instead: rounds 1 and 2 side by side, round 3
+below round 1. Ten quads costs ten sheets rather than thirty.
+
+This is the default, and it does not matter how far along the section is.
+All three rounds of a quad are paired the moment you pair it, so the
+sheet is complete from the start, and rounds that have already been
+played stay on it — a sheet that dropped finished rounds would renumber
+itself as the day went on.
+
+To print one round per page instead, untick **Print the whole quad on one
+page** in **Page setup**. The option appears there only when the print you
+are about to make covers a quad; it does nothing anywhere else, so it is
+not shown anywhere else. The setting is remembered, like the rest of page
+setup.
+
+With it off, a quad prints the round it is **actually on** — the first one
+not yet finished — not round 3 just because round 3 is the last one on the
+schedule. The Round dropdown at the top of the Pairings tab opens on that
+same round, and whatever you pick there is what prints.
+
+The quad sheet is always **landscape**, even if you set the pairing sheet
+to portrait. Two tables side by side need the width; on portrait paper the
+type would shrink until the sheet was unreadable.
+
+The file is named for the section rather than for a round — for example
+`Quad 1-pairings.pdf` — because every round is on it.
+
+A quad you have paired only part-way, and any other section, prints the
+single round you are looking at exactly as before.
+
 Under **⚙ Settings → Display**, **Use ASCII-only output** replaces
 the ½ glyph with plain text for printers and downstream systems that
 cannot render it.
@@ -2215,10 +2254,20 @@ report is rebuilt from the event each time.
 
 **Which round gets printed.** Sections in a mixed event are rarely on the
 same round number: the quads may be on 3 while the Swiss is on 2. So the
-pairings print defaults to **each section's latest paired round**, which
-is what goes on the wall. Choosing a specific round number instead prints
-that same round everywhere, and quietly skips any section that has not
-reached it yet.
+pairings print defaults to **the round each section is actually on** —
+the first one that is not finished, or the last round once they all are.
+Choosing a specific round number instead prints that same round
+everywhere, and quietly skips any section that has not reached it yet.
+
+That distinction matters for quads and round robins, which pair their
+whole schedule in one go. Their *last* round is the end of a timetable,
+not the newest thing that happened, so printing it would hand you the
+round 3 sheet before anyone had played round 1.
+
+**Quads ignore the round choice**, because their page carries all three
+rounds whatever you pick — see *A quad prints on one sheet* above. Untick
+the quad option in **Page setup** if you want the chosen round on its own
+sheet instead.
 
 **Several crosstables per page.** A quad's crosstable is four rows, so one
 to a page wastes most of the sheet — ten quads costs ten sheets. Set
@@ -2612,6 +2661,20 @@ which file they were still working in:
 - **Save** — where the event file is, and **Rename (Save As)…** if you
   want the event to carry on in a different file. Renaming leaves the old
   file exactly as it is; from then on every change goes to the new one.
+
+  **The name is filled in for you, numbered.** Renaming
+  `MCC - 2026-09` offers `MCC - 2026-09 - 001`, then `- 002`, then
+  `- 003`, so keeping a numbered series through the day is Save As and
+  Enter — no typing unless you want to. Anything you add of your own is
+  kept and numbered from there: `MCC - 2026-09 - Mark - 001`,
+  `- 002`, and so on.
+
+  The number comes from what is **already in the folder**, not from the
+  file you have open, so reopening an earlier snapshot and saving from it
+  still continues the series instead of offering a name that exists.
+  FreePair only treats a **three-digit** ending as a number, so an event
+  named for a year — `MCC - 2026` — becomes `MCC - 2026 - 001` rather
+  than `MCC - 2027`.
 - **Backup** — write a frozen snapshot, either to a folder on this
   computer or to NA Chess Hub. A backup never becomes the file you are
   working in.
@@ -3643,7 +3706,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.91.20260830**. It is updated whenever a
+This guide describes FreePair **v0.92.20260831**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
