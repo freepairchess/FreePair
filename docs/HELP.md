@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.94.20260831**
+**Applies to FreePair v0.95.20260901**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -1335,8 +1335,9 @@ much less disruptive to get the pool right first.
 ### Pairing a round
 
 **Pairing Operations** pairs the next round for the section. To pair
-every section at once, use the pair-all-sections action from the event
-page. **Sync Roster with NACH** is on this menu as well as the Roster
+every section at once, use **Pair all sections** on the event page —
+see [Pairing every section at once](#pairing-every-section-at-once).
+**Sync Roster with NACH** is on this menu as well as the Roster
 tab's **Roster Update** menu, since checking for late entries is
 normally the step just before pairing.
 
@@ -1393,6 +1394,161 @@ plays whom.
 This matters more than it sounds: in round 1 everyone is on zero and
 nobody is owed a colour, so the seeding order is the **only** thing
 deciding the boards.
+
+### Pairing every section at once
+
+**Pair all sections** on the event page pairs the next round of every
+section that is ready, without you visiting each one. A section is ready
+when at least two players are active, the previous round's results are
+all in, and more rounds remain; the others are listed for context and
+skipped.
+
+The bottom half is a table of the whole event, one row per section:
+players, rounds paired, **pairing rule**, starting board and the board
+range that implies, pairing engine, **Avoid same team**, **Accelerate**,
+and why a section is or is not ready.
+
+- **Pair?** ticks the sections the run will pair. Every ready section
+  starts ticked, so the default is still "pair everything"; untick the
+  one that is waiting for a player who has not arrived, or that you are
+  holding back a round. The **Pair?** heading itself is a button that
+  ticks or clears them all. Sections that are not ready have no
+  checkbox — there is nothing to pair.
+- **Pairing rule** is how the section is paired — Swiss, Quad, Round
+  Robin and so on — and you can change it here, for any section that
+  has not paired round 1. It is worth reading first, because it decides
+  what the rest of the row can do: a Swiss section runs the pairing
+  engine and can be accelerated, while a quad or round robin computes a
+  fixed schedule and cannot. After round 1 it is shown as plain text,
+  because every operation that acts on the rule refuses a section that
+  has already paired. **A rule you change here is saved to the
+  section**, even if you then close the dialog without pairing anything
+  — so setting Open to Quad and pairing it later from its own tab still
+  pairs it as quads.
+- **Start board** opens on the number each section *should* have. A
+  section you have placed yourself keeps your number; one you have never
+  placed gets its recommended board, so the sections stack end to end
+  instead of all beginning at board 1 — the same rule the **Starting
+  Boards** tab of Event settings describes. Any two sections whose
+  ranges overlap are called out in orange. Overlapping ranges are not an
+  error: two sections playing in different rooms may both start at board
+  1. **Use recommended board numbers**, under the table, re-cascades
+  them all.
+- **Avoid same team** and **Accelerate** are per-section settings, shown
+  together because they behave the same way — both are fixed once the
+  section has paired round 1, and a section past that point shows what it
+  is set to rather than a checkbox. Ticking either one reveals how many
+  opening rounds it covers, so a tick never sits above a window you
+  cannot see. Teammate avoidance defaults to the whole event;
+  acceleration defaults to one round and is capped at half the section's
+  scheduled rounds. Acceleration is per section rather than per event on
+  purpose: a top section is normally accelerated precisely because the
+  ones under it are not. Quads and round robins show a dash under
+  Accelerate — their whole schedule is fixed in advance, so acceleration
+  would do nothing.
+
+> **In a quad, avoiding teammates means something different**, and the
+> row says so: it reads **in different quads**, with no round count. A
+> quad is a four-player round robin, so two teammates in the same quad
+> are *certain* to play each other and no later pairing decision can
+> prevent it — "avoid for rounds 1–3" would be the whole event restated.
+> Instead, FreePair separates them when it cuts the field up, moving the
+> fewest players it can so the seeding stays as close to the ratings as
+> the separation allows. Players left over in the mini-Swiss are not
+> moved: there, avoidance is an ordinary pairing constraint.
+>
+> **Two cases cannot be fully separated, and FreePair tells you which.**
+> A section of exactly four players *is* one quad — everybody plays
+> everybody whatever their team, so there is nowhere to move anyone. And
+> a team with more players than there are groups cannot be spread over
+> them; there, the strongest players are separated first and whatever
+> remains is left at the bottom of the field, where it affects the
+> fewest results. In both cases the split still goes ahead, and the
+> summary afterwards says what could not be done rather than letting it
+> pass as a success.
+>
+> **The mini-Swiss counts as somewhere to move a player.** A section of
+> eleven, say, becomes one quad and a seven-player group — so two
+> teammates seeded 3rd and 4th are separated by moving the lower-rated
+> one down into that group, where avoiding them becomes an ordinary
+> pairing constraint.
+
+**Every split reports what it made.** Pairing quads from the section's
+own button ends with a summary — how many quads, whether there is a
+mini-Swiss, and what happened to the teammate separation: nothing to
+do, done by moving *N* players out of rating order, or not fully
+possible and why. In a batch run the same summary appears on the
+section's row in the dashboard.
+
+**The mini-Swiss is paired too — its round 1.** A split leaves the quads
+fully paired (all three rounds each) and the leftover group ready but
+empty, which is easy to walk away from. FreePair pairs its first round
+as part of the same operation, so nothing is left half-done. Splitting
+a section from its own button and from the batch run the identical
+code, so they cannot drift apart.
+- **Pairing engine** can be set here for any section that has not paired
+  round 1 yet. After that it is locked and shown with a padlock.
+
+Above the table are the questions FreePair would otherwise ask you once
+per section:
+
+- **Review each round in the pairing preview before it is committed.**
+  **Off** by default. Unticked, nothing stops between sections: each
+  round is committed exactly as the engine produced it, which is what a
+  button called *Pair all sections* implies. Nothing is lost — you can
+  unpair a round afterwards. Tick it if you would rather see each
+  proposed round, and swap colours or boards, before it reaches the hall.
+- **Use the same round 1 settings for every section that hasn't paired
+  yet.** **On** by default. Answers the round 1 colour question once for
+  the whole event instead of once per section. **Coin toss** — the
+  default — tosses separately for each section, which is what the
+  per-section prompt does; **Top seed plays White** or **Black** fixes
+  board 1 the same way everywhere. Sections that have already paired
+  round 1 are untouched. Untick it and each first-round section asks
+  individually, exactly as it would on its own.
+- **Re-seed each roster before pairing round 1.** **On** by default, and
+  recommended for the same reason the per-section prompt recommends it:
+  the pairing rules assume the engine's own seeding order, so this is the
+  numbering the engine is about to be given. Each section is re-seeded by
+  **its own** engine's rule — a FIDE section ranks title before name, a
+  US Chess section goes straight to name — so an event mixing engines or
+  rating scales still gets the right order in each section. Untick it
+  only when the pair numbers were assigned elsewhere and must be
+  reproduced exactly.
+
+**Pair ready sections asks you to confirm first.** The prompt lists
+every ticked section and what will happen to it — *pairs round 1*,
+*pairs round 3* — and says whether the rounds will be reviewed in the
+preview or committed straight through. **Cancel** goes back to the
+table with nothing changed; **Pair now** starts the run.
+
+**A section set to Quad is called out in that prompt**, because it is
+not paired as it stands: it is split into new sections. Each quad is
+four players and a three-round round robin, all paired at once; any
+players left over become a mini-Swiss whose round 1 is paired too. The
+original section is kept but soft-deleted, so you can undo the split by
+undeleting it and removing the generated sections. When it finishes,
+that row reports what it made — *Split into 2 quads and 1 mini-Swiss —
+all paired*.
+
+> Pairing a quad section on its own asks you a second time, on the
+> section itself, whether you meant a Swiss round instead. The batch
+> does not: you answered that question when you set the rule in this
+> table and confirmed the summary, and asking again per section is the
+> interruption the batch exists to remove.
+
+**The dialog stays open while the run works**, and it is where the
+progress is: a bar, *Section 3 of 5 — Open*, and a line saying what is
+happening right now — checking player IDs, calculating pairings, saving
+the round. Each row updates as its turn comes and finishes with the
+round it paired, or with why it did not. Pairing a large section takes
+several seconds, and this is what those seconds are.
+
+**Stop after this section** halts the run cleanly: the section being
+paired finishes, and the rest are left alone. Rounds already committed
+stay committed. The dialog cannot be closed while the run is going —
+stopping it is the way out — and once it has finished, **Close** returns
+you to the event with a summary of what was paired.
 
 ### Pairing as quads
 
@@ -1592,6 +1748,23 @@ Section dialog still *show* both settings — greyed out, with a note
 saying the section has started — rather than hiding them. "Is this
 section accelerated?" is a fair question mid-event, and it deserves an
 answer rather than an empty space.
+
+**A section paired as quads reads differently, because it works
+differently.** Acceleration is not shown at all: a quad's schedule is
+fixed in advance, so there is nothing for it to accelerate. Teammate
+avoidance *is* shown, but labelled **Keep teammates in different
+quads** and without a round window — a quad is three rounds long and
+everybody meets everybody, so a round count would restate the event
+instead of settling anything. The explanation underneath is the quad
+one rather than the plus-two / minus-two note, which describes a
+decision only Swiss pairing makes.
+
+**And a four-player quad shows neither.** Every quad produced by a
+split is exactly four players, which *is* one quad: the four play a
+round robin whatever their teams, so there is no grouping left to
+decide and no acceleration to apply. Offering either would be a choice
+that cannot change anything, and a director who ticked it would
+reasonably believe they had prevented something.
 
 ### Why this pairing?
 
@@ -3819,7 +3992,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.94.20260831**. It is updated whenever a
+This guide describes FreePair **v0.95.20260901**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
