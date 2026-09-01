@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.93.20260831**
+**Applies to FreePair v0.94.20260831**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -1808,6 +1808,15 @@ question about the roster.
 - **Withdrawing** a player removes them from future rounds while keeping
   the games they have already played.
 
+**The Kind column abbreviates**, matching the **HPB** and **0-PB**
+columns on the roster itself: **HPB (½)** is a half-point bye, **0-PB
+(0)** a zero-point one, and **FPB (1)** a full point. The value in
+brackets is what the bye is worth on the scoresheet, so you can check a
+bye before it becomes a score without having to remember which
+abbreviation is which. Printed reports still spell the kind out in full,
+since a sheet pinned to a wall is read by people who do not have the
+rest of the screen for context.
+
 **A zero-point bye is one round; withdrawing is the rest of the event.**
 For the last round the two amount to the same thing, and FreePair pairs
 them identically — the player stays in the record and is not paired. They
@@ -3158,6 +3167,16 @@ takes a second and settles it.
 - **"Couldn't reach…" is not a verdict.** It means the lookup failed,
   not that the ID is wrong. Try again when you have a connection.
 
+**If you do not have a TD's ID to hand, press 🔎 with the box empty.**
+It opens the player database in your browser so you can find them by
+name and copy the ID back. You are already at that button when you
+discover you do not know your assistant's number, and being told "Enter
+a USCF ID first" is a dead end.
+
+The affiliate 🔎 does not do this, because the player database holds
+players — an affiliate code is not in there to be found. Affiliate codes
+come from your club's US Chess account.
+
 The **🔗** button beside each field still opens the full US Chess page
 for that ID in your browser.
 
@@ -3800,7 +3819,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.93.20260831**. It is updated whenever a
+This guide describes FreePair **v0.94.20260831**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
