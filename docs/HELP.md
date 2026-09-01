@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.92.20260831**
+**Applies to FreePair v0.93.20260831**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -279,6 +279,14 @@ A few of these are worth a sentence:
   boards, rating reports. Those stay one click away in the menu, because
   a shortcut list long enough to need scrolling is a list nobody learns.
   Every key that does exist is printed beside its item in the menu.
+- **A menu only prints a key that does exactly what the item does.** A
+  section's **Pairing Operations** menu shows `F5` beside *Pair Next
+  Round* and `Ctrl+Shift+Delete` beside *Delete last round*, and nothing
+  beside Check Section, Pairing Quality or Sync Roster — because `F8`,
+  `F9` and `F6` act on the **whole event**, not on the section in front
+  of you. Near enough to look like the same command, far enough to
+  surprise you mid-round, so the menu says nothing rather than something
+  almost true.
 - **`Ctrl+Shift+Delete` is deliberately awkward**, and it still asks
   before deleting. It is the same confirmation the button shows; a
   keystroke is never a shorter route to throwing pairings away than the
@@ -796,6 +804,12 @@ a long list stays scannable. A collapsed row still carries the two
 numbers you are usually scanning for, in brackets after the name —
 `Open [123, 3/9]` is 123 players, 3 rounds played of 9.
 
+Under the **Sections** heading is the event's own total — *4 sections ·
+120 players* — so the size of the event is one glance rather than a
+column of numbers added up by hand. Deleted sections are not in either
+figure; they are struck through in the list because they are no longer
+part of the event, and counting their players would say otherwise.
+
 Sections are laid out so that no two share a physical board number.
 FreePair works out each section's starting board from the ones before it
 and **uses that recommendation automatically** — pairing a round does not
@@ -954,6 +968,33 @@ one, and the column belongs on it. If the column is missing on a section
 you expect it on, check the section's rating system on the **Overview**
 tab before suspecting the lookup: everything else FIDE about the tab —
 the ID2 and Rating2 headings, the Norms tab — reads the same setting.
+
+### Copying a player's details
+
+The roster's **Actions** column — the icons at the far left, next to the
+✏ pencil — has a 📋 button. It opens a short list of everything FreePair
+holds for that player: name, ID, rating, title, club, state, team, email,
+phone and score. Press **Copy** beside the one you want and the window
+closes with that value on the clipboard.
+
+The pair number and the status are deliberately not on the list. Neither
+travels: a pair number belongs to this section's seeding and means
+nothing outside it, and *Active* is FreePair's word for the absence of
+news.
+
+The copy buttons used to sit inside the ID, Name, Rating, Team, Email and
+Phone cells themselves. Six icons repeated down every row cost more width
+than the values beside them, and you read past all of them on every line
+to reach the data. One button per row does the same job and gives the
+space back to the roster.
+
+**Phone numbers are shown grouped** — *(206) 555-1234* rather than the run
+of digits a registration form collected — so a column of them can be read
+and compared. Only numbers FreePair can recognise with certainty are
+regrouped; an international number is shown exactly as it was entered,
+because guessing at the grouping of a number whose country is unknown
+produces something that looks authoritative and is wrong. Nothing is
+rewritten in the event file either way.
 
 ### The counting column
 
@@ -2365,10 +2406,39 @@ part-way through knows to wait rather than assuming their name is
 missing. Byes are listed with the boards, since a player with a bye is
 looking for their name too.
 
+**The clock in the corner shows seconds.** It is a wall clock for the
+room, but it is also the answer to the question a projector always
+raises: is this screen live, or did it freeze twenty minutes ago? A
+minute-only clock cannot tell you, because it looks identical either
+way. A second ticking over says the board is current before anybody has
+to check a board number against the sheet.
+
+**Under the clock is when the event last changed** — *Last updated at
+17:32:05*. That is not when the board last looked at the event, which it
+does every couple of seconds and would always read as "now". It is the
+last time a pairing or a result actually moved. The two lines sit
+together because they answer different halves of the same question: the
+clock says the screen is alive, and this says whether anything has
+*happened*. 18:40 above *Last updated at 17:32* is an hour of scoresheets
+that has not reached the desk — worth knowing, and invisible without it.
+
+It covers the whole event rather than the screen in front of you, so a
+result typed into a section two slides away moves it. That is deliberate:
+the change is real and will be on screen shortly, and a stamp tied to the
+current screen would reset every time the rotation moved on, which would
+make the number mean nothing.
+
 **Which round it shows.** For a Swiss section, the round you last paired
 — those are the board numbers the room is looking for, and an earlier
 round still missing a result from a game that ran long must not pull the
 screen backwards.
+
+**Nothing reaches the board until you accept it.** A round you are still
+looking at in the pairing preview — swapping a colour, moving a board,
+granting a late half-point bye — is not on the projector, is not on the
+shared board, and is not on NA Chess Hub. It appears the moment you
+accept the preview, and a preview you cancel never appears at all. The
+hall should not be reading a pairing you have not finished deciding.
 
 Round robins, double round robins and quads are different, because their
 whole schedule is paired in one go. There the Live Score Board shows **the
@@ -2401,6 +2471,30 @@ window. At the screen itself:
 - **Space** pauses, to leave a section up while people copy it down.
 - **← →** step back and forward a screen.
 - **F11** switches between full screen and an ordinary window.
+
+**You can also close it from the desk.** Once a board is up, **Event
+Operations → Close Live Score Board** appears, and the setup panel — the
+🖥 button, or `Ctrl+B` — grows a **Close Live Score Board** button beside
+its usual two. Either shuts the board down where you are standing.
+
+That matters more than it sounds. The board opens full screen on the
+display your working window is *not* on, which is the whole point of it;
+but it meant the only way to stop it was to walk to that screen and press
+Escape. Fine at a desk with two monitors, less so with a projector at the
+far end of a hall. Nothing is lost by closing it — the board keeps no
+state of its own and reopens in two clicks — so neither route stops to
+ask.
+
+Sharing to phones and televisions is a **separate** thing on its own
+window, and closing the projector does not stop it. Turning the screen
+off at the end of a round is not the same as asking the room to stop
+following the event on their phones.
+
+**Closing FreePair closes the board.** You do not have to remember to
+shut the projector down first — quitting the application takes every one
+of its windows with it. Previously the board was left running on a
+display you could no longer see, still showing the last round, after you
+had closed FreePair and packed up.
 
 **Two screens or one.** If you have a second display, the Live Score Board
 opens full screen on it and leaves your working window alone. If you
@@ -3706,7 +3800,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.92.20260831**. It is updated whenever a
+This guide describes FreePair **v0.93.20260831**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
