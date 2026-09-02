@@ -796,9 +796,13 @@ down through each half. If there's an odd number, the lowest-rated
 ([28L](#rule-28l)).
 
 **FreePair coverage today.** `UscfPairer.PairRoundOne` implements
-exactly this. The initial-colour decision uses the tournament's
-configured first-board colour (per-section, since one coin toss
-decides all sections per the rule book's TD TIP).
+exactly this. The coin is flipped **once for the event** and recorded
+on it (`Tournament.CoinToss`), so every section's round 1 follows the
+same toss per the TD TIP under [29E2](#rule-29e2). The toss is shown,
+and can be made ahead of time, on Event settings -> Coin Toss; it is
+frozen once any section has paired a round. A director who instead
+names a colour for one section ("top seed plays White") is making a
+per-section call, and that is *not* recorded as the event's toss.
 
 **Annotation today.** `RoundOneSlide`, `UscfRule: "28J"` (Phase B
 fixed `"28C"` which is "ratings of players"). Colour annotation:
@@ -1582,7 +1586,11 @@ players in each section are assigned alternating colours per
 
 **FreePair coverage today.** `UscfPairer.PairRoundOne` honours the
 per-section initial-colour setting and alternates down through each
-half.
+half. That setting is seeded from the event's single coin toss
+(`Tournament.CoinToss`), so all sections share one toss - see
+[28J](#rule-28j). Until `v0.96` the coin was flipped afresh per
+section, which meant a multi-section event's top boards could
+contradict one another.
 
 **Annotation today.** `ColorByInitialRule`, `UscfRule: "29E2"`
 (Phase B fixed the previously-emitted `"29E1"`, which is the

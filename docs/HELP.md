@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.95.20260901**
+**Applies to FreePair v0.96.20260901**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -167,6 +167,9 @@ event sit at the right-hand end of the same row:
     your browser.
   - **User Guide** — this guide. F1 still opens it directly, without
     going through the menu.
+  - **Keyboard Shortcuts** — every key FreePair responds to, what it
+    does, and what it needs open to work. See
+    [Keyboard shortcuts](#keyboard-shortcuts).
 - **Theme** applies immediately. It is left out here rather than filed
   away in Settings because it is the one display choice you are
   likely to change on the spot, usually because of the light in the
@@ -202,9 +205,11 @@ still scroll as a whole.
 ### Keyboard shortcuts
 
 The commands used most often during a round have keys. The full list is
-in **⚙ Settings → Shortcuts**, which is worth knowing about because
-the moment you want it is usually the moment you are in a playing hall
-with no internet.
+in **Help (?) → Keyboard Shortcuts**, which is worth knowing about
+because the moment you want it is usually the moment you are in a
+playing hall with no internet. It sits under Help rather than in
+Settings because there is nothing to change there — it answers a
+question.
 
 | Key | What it does |
 |---|---|
@@ -224,6 +229,7 @@ with no internet.
 | `F5` | Pair the next round of the selected section |
 | `Shift+F5` | Pair the next round of every ready section |
 | `Ctrl+Shift+Delete` | Delete that section's last round — asks first |
+| `Ctrl+Shift+K` | Choose sections and rounds to delete — asks first |
 | `F6` | Sync all rosters with NA Chess Hub |
 | `F7` | Publish pairings and results to NA Chess Hub |
 | `F8` | Check the event over |
@@ -293,7 +299,8 @@ A few of these are worth a sentence:
   click it stands in for.
 - **A shortcut that needs something does nothing until it has it.**
   `F5` with no section selected, or `Ctrl+S` with no event open, is
-  silent rather than broken. The Shortcuts tab says what each one needs.
+  silent rather than broken. **Help → Keyboard Shortcuts** says what
+  each one needs.
 
 Keys cannot be reassigned in this release.
 
@@ -782,6 +789,8 @@ fit comfortably on one screen:
 - **Results Publishing** — the NA Chess Hub event ID and passcode, and
   whether to check NA Chess Hub for roster changes before pairing.
 - **Starting Boards** — the first physical board number for each section.
+- **Coin Toss** — the one coin toss that decides board 1's colour for the
+  whole event. See [The coin toss](#the-coin-toss).
 
 Everything saves as you type, on whichever tab you are on.
 
@@ -1360,7 +1369,8 @@ leaving you to guess. The usual answers are:
 
 For the first round you may be asked who plays White on board 1, and how
 the field should be seeded. Later rounds are determined by the pairing
-rules and need no input.
+rules and need no input. The coin is tossed **once for the whole
+event** — see [The coin toss](#the-coin-toss).
 
 The seeding prompt offers **Re-sort** — marked *(Recommended)* and
 pre-selected, so pressing Enter takes it — or **Keep current order**.
@@ -1394,6 +1404,45 @@ plays whom.
 This matters more than it sounds: in round 1 everyone is on zero and
 nobody is owed a colour, so the seeding order is the **only** thing
 deciding the boards.
+
+### The coin toss
+
+**One coin toss decides board 1 for the whole event, not one per
+section.** US Chess rule 28J has you flip a coin to settle whether the
+top seed on board 1 plays White, and the TD tip under 29E2 says every
+section then follows that same toss. So if the coin gives White, the
+top seed plays White on board 1 of Open, of U1600, and of every other
+section.
+
+FreePair makes the toss the **first** time it is needed — the first
+round 1 you pair where you leave **Coin toss** selected — and records
+it on the event. Every section paired afterwards reads it back rather
+than flipping again. Their round-1 prompt says so, and choosing **Coin
+toss** there no longer re-rolls.
+
+You can see it, and make it in advance, on the event page's **Coin
+Toss** tab. It shows what the coin gave and when it was tossed, which
+is the line to read out if a board-1 colour is ever questioned. Before
+anything is paired there is a **Toss for this event** button, and once
+there is a result you can **Re-toss** or **Clear** it.
+
+**The toss freezes as soon as any section pairs a round.** Re-tossing
+after that would leave the section already paired on the old toss and
+everything still to pair on the new one — which is the very
+disagreement between sections that a single toss exists to prevent,
+only now with a record claiming otherwise. The tab says as much when it
+locks.
+
+Choosing **Top seed plays White** (or **Black**) for one section is a
+different thing: it is your decision about that section, so it is not a
+toss and is not recorded on the event. Other sections are unaffected.
+It also stays available on the round-1 prompt after the event has
+tossed, for the rare case where you need to overrule the toss for one
+section and can say why.
+
+Events you had already paired before this existed have no recorded
+toss, and nothing is changed retrospectively — their colours stay
+exactly as they were paired.
 
 ### Pairing every section at once
 
@@ -1501,11 +1550,11 @@ per section:
 - **Use the same round 1 settings for every section that hasn't paired
   yet.** **On** by default. Answers the round 1 colour question once for
   the whole event instead of once per section. **Coin toss** — the
-  default — tosses separately for each section, which is what the
-  per-section prompt does; **Top seed plays White** or **Black** fixes
-  board 1 the same way everywhere. Sections that have already paired
-  round 1 are untouched. Untick it and each first-round section asks
-  individually, exactly as it would on its own.
+  default — uses the event's single toss, making it the first time it is
+  needed and reusing it for every section after that; **Top seed plays
+  White** or **Black** fixes board 1 the same way everywhere. Sections
+  that have already paired round 1 are untouched. Untick it and each
+  first-round section asks individually, exactly as it would on its own.
 - **Re-seed each roster before pairing round 1.** **On** by default, and
   recommended for the same reason the per-section prompt recommends it:
   the pairing rules assume the engine's own seeding order, so this is the
@@ -1935,6 +1984,47 @@ taken first, so the round can still be recovered from **Earlier
 versions**.
 
 Deleting pairings for the whole event at once works the same way.
+
+#### Deleting pairings across the event
+
+**Delete Pairings…** on the event page clears rounds in more than one
+section at a time. It used to be all-or-nothing — every pairing and
+every result in the event — which was rarely what anyone actually
+wanted. You now choose.
+
+The dialog lists every section with its rounds, and says of each round
+whether it has **all results in**, **partial results** (with the board
+counts), or was **paired with no results entered**. It opens with only
+the last kind ticked, in each section, so pressing the delete button
+straight away undoes a round paired too early and touches nothing that
+was played.
+
+**Rounds are removed from the last one backwards.** Each player's
+history is stored in order, so round 2 cannot be deleted while round 3
+stays — ticking round 2 therefore also ticks round 3 and everything
+after it in that section. The dialog says so at the top. Unticking a
+round releases the earlier ones in the same way.
+
+Three buttons set the selection in bulk: **Rounds with no results**
+returns to the safe default, **Select none** clears it, and **Select all
+sections and rounds** ticks the entire event. That last one is red,
+because it is the old all-or-nothing behaviour and it is now something
+you have to ask for.
+
+An amber warning appears as soon as the selection would discard results
+you typed in, and says how many. The safe default shows no warning at
+all, which is what makes the warning worth reading.
+
+Pressing **Delete selected…** does not delete anything yet. It opens a
+second, red confirmation that lists each section, exactly which rounds
+go, and how many results each loses. **Cancel** is the default there, so
+Enter and Esc both back out; the button that goes ahead is red. A
+checkpoint is taken before anything is removed, so the event can still
+be recovered from **Save Event → Earlier versions**.
+
+Players, their seeding and their requested byes are always kept, so you
+can pair again from whichever round you cleared back to. Pairings you
+have already printed or published are not retracted.
 
 ### PGN headers for recording games
 
@@ -3923,10 +4013,11 @@ They are split across tabs:
   version, and — when a check finds one — a button to install it without
   leaving the page. Also where you go back to an earlier release, and
   where any crash reports are listed.
-- **Shortcuts** — a reference card for the keyboard shortcuts. It is the
-  only tab that changes nothing; it is here so the list is available
-  without leaving the application, which matters in a hall with no
-  internet. See [Keyboard shortcuts](#keyboard-shortcuts).
+
+Every tab here changes something. The keyboard-shortcut reference card
+used to be a tab too, and has moved to **Help → Keyboard Shortcuts**,
+where a question is a better fit than a setting. See
+[Keyboard shortcuts](#keyboard-shortcuts).
 
 ---
 
@@ -3992,7 +4083,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.95.20260901**. It is updated whenever a
+This guide describes FreePair **v0.96.20260901**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
