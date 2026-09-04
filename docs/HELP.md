@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.98.20260903**
+**Applies to FreePair v0.99.20260904**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -1049,17 +1049,27 @@ directions, and each one breaks an event differently.
 event starting 30 August is still played on the August supplement when you
 pair round 3 on 1 September. That is the point of pairing on the supplement
 in force at the start: a player's rating cannot change in the middle of the
-event they are playing. Refresh ratings then and you would re-seed a running
-event on numbers it is not being played under, so FreePair warns you and
-tells you what it would do. If it really is a *new* event rather than a
-continuing one, the fix is to change the start date on the event page — the
-ratings follow the date, not the other way round.
+event they are playing.
 
-**An event that starts next month is not paired on this month's ratings
-either.** Setting a 1 September event up on 30 August is normal and fine.
-Pairing round 1 on 30 August is not, unless you mean to seed it on August
-numbers: the September supplement does not exist yet, so that is all a
-refresh can fetch. FreePair names the date to come back on.
+Because the answer is always "change nothing", **pairing an event dated in a
+past month raises nothing at all** — no warning, no rating comparison, no
+dialog. That covers the ordinary cross-month weekend event and it covers the
+much commoner case of opening an old file to rehearse or try something out.
+A message you can only ever dismiss is not worth putting between a director
+and a round. If it really is a *new* event rather than a continuing one, the
+fix is to change the start date on the event page — the ratings follow the
+date, not the other way round. (Asking for **Refresh Ratings** yourself on
+such an event still warns, because there you have deliberately asked to
+change something.)
+
+**An event that starts next month is compared against today's ratings.**
+Setting a 1 September event up on 30 August is normal, and so is pairing it
+early. The September supplement does not exist yet, so August's are both the
+newest anyone can get and what round 1 would be seeded on either way — which
+makes them the right thing to check against. FreePair no longer lectures you
+about the calendar here; it simply compares, and speaks up only if some
+player's rating in your roster differs from the published one, listing who
+and recommending the refresh.
 
 **Round 1 will not pair without a start date.** This is the one case
 FreePair refuses outright rather than warning. Every other situation is a
@@ -1068,8 +1078,8 @@ answer — FreePair cannot tell which supplement the roster ought to hold, and
 assuming "today" would quietly pair that 30 August event on September's
 numbers. Set the date on the event page and pair again.
 
-The check runs **before round 1 only**. After that the field is seeded, and
-moving ratings would only make the standings argue with the wall chart.
+The comparison runs **before round 1 only**. After that the field is seeded,
+and moving ratings would only make the standings argue with the wall chart.
 Pairing all sections at once asks once for the event rather than once per
 section, because the answer is a property of the event.
 
@@ -1092,6 +1102,19 @@ he will ask you about.
 its own **!**, and there is another beside **Sections** carrying every
 section's differences at once — a rating wrong in a section you are not
 looking at is exactly the one you would not find.
+
+**On a dual-rated event, both rating columns are compared.** A FIDE-rated
+section carries the FIDE ID and rating in the pairing slots and the US Chess
+pair in ID2 and Rating2, and both numbers are registered on the site. Each
+column gets its own row, with a **Rating** column naming the federation, so a
+player whose FIDE and US Chess numbers have both drifted appears twice and you
+can see which is which. *Sync ratings from NA Chess Hub* then updates both.
+
+The two sides are lined up **by federation, not by column position**. NA Chess
+Hub is free to order its columns differently from your file, and comparing
+slot to slot would report every player as hundreds of points out when the two
+rosters actually agree. Where neither side labels its columns — the ordinary
+single-rated event — the pairing ratings are compared directly, as before.
 
 **It is a marker, not an error.** A difference can mean the registration on
 the site is out of date, or that you corrected a rating by hand and meant to.
@@ -1160,21 +1183,61 @@ each other on the event page's **NA Chess Hub** tab so the difference is visible
   roster match the published rating?* That is where a new rating supplement
   shows up.
 
-An event can want either, both or neither. The second is **off by default**:
-it is one lookup per player against someone else's service, and a director
-who has deliberately seeded a field should not have that questioned every
-time they pair.
+An event can want either, both or neither. The second is **on by default**.
+A field seeded on last month's numbers is a mistake you normally find out
+about from the player it cost, and the check is silent on every event it has
+nothing to say about — including, entirely, any event dated in a past month.
 
-With it on, pairing a round looks each player up and, if anything differs,
+**It runs only before round 1, and only for an event starting this month or
+later.** Open an old file to rehearse with, or pair the next round of a
+weekend event that has run into a new month, and nothing is looked up and
+nothing is shown. Such an event keeps the supplement it started on, so the
+answer would always be "change nothing", and a question with one possible
+answer is not worth asking. Untick it on the event page if you want it off
+for an event; that choice is saved with the file.
+
+**Each rating is compared against the right federation.** A section's pairing
+column is not always US Chess — a FIDE-rated section carries the FIDE ID and
+FIDE rating in the pairing slots, with the US Chess pair in ID2 and Rating2 —
+so FreePair reads the column's federation from the file (or from a *Verify
+IDs* pass, which is sharper) and asks that federation. A FIDE section is
+compared with FIDE, a US Chess section with US Chess, and an NWSRS section
+with neither, because the NWSRS scale has no conversion to a national one.
+Records are also matched back: the federations number their members
+independently, so the digits of a FIDE ID are frequently a live US Chess ID
+belonging to somebody else, and a record that turns out to be that other
+person is discarded rather than reported.
+
+With it on, pairing round 1 looks each player up and, if anything differs,
 opens a review that answers the question a bare list of numbers cannot:
 **which of the two is the one your event is played on.**
 
-The header names the **event**, its **start date**, the **supplement that
-follows from it** — "September 2026 supplement [USCF]" — and **today's
-date**, so the two dates can be compared at a glance. Under it is a
+The header names the **event**, its **start date**, the **supplement being
+compared against** — "September 2026 supplement [USCF]", or "[FIDE]" on a
+FIDE-rated section — and **today's date**, so the two dates can be compared at
+a glance. For an event set up months or years ahead, the supplement named is
+the current one, because that
+is the list the numbers beside it actually came from; naming an unpublished
+future month there only made the table confusing. Under it is a
 recommendation in plain words, and then a table: section, player with their
 ID and federation, the rating in your roster, the supplement rating, the
-difference, and what is recommended for that player.
+difference, and what is recommended for that player. The ID and the label in
+that table are always the ones belonging to the federation being compared, so
+they agree with the numbers beside them.
+
+**Both rating columns are checked.** On a dual-rated section the pairing
+rating and Rating 2 go stale at the same time and for the same reason, so each
+gets its own row and the **Column** tells you which is which. A player whose
+FIDE and US Chess ratings have both moved appears twice; *Refresh* takes both,
+and a column that already matches is left alone rather than listed. A blank
+Rating 2 beside a published number counts as a difference too — it is printed
+on the wall chart and goes into the rating report, and "unrated" there is
+wrong in the same way a stale number is.
+
+Only the **pairing** column decides the recommendation at the top. That verdict
+is about the supplement your event is seeded on, and a second column whose
+federation happens not to publish a list date must not be able to talk you out
+of a refresh the seeding needs.
 
 **When the rating database is behind, the header gains a "Database has"
 row and the recommendation turns into "not yet".** A supplement is
@@ -1193,9 +1256,38 @@ it names the month the database actually served — "August 2026 supplement"
 do about it: the ratings you want do not exist on that service yet. Try
 again in a day.
 
+**On the way to pairing, that case does not stop you at all.** You are told
+in the status bar — "the rating database is still publishing August 2026 …
+pairing on the ratings already in the roster" — and the round goes out. The
+only advice a dialog could give is "try again tomorrow", which is not
+something to say to somebody holding a pairing sheet. You will still see the
+full explanation if you ask for **Refresh Ratings** yourself, because there
+you asked the question and are owed the answer.
+
 If most records come back on the right list and one straggles, that single
 record does not change the headline — the month reported is the one the
 database as a whole is answering from.
+
+**Nothing about this check can cost you a round.** It runs against somebody
+else's service, and every way that can go wrong ends with the round pairing
+anyway and a line in the status bar:
+
+- **The service is down or unreachable** — pairing continues on the ratings
+  already in your roster. Rosters downloaded from NA Chess Hub normally
+  arrive with current ratings, so this is the ordinary case working, not a
+  failure to worry about.
+- **The service is slow.** The check is given 30 seconds for a section.
+  Past that it is abandoned and the round pairs. An unbounded wait is worse
+  than an outage: with an outage you at least know where you stand.
+- **Nobody could be looked up** — no usable IDs, or no records — and you are
+  told how many, rather than being shown an empty result that looks like
+  agreement.
+- **The database is on the wrong supplement**, as above.
+
+**A partial answer says so.** When some of the section could not be checked,
+the review names the count — "28 of 33 player(s) checked — 5 could not be
+looked up". A list of differences reads as a complete picture, and silence
+about the rest is ignorance rather than agreement.
 
 **The recommendation can also be "do not refresh" for the opposite
 reason.** An event that began on 30 August is played on August's ratings
@@ -1203,7 +1295,9 @@ even once September's are published; refreshing then would move a running
 event onto a list it is not being played under, and the standings would stop
 agreeing with the seeding. FreePair says so, and the refresh button becomes
 **Refresh anyway** — an explicit override behind a tick rather than the
-obvious thing to press.
+obvious thing to press. You will only meet this by asking for **Refresh
+Ratings** yourself: on the way to pairing, a past-dated event is passed over
+in silence.
 
 When refreshing *is* right, the tick guards the other button instead. The
 discouraged action is always the one you have to acknowledge, whichever it
@@ -1222,9 +1316,7 @@ matches the supplement, it says so and does nothing.
 If the database cannot be reached, the round pairs as though the check were
 off; an outage must not be able to stop a round going out. Which supplement
 applies is decided by the event's start date — see *Which rating supplement
-your event is paired on*.
-
-### Optional columns
+your event is paired on*.### Optional columns
 
 **⚙ Optional Columns** chooses which columns the roster shows. By default
 columns with no data are hidden so the grid stays readable; turn on the
@@ -1637,12 +1729,22 @@ leaving you to guess. The usual answers are:
 - **A player is soft-deleted.** Restore them or delete them permanently
   before round 1.
 
+**A panel names each step while you wait.** Pairing one section is not one
+action: before round 1 FreePair verifies every player's ID, and — if the
+event's rating check is on — compares every rating with the rating database.
+Both are one request per player, so a large section spends tens of seconds
+there. The panel says which step is running (*Checking player IDs…*,
+*Checking ratings…*, *Updating ratings…*, *Getting ready to pair…*,
+*Calculating pairings…*) and, for the two that walk the roster, shows a bar
+counting players — *18 of 35*. A spinner alone cannot tell a long wait from a
+hang, and neither can you. The panel comes down whenever FreePair needs an
+answer from you, so a question is never sitting behind a screen claiming to be
+busy.
+
 For the first round you may be asked who plays White on board 1, and how
 the field should be seeded. Later rounds are determined by the pairing
 rules and need no input. The coin is tossed **once for the whole
 event** — see [The coin toss](#the-coin-toss).
-
-The seeding prompt offers **Re-sort** — marked *(Recommended)* and
 pre-selected, so pressing Enter takes it — or **Keep current order**.
 Take the re-sort. The pairing rules assume the engine's own seeding
 order, and the button names which one applies: *Re-sort (FIDE order)* or
@@ -3652,9 +3754,15 @@ to sync**.
 **Play a sound when the count changes** sits under that option and is
 off until you turn it on. It uses your computer's own notification
 sound, so it follows the system volume and Do Not Disturb — handy when
-you are working on pairings and not watching the badge. It plays in
-either direction, since an entry being withdrawn is worth hearing about
-too, and it stays quiet when your own sync clears the count.
+you are working on pairings and not watching the badge.
+
+**It plays when the number goes up, and stays quiet when it comes down.**
+A rise means NA Chess Hub has something your file does not — an entry
+arriving, an entry being withdrawn, a bye requested — and that is worth
+looking at. A fall means you have just dealt with it, and being told so
+is not news. Sounding at that moment would be making the "come and look"
+noise at the point there was nothing left to look at, which is the
+fastest way to learn to ignore it.
 
 The dropdown beside it chooses **which** of your computer's notification
 sounds to use — System default, Ding, Chimes, Chord or Alert. They are
@@ -3664,6 +3772,26 @@ FreePair's alert apart from whatever else on the laptop already beeps.
 Each is a different noise on Windows, macOS and Linux, so **Test** —
 which plays whichever one is selected — is the honest way to find out
 which is which.
+
+**Custom… lets you use your own sound file.** Pick it and a **📁 Choose
+sound file…** button appears. `.wav` and `.mp3` both work, along with most
+other common audio files — and if you pick something unusual, FreePair says
+it may not play rather than refusing. Nothing sounds until you press
+**Test**, so choosing a file is safe to do mid-event in a quiet hall. This
+is the option for a noise nothing else on the machine can make: a spoken
+phrase, or something that carries across a hall.
+
+Two things behave differently for a custom sound, and both are stated
+beside the button:
+
+- **It follows the system volume but not Do Not Disturb.** Your file is
+  played as audio rather than as a notification, which is the price of it
+  not being one of the machine's own sounds.
+- **FreePair remembers where the file is, not the file itself.** Move or
+  delete it and the alert falls back to a plain beep — never to silence,
+  because an alert that goes quiet teaches you that nothing is happening.
+  The line beside the button tells you when the file has gone missing, so
+  you find out while setting up rather than during an event.
 
 **Compare player ratings on NA Chess Hub roster with FreePair roster** sits under
 the same option and is **on**. Each time FreePair checks the site it also
@@ -4457,7 +4585,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.98.20260903**. It is updated whenever a
+This guide describes FreePair **v0.99.20260904**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
