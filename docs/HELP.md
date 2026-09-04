@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.97.20260901**
+**Applies to FreePair v0.98.20260903**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -786,9 +786,13 @@ fit comfortably on one screen:
   engine; and the organizer's name and ID.
 - **Team Event** — team and match size and the default board order. Turn
   on **Team Event** first; the rest of the tab stays hidden until you do.
-- **Results Publishing** — the NA Chess Hub event ID and passcode, and
-  whether to check NA Chess Hub for roster changes before pairing.
-- **Starting Boards** — the first physical board number for each section.
+- **NA Chess Hub** — the event ID and passcode, whether to check NA Chess
+  Hub for roster changes before pairing, and the two rating checks: whether
+  to report players whose rating differs from their registration, and
+  whether to check ratings against the rating database before pairing.
+- **Starting Boards** — the first physical board number for each section,
+  and the board packing this event uses.
+- **Options** — the decision log.
 - **Coin Toss** — the one coin toss that decides board 1's colour for the
   whole event. See [The coin toss](#the-coin-toss).
 
@@ -832,8 +836,88 @@ put in a different room on board 40 stays on board 40 for the rest of the
 event. This is the distinction that matters: FreePair fills in the blanks
 and never overrules a number you typed.
 
-To be asked once per section each round instead, turn off **Always use
-the recommended starting board** in Settings.
+#### Loose, tight, or ask me
+
+**Board number packing is a property of the event, and you have a default.**
+Under **Settings → Boards** you set the packing every *new* event starts
+with — your own preference, because one director runs a club night in one
+room and a five-section weekend in three. Each event then keeps its own
+answer. Changing your default never moves the boards of an event that
+already exists.
+
+To change it for the event in front of you, use the event page's **Starting
+Boards** tab, **Pair all sections**, or **Renumber section starting
+boards**. All three edit *that event*; only the Settings dialog edits your
+default.
+
+**Loose** is the default and reserves a board for every player in the
+section, whether or not they play a given round. A board number then means
+the same table for the whole event: board 12 is board 12 in round 5 however
+many players took byes along the way.
+
+**Tight** reserves room only for the players who will actually be paired
+next round, so the event's boards run 1 to N with nothing empty in the
+middle. This is what a small club or a weeknight event wants — they set out
+physical tables, and a gap in the numbering is a table nobody sits at. The
+trade is that a section's range can move between rounds as bye counts
+change, which is fine if you renumber and re-post the boards each round and
+confusing if you do not.
+
+The two differ by the players sitting out. If Open has 24 players but four
+have taken byes, it needs 12 boards loose and 10 tight — so under tight
+packing U1700 starts on board 11 instead of 13. A seven-player section is
+four boards loose (one of them empty) and three tight, with the odd player
+out taking the bye instead of a table.
+
+**Prompt for starting board** asks you for each section's number when it is
+paired, rather than laying the event out for you. It sizes sections the same
+way Loose does — it changes who decides, not how much room a section takes.
+
+Whichever you pick applies to **both** ways of pairing: the Pair button
+beside a single section and **Pair all sections** read the same setting, so
+an event lands on the same tables either way.
+
+**Allow overlapping board numbers across sections** turns off the overlap
+warning. Overlap has never blocked anything — two sections in different
+rooms can quite reasonably both have a board 1 — so this only decides
+whether FreePair mentions it. It follows the same default-then-event rule.
+
+#### Moving the boards of a round that is already paired
+
+Changing a starting board normally affects only **future** rounds, so that
+pairing sheets already on the wall stay true. When the round has not started
+yet that is the wrong answer, and the only way round it used to be deleting
+the round and pairing it again — which risks the engine returning a
+different, equally legal pairing, so fixing a board number could change who
+plays whom.
+
+Three places do it without re-pairing. Only the numbers move: the pairings,
+the colours and the results are untouched.
+
+- **The section's Pairings tab → Pairing Operations → Renumber Round N
+  Boards…** Acts on the round you are looking at, and the menu names it, so
+  there is no doubt which round is about to move. It asks which board first,
+  opening on the number the section is on now, with a **Use recommended**
+  button beside it and the same overlap notice you get when pairing. This is
+  the quick one during an event.
+- **Event Operations → 🔢 Renumber boards** gives each section a **Renumber
+  R*n*** button beside its row. That applies the number typed in *that row*
+  and moves the section's latest paired round onto it in one go — so you can
+  fix one section without touching the others. Sections that have not been
+  paired yet show nothing there.
+
+  Everything on that dialog takes effect as you use it — a starting board as
+  you type it, the packing choice as you pick it, **Renumber R*n*** at once
+  — so it has a single **Close** button and no Apply. There is nothing left
+  to apply, and a Cancel would only have promised to undo work already
+  saved.
+- **Event page → Starting Boards → Apply to paired rounds** does every
+  section at once, using the starting boards in the grid above.
+
+Setting a starting board and moving an already-paired round are deliberately
+two actions. Setting the board affects future rounds, which is what you want
+once the sheets are posted; doing both at once would silently renumber rounds
+players are already sitting at.
 
 ---
 
@@ -948,11 +1032,197 @@ Two warnings exist here on purpose:
 
 - Once a round has been paired, refreshing ratings can change the
   pairing basis mid-event, so FreePair asks first.
-- Around the start of a month, a rating supplement may be about to
-  change; FreePair points this out so you can decide which supplement
-  the event should use.
+- If the ratings a refresh would fetch are from a different supplement
+  than the one this event is played on, FreePair says so — see below.
 
 Both need an internet connection.
+
+### Which rating supplement your event is paired on
+
+US Chess publishes a rating supplement on the 1st of each month, and FIDE's
+rating list works the same way. **The one your event uses is decided by the
+date the event starts** — not by the date you happen to be sitting in front
+of FreePair. Those two come apart around the 1st of a month, in both
+directions, and each one breaks an event differently.
+
+**An event that started last month keeps last month's ratings.** A weekend
+event starting 30 August is still played on the August supplement when you
+pair round 3 on 1 September. That is the point of pairing on the supplement
+in force at the start: a player's rating cannot change in the middle of the
+event they are playing. Refresh ratings then and you would re-seed a running
+event on numbers it is not being played under, so FreePair warns you and
+tells you what it would do. If it really is a *new* event rather than a
+continuing one, the fix is to change the start date on the event page — the
+ratings follow the date, not the other way round.
+
+**An event that starts next month is not paired on this month's ratings
+either.** Setting a 1 September event up on 30 August is normal and fine.
+Pairing round 1 on 30 August is not, unless you mean to seed it on August
+numbers: the September supplement does not exist yet, so that is all a
+refresh can fetch. FreePair names the date to come back on.
+
+**Round 1 will not pair without a start date.** This is the one case
+FreePair refuses outright rather than warning. Every other situation is a
+judgement you are entitled to make, but with no date there is no question to
+answer — FreePair cannot tell which supplement the roster ought to hold, and
+assuming "today" would quietly pair that 30 August event on September's
+numbers. Set the date on the event page and pair again.
+
+The check runs **before round 1 only**. After that the field is seeded, and
+moving ratings would only make the standings argue with the wall chart.
+Pairing all sections at once asks once for the event rather than once per
+section, because the answer is a property of the event.
+
+### The red "!" beside a section
+
+A section shows a small red **!** — just after the NA Chess Hub change badge,
+if that is showing too — when one or more players are registered for this
+event on NA Chess Hub with a **different rating from the one in your
+roster**. Hovering says how many; clicking opens the list, player by player,
+with both numbers side by side.
+
+**This compares your roster with the event's own roster on NA Chess Hub** —
+the rating each player is registered with for *this* event, the number they
+will read beside their own name on the event page. It is not a lookup in the
+national rating database. If Anthony He shows 2500 on the event page and is
+seeded as 2600 here, that is what this tells you about, because that is what
+he will ask you about.
+
+**A marker on the section, and one for the whole event.** Each section shows
+its own **!**, and there is another beside **Sections** carrying every
+section's differences at once — a rating wrong in a section you are not
+looking at is exactly the one you would not find.
+
+**It is a marker, not an error.** A difference can mean the registration on
+the site is out of date, or that you corrected a rating by hand and meant to.
+So the dialog suggests and never acts on its own:
+
+- **Sync ratings from NA Chess Hub** replaces the rating in your roster with
+  the one on the site, for the players listed. It asks you to confirm first,
+  and says why that matters: the site carries the rating captured when the
+  player registered, which can be OLDER than yours — if you have already
+  refreshed from the rating database, this undoes that. Sections not yet
+  paired are re-seeded, because rating decides seeding; sections already
+  paired keep their pair numbers and their pairings.
+- **Ignore for this event** stops the marker appearing again — for this event
+  only. It asks first, and says where to undo it: tick *Compare player ratings
+  on NA Chess Hub roster with FreePair roster* on the event page's **NA Chess
+  Hub** tab. It changes no ratings and nothing about pairing, and does not
+  carry over to your next event.
+- **Close** changes nothing.
+
+**An unrated player with a rating typed over them counts as a difference.**
+If the site has someone unrated and your roster gives them 66, that is
+reported — it is the most deliberate kind of difference there is, and it is
+exactly the number you are pairing them on while the event page shows none.
+Two unrated sides are not a difference, because there is nothing to
+reconcile. The list says "unrated" rather than 0, which would read as a data
+fault.
+
+It rides on the same background check as the sync badge, so it costs no extra
+network calls and needs the event to have NA Chess Hub credentials. A failed
+check leaves the markers as they were, because "could not ask" and
+"everything agrees" are not the same thing.
+
+**One switch, at two levels — a default and an override.** **⚙ Settings →
+Online → Compare player ratings on NA Chess Hub roster with FreePair roster** is
+your default for new events, on out of the box. Every event carries the
+same setting under the same name on its **NA Chess Hub** tab, and starts
+with no answer of its own, following your default.
+
+The first time you tick or untick it on an event — or press *Ignore for
+this event*, which unticks it — that event has answered for itself and
+stops following the default. Changing your default afterwards leaves it
+alone. That is deliberate: the reasons to switch this off are reasons
+about one event, and a default that reached back into events you had
+already decided about would undo those decisions silently.
+
+**Whichever answer applies, switching it off clears the markers** for the
+open event, because that is a definite answer rather than a failed lookup.
+
+**One thing sits above both**, and it is a different setting: **⚙ Settings
+→ Online → Check NA Chess Hub for roster and bye changes**. That is what
+makes FreePair poll the site in the background at all, and the rating
+comparison rides on the same download. Turn *that* off and nothing is
+fetched, so no markers appear for any event no matter what the event's own
+switch says. It is not overruling your choice — it is the difference
+between "do not compare" and "do not look".
+
+### Checking ratings against the rating database before pairing
+
+This is a **different question** from the red "!", and the two are next to
+each other on the event page's **NA Chess Hub** tab so the difference is visible.
+
+- The red "!" asks: *does my roster match what this player is registered with
+  on NA Chess Hub for this event?* That is the number they read beside their
+  own name.
+- **Check ratings against the rating database before pairing** asks: *does my
+  roster match the published rating?* That is where a new rating supplement
+  shows up.
+
+An event can want either, both or neither. The second is **off by default**:
+it is one lookup per player against someone else's service, and a director
+who has deliberately seeded a field should not have that questioned every
+time they pair.
+
+With it on, pairing a round looks each player up and, if anything differs,
+opens a review that answers the question a bare list of numbers cannot:
+**which of the two is the one your event is played on.**
+
+The header names the **event**, its **start date**, the **supplement that
+follows from it** — "September 2026 supplement [USCF]" — and **today's
+date**, so the two dates can be compared at a glance. Under it is a
+recommendation in plain words, and then a table: section, player with their
+ID and federation, the rating in your roster, the supplement rating, the
+difference, and what is recommended for that player.
+
+**When the rating database is behind, the header gains a "Database has"
+row and the recommendation turns into "not yet".** A supplement is
+published on the 1st, but the services that serve it do not all ingest it
+that morning. Ask for September ratings on 1 September and you may be
+handed August's — with no error, because as far as the database is
+concerned it answered your question.
+
+That is the one failure worth guarding against most carefully, because it
+*looks like success*. You press refresh, numbers change, and you walk away
+believing your roster holds the current ratings when it holds last
+month's. So FreePair reads the rating list date that comes back with every
+lookup and checks it is the list your event is played on. When it is not,
+it names the month the database actually served — "August 2026 supplement"
+— and recommends waiting rather than refreshing. There is nothing else to
+do about it: the ratings you want do not exist on that service yet. Try
+again in a day.
+
+If most records come back on the right list and one straggles, that single
+record does not change the headline — the month reported is the one the
+database as a whole is answering from.
+
+**The recommendation can also be "do not refresh" for the opposite
+reason.** An event that began on 30 August is played on August's ratings
+even once September's are published; refreshing then would move a running
+event onto a list it is not being played under, and the standings would stop
+agreeing with the seeding. FreePair says so, and the refresh button becomes
+**Refresh anyway** — an explicit override behind a tick rather than the
+obvious thing to press.
+
+When refreshing *is* right, the tick guards the other button instead. The
+discouraged action is always the one you have to acknowledge, whichever it
+happens to be that day.
+
+**Refresh ratings and pair** takes the published ratings and carries straight
+on with the pairing — no cancelling, no going to the Roster tab, no starting
+again. Sections not yet paired are re-seeded, because rating decides seeding.
+
+**The same review appears on the Roster tab.** *ID and Ratings → Refresh
+Ratings* shows it before it does anything, so the answer to "should I refresh
+today?" is on screen at the moment you are asking it, rather than being
+something you have to work out from the calendar. If every rating already
+matches the supplement, it says so and does nothing.
+
+If the database cannot be reached, the round pairs as though the check were
+off; an outage must not be able to stop a round going out. Which supplement
+applies is decided by the event's start date — see *Which rating supplement
+your event is paired on*.
 
 ### Optional columns
 
@@ -2496,6 +2766,33 @@ section, time control, location, dates, a page number and a timestamp.
 be adjusted independently, which is useful when a wall chart is one
 column too wide for the page.
 
+### The colour-due legend prints only when it explains something
+
+A pairing sheet can carry a boxed **Colour Due Legend** at the foot,
+decoding the codes in the due-colour column — `w`/`b` a mild preference,
+`W`/`B` one colour off balance, `WW`/`BB` a must-switch.
+
+It now appears **only when a due-colour column is actually on the sheet**,
+and only for sections paired as a Swiss. Out of the box the pairing sheet
+does not print due colours at all, so on most events the legend simply
+stops appearing — and that is the point. It is four lines of boxed text
+under every round, which was enough on a long section to push a sheet that
+fitted on two pages onto a third, to explain symbols that were nowhere on
+the page.
+
+To get it back, switch on **Due colour** for White or Black in the
+pairings column setup before printing; the legend follows the column.
+
+**Round 1 never prints it**, whatever the column setup says. Round 1 is
+nobody's second game: no player has a colour history yet and no colour is
+due to anyone, so those columns come out blank and a legend explaining them
+would be explaining blanks. From round 2 the columns have something in them
+and the legend follows as usual.
+
+A round robin or a quad never prints it. Those take their colours from
+the schedule rather than from a due-colour calculation, so the legend
+would be describing a rule that did not run.
+
 ### A quad prints on one sheet
 
 A quad is four players and three rounds of two boards, so a sheet per
@@ -2927,7 +3224,7 @@ across a room.
 
 **In the app.** Small codes appear at the right-hand end of the tab row —
 beside *Overview / Roster / Pairings / …* on a section, and beside
-*Basic / Team Event / Results Publishing / …* on **Event Configuration**.
+*Basic / Team Event / NA Chess Hub / …* on **Event Configuration**.
 Click one for a large, properly scannable copy with the address written
 underneath. They appear only while you are actually sharing, so the row
 is unchanged if you never use the feature.
@@ -3202,6 +3499,41 @@ that compatibility.
 
 ## NA Chess Hub
 
+### The NA Chess Hub badge on the event card
+
+**An event linked to NA Chess Hub shows a logo on its card**, at the
+top-right of the panel on the left. It is the quickest answer to "is this
+the same event as the one on the site?" — a question that otherwise means
+opening the Event Configuration page and reading a long identifier back
+and forth.
+
+**If the organising club has uploaded its own logo to NA Chess Hub, that
+is what you see**; otherwise the NA Chess Hub logo. The club's badge is by
+far the more useful of the two on a laptop that runs one organiser's
+events all season, because the site logo is identical on every event — it
+tells you the event is linked and nothing more.
+
+The club logo is fetched in the background the first time you open the
+event and then kept on your machine for a month, so it costs nothing on
+later launches and an event opens just as fast offline. If it cannot be
+fetched — no connection, or the club has not uploaded one — the card shows
+the NA Chess Hub logo and nothing is reported. It is a picture; it is not
+worth interrupting a round for.
+
+**Click the logo to open that event's roster page** in your browser: the
+list of who has registered and the rating each of them is registered with.
+That is the page worth reaching, rather than the event-details page — it
+is where the numbers behind the red **!** actually live, so when FreePair
+says a rating disagrees with the site you land on the disagreement itself.
+
+The badge appears as soon as the event has an **NACH Event ID**, whether
+it came from opening the event off NA Chess Hub or from pasting the id in
+yourself. It does not wait for a passcode: the id is what makes it the
+same event; the passcode only decides whether FreePair may sync with it.
+
+Clicking the logo does not select the Event Configuration page behind the
+browser — only the browser opens.
+
 ### Signing in to NA Chess Hub
 
 **⚙ Settings → Online → NA Chess Hub sign-in.** Signing in once lets you
@@ -3323,6 +3655,48 @@ sound, so it follows the system volume and Do Not Disturb — handy when
 you are working on pairings and not watching the badge. It plays in
 either direction, since an entry being withdrawn is worth hearing about
 too, and it stays quiet when your own sync clears the count.
+
+The dropdown beside it chooses **which** of your computer's notification
+sounds to use — System default, Ding, Chimes, Chord or Alert. They are
+all your machine's own sound files, so they follow the system volume and
+are noises you already know; the point of the choice is telling
+FreePair's alert apart from whatever else on the laptop already beeps.
+Each is a different noise on Windows, macOS and Linux, so **Test** —
+which plays whichever one is selected — is the honest way to find out
+which is which.
+
+**Compare player ratings on NA Chess Hub roster with FreePair roster** sits under
+the same option and is **on**. Each time FreePair checks the site it also
+compares the rating each player is registered with **for this event**
+against the rating in your roster, and puts a red **!** on any section
+where they differ. Click it to see who, and to decide what to do —
+nothing is ever changed for you, and you can dismiss it for the event.
+See *The red "!" beside a section*.
+
+**This one is the default new events start with, not a master switch.**
+Every event carries the same setting, under the same name, on its own
+**NA Chess Hub** tab. An event that has never been asked follows what you
+set here; the moment you tick or untick it on the event, that event has an
+answer of its own and stops following the default. Pressing **Ignore for
+this event** on the rating-difference dialog is the same thing — it
+unticks the event's box, and the event page is where you tick it back on.
+
+Changing your default here therefore does not reach into events you have
+already decided about, which is the point: the reasons to switch this off
+are reasons about one event, not about how you run every event
+afterwards.
+
+This is the event's own roster on NA Chess Hub, not a lookup in the
+national rating database. It uses the same check as the alert above, so
+it makes no extra network calls, and like that alert it needs the event
+to have NA Chess Hub credentials.
+
+It is on by default because the mismatch is invisible from inside
+FreePair: your roster looks perfectly consistent with itself, and the
+first sign of trouble is a player pointing at the event page and asking
+why the number there is not the number they were seeded on. Turn it off
+if you know your ratings differ from the site's and would rather not be
+reminded.
 
 ### Publishing pairings and results
 
@@ -4083,7 +4457,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.97.20260901**. It is updated whenever a
+This guide describes FreePair **v0.98.20260903**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
