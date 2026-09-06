@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.102.20260904**
+**Applies to FreePair v0.103.20260906**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -170,10 +170,18 @@ event sit at the right-hand end of the same row:
   - **Keyboard Shortcuts** — every key FreePair responds to, what it
     does, and what it needs open to work. See
     [Keyboard shortcuts](#keyboard-shortcuts).
-- **Theme** applies immediately. It is left out here rather than filed
+- **Theme** applies immediately and keeps your choice across launches;
+  there is nothing to confirm. It is left out here rather than filed
   away in Settings because it is the one display choice you are
   likely to change on the spot, usually because of the light in the
-  playing hall.
+  playing hall. Themes change only colours, not the layout or how anything
+  works. Alongside the existing choices, four coordinated palettes change
+  the colours throughout the app. These four keep their light or dark
+  appearance even when the system setting changes:
+  - **Sandstone** — warm ivory and sand with bronze accents; always **Light**.
+  - **Rose Quartz** — soft rose with berry accents; always **Light**.
+  - **Midnight** — navy and slate with cyan accents; always **Dark**.
+  - **Pine** — green-charcoal with jade accents; always **Dark**.
 
 Live Score Board, Share and Print appear only once an event is open; Settings,
 Help and Theme are always there.
@@ -973,6 +981,10 @@ players changed and the rest not.
 **ID and Rating** verifies USCF and FIDE IDs against the online player
 database and fills in the current ratings.
 
+**ID and Rating** → **Verify IDs** requires a known federation and a matching
+name to verify an ID, because the same number can identify different people
+in USCF and FIDE.
+
 **On a FIDE-rated section it also fills in the FIDE half of the roster.**
 Plenty of events arrive with national IDs and national ratings and nothing
 else — an event imported from a national source usually does. For every
@@ -1027,11 +1039,147 @@ otherwise it cannot tell whether the number it is about to overwrite is a
 USCF rating or a FIDE one. That classification is saved in the event file,
 so once a section has been through **ID and Rating** it stays classified —
 closing and reopening the event does not send you back to square one.
+The refresh checks identities again where there is no matching verification
+result, rather than treating a saved column label as proof of identity.
+
+**No ID2 means no secondary lookup.** If a player has no secondary identity,
+ID checking skips ID2 and Roster Update skips Rating2. A linked FIDE profile
+alone does not trigger extra lookups or fill these absent fields. Existing
+secondary values and manual confirmations are retained, not cleared. Primary
+ID and rating checks still run normally. A stored NWSRS identity assigned to
+the secondary column counts as ID2 even when the raw ID2 field is blank.
+
+**The green tick beside Rating confirms the primary rating, not Rating2.**
+It appears whether the primary number changed or was already current. A
+confirmed USCF rating still gets its tick when an optional FIDE rating is
+unavailable; a successful Rating2 lookup alone cannot tick an unchecked
+primary rating. Hover over the tick for each column's outcome.
+
+**Pairing does not undo your roster checks.** Saved
+automatic ID-verification and rating-refresh indicators survive pairing,
+unpairing or deleting a round (including Round 1), and reseeding. When the
+same players' ID and rating contexts are unchanged, their ticks, warnings,
+and column-heading all-clears stay in place; confirmation dropdowns do not
+return merely because a round changed. Changing a rating invalidates that
+rating's automatic tick, not its ID tick or an unchanged other rating.
+An identity or federation change, ambiguous player/section identity, or a
+subsequent unsuccessful lookup can invalidate the affected evidence.
+**Automatic ID-verification and rating-refresh results are saved in SJSON**,
+independently for ID, ID2, Rating and Rating2. Closing and reopening the file
+keeps matching results and their original check times; hover over a tick to
+see when it was checked. Reopening does not run a new lookup or pretend the
+saved result is fresh. Any source-reported rating-list date is also retained.
+Older files without this evidence start unchecked until a check is run and
+saved. Restoring an earlier saved version restores that version's matching
+evidence. Automatic results remain distinct from manual TD acknowledgements.
+
+**To confirm a value yourself**, open the small dropdown beside **ID**,
+**ID2**, **Rating**, or **Rating2** in the roster. The dropdown appears only
+when that value still needs confirmation; it disappears once an automated
+check or your manual confirmation marks it verified/refreshed. Choose **Mark as verified
+(TD)** for an ID or **Mark as refreshed (TD)** for a rating. The green tick's
+tooltip says **Manually confirmed by TD**, not that a database checked it.
+This records your assertion without changing the number or running a lookup.
+Blank IDs and missing ratings cannot be confirmed; unrated **0** can.
+
+**An all-zero ID is a placeholder, not a federation identity.** For **0**,
+**00000000**, or another all-zero value in either ID column, choose
+**Confirm no ID (TD)**. Its tick means you reviewed **no federation ID on
+file**; the tooltip makes that distinction explicit. The zeros stay exactly
+as entered, no ID-0 lookup is made, and the acknowledgement does not authorize
+a federation lookup. Replacing the placeholder with a real ID clears this
+acknowledgement so the new identity can be checked.
+
+Manual confirmations update the existing row in place, including hiding its
+dropdown immediately. They do not reset your search, selection, sort order,
+or scroll position, in either the main section or a popped-out section.
+
+Manual confirmations are saved with the event and survive closing and
+reopening it. Changing
+the value or its identifying context invalidates it. A later completed ID
+verification or rating refresh replaces the affected manual confirmations
+with the new results, including an unconfirmed result when a lookup fails.
+Unattempted columns, including a missing or zero-placeholder ID2, keep their
+manual acknowledgements.
+Manual marks do not bypass the database identity checks used by a refresh.
+
+**A green check before a roster column heading means everyone applicable
+is addressed in that column.** The heading's tooltip gives confirmed/total
+counts for the **whole active roster**, not just your search results.
+Withdrawn players count; soft-deleted players do not. Automated checks and
+matching manual confirmations both count, including an explicitly reviewed
+zero-ID placeholder or a confirmed unrated rating. Merely knowing a column's
+federation is not confirmation.
+
+A blank primary ID prevents the ID heading from getting a check. Players
+without ID2 are excluded from both secondary headings, even if an old
+Rating2 value is displayed. An explicit zero ID2 is different: it counts and
+needs your acknowledgement; its Rating2 also needs confirmation if present,
+and a missing Rating2 cannot earn a tick. An empty roster or a column with
+no applicable players never gets a green check. Editing a confirmed value
+or receiving an unconfirmed verification/refresh result removes the affected
+all-clear. Rating headings name the recorded rating scale, falling back to
+the adjacent ID federation only when the scale is unknown.
+
+**Unrated can be a confirmed answer.** A primary USCF rating of 0 gets a
+tick when the verified US Chess member's complete rating record confirms
+that no regular rating is published (or explicitly reports regular 0).
+When the member search has no rating, FreePair checks US Chess's detailed
+member record rather than assuming that a missing number means zero.
+An incomplete response, missing member, missing ID, unverified identity,
+or unreachable service is not proof of being unrated and earns no tick.
+A missing rating never clears a positive stored number: even a definitive
+unrated response leaves it in place, unconfirmed, with an explanation.
+
+**Rating refresh results** counts every player in its headline, but lists
+only changed ratings and entries needing attention. For example, a section
+of 23 players can report **22 ratings confirmed (22 already up to date);
+0 updated; 1 not available/not confirmed**, with only that last player in
+the table. Confirmed, unchanged players do not clutter the details.
+**Updated** and **Needs attention** show primary and Rating2 outcomes
+in fully bordered tables with **Player** and federation-labelled columns
+such as **Rating [USCF]** and **Rating2 [FIDE]**. Rating2 is omitted when
+it is absent from the section's source file. Columns automatically size to
+their contents, and the wider dialog can be resized.
+When Rating2 is shown, its summary gives separate applicable, confirmed,
+updated and unconfirmed counts; missing ID2 entries are counted as skipped.
+
+Beside the player's name, a **green check** means all applicable ratings are
+confirmed, a **yellow !** means only one of two is confirmed, and a **red !**
+means none are confirmed. A single-rating section is judged on Rating alone.
+When Rating2 is displayed but ID2 is absent, it is labelled **Not attempted —
+no ID2**, with a neutral dash, and does not count against the player's status.
+Beside each rating, a **green check** means confirmed and unchanged, a
+**green !** means the value was refreshed and changed, and a **red !** means
+it could not be confirmed. Changed ratings show both values directly in the
+cell, such as **2140 → 2040**, with the green **!** beside them. Each rating
+also includes a short explanation on the same line, such as **Confirmed —
+already up to date** or **FIDE rating not available**. When the rating type
+is not explicitly recorded, the corresponding ID column's federation supplies
+the label; missing lookups do not turn a known FIDE column into “mixed”.
+Hover for the full reason a rating could not be confirmed, including service
+or identity issues, and the change details, including
+**Refreshed from 1800 to 1823**.
+
+“No ratings changed” does not mean nobody was checked. The report also
+explains why a column could not be confirmed. Running the refresh again
+still confirms values that already match. A preview with no differences
+skips only the review dialog, not the actual refresh. Confirmations describe
+the returned rating data, not a guarantee that the service has published
+the supplement your event needs — the timing warnings still matter.
 
 Two warnings exist here on purpose:
 
-- Once a round has been paired, refreshing ratings can change the
-  pairing basis mid-event, so FreePair asks first.
+- Once a round has been paired, **Verify IDs** and **Refresh Ratings** show
+  **Warning: this section already has pairings** before starting. The warning
+  names the section and round count. **Cancel** is the default; continuing
+  requires acknowledging the risk and explicitly choosing **Verify IDs anyway**
+  or **Refresh ratings anyway**. Save a copy or checkpoint first. Changed
+  identities, names, or ratings can conflict with the published starting list.
+  Existing rounds are not recalculated, and already-paired players are not
+  reseeded or renumbered by these operations. Review the published roster
+  against the new data. Declining an optional automatic rating check before
+  pairing keeps the existing ratings and allows pairing to continue.
 - If the ratings a refresh would fetch are from a different supplement
   than the one this event is played on, FreePair says so — see below.
 
@@ -1172,6 +1320,13 @@ switch says. It is not overruling your choice — it is the difference
 between "do not compare" and "do not look".
 
 ### Checking ratings against the rating database before pairing
+
+**Pairing one section's first round uses the central R1 dialog instead of
+silently running this optional check.** Select **3. Refresh ratings to current month's supplement**
+there; its date-aware default and any failure are shown explicitly. The
+automatic pre-pairing check described below still applies to **Pair all
+sections**. The supplement review and its risk acknowledgements are shared.
+See [Pairing a round](#pairing-a-round).
 
 This is a **different question** from the red "!", and the two are next to
 each other on the event page's **NA Chess Hub** tab so the difference is visible.
@@ -1729,32 +1884,174 @@ leaving you to guess. The usual answers are:
 - **A player is soft-deleted.** Restore them or delete them permanently
   before round 1.
 
-**A panel names each step while you wait.** Pairing one section is not one
-action: before round 1 FreePair verifies every player's ID, and — if the
-event's rating check is on — compares every rating with the rating database.
-Both are one request per player, so a large section spends tens of seconds
-there. The panel says which step is running (*Checking player IDs…*,
-*Checking ratings…*, *Updating ratings…*, *Getting ready to pair…*,
-*Calculating pairings…*) and, for the two that walk the roster, shows a bar
-counting players — *18 of 35*. A spinner alone cannot tell a long wait from a
-hang, and neither can you. The panel comes down whenever FreePair needs an
-answer from you, so a question is never sitting behind a screen claiming to be
-busy.
+**The first round opens “Start Pairing R1 for Section {section name}”.**
+This is one place to review the section, prepare its roster and approve its
+pairings. It applies only when pairing one section's first round; **Pair all
+sections** and later rounds retain their own workflow.
 
-For the first round you may be asked who plays White on board 1, and how
-the field should be seeded. Later rounds are determined by the pairing
-rules and need no input. The coin is tossed **once for the whole
-event** — see [The coin toss](#the-coin-toss).
-pre-selected, so pressing Enter takes it — or **Keep current order**.
-Take the re-sort. The pairing rules assume the engine's own seeding
-order, and the button names which one applies: *Re-sort (FIDE order)* or
-*Re-sort (USCF order)*. Let FreePair number the field from the rules
-rather than adjusting pair numbers by hand; a hand-edited order can
-produce boards the rules would not have chosen, and it is the order the
-engine is given. **Keep current order** exists for the narrow case where
-the numbers were assigned elsewhere and must be reproduced exactly —
-matching an arbiter-assigned starting list on an imported event, for
-instance.
+Choose **Pairing engine**, **Pairing rule**, **Top seed color** and
+**Starting board** across the compact first row. The second row holds
+**Re-seed before R1**, **Avoid same team** and **Accelerate**, in that order.
+Starting board and round limits are typed
+directly, without spinner buttons.
+
+**Use recommended**, beside Starting board, recalculates the recommendation
+from the current event without changing its board-packing policy. Hover over
+the button to see the recommended number and the effective **Loose**,
+**Tight**, or **Prompt** setting, including whether it was inherited from
+app settings. Prompt uses Loose when calculating the recommendation.
+
+**Avoid same team** uses **R1 to [x]**, where you type the last opening round;
+for quads it separates teammates into different
+quads instead. It is unavailable for a full round robin or a team-pairing
+section. **Accelerate** also uses **R1 to [x]** and is
+unavailable for fixed round-robin and quad schedules. Hover over a setting
+for its explanation, including why it does not apply.
+The pairing engine is disabled for fixed schedules; if a quad split includes
+a mini-Swiss remainder, the engine choice applies to that remainder.
+
+Leave **Re-seed before R1** checked unless you must
+reproduce an externally assigned starting list. This uses the selected
+engine's seeding order rather than hand-edited pair numbers. Its tooltip
+shows that order: FIDE uses descending rating, then title, then name; USCF
+uses descending rating, then name. Existing pair number breaks remaining
+ties. The tooltip updates when the engine or rule changes and explains
+fixed-schedule exceptions.
+
+An inherited engine displays its resolved value, such as **Inherit (USCF)**,
+instead of leaving you to guess the event default. The pairing rule is
+stored as a concrete section setting and displays that rule directly.
+
+For
+**Top seed color**, **Coin toss** reuses
+the event's single toss; **Top seed plays White** and **Top seed plays
+Black** override it for this section only.
+**Already tossed: White/Black** shows a recorded result; selecting Coin toss
+uses that result rather than tossing again. Explicit color choices are
+labelled as an override for this section and do not replace the event's toss.
+Quads always group players by rating, so their re-seed checkbox is disabled.
+
+**Pre-Pairing Tasks (Optional)** shows the three checkable tasks
+in a fully bordered table. **Task** holds the
+checkboxes selecting work to run. **Details** explains the task and its
+default before it runs, then shows what happened, including complete
+confirmation/update/unavailable counts. **Result** contains a **Succeeded**
+checkbox and a short outcome:
+
+1. **1. Sync roster with NA Chess Hub** starts checked when the event has both its
+   NACH event ID and passcode. Otherwise it is disabled with the reason
+   shown. **Compare player ratings with NACH Roster** starts with the event's choice, falling
+   back to the app default only if the event has not chosen.
+   When no differences are found, the task is marked successful and continues
+   automatically; no empty review dialog opens. Differences still open the
+   normal roster review.
+2. **2. Verify IDs** starts checked unless every applicable ID has actual
+   confirmation, including explicit manual TD assertions. A known column
+   federation alone is not verification. No effective ID2 means no automatic
+   secondary-ID query. With no applicable IDs, this task is disabled.
+   In this dialog, verification can fill identity details such as FIDE ID,
+   federation and title, and offer name corrections, but **never changes
+   ratings**, even blank ratings. Leave refresh unchecked to keep historical
+   ratings. Rating changes require the separate refresh task and its risk
+   review, or roster changes you explicitly accept in the NACH sync review.
+3. **3. Refresh ratings to current month's supplement** starts checked only for an event
+   starting in the current month whose known end date has not passed. Historical
+   events, future-month events, events with missing dates and ended events start
+   unchecked, with the reason visible and available as a tooltip. You may
+   select it deliberately; the existing supplement review and risk
+   acknowledgements still apply. With no applicable IDs it is disabled.
+   It also starts unchecked with “All ratings are refreshed and up to date for
+   {month} or TD explicitly checked.” when saved successful refresh evidence confirms every
+   applicable rating against source-reported list dates for the current
+   event month, and the roster identities and ratings are unchanged.
+   This includes **Refresh Ratings** run before opening this dialog.
+   Reseeding and reopening the file do not discard that evidence; changing
+   the relevant roster or rating columns, or a later failed check of those
+   values, invalidates it. A new month requires matching source-list dates
+   for that month before the task can be considered already up to date.
+   An absent ID2 is excluded. Roster ticks (including manual ticks) and
+   undated sources are not supplement proof: missing list dates mean unknown
+   vintage. Valid explicit TD rating confirmations can satisfy preparation
+   too, but the explanation identifies them as TD checks, not dated source
+   evidence. Opening the dialog does not fetch ratings.
+
+Press **Start Pair Round 1** to apply all validated settings together,
+then run the selected tasks. Settings stay locked after application;
+cancel and reopen the dialog to change them. Each task reports progress
+and its own outcome centrally. A roster sync can change which checks are
+needed; automatic choices are reconsidered, but a checkbox you explicitly
+changed is not overridden.
+
+**Already-satisfied tasks start with Succeeded checked**, with an explanation
+such as **Already verified — no need to run again**. Inapplicable tasks are
+explicitly labelled as skipped. Simply deselecting a task does not claim it
+succeeded: an applicable skipped task still needs your acknowledgement before
+pairing. Selected work that has not run starts unchecked.
+
+When an R1 rating refresh confirms the applicable ratings without changing
+any values, its result is shown in the task table without a separate results
+popup. Changed ratings with no unconfirmed players still open the usual
+change report. If **Verify IDs** or **Refresh ratings to current month's
+supplement** returns unconfirmed players, a popup opens automatically above
+the R1 dialog, showing **only those players and their unconfirmed fields**,
+with the captured name, ID, federation and reason. Its headline keeps the
+full lookup counts: for example, 24 confirmed out of 25 means only the
+remaining player appears, not the other 24 (even if their ratings changed).
+Missing or zero ID2 entries are skipped, not failed verifications.
+
+Use **View unconfirmed players** in that task's **Result** cell to reopen
+the same captured report without another lookup. It remains available after
+you manually check **Succeeded**; neither opening nor closing it accepts
+the task or pairs a round. While work is running the link is unavailable;
+if relevant inputs change, it is disabled until another run replaces the
+old result. A failure with no per-player lookup results has no player report:
+read the task's error instead. **Roster Update**'s standalone rating-refresh
+report still includes both changed ratings and ratings needing attention.
+
+Before pairing, a review lists the task outcomes and pauses for your decision.
+When all tasks are successful or acknowledged, continue from that review to
+pairing. If any applicable task still has **Succeeded** unchecked, the review
+identifies it and offers **Continue anyway** or **Go back**. Going back or
+closing the review does not pair a round.
+
+**Failures and partial results stop for your decision.** Fix the issue and
+choose **Retry failed tasks** to retry only selected unsuccessful work.
+Alternatively, check **Succeeded** yourself to accept the outcome for this
+preparation, or choose **Continue** to review the unresolved tasks. A manual
+acceptance is labelled **Accepted by TD** and preserves the actual failure
+details. It never verifies a player's ID/rating or saves a false confirmation.
+Unchecking Succeeded withdraws that acknowledgement without undoing completed
+work. Reselecting a task explicitly requests another run.
+
+**Continue does not automatically retry failed work.** After you accept any
+unresolved outcomes, remaining selected tasks still run; a new failure pauses
+again. Successful work and TD acceptance remain valid only while their relevant
+inputs match. Cancelling the final
+preview leaves it retryable; an existing round prevents this dialog from
+accidentally pairing round 2.
+
+**Stop current task** requests cancellation and waits for the task to finish
+safely. Each preparation task has a three-minute active-work limit, paused
+while you answer a review dialog. **Cancel**, Escape and the window's close
+button also request a stop when busy, then close only after work settles.
+The limit includes waiting to save. Settings saves, checkpoints and final
+saves also have bounded, cancellable work; filesystem operations that do not
+support cancellation must still finish safely.
+Already-applied settings, roster changes and committed rounds are kept in
+memory, not rolled back. If saving is interrupted, saving remains pending
+and normal autosave retries; do not close the event until it is saved.
+**Continue** retries an interrupted settings save even though the
+settings are locked. If rounds were already committed, save and review them
+rather than trying to pair again.
+
+**Pair Round 1 and review pairings** sits below the optional-task table and
+always follows selected preparation. It has no checkbox because it is the
+actual pairing stage, not another optional check. Rating-month warnings, check-in checks, final validation
+and the preview are not bypassed by unchecking tasks. Any question opens
+above the R1 dialog, which stays open until pairing completes or you cancel.
+Fixed-schedule previews permit board reordering but not opponent, color or
+bye changes. Team previews also keep the board order intact because the first
+board determines each team's color history. Cancel to change the setup.
 
 If you accept the re-seed, players are numbered strongest first — and
 what breaks a tie between players on the **same** rating depends on the
@@ -3415,9 +3712,10 @@ once.
 
 ### FreePair saves as you go
 
-There is no "unsaved changes" state to worry about. Every change is
-written to your event file as you make it, and the **Save event** dialog
-exists mainly to tell you where that file is.
+FreePair automatically writes changes to your event file, and the **Save
+event** dialog tells you where that file is. A cancelled or failed save can
+leave changes only in memory: heed the save status or error, and make sure
+the event is saved before closing it.
 
 The dialog is split into three tabs, because a save and a backup are
 different things and mixing them in one list is what made TDs unsure
@@ -3614,6 +3912,11 @@ is what you see**; otherwise the NA Chess Hub logo. The club's badge is by
 far the more useful of the two on a laptop that runs one organiser's
 events all season, because the site logo is identical on every event — it
 tells you the event is linked and nothing more.
+
+FreePair keeps the club image at the resolution supplied by the site and
+uses high-quality scaling for both logos in the compact badge, preserving
+their proportions and transparency. Fine lettering can still be hard to
+read at this size; enlarging a raster logo cannot add missing detail.
 
 The club logo is fetched in the background the first time you open the
 event and then kept on your machine for a month, so it costs nothing on
@@ -4585,7 +4888,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.102.20260904**. It is updated whenever a
+This guide describes FreePair **v0.103.20260906**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
