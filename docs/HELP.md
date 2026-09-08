@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.105.20260908**
+**Applies to FreePair v0.106.20260908**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -58,7 +58,9 @@ pair identically.
 
 The installer bundles everything FreePair needs, including the .NET
 runtime and both pairing engines. There is nothing to install
-separately.
+separately. The Windows Setup executable uses the FreePair logo, matching
+the application; older installers may show a generic program icon.
+The icon identifies the app visually but is not proof of its publisher.
 
 Windows releases are digitally signed. In the downloaded installer's
 **Properties → Digital Signatures**, check that Windows reports a valid
@@ -186,6 +188,30 @@ event sit at the right-hand end of the same row:
 Live Score Board, Share and Print appear only once an event is open; Settings
 and Help are always there. The **Theme** picker is in **Settings → Display**
 to leave more toolbar space for event commands.
+
+**Action messages appear below the entire toolbar**, including Live Score
+Board, Share and Print, rather than alongside the left-hand buttons.
+Each notice is labelled **Information**, **Warning**, or **Error**, with
+matching colours. Identical status and error/warning text appears only
+once. A rating refresh that completes with some ratings unconfirmed is a
+**Warning**, not a failed operation; use each player's rating indicator
+for the individual outcome. A failure that prevents completion is an
+**Error**. Saving or other progress does not hide a distinct warning or
+error that still needs attention.
+
+Use **Dismiss** to hide any notice without changing the event or cancelling
+an operation. The **Messages (count)** button stays available after the
+last notice is dismissed. Open it to see this session's messages, newest
+first, with their original times and severity. **Show again** brings one
+past notice back below the toolbar, labelled **From session history**;
+it does not repeat the operation or replace current status. Click
+**Messages (count)** again to close the history. The message area remains
+available in focus mode too.
+
+Message history belongs to the current application window's session. It
+also retains messages whose operation has already cleared them, but it is
+not saved in the event file and does not survive closing the window. A
+new occurrence of a dismissed message can appear again.
 
 **On a narrow window the toolbar drops the labels and keeps the icons.**
 It does this rather than taking a second row, because the row it would
@@ -1049,6 +1075,8 @@ alone does not trigger extra lookups or fill these absent fields. Existing
 secondary values and manual confirmations are retained, not cleared. Primary
 ID and rating checks still run normally. A stored NWSRS identity assigned to
 the secondary column counts as ID2 even when the raw ID2 field is blank.
+If the only identity present is a known FIDE ID in **ID2**, verification
+checks FIDE directly; it does not send that number to US Chess first.
 
 **The green tick beside Rating confirms the primary rating, not Rating2.**
 It appears whether the primary number changed or was already current. A
@@ -4968,7 +4996,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.105.20260908**. It is updated whenever a
+This guide describes FreePair **v0.106.20260908**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
