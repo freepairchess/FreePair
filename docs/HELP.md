@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.103.20260906**
+**Applies to FreePair v0.104.20260908**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -141,9 +141,10 @@ The event commands — **New Event**, **Open Event**, **Save Event**,
 the left. The controls that belong to the program rather than to the
 event sit at the right-hand end of the same row:
 
-- **🖥** and **📺** put pairings and standings on a projector, a TV or
-  people's phones.
-- **🖨** prints the whole event: **All Pairings**, **All Standings**,
+- **🖥 Live Score Board** opens pairings and standings for a second screen
+  or projector. **Share**, marked by three connected dots, shares that
+  display with TVs and phones.
+- **🖨 Print** prints the whole event: **All Pairings**, **All Standings**,
   **All Wall Charts** or **All Crosstables**, one PDF with a section to
   a page. These are the same four reports as **Event Operations →
   Print**; they are also up here because printing the pairings is the
@@ -151,8 +152,9 @@ event sit at the right-hand end of the same row:
   something done every forty minutes. To print one section rather than
   the whole event, use the **Print as PDF** button on that section's
   tab.
-- Those three are icons only, to keep the row narrow; hover any of them
-  and the tooltip names it. All three are also in **Event Operations**
+- All three show an icon and text when there is room. In the toolbar's
+  compact mode, labels hide but icons and tooltips remain.
+  All three are also in **Event Operations**
   under their full names — **Live Score Board (full screen)**, **Share
   Live Score Board** and **Print** — if you would rather find
   them by name.
@@ -170,21 +172,10 @@ event sit at the right-hand end of the same row:
   - **Keyboard Shortcuts** — every key FreePair responds to, what it
     does, and what it needs open to work. See
     [Keyboard shortcuts](#keyboard-shortcuts).
-- **Theme** applies immediately and keeps your choice across launches;
-  there is nothing to confirm. It is left out here rather than filed
-  away in Settings because it is the one display choice you are
-  likely to change on the spot, usually because of the light in the
-  playing hall. Themes change only colours, not the layout or how anything
-  works. Alongside the existing choices, four coordinated palettes change
-  the colours throughout the app. These four keep their light or dark
-  appearance even when the system setting changes:
-  - **Sandstone** — warm ivory and sand with bronze accents; always **Light**.
-  - **Rose Quartz** — soft rose with berry accents; always **Light**.
-  - **Midnight** — navy and slate with cyan accents; always **Dark**.
-  - **Pine** — green-charcoal with jade accents; always **Dark**.
 
-Live Score Board, Share and Print appear only once an event is open; Settings,
-Help and Theme are always there.
+Live Score Board, Share and Print appear only once an event is open; Settings
+and Help are always there. The **Theme** picker is in **Settings → Display**
+to leave more toolbar space for event commands.
 
 **On a narrow window the toolbar drops the labels and keeps the icons.**
 It does this rather than taking a second row, because the row it would
@@ -2505,6 +2496,48 @@ and open the FIDE reference. The citation says which — `(USCF 29E5 — …)`
 or `(FIDE 5.2.1 — …)` — so there is no doubt which book you are quoting.
 Both are installed with FreePair and work with no internet.
 
+**Why a USCF floater may keep a colour conflict.** When a score group
+has an odd number of players, FreePair normally tries its lowest-rated
+rated player first to move down to the next group (the *floater*), with
+unrated players tried last. The natural floater is the first candidate
+that leaves a legal pairing behind and permits the remaining score groups
+to be paired under the engine's constraint checks — not necessarily the
+absolute lowest-rated player. Finding just one legal opponent below is
+not enough if that matchup strands the other players. A forbidden matchup
+with the next group's highest-rated player alone does not force a different
+floater if a legal completion remains available. Existing merge and
+rematch-repair rules still handle deadlocks; colour limits are not simply
+switched off when no completion is found.
+
+Changing that floater **only to improve colours** is limited by the rating
+difference between the natural and replacement candidates: **at most 80
+points** for mild alternation preferences or no preference, or **200
+points** if either candidate has a strong or absolute colour need
+(equalisation or avoiding a streak). The engine keeps the natural floater
+and tolerates colour conflicts when no alternative within that limit
+meets its colour-improvement conditions. An ineligible alternative does
+not prevent another eligible candidate from being considered.
+
+These limits do **not** block a different floater needed to avoid a
+rematch, satisfy pairing constraints or preserve score groups. If either
+of the two floater candidates is unrated, the rating limit is waived.
+This is neither a ban on a top-rated player floating nor an attempt to
+minimise the rating gap between opponents. There is no new setting to
+turn these limits off.
+
+**When the nominal floater opponent is a rematch.** FreePair also checks
+the actual resulting pairing before accepting a serious colour conflict.
+It may choose a different floater within the same rating limits when the
+complete alternative round is legal, keeps the same bye, does not enlarge
+the score gaps, and reduces colour damage without adding third consecutive
+colours. A forbidden nominal opponent alone is not a reason to switch.
+
+**Equal colour claims can depend on an earlier round.** When equally
+scoring players have equal colour balances and the same most recent
+colour, FreePair looks back to the latest round where their colours
+differed. The **Why this pairing?** explanation identifies that round;
+rating is not the tiebreak when this history decides the colour.
+
 For a FIDE section the dialog explains:
 
 - which score group each player was in, and whether the pair crossed
@@ -2825,6 +2858,29 @@ than the displayed text.
 Half-point and zero-point byes appear in their own columns, so you can
 check them against your written list at a glance.
 
+**Show pending pairings** is on by default in both **Standings** and
+**Wall Chart**. It shows the assigned opponent and colour as soon as a
+round is paired, before results are complete. For example, `?7B` means
+the player has Black against opponent 7 in a pending round; the `?` is
+not a result or an awarded score. In Standings, 7 is the opponent's
+standings row; in Wall Chart, it is their pair number. Assigned byes keep
+their usual `B---`, `H---` or `U---` codes.
+
+The checkbox is shared between the two player tables for that section.
+Turn it off to hide those pending round entries; completed results and
+future requested byes remain visible. The choice survives section refreshes
+during this session and resets to on when you reopen the event. Separate
+windows and PDFs printed from these section tabs follow the same choice.
+Whole-event reports and the Live Score Board retain their own existing
+display behavior.
+
+This option does not change any scores, tiebreaks or saved results.
+Standings still rank completed rounds only. Until the whole round is
+complete, its games remain marked `?`, even if some results have already
+been entered; completing the round replaces those markers with result
+codes. Deleting its pairings removes the pending entries. Fixed schedules
+such as round robin can show several paired future rounds at once.
+
 A **Title** column sits beside the rating, matching the roster.
 
 **Round codes name the opponent's place in the standings.** `W7B` means
@@ -2848,6 +2904,8 @@ all show "1-4".
 The **Wall Chart** tab shows the traditional cross-table: every player's
 round-by-round result, opponent and colour. It carries the same
 **Title** column as the standings.
+Its **Show pending pairings** checkbox is the same per-section choice
+described above, not an independent setting.
 
 **Here the round codes name the opponent's pair number**, not their
 standing. The wall chart is ordered by pair number and shows that column,
@@ -4819,6 +4877,18 @@ They are split across tabs:
   leaving the page. Also where you go back to an earlier release, and
   where any crash reports are listed.
 
+**Choose a theme in Settings → Display → Theme.** It applies immediately
+and keeps your choice across launches; there is nothing to confirm.
+Themes change colours, not layout or how anything works. **System** follows
+your system's light/dark appearance. Alongside the other choices, four
+coordinated palettes keep a fixed appearance even when that system setting
+changes:
+
+- **Sandstone** — warm ivory and sand with bronze accents; always **Light**.
+- **Rose Quartz** — soft rose with berry accents; always **Light**.
+- **Midnight** — navy and slate with cyan accents; always **Dark**.
+- **Pine** — green-charcoal with jade accents; always **Dark**.
+
 Every tab here changes something. The keyboard-shortcut reference card
 used to be a tab too, and has moved to **Help → Keyboard Shortcuts**,
 where a question is a better fit than a setting. See
@@ -4888,7 +4958,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.103.20260906**. It is updated whenever a
+This guide describes FreePair **v0.104.20260908**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed

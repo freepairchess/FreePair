@@ -143,7 +143,7 @@ Click any rule number to jump to the full entry.
 | [29C1](#rule-29c1) | Upper half vs. lower half | **enforced** | `UscfPairer.PairPool` SLIDE | — |
 | [29C2](#rule-29c2) | Other adjustments (transpositions / interchanges) | **enforced** | `UscfPairer.TryFindNonRematchMatching` + `TryCrossHalfInterchange` | `28L1` / `28L3` (wrong → `29C2`) |
 | [29D](#rule-29d) | The odd player | **enforced** | `UscfPairer.PairRoundN` drop-selection | — |
-| [29D1](#rule-29d1) | Determination | **enforced** | `UscfPairer.PairRoundN` drop loop | `29C` (over-general → `29D1a`) |
+| [29D1](#rule-29d1) | Determination | **enforced** | `UscfPairer.PairRoundN` drop loop; first feasible natural drop, direct 80/200 cap on colour-only alternatives | `29C` (over-general → `29D1a`) |
 | [29D2](#rule-29d2) | Multiple drop downs | **enforced** | single-player-drop accumulator + forced-merge | `29D1a`/`27A1` |
 | [29E](#rule-29e) | Color allocation (chapter umbrella) | **enforced** | `UscfPairer.TopGetsWhite` + `TryReduceColorConflicts` | `29E` (over-general → specific sub-rule) |
 | [29E1](#rule-29e1) | Unplayed games (don't count for colour) | **enforced** | `TopGetsWhite` ignores bye / forfeit cells | — |
@@ -155,17 +155,17 @@ Click any rule number to jump to the full entry.
 | [29E4b](#rule-29e4b) | Variation: alternating priority | **planned** | — | — |
 | [29E4c](#rule-29e4c) | Variation: priority based on lot (last round) | **TD discretion** | — | — |
 | [29E4d](#rule-29e4d) | Variation: priority based on rank (old rule) | **deferred** | — | — |
-| [29E5](#rule-29e5) | Colors vs. ratings (umbrella) | **enforced** | `IsRatingCapCompliant` (80/200 caps) | `29E5` |
-| [29E5a](#rule-29e5a) | **The 80-point rule** | **enforced** | `IsRatingCapCompliant` | `29E5a` |
-| [29E5b](#rule-29e5b) | **The 200-point rule** | **enforced** | `IsRatingCapCompliant` | `29E5b` |
+| [29E5](#rule-29e5) | Colors vs. ratings (umbrella) | **partial** | 80/200 caps enforced in `IsRatingCapCompliant` + colour-only floater selection; colour interchanges gated off | `29E5` |
+| [29E5a](#rule-29e5a) | **The 80-point rule** | **enforced** | `IsRatingCapCompliant` + colour-only floater selection | `29E5a` |
+| [29E5b](#rule-29e5b) | **The 200-point rule** | **enforced** | `IsRatingCapCompliant` + colour-only floater selection | `29E5b` |
 | [29E5b1](#rule-29e5b1) | Variation: 200pt for two-extra-blacks | **planned** | — | — |
 | [29E5c](#rule-29e5c) | Evaluating transpositions (smaller of two diffs) | **enforced** | `IsRatingCapCompliant` | `29E5c` |
 | [29E5d](#rule-29e5d) | Evaluating interchanges (one diff; prefer transposition) | **partial** | `TryReduceColorConflicts` two-pass (interchange pass gated off; rematch interchange live) | — |
 | [29E5e](#rule-29e5e) | Comparing transpositions to interchanges | **partial** | interchange pass gated off | — |
 | [29E5f](#rule-29e5f) | Colors in a series (no three in a row) | **partial** | `TopGetsWhite` (no hard cap; alternation only) | — |
 | [29E5f1](#rule-29e5f1) | Variation: last-round exception | **TD discretion** | — | — |
-| [29E5g](#rule-29e5g) | Unrateds and color switches (exempt from 80/200) | **enforced** | `IsRatingCapCompliant` | `29E5g` |
-| [29E5h](#rule-29e5h) | Variation: equalization priority over ratings | **TD discretion** | — | — |
+| [29E5g](#rule-29e5g) | Unrateds and color switches (exempt from 80/200) | **enforced** | `IsRatingCapCompliant` + colour-only floater selection | `29E5g` |
+| [29E5h](#rule-29e5h) | Variation: equalization priority over ratings | **TD discretion** | No automatic option or cap off-switch | — |
 | [29E6](#rule-29e6) | Color adjustment technique | **enforced** | `TryReduceColorConflicts` (branch-and-bound) | — |
 | [29E6a](#rule-29e6a) | The Look Ahead method | **partial** | `TryReduceColorConflicts` minimises conflicts globally | — |
 | [29E6b](#rule-29e6b) | Variation: the Top Down method | **deferred** | — | — |
@@ -1461,16 +1461,53 @@ down.
 - <a id="rule-29d1c"></a>**(c) All-unrated group.** When the entire score group is unrated,
   an unrated player **must** be designated as the floater.
 
-**FreePair coverage today.** `UscfPairer.PairRoundN` drop loop
-implements (a) by default. The drop selection considers candidates
-in order `rated lowest → next rated → unrated last`, runs each
-through `TryReduceColorConflicts` to compute the achievable colour
-balance, and prefers the natural drop unless ≥2 conflicts could be
-eliminated by an alternative drop. This implements (a) and a
-colour-friendly variant of (b); the **pure-keep-groups-intact
-escape with no rating limit** is implicitly honoured because the
-matchers themselves don't enforce rating limits. (c) is honoured
+**FreePair coverage today.** `UscfPairer.PairRoundN` considers odd-pool
+drop candidates in order `rated lowest → next rated → unrated last`.
+The **natural drop is the first feasible candidate** whose residual pool
+passes the existing rematch/team-constraint matcher and whose downstream
+score groups admit a completion through the engine's drop/merge rules.
+The memoized constraint probe preserves incoming-floater order, bye
+eligibility and receiving-group plus/minus-two team allowances; those
+allowances never waive rematches. Merely finding one legal opponent below
+does not suffice if the remaining players would be stranded.
+
+The probe reuses the engine's matchers and their search limits, not an
+unrestricted whole-round optimizer. If no candidate completes through
+the probe, a fixed-prefix engine replay can establish a legal completion
+through the existing cross-board rematch repair. A successful replay is
+adopted whole. If neither route succeeds, the capped least-bad fallback
+remains. Necessary rematch, constraint, or score-group-preserving
+escapes have **no rating cap**, but later colour choices are anchored to
+the first viable replacement, not exempted wholesale. (c) is honoured
 because unrateds participate in the drop loop.
+
+An alternative chosen **only to improve colours** must pass a direct
+comparison: `abs(natural.Rating - alternative.Rating) ≤ budget`.
+The shared colour-strength/budget helpers allow **80 points** when both
+candidates have only Mild/None claims, or **200 points** when either has
+a Strong/Absolute claim. Either candidate being unrated (`Rating ≤ 0`)
+waives this cap. This compares the two potential floaters, **not** their
+opponents' rating gaps; it is distinct from the equivalent within-pool
+swaps in [29E5c](#rule-29e5c).
+
+Candidates are filtered **before** selecting `bestColor`, so an over-cap
+colour winner cannot hide an eligible alternative. This applies to the
+cross-group override and both the complete- and partial-relief branches
+of the existing selection ladder. Their colour-improvement conditions
+are unchanged, including the cross-group threshold of **2**. If no
+eligible alternative satisfies those conditions, the natural floater is
+kept even with colour conflicts. This is not a blanket prohibition on a
+top-rated player floating.
+
+When a rematch or team restriction displaces the natural floater from its
+nominal next opponent, a clean, within-limit alternative can also be
+compared through completed engine replays. The selected prefix is fixed;
+the trials do not recursively launch further colour trials. The alternative
+must clear the actual boundary colour conflict, preserve the bye, remain
+constraint-legal, not worsen the sorted score gaps, reduce total denied
+colour severity and not increase absolute colour denials. The successful
+round is adopted as a whole, rather than assuming a nominal opponent will
+be the actual one. This does not change the 80/200-point limits.
 
 **Annotation today.** `FloaterDropNatural` or
 `FloaterDropColorFriendly`, `UscfRule: "29D1a"` (for natural) / `"29E5"`
@@ -1668,14 +1705,16 @@ in order until one decides:
    Per the TD TIP, rule 5 takes effect only when rules 1–4 don't
    decide.
 
-**FreePair coverage today.** `TopGetsWhite` implements steps 1–5
-as documented in the existing engine comments. Two non-obvious
-tiebreakers were added on the `ManualTesting` branch (commit
-`3230c08`): equal-imbalance same-preference gate, and per-colour
-recency tiebreaker.
+**FreePair coverage today.** `TopGetsWhite` retains streak and
+equalisation priority, then scans backwards for the latest differing
+round rather than comparing only the last occurrence of each colour.
+Unplayed cells have no colour; a played colour against an unplayed cell
+can distinguish that round. Identical histories retain the existing
+rank/fallback behavior. The existing equal-imbalance, same-preference
+score gate still applies to players on different scores.
 
 **Annotation today.** `ColorEqualization` (rule 2),
-`ColorAlternation` (rule 3), `ColorByRating` (rule 5),
+`ColorAlternation` (rules 3–4; historical ties name the deciding round), `ColorByRating` (rule 5),
 `ColorByInitialRule` (fallback / first round). Phase B fixed all
 four to cite `"29E4"` (previously `"29D1"` / `"29D2"` / `"29D"` /
 `"29E1"`, which were odd-player and unplayed-games rules).
@@ -1767,17 +1806,25 @@ to the final pairing **after** all colour swaps. In other words,
 the natural-pairing baseline includes 27A1 swaps already; rating-
 difference math only applies to the colour-driven changes on top.
 
-**FreePair coverage today.** `TryReduceColorConflicts` performs
-the search but minimises by **conflict count + board-distance
-disturbance**, *not* by rating difference. The rating-cap rules
-[29E5a](#rule-29e5a)–[29E5b](#rule-29e5b) are **not enforced**.
-Consequently FreePair may accept a swap that USCF would reject as
-overshooting the 80 or 200 point limits.
+**FreePair coverage today.** The 80/200-point colour-vs-rating caps
+are enforced: `IsRatingCapCompliant` checks within-pool two-player
+transpositions, and the odd-pool drop loop checks colour-only floater
+alternatives before selecting `bestColor`. Both use the shared
+colour-strength/budget helpers. Floater cost is the **direct absolute
+rating difference between the natural and alternative candidates**
+([29D1](#rule-29d1)); within-pool cost uses the **smaller of two equivalent
+swap differences** ([29E5c](#rule-29e5c)). These are eligibility limits,
+not opponent-gap minimisation.
+
+Necessary rematch/constraint escapes are not capped. The unrated exemption
+([29E5g](#rule-29e5g)) and the existing flexible exemption for within-pool
+cycles of length ≥3 remain in place. The broader family is still partial:
+colour-driven interchanges remain gated off ([29E5d](#rule-29e5d)), and
+no [29E5h](#rule-29e5h) cap-disabling setting is implemented.
 
 **Annotation today.** `ColorConflictReduction`, `UscfRule: "29E5"`
-(Phase B narrowed from the chapter umbrella `"29E"`). Phase C will
-further distinguish capped / uncapped and alternation- vs equalization-
-driven sub-cases when the rating-cap rules land.
+(Phase B narrowed from the chapter umbrella `"29E"`), and
+`FloaterDropColorFriendly` for colour-driven floater selection.
 
 ---
 
@@ -1795,17 +1842,20 @@ purpose of **maximising the number of players who receive their
 > second straight black. That's only **moderately undesirable**,
 > and does **not justify** a switch of over 80 rating points.
 
-**FreePair coverage today.** Not enforced. `TryReduceColorConflicts`
-performs a branch-and-bound search that may exchange players with
-arbitrary rating differences as long as the conflict count drops
-and the board-distance disturbance is acceptable. In score groups
-where SwissSys would refuse a swap on rating-distance grounds,
-FreePair currently makes it.
+**FreePair coverage today.** Enforced with an inclusive **80-point**
+budget when the exchanged players have only Mild/None colour claims.
+For within-pool two-player transpositions, `IsRatingCapCompliant` uses
+the smaller-of-two comparison in [29E5c](#rule-29e5c), considering the
+claims of all four affected players. For a colour-only odd-pool floater
+change, the direct rating difference between the first feasible natural
+drop and the alternative must be ≤80; only those two candidates determine
+the budget. Over-cap candidates are excluded before the best colour
+alternative is selected, preserving eligible alternatives. Necessary
+rematch/constraint escapes, unrated exemptions and the within-pool
+cascading-transposition exemption are unaffected.
 
-**Annotation today.** `ColorConflictReduction`. Phase C will add a
-sub-distinction (e.g. `ColorConflictReductionCapped` /
-`ColorConflictReductionRejected`) and emit the rating diff in the
-annotation text.
+**Annotation today.** `ColorConflictReduction` for within-pool changes;
+`FloaterDropColorFriendly` for colour-driven floater selection.
 
 **See also.** [29E5b](#rule-29e5b) (the 200-point sibling),
 [29E5c](#rule-29e5c) (how to compute transposition rating diffs —
@@ -1836,10 +1886,17 @@ two-extra-blacks**.
 > **black for the third time**. That's **highly undesirable**,
 > justifying a switch limit of **200 points**.
 
-**FreePair coverage today.** Not enforced. Same gap as
-[29E5a](#rule-29e5a). Phase C will add the second-tier (200pt)
-budget and distinguish equalization-driven swaps from
-alternation-driven ones.
+**FreePair coverage today.** Enforced with an inclusive **200-point**
+budget when any affected player has a Strong/Absolute colour claim.
+Within-pool two-player transpositions consider all four players and
+retain [29E5c](#rule-29e5c)'s smaller-of-two cost. A colour-only floater
+change instead considers **only the natural and alternative candidates**:
+if either has a Strong/Absolute claim, their direct absolute rating
+difference may be up to 200 points. A strong claim elsewhere in the pool
+or on the next opponent does not enlarge that floater budget. Eligibility
+is checked before the complete-, partial-relief and cross-group selection
+branches; their existing improvement thresholds are unchanged. The
+[29E5g](#rule-29e5g) unrated exemption still applies.
 
 **See also.** [29E5a](#rule-29e5a) (80pt sibling),
 [29E5b1](#rule-29e5b1) (variation),
@@ -1887,7 +1944,18 @@ transpositions, not all of which satisfy 29E5a / 29E5b. The TD may
 **strictly observe** the limits or **be flexible** — exceeding
 limits "somewhat" is acceptable if colours improve substantially.
 
-**FreePair coverage today.** Not enforced. Phase C target.
+**FreePair coverage today.** `IsRatingCapCompliant` enforces this
+arithmetic for within-pool **2-cycles**: cost is
+`min(abs(topA.Rating - topB.Rating), abs(bottomA.Rating - bottomB.Rating))`.
+The strongest colour claim among the four players determines the 80/200
+budget; any unrated participant waives it. Cycles of length **≥3** retain
+the existing flexible exemption and pass without an explicit cap check.
+
+This equivalent-swap arithmetic does **not** apply to choosing a different
+odd-pool floater. There the exchanged players are the natural and
+alternative drop candidates, so [29D1](#rule-29d1) uses their **direct
+absolute rating difference**, not a smaller opponent-side difference.
+Neither calculation minimises the rating gap between eventual opponents.
 
 ---
 
@@ -2051,9 +2119,14 @@ unrated opponent** to improve colour allocation, this is **not in
 violation** of the 80 or 200-point rules. The rationale: an
 unrated player has no meaningful rating to apply the cap against.
 
-**FreePair coverage today.** Currently moot since the rating caps
-aren't enforced at all. Phase C will need this exemption built
-into the same code path that adds the caps.
+**FreePair coverage today.** Enforced. In a within-pool two-player
+transposition, `IsRatingCapCompliant` waives the cap if **any of the four
+affected players** has `Rating ≤ 0`. For a colour-only floater change,
+the cap is waived if **either exchanged candidate** — the natural or
+alternative drop — has `Rating ≤ 0`. An unrelated unrated player in the
+pool or an unrated next opponent does not waive the floater comparison.
+This exemption does not bypass rematch/team feasibility or the existing
+colour-improvement conditions.
 
 ---
 
@@ -2067,9 +2140,12 @@ into the same code path that adds the caps.
 TD TIP: more successful at club / local events than at large
 state / national tournaments.
 
-**FreePair coverage today.** Effectively what FreePair does today
-(no rating caps). When Phase C lands the caps, this variation
-becomes a configurable "off-switch" the TD can flip per tournament.
+**FreePair coverage today.** This variation is **not implemented as an
+automatic option**. The 80/200-point caps are active; there is **no setting
+or off-switch** to disable them under 29E5h. Necessary rematch/constraint
+escapes, unrated exemptions and flexible within-pool cascading
+transpositions are specific exceptions, not an implementation of this
+variation.
 
 ---
 
@@ -2499,6 +2575,4 @@ today; planned as `PairingReason.WithdrawalRebalance` in Phase C.
 
 For an authoritative source, consult the **USCF *Official Rules of
 Chess*, 7th edition** (V. 7, 8-21-20), chapters 22, 27, 28, 29.
-
-
 
