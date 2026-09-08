@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.104.20260908**
+**Applies to FreePair v0.105.20260908**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -59,6 +59,16 @@ pair identically.
 The installer bundles everything FreePair needs, including the .NET
 runtime and both pairing engines. There is nothing to install
 separately.
+
+Windows releases are digitally signed. In the downloaded installer's
+**Properties → Digital Signatures**, check that Windows reports a valid
+signature; any Windows permission prompt should identify a **verified
+publisher**, not an unknown publisher. The portable download and update
+package also contain signed executables. Signing identifies the publisher
+and detects changes to those files; it does not guarantee that SmartScreen
+will never show a reputation warning, especially for a new release. If a
+signature is missing or invalid, stop and download again from the official
+FreePair release page rather than bypassing the warning.
 
 FreePair can check for new versions on startup. Turn this on or off
 under **⚙ Settings → Updates → Check for updates on startup**, or
@@ -4958,7 +4968,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.104.20260908**. It is updated whenever a
+This guide describes FreePair **v0.105.20260908**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
