@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.106.20260908**
+**Applies to FreePair v0.107.20260908**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -200,18 +200,25 @@ for the individual outcome. A failure that prevents completion is an
 error that still needs attention.
 
 Use **Dismiss** to hide any notice without changing the event or cancelling
-an operation. The **Messages (count)** button stays available after the
-last notice is dismissed. Open it to see this session's messages, newest
-first, with their original times and severity. **Show again** brings one
-past notice back below the toolbar, labelled **From session history**;
-it does not repeat the operation or replace current status. Click
-**Messages (count)** again to close the history. The message area remains
-available in focus mode too.
+an operation. When no notices remain, the area below the toolbar takes no
+space. A brief overlay says **Message dismissed. Find it in Event > Messages.**
+It disappears after a few seconds, or you can use **Close**. It does not
+interrupt your work or switch pages automatically. **Open Messages** leaves
+focus mode and opens the event's **Messages** tab.
+
+To find history later, click the event card in the left navigation and choose
+**Messages**. This is an event-level tab, not a tab in each section. Leave
+focus mode first if the navigation is hidden. History scrolls within the page,
+newest first, with each message's original time and severity. **Show again**
+brings one past notice back below the toolbar, labelled **From session history**;
+it does not repeat the operation, duplicate history, or replace current status.
+Active notices remain visible in focus mode too.
 
 Message history belongs to the current application window's session. It
-also retains messages whose operation has already cleared them, but it is
-not saved in the event file and does not survive closing the window. A
-new occurrence of a dismissed message can appear again.
+also retains messages whose operation has already cleared them. If no event
+is open, use **Messages** on the empty-event page to see the same history.
+It is not saved in the event file and does not survive closing the window.
+A new occurrence of a dismissed message can appear again.
 
 **On a narrow window the toolbar drops the labels and keeps the icons.**
 It does this rather than taking a second row, because the row it would
@@ -4996,7 +5003,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.106.20260908**. It is updated whenever a
+This guide describes FreePair **v0.107.20260908**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
