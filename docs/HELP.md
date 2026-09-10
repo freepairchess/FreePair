@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.107.20260908**
+**Applies to FreePair v0.109.20260910**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -2813,12 +2813,15 @@ question about the roster.
   and the player is withheld from that round's pairing pool.
 - **Full-point byes** are assigned by FreePair when a section has an odd
   number of players. The rules decide who receives one; a player who has
-  already had a full-point bye will not normally get another.
+  already had a full-point bye will not normally get another. Separately,
+  a TD can explicitly grant an exceptional full-point bye; this is a
+  director-controlled award, not an ordinary player entitlement or the
+  automatic odd-player allocation.
 - **Zero-point byes** cover a player who is absent without a request.
 - **Withdrawing** a player removes them from future rounds while keeping
   the games they have already played.
 
-**The Kind column abbreviates**, matching the **HPB** and **0-PB**
+**The Kind column abbreviates**, matching the **HPB**, **0-PB** and **FPB**
 columns on the roster itself: **HPB (½)** is a half-point bye, **0-PB
 (0)** a zero-point one, and **FPB (1)** a full point. The value in
 brackets is what the bye is worth on the scoresheet, so you can check a
@@ -2851,6 +2854,31 @@ Requests** tab. These lists are what you read just before changing
 somebody's byes, so they now do something about it rather than sending
 you back to the roster to find the player by hand.
 
+**To grant a future full-point bye**, add or edit the player on **Roster**,
+open **Bye Requests**, and under **REQUESTED BYES (FUTURE ROUNDS)** choose
+**Full-point bye (1)** for the round. Press **Add** or **Save** to keep it.
+**Cancel** discards the form changes. **No bye** removes a future request;
+you can also change it to **Half-point bye (½)** or **Zero-point bye (0)**.
+Already-paired byes are corrected under **BYES FOR ALREADY-PAIRED ROUNDS**,
+not by scheduling another request.
+
+**A future request is not a score.** It appears in **Byes & Withdrawals**,
+the roster's **FPB** column, and as a green `B---` on **Standings** and
+**Wall Chart**, including their PDFs. It awards no early standings points.
+When that real round is paired, the manual full-point request keeps the
+player off a board and awards exactly one point. It does not override the
+existing restrictions for team matches, fixed round-robin schedules or
+forced pairings. Withdrawal suspends future full-point requests: a withdrawn
+player receives neither a new bye nor its point. Reinstate the player before
+pairing the requested round to honour it.
+
+**Manual full-point requests are FreePair-specific.** Saving stores them
+under the player key `FreePair full-point bye rounds`. SwissSys may ignore
+this key, so check the requests if you transfer the event to SwissSys.
+Automatic full-point byes are not turned into pinned manual requests just
+because you save or reopen the event, or open the player form without
+changing anything.
+
 It is a double-click, not a single one, because a single click selects
 and selection follows the arrow keys — reading down the list would
 otherwise open a dialog on every row.
@@ -2859,7 +2887,7 @@ otherwise open a dialog on every row.
 it, decide you want it again — the requests that were honoured the first
 time are honoured the second time. This holds for a request that arrived
 in the file you opened as well as one you entered here, and for
-zero-point requests as well as half-point ones. A request only stops
+full-point and zero-point requests as well as half-point ones. A request only stops
 being live once its round has actually been played.
 
 It also holds across a save. Closing the event and reopening it later
@@ -2877,6 +2905,15 @@ You can also assign a bye mid-event once a round is already paired.
 
 Results are entered on the **Pairings** tab, board by board. Standings,
 tiebreaks and the wall chart update immediately.
+
+**A forfeit win counts as a full point for USCF pairing score groups,**
+just as it does in the standings. Because no game was played, a forfeit
+adds neither colour history nor a played opponent for repeat-opponent
+checks, for either player. A forfeit loser can therefore later play the
+original opponent. Under normal bye eligibility, a forfeit winner is
+ineligible for an automatic full-point bye. The full pairing point does
+not guarantee that leaders will meet: no-rematch rules and other pairing
+constraints still matter.
 
 **The Round list tells you where each round stands.** Every entry in the
 **Round:** drop-down carries a mark:
@@ -2900,7 +2937,7 @@ The **Standings** tab ranks players by score and then by tiebreak.
 Tiebreak columns are sortable, and sort by the underlying value rather
 than the displayed text.
 
-Half-point and zero-point byes appear in their own columns, so you can
+Full-point, half-point and zero-point requests appear in their own columns, so you can
 check them against your written list at a glance.
 
 **Show pending pairings** is on by default in both **Standings** and
@@ -4146,7 +4183,7 @@ player asked for a half-point bye and got exactly that, the two agree,
 and the roster's HPB column shows that round whether the bye is still a
 pending request or has already been played out.
 
-**The HPB and 0-PB columns show every bye on record**, not only the ones
+**The roster's HPB, 0-PB and FPB columns show every bye on record**, not only the ones
 a player asked for in advance. A bye you grant when adding somebody
 mid-event — a half point for the rounds they missed — appears there too,
 alongside the requested ones. Before this, those byes showed on the Byes
@@ -4925,9 +4962,27 @@ They are split across tabs:
 **Choose a theme in Settings → Display → Theme.** It applies immediately
 and keeps your choice across launches; there is nothing to confirm.
 Themes change colours, not layout or how anything works. **System** follows
-your system's light/dark appearance. Alongside the other choices, four
-coordinated palettes keep a fixed appearance even when that system setting
-changes:
+your system's light/dark appearance. The vivid accents — **Ocean Blue**,
+**Emerald**, **Sunset**, **Grape**, and the eight choices below — also
+follow your operating system's light/dark appearance rather than fixing
+it to one or the other. These eight pair their vivid accent colours with
+softly tinted surfaces:
+
+- **Banana Red** — red (`#D4042D`).
+- **Warm Sun Orange** — warm orange (`#DB7A0E`).
+- **Cornflower Blue** — cornflower blue (`#5A92E5`).
+- **Jade Green** — jade green (`#5E8034`).
+- **Melo Pink** — pink (`#EB6D98`).
+- **Azure** — turquoise (`#41B5C2`).
+- **Lemon Yellow** — yellow (`#FACA2E`).
+- **Royal Purple** — royal purple (`#722169`).
+
+These eight themes adjust selected-tab text for readability in light and
+dark mode while keeping the underline in the exact accent colour. Text on
+the selected event card and section rows uses black or white to suit the accent fill.
+
+Four coordinated palettes keep a fixed appearance even when that system
+setting changes:
 
 - **Sandstone** — warm ivory and sand with bronze accents; always **Light**.
 - **Rose Quartz** — soft rose with berry accents; always **Light**.
@@ -5003,7 +5058,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.107.20260908**. It is updated whenever a
+This guide describes FreePair **v0.109.20260910**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
