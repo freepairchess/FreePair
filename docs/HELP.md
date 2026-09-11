@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.109.20260910**
+**Applies to FreePair v0.110.20260910**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -174,8 +174,10 @@ event sit at the right-hand end of the same row:
   their own. See [Settings](#settings).
 - **📖 Help** opens a short menu:
   - **About FreePair** — what the program is, **the version you are
-    running**, and the address to send a feature request or a bug report
-    to. If anyone ever asks you which version of FreePair you have, this
+    running**, its publisher **Chessnique LLC** and FreePair copyright,
+    and the address to send a feature request or a bug report to. Existing
+    third-party attribution and federation-disclaimer text is retained.
+    If anyone ever asks you which version of FreePair you have, this
     is the answer — press **📋 Copy** beside it and paste. **📝 Change
     log** opens the list of every published release, newest first, in
     your browser.
@@ -230,6 +232,15 @@ of is still in that position. Widen the window and the labels come back.
 
 If an event is open, the title bar shows the event name and the file it
 is saved to.
+
+**Grid text controls are global.** The **Text**, **A− / A+**, size and
+font-family controls sit at the far right of the section's tab-name row,
+rather than repeating beside every table's filter. They apply to all grids
+and are remembered. On narrower windows, the tabs scroll in their own area
+without overlapping the controls or narrowing the table underneath. Focus
+mode hides the tab strip and its text controls; leave focus mode to adjust
+them, or use **Settings → Display**. A popped-out section window has one
+shared text control in its own header.
 
 **The big tables scroll inside the tab, not with the page.** On Roster,
 Pairings, Standings and Wall Chart the table stretches to the bottom of
@@ -984,7 +995,11 @@ so it is never a guess about what it will touch.
 - **Edit selected players…** — changes the fields a group can genuinely
   share.
 - **Delete selected players** — soft-deletes them all. They stay in the
-  file and can be brought back until the section is paired.
+  roster and file, with their byes preserved, and can be restored.
+  Available before pairing starts and later for players with only byes
+  or no games. If anyone selected has an opponent pairing or game,
+  even with no result yet, deletion is blocked for the whole selection;
+  hover over the menu item for the reason.
 - **Restore selected players** — brings back the ones that were deleted.
   Deleted players stay listed in the roster, so you can select them the
   same way.
@@ -1009,6 +1024,40 @@ losing eleven players' details at once.
 **Nothing is half-done.** If any part of the change cannot be applied,
 none of it is, and FreePair says so. You never end up with the first four
 players changed and the rest not.
+
+### Deleting a player who never played
+
+On **Roster**, open the player's **🗑** menu in **Actions** and choose
+**Delete**. After confirming, the row stays visible with status
+**Soft-deleted** and a **Restore** arrow. The trash icon turns **red** to
+show that its next delete action is permanent; restoring the player turns
+it green again. This first step is reversible:
+the player's data and byes are still kept, but their byes are hidden from
+pairing and bye displays and exports until restored. **Restore** brings
+back their bye rows and points. Clear the roster search if you cannot
+find the row. A popped-out roster is a read-only mirror;
+make these changes in the main window.
+
+To remove the player completely, open that row's **🗑** menu again,
+choose **Permanently delete…**, and confirm **Permanently delete**.
+This removes the player from the roster and future USCF exports, along
+with their recorded and requested byes. Restore is no longer available;
+you would need a backup to recover them. Already-exported files are not
+changed — generate a fresh export.
+
+**Bye-only players can be deleted after any number of paired or played
+rounds**, including withdrawn players and players with manual full-point
+byes. A player with any opponent pairing or game cannot be deleted,
+including an unscored pairing or a forfeit. Hover over the trash button
+or disabled menu item for the reason. FreePair does not delete or unpair
+games to make a player eligible. Use withdrawal to keep a player's games
+while excluding them from future pairing.
+
+**Finish the two-step decision before pairing the next round:** restore
+soft-deleted players or permanently delete them. Existing rounds and
+other players' games remain intact. **Restore selected players** also
+remains available from **Roster Update**. Team-wide deletion is still
+limited to before round 1; the bye-only exception is for individual players.
 
 ### Verifying IDs and ratings
 
@@ -1214,8 +1263,12 @@ Two warnings exist here on purpose:
   identities, names, or ratings can conflict with the published starting list.
   Existing rounds are not recalculated, and already-paired players are not
   reseeded or renumbered by these operations. Review the published roster
-  against the new data. Declining an optional automatic rating check before
-  pairing keeps the existing ratings and allows pairing to continue.
+  against the new data. This safeguard applies when you explicitly request
+  those roster operations. **Pair next round** does not automatically check
+  or refresh ratings after round 1, and does not repeatedly open this warning.
+  The event option **Check ratings against the rating database before the
+  first pairing** applies only while that section has no rounds. Deleting
+  all its rounds makes the first-round check eligible again.
 - If the ratings a refresh would fetch are from a different supplement
   than the one this event is played on, FreePair says so — see below.
 
@@ -1918,7 +1971,7 @@ leaving you to guess. The usual answers are:
 - **The roster is empty, or has one player.** Add players on the
   **Roster** tab.
 - **A player is soft-deleted.** Restore them or delete them permanently
-  before round 1.
+  on **Roster** before pairing the next round, not just round 1.
 
 **The first round opens “Start Pairing R1 for Section {section name}”.**
 This is one place to review the section, prepare its roster and approve its
@@ -2638,9 +2691,25 @@ bracket, so the diagram shows you which pairs were made — not which were
 "expected" and which were not. Any such marking would be a guess dressed
 up as a fact.
 
-USCF sections show a different diagram, the score-group switch diagram,
-which reflects how the USCF engine pairs. The two are not
-interchangeable.
+USCF sections show **Score-group comparison (reconstructed)**. It starts
+from the recorded games and pre-round scores, removes actual outgoing
+players and byes, and compares the remaining players with a rating-half
+slide. It does not assume the lowest-rated player was the one floated.
+**Black** lines match that reconstructed slide; **purple** lines differ.
+Neither colour proves why the engine chose an opponent, that a transposition
+occurred, or that every rule was satisfied. Engine annotations appear
+separately above the comparison.
+
+Incoming players, partners in the same rating half, accelerated scores or
+incomplete records can make that comparison unsuitable. In those cases,
+the dialog states why and shows **Recorded pairs and pre-round histories**
+instead of drawing a partial graph that silently drops an opponent.
+Player labels in these explanations use **pair numbers**, not Standings #.
+New USCF engine annotations translate recognized player references back to
+roster pair numbers; unrecognized external-engine wording is retained with
+an explicit warning that its player identifiers are **engine ranks**.
+
+The FIDE bracket and the USCF reconstructed comparison are not interchangeable.
 
 ### Pairing quality
 
@@ -2965,13 +3034,23 @@ such as round robin can show several paired future rounds at once.
 
 A **Title** column sits beside the rating, matching the roster.
 
-**Round codes name the opponent's place in the standings.** `W7B` means
-a win with Black against whoever is standing 7th — the row numbered 7 in
-the **#** column, on the same sheet. That column is always shown, and is
-deliberately separate from **Place**: places tie, so Place reads "2-6"
-against the first of five players and is blank against the rest, while an
-opponent reference has to name exactly one row. The filter box searches
-it too, so typing `7` finds the player a code points at.
+**Round codes use standings numbers, not pair numbers.** `W7B` means a
+win with Black against the player numbered 7 in **Standings #** on the
+current table (**#** on the printed sheet). That number is separate from
+**Pair #**, which identifies the player in pairings, and from **Place**:
+places can tie, while an opponent reference must identify one row. The
+standings number follows the current completed-round ranking, not the
+ranking when that historical game was played. Sorting or filtering the
+view does not renumber those references.
+
+**Hover a round cell to identify the opponent.** The tooltip gives the
+result, opponent's name, **Pair #** and **Standings #**. For example, a
+player whose Pair # is 4 can legitimately have `L4W`: it means a loss to
+Standings #4, not a game against themselves. A bye is explicitly described
+as no game played. Pending-game tooltips identify the opponent while still
+explaining that results are not yet included in completed-round standings.
+The filter searches standings numbers too, so typing `7` helps find the
+player referenced by `W7B`.
 
 This is how US Chess prints its published crosstable and how NA Chess Hub
 shows standings, so a player comparing the three sees the same number in
@@ -2994,7 +3073,8 @@ standing. The wall chart is ordered by pair number and shows that column,
 so a reference points at a row you can find on the page; the standings
 are ordered by score, where a pair number would point at nothing visible.
 The games are the same on both sheets — only the way the opponent is
-identified differs.
+identified differs. Wall Chart round-cell tooltips identify the opponent
+by name and **Pair #**; they do not substitute a standings position.
 
 Pair numbers are what the pairing engine and the rating report use, so
 they are what appears in the file you send to US Chess. Nothing about
@@ -3052,9 +3132,9 @@ Its contents are grouped into collapsible panels — **Prize winners**,
 **Not awarded**, **Prize projection**, **Prize fund**, and in a team
 section **Team medals** and **Board prizes**. A panel appears only when
 it has something to say, so a section before its prizes are calculated
-shows just the fund. Each panel header carries the same controls as
-every other tab: a **Focus** button, a **Filter** box with **Clear**, and
-the **A- / A+** font stepper.
+shows just the fund. Each panel header carries a **Focus** button and a
+**Filter** box with **Clear**. The shared **A− / A+** and font-family
+controls are at the far right of the section's tab-name row.
 
 The filters are per panel rather than shared, since the tables answer
 different questions — filtering the winners for a player should not
@@ -4674,8 +4754,8 @@ you promising something that was never available.
 
 Rows are ordered with the players who have something to play for first,
 then those already safe, then those who cannot get there. The panel header
-carries the same **Focus**, **filter** and **font stepper** as every other
-table on the section — the filter matches either side of the board, so
+carries **Focus** and a **filter**; the global font controls are on the
+section's tab-name row. The filter matches either side of the board, so
 typing a name finds that player's row and the row of whoever is playing
 them, and typing `must win` lists everyone who still has something to
 play for.
@@ -4731,9 +4811,10 @@ changes what this one table lists and nothing else — up there, beside the
 host federation, it read like a setting for the whole event.
 
 Beside it, the same controls every other table on the section has: a
-**Focus** button, a **filter** that matches on name, pair number,
-federation, title, norm code or result, and the **font stepper**. Type
-`Norm` in the filter to see only the players who have earned one.
+**Focus** button and a **filter** that matches on name, pair number,
+federation, title, norm code or result. The shared font controls are on
+the section's tab-name row. Type `Norm` in the filter to see only the
+players who have earned one.
 
 **A row whose Result reads Norm is filled green.** It is the one outcome
 on this tab worth spotting from across a room, and "Norm" sits in the
@@ -4939,9 +5020,10 @@ rather than a separate field.
 
 Settings apply to the application, not to one event. Open them with
 **⚙ Settings** at the top right of the toolbar. They open in a
-window of their own; there is no Save button, because every change is
-written as you make it. **Close** is the only way out, and Escape does
-the same thing.
+window of their own. Most preferences save immediately; theme selection
+is a temporary preview until you choose **Keep theme**. **Close**, the
+window's **X**, and Escape discard any unkept theme preview without
+undoing other preferences you changed.
 
 They are split across tabs:
 
@@ -4959,8 +5041,12 @@ They are split across tabs:
   leaving the page. Also where you go back to an earlier release, and
   where any crash reports are listed.
 
-**Choose a theme in Settings → Display → Theme.** It applies immediately
-and keeps your choice across launches; there is nothing to confirm.
+**Choose a theme in Settings → Display → Theme.** The list is sorted
+alphabetically by name, including **System**. Selecting one previews its
+colours immediately across the application without saving it. **Keep theme**
+saves that choice across launches; **Revert** restores the last kept theme.
+Closing Settings without keeping the preview also restores that theme.
+Changing another preference while previewing does not save the preview.
 Themes change colours, not layout or how anything works. **System** follows
 your system's light/dark appearance. The vivid accents — **Ocean Blue**,
 **Emerald**, **Sunset**, **Grape**, and the eight choices below — also
@@ -5058,7 +5144,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.109.20260910**. It is updated whenever a
+This guide describes FreePair **v0.110.20260910**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
