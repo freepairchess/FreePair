@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.111.20260912**
+**Applies to FreePair v0.112.20260912**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -870,6 +870,15 @@ a long list stays scannable. A collapsed row still carries the two
 numbers you are usually scanning for, in brackets after the name —
 `Open [123, 3/9]` is 123 players, 3 rounds played of 9.
 
+**The whole sidebar collapses too**, with the chevron at the top of it.
+It becomes a narrow rail showing the start of each section's name, and
+the chevron brings the full list back. The rail is wide enough for about
+six characters, which is what it takes to tell `U1700` from `U1200` —
+and if your section names need more, **drag the divider beside it**. The
+divider works in both states, and each state remembers its own width, so
+widening the rail does not disturb the list you get back when you expand
+it. Hovering any rail entry shows the full name.
+
 Under the **Sections** heading is the event's own total — *4 sections ·
 120 players* — so the size of the event is one glance rather than a
 column of numbers added up by hand. Deleted sections are not in either
@@ -984,14 +993,33 @@ Add** to open the Add-player form.
 Type the player manually if you already know the details, or press
 **Search Player DB…** beside the **Name** box to look them up online.
 The search opens on top of the Add-player form, starts from the name you
-typed there, and on **Add** copies the chosen player's IDs, ratings and
-other published details back into the same form for review. Your team,
+typed there, and **runs that search straight away** — you do not have to
+retype the name or press **Search** again. Press **Search** when you want
+to run a different query. On **Add** it copies the chosen player's IDs,
+ratings and other published details back into the same form for review.
+Your team,
 club, state, contact details, check-in status and bye choices stay in place.
 Nothing is added until you press the form's own **Add** button. Cancelling
 the search leaves whatever you already typed unchanged; cancelling the
 Add-player form discards the entire new entry, even after choosing a search
 result. Search is available for individual-player rosters, not calculated
 Bughouse team rows.
+
+**A number is looked up as a member ID; anything else is a name search.**
+A name is searched two ways at once — an exact match and a close ("fuzzy")
+match — and the two lists are merged with the nearest names first. That
+matters because the player database's exact match ignores middle names:
+searching *David W. Martin* finds everyone called *David Martin*, and on
+its own it would never show you the *David W. Martin* you asked for.
+Running both searches and putting the fuller name matches at the top means
+the more of the name you know, the better the result, which is the way
+round a search should work.
+
+**Use the "Narrow results" box to sift a long list.** A common name can
+come back forty or more players deep. Typing in that box filters the rows
+already on screen — it does not run another search, so it is instant — and
+it matches any column, so a middle initial, a state, or part of an ID all
+work. Clearing the box brings the full list back.
 
 Adding a player after the event has started is supported. FreePair works
 out what the late entrant should be scored for the rounds already played
@@ -1686,6 +1714,60 @@ For team events, **Team section** enables team handling, and
 **Team Setup** and **Team Lineup** define the teams and board order.
 FreePair can avoid pairing teammates against each other; where the rules
 require it, that preference is relaxed rather than broken.
+
+#### Making teams from family names
+
+Scholastic and club events are full of siblings, and the usual wish is
+that they do not meet in round 1. **👪 Make Teams With Same Family Name**
+puts everyone who shares a surname onto one team, which is what
+**Avoid pairing teammates** then works from.
+
+It is in two places, and they do the same thing to different amounts of
+the event:
+
+- **Event Operations → Make Teams With Same Family Name** — every
+  section, all ticked to start with. Untick the ones to leave out.
+- A section's **Roster Update → Make Teams With Same Family Name** —
+  that section only. The section list is not shown, because there is
+  nothing to choose.
+
+**Nothing changes until you press Make teams.** The dialog is a preview:
+it lists every player it would move, with the team they have now — shown
+as *(none)* when they have none — and the team they would get. If the
+list is empty the button stays disabled, and the line at the bottom says
+why.
+
+**A surname held by one player in a section is left alone.** There is
+nobody for them to be kept apart from, so a team of one would be a label
+that does nothing. For the same reason, families are worked out **within
+each section**: two players in different sections can never be paired, so
+calling them teammates would change nothing and would make the section's
+own team count read wrong.
+
+**Team name** is a pattern. `{family}` is replaced by the surname, so the
+default `Team {family}` gives *Team Nguyen*. Type whatever your event
+uses — `{family} family`, `{family}s` — and the example beside the box
+shows the result as you type.
+
+**Overwrite current team name** is off, and that is deliberate. A team
+you typed in yourself, or that arrived with an import, is a fact about
+the event; a family team is a convenience. Players who already have a
+team are listed separately under **Left alone**, with the team they keep,
+so you can see them and decide. Tick the box to replace those too — the
+report then shows their old team in the **Previous team** column.
+
+> **If the section is already paired and set to avoid teammates, you get
+> a second warning, and you should read it.** Those two things together
+> mean the pairing engine is using team membership right now. Changing it
+> changes who can face whom from the next round on, and re-pairing a
+> round you have already published will produce different boards. Rounds
+> already played and results already entered are not touched, and
+> **Undo** reverses the whole batch while the event is open.
+
+You will not see that warning for a section that is unpaired, or one that
+is not avoiding teammates — in neither case can this change a pairing, and
+a warning that appears when nothing is at stake is one you learn to click
+past.
 
 ### Merging sections
 
@@ -5197,7 +5279,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.111.20260912**. It is updated whenever a
+This guide describes FreePair **v0.112.20260912**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
