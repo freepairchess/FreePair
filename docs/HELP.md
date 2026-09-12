@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.110.20260910**
+**Applies to FreePair v0.111.20260912**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -978,9 +978,20 @@ players are already sitting at.
 
 ### Adding players to a roster
 
-The **Roster** tab holds the players in a section. You can add players
-one at a time, look them up in the online player database, or pull a
-whole roster from NA Chess Hub.
+The **Roster** tab holds the players in a section. Use **Roster Update →
+Add** to open the Add-player form.
+
+Type the player manually if you already know the details, or press
+**Search Player DB…** beside the **Name** box to look them up online.
+The search opens on top of the Add-player form, starts from the name you
+typed there, and on **Add** copies the chosen player's IDs, ratings and
+other published details back into the same form for review. Your team,
+club, state, contact details, check-in status and bye choices stay in place.
+Nothing is added until you press the form's own **Add** button. Cancelling
+the search leaves whatever you already typed unchanged; cancelling the
+Add-player form discards the entire new entry, even after choosing a search
+result. Search is available for individual-player rosters, not calculated
+Bughouse team rows.
 
 Adding a player after the event has started is supported. FreePair works
 out what the late entrant should be scored for the rounds already played
@@ -1779,6 +1790,40 @@ available to look at and to restore, but they are left out of the USCF
 and FIDE rating reports and out of publishing, because their games are
 now being reported by the merged section and would otherwise be counted
 twice.
+
+### Deleting several sections
+
+**Event Operations → Delete Sections** removes several sections at once —
+for example, thirty quads you no longer need. **Nothing starts selected.**
+Each row shows the section name, full **Roster size** (including withdrawn
+and soft-deleted players), existing **Rounds**, and soft-deleted status.
+The selected count stays visible below the list.
+
+- **Select All Unpaired Sections** replaces the selection with sections
+  that have **no rounds at all**. A paired round with no results is still
+  paired and is not selected. Imported progress counters do not override
+  the rounds that actually exist.
+- **Deselect All** clears every tick.
+- **Select All** is **red**: it selects every section, including those with
+  played games and recorded results. You can also tick any row manually.
+  Empty and soft-deleted sections are available too, unlike in the report
+  chooser. Deleting every section is allowed and leaves an empty event.
+
+**Delete selected...** is disabled until at least one section is selected.
+It opens a **separate destructive confirmation**, listing exactly which
+sections will go and warning that **the sections AND their entire rosters,
+all pairings and results, and prizes are deleted** — this is not just
+clearing pairings. Scroll the list for a large selection, then choose
+**Delete selected sections** only if that is what you intend. **Cancel**
+is the safe default in both dialogs and leaves the event unchanged.
+The menu action is unavailable while the app is busy or loading.
+
+The batch is one change: **Undo** restores all of it while the event is
+open, and FreePair attempts to save an earlier-version checkpoint before
+applying it. The updated event is auto-saved. Already printed or published
+copies are not retracted. If the event changes while you are choosing or
+confirming, deletion is cancelled; reopen **Delete Sections** and review
+the current data rather than deleting anything you have not confirmed.
 
 ### Moving players between sections
 
@@ -4355,6 +4400,14 @@ Publishing puts pairings and results on the event's public page so
 players can follow along. You can set new events to publish
 automatically under **⚙ Settings → Online**.
 
+**Forfeits stay marked as forfeits in the published results.** The results
+JSON uses `X` for a forfeit win and `F` for a forfeit loss, with board
+results `(1X-0F)`, `(0F-1X)` or `(0F-0F)` for a double forfeit. The last
+means neither player receives a point, not two ordinary played losses.
+If an older upload showed forfeits as normal wins or losses, publish the
+event again from the updated app to replace that results file; the saved
+`.sjson` already retains the forfeit information.
+
 **This is not the same as sharing the Live Score Board.** Publishing
 uploads *files* — the pairing sheet, the standings, the event file — to
 the event's page, where they sit until you publish again. Sharing the
@@ -5144,7 +5197,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.110.20260910**. It is updated whenever a
+This guide describes FreePair **v0.111.20260912**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
