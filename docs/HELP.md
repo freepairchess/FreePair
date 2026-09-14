@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.112.20260912**
+**Applies to FreePair v0.113.20260913**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -731,6 +731,20 @@ setting-up done for you, and an entry list often carries more than names:
 requested byes, membership expiry dates, and which section and schedule each
 player entered.
 
+**A roster link also brings the event's dates.** Paste a roster address
+such as `https://chessreg.com/gk911/roster` and FreePair reads the
+event's own page as well, so the start and end dates arrive filled in.
+That matters more than it sounds: without a start date FreePair will not
+pair round 1, because the date decides which rating supplement the event
+is seeded on — so an import that skipped the dates handed you an event
+you could not pair until you went and found them yourself.
+
+It reads the date the event is *played*, which is not the only date on
+that page: registration and refund cutoffs sit beside it, and the refund
+cutoff is usually the day before. If the page cannot be read, or states
+no date, the entry list still imports and the dates are simply left for
+you to fill in on **Event Configuration → Basic**.
+
 **Where an event runs the same section on more than one schedule** — a
 2-day and a 3-day entry into the same Under 1800 — those arrive as separate
 sections, named for both. They are separate pairing groups until the
@@ -839,10 +853,21 @@ fit comfortably on one screen:
   engine; and the organizer's name and ID.
 - **Team Event** — team and match size and the default board order. Turn
   on **Team Event** first; the rest of the tab stays hidden until you do.
-- **NA Chess Hub** — the event ID and passcode, whether to check NA Chess
-  Hub for roster changes before pairing, and the two rating checks: whether
-  to report players whose rating differs from their registration, and
-  whether to check ratings against the rating database before pairing.
+- **Online** — everything about this event's dealings with the outside
+  world. The **NA Chess Hub** event ID and passcode come first; the
+  settings that depend on them stay hidden until both are filled in,
+  because none of them can do anything without credentials. Those are:
+  whether to **alert when the NA Chess Hub roster has updates to sync**,
+  whether to check NA Chess Hub for roster and bye changes before
+  pairing, and whether to compare player ratings on the NA Chess Hub
+  roster with your own. Underneath, **Before pairing** groups the two
+  gates that run before a round regardless of NA Chess Hub: requiring
+  players to check in, and checking ratings against the rating database
+  before the first pairing.
+
+  The tab was called *NA Chess Hub*. It is called **Online** because the
+  rating-database check on it is not a NA Chess Hub feature at all, and a
+  tab named for one service is the wrong place to go looking for it.
 - **Starting Boards** — the first physical board number for each section,
   and the board packing this event uses.
 - **Options** — the decision log.
@@ -1426,7 +1451,7 @@ check leaves the markers as they were, because "could not ask" and
 **One switch, at two levels — a default and an override.** **⚙ Settings →
 Online → Compare player ratings on NA Chess Hub roster with FreePair roster** is
 your default for new events, on out of the box. Every event carries the
-same setting under the same name on its **NA Chess Hub** tab, and starts
+same setting under the same name on its **Online** tab, and starts
 with no answer of its own, following your default.
 
 The first time you tick or untick it on an event — or press *Ignore for
@@ -1457,7 +1482,7 @@ sections**. The supplement review and its risk acknowledgements are shared.
 See [Pairing a round](#pairing-a-round).
 
 This is a **different question** from the red "!", and the two are next to
-each other on the event page's **NA Chess Hub** tab so the difference is visible.
+each other on the event page's **Online** tab so the difference is visible.
 
 - The red "!" asks: *does my roster match what this player is registered with
   on NA Chess Hub for this event?* That is the number they read beside their
@@ -2147,8 +2172,28 @@ uses that result rather than tossing again. Explicit color choices are
 labelled as an override for this section and do not replace the event's toss.
 Quads always group players by rating, so their re-seed checkbox is disabled.
 
-**Pre-Pairing Tasks (Optional)** shows the three checkable tasks
-in a fully bordered table. **Task** holds the
+**Pre-Pairing Tasks (Optional)** is off, and its tick-box is to the left
+of that heading. Left clear — which is how the dialog opens — the task
+table is not shown, none of that work runs, and **Start Pair Round 1**
+applies the settings above and goes straight to pairing. Tick the box to
+bring the table back and work through it as before.
+
+**Off means skipped, not merely hidden.** These tasks reach out to NA
+Chess Hub and can change ratings; nothing like that happens behind a
+collapsed panel. With the box clear there is also no acknowledgement
+review, because there is nothing you were shown to acknowledge.
+
+**The pairing safety checks are not in this table and are never
+skipped.** The rating-month warning, check-in checks, final validation
+and the pairing preview run whichever way the box is set. What the
+tick-box controls is the housekeeping you would normally do once for an
+event, not the checks that protect a round.
+
+This applies to round 1 only. Later rounds have their own, shorter
+workflow and never showed these tasks.
+
+With the box ticked, the three tasks appear in a fully bordered table.
+**Task** holds the
 checkboxes selecting work to run. **Details** explains the task and its
 default before it runs, then shows what happened, including complete
 confirmation/update/unavailable counts. **Result** contains a **Succeeded**
@@ -2449,6 +2494,61 @@ per section:
   rating scales still gets the right order in each section. Untick it
   only when the pair numbers were assigned elsewhere and must be
   reproduced exactly.
+- **Execute pre-pairing tasks before R1.** **On** by default. Each
+  section about to pair its first round first runs the same optional
+  preparation a section's own round 1 dialog offers: sync the roster
+  with NA Chess Hub, verify player IDs, and refresh ratings to the
+  current supplement. Each task runs only where it applies, chosen by
+  the same rules that dialog uses — so a section with no player IDs, or
+  an event with no NA Chess Hub credentials, simply skips what cannot
+  apply to it.
+
+  **It is on here and off on the section's own dialog, and that is
+  deliberate.** Pairing one section at a time, you are already looking
+  at that section and a checklist in front of the button is in the way.
+  Pairing the whole event in one click *is* the sweep these tasks are
+  for, and there is no other moment to ask for it.
+
+  **Untick it and nothing is looked up online before a round is
+  paired.** That includes this event's own **Check ratings against the
+  rating database before pairing** setting, which otherwise reports
+  *Checking ratings…* before each first round. It is the same kind of
+  work — a request per player, with the same wait — so one box governs
+  all of it. Ticked, that setting still decides for itself whether it
+  runs; unticked, nothing reaches the internet before a round.
+
+  You get the same roster you would pairing section by section with
+  Pre-Pairing Tasks left off. That is the point of the box: preparation
+  is something you chose, not a side effect of which button you pressed.
+
+  **The roster check happens once, before anything is paired.** If your
+  event is linked to NA Chess Hub, the run downloads the roster for the
+  whole event first and shows you one review — the same one **Sync Roster
+  with NACH** shows — before a single round is paired. Apply what you
+  want and continue. It is asked up front because that is the only point
+  at which every answer is still available; asked between sections, it
+  would arrive after some rounds already existed.
+
+  **A section whose roster changes you did not apply is not paired.**
+  Its row says so and tells you what to do: review the roster, then pair
+  that section from its own Pairing Operations menu. This is deliberate.
+  Pairing round 1 without a player who registered is undone only by
+  deleting the round, syncing and pairing again — so FreePair leaves the
+  section alone, which costs you a second look instead of the round.
+
+  **If the roster check itself cannot run, the event still pairs.** An
+  unreachable service means no known differences, and grounding an event
+  over a bad network would be the worse failure. The run says the check
+  did not happen.
+
+  **A task that does not finish does not stop the round.** The section
+  still pairs, and its row still says **Paired round 1**. Anything else
+  the preparation found is a grey line underneath — *Preparation: rating
+  refresh: some entries unconfirmed* — with the task's own words in full
+  when you hover it. These are notes, not instructions: a rating refresh
+  reports unconfirmed entries when some players have no ID to look up,
+  which is normal and needs nothing from you. The pairing safety checks
+  are separate from all of this and always run.
 
 **Pair ready sections asks you to confirm first.** The prompt lists
 every ticked section and what will happen to it — *pairs round 1*,
@@ -3110,6 +3210,22 @@ original opponent. Under normal bye eligibility, a forfeit winner is
 ineligible for an automatic full-point bye. The full pairing point does
 not guarantee that leaders will meet: no-rematch rules and other pairing
 constraints still matter.
+
+**A forfeited round shows as `X` in the Colors column**, whichever
+colour the player had been assigned, and the colour due beside it
+ignores that round. A player who played Black in round 1 and took a
+forfeit win as White in round 2 reads `BX` and is still due **W** — the
+forfeit gave him a point, not a game. This is the same view both pairing
+engines get, so the colour you are handed next round matches the one
+shown here.
+
+> **Record a forfeit as a forfeit.** The result box offers **1-0F**,
+> **0F-1** and **0F-0F** alongside the ordinary **1-0** and **0-1**.
+> Entering a forfeit as a plain win is not a cosmetic shortcut: the
+> round then counts as a played game, so its colour goes into the
+> player's colour balance and the two players are recorded as having
+> met. Both of those change future pairings, under FIDE and USCF alike,
+> and no later correction to the colour display will undo them.
 
 **The Round list tells you where each round stands.** Every entry in the
 **Round:** drop-down carries a mark:
@@ -4353,6 +4469,24 @@ sign-in page so you can pick the account you want — one click, nothing to
 do by hand. It is worth knowing this if you hold both a personal login
 and a club one.
 
+**You can do all of this from the My Events window itself.** Both lists
+show a **Signed in as …** banner naming the account whose events you are
+looking at, with **Use a different account…** and **Sign out** beside it.
+The list reloads as the new account, so you stay where you are.
+
+That matters because the My Events window is usually where you *find out*
+you are the wrong account — it is the only place your account's events are
+listed, so a short list is the first sign that FreePair picked up a login
+you did not choose. Having to close the window, cross the application to
+Settings, switch, and come back to reopen it was a detour for a
+realisation you had on that screen.
+
+**Use a different account…** is offered there whether or not FreePair is
+signed in, for the same reason it is in Settings: the account that will
+not budge is your *browser's*, and it is still there after FreePair has
+signed out — which is exactly the state you are in if you already tried
+fixing it by signing out and back in.
+
 You may occasionally be asked to sign in again. The sign-in lasts about a
 fortnight, so coming back to a tournament after a few weeks away is the
 usual reason.
@@ -4400,6 +4534,22 @@ appeared to have a bye in one place and none in another.
 Turn the alerts on or off, and set how often they run, under
 **⚙ Settings → Online → Alert when NA Chess Hub roster has updates
 to sync**.
+
+**This one is the default new events start with, and each event can
+answer for itself.** The same setting, under the same name, is on every
+event's **Online** tab once that event has its NA Chess Hub credentials.
+An event that has never been asked follows what you set here; tick or
+untick it on the event and that event has an answer of its own. It takes
+effect immediately — turn it off and the checking stops there and then.
+
+That is worth having because the right answer differs between events you
+run from the same machine. A club night whose roster is settled before
+the doors open has nothing to watch for. A scholastic weekend still
+taking entries at the desk has every reason to check.
+
+**How often it checks is not per event.** The interval stays here,
+because it describes your network and the load put on somebody else's
+service, neither of which changes from one event to the next.
 
 **Play a sound when the count changes** sits under that option and is
 off until you turn it on. It uses your computer's own notification
@@ -4453,7 +4603,7 @@ See *The red "!" beside a section*.
 
 **This one is the default new events start with, not a master switch.**
 Every event carries the same setting, under the same name, on its own
-**NA Chess Hub** tab. An event that has never been asked follows what you
+**Online** tab. An event that has never been asked follows what you
 set here; the moment you tick or untick it on the event, that event has an
 answer of its own and stops following the default. Pressing **Ignore for
 this event** on the rating-difference dialog is the same thing — it
@@ -5279,7 +5429,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.112.20260912**. It is updated whenever a
+This guide describes FreePair **v0.113.20260913**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
