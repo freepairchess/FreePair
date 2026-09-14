@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.113.20260913**
+**Applies to FreePair v0.114.20260913**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -2599,6 +2599,16 @@ sections do get split, and the original is kept but soft-deleted so its
 players do not count twice; you can undo that by restoring it and
 removing the generated sections.
 
+When a split will create new quad sections, FreePair asks how to name
+them before it changes anything. The default template is **Quads {x}**,
+which creates short names such as **Quads 1** and **Quads 2**. Turn on
+**Include parent section name** if you want names such as
+**Friday Night Quads — Quads 1** instead. The template must include
+**{x}**, which is replaced by the 1-based quad number; if a name already
+exists, FreePair adds a deterministic suffix so no section is overwritten.
+The leftover group defaults to **Mini Swiss**. With **Include parent section
+name** checked, it becomes **Friday Night Quads — Mini Swiss**.
+
 Either way the players are re-seeded by rating first, because the
 round-robin schedule is built around the top seed.
 
@@ -3994,6 +4004,90 @@ connect.
 If the first address does not work, the window lists the others. A
 laptop that is on Wi-Fi *and* in a dock has more than one, and only one
 of them is on the same network as the TV.
+
+### Entering results from phones on the local network
+
+The same **Share** window also has **Enter Results from phones on this Wi-Fi**.
+Press **Start result entry** and FreePair starts a separate local page with its
+own QR code and address. It works without NA Chess Hub credentials and without
+internet access; phones and iPads only need to be on the same Wi-Fi or hotspot
+as the TD laptop.
+
+The result-entry page is designed for an iPad at the score table. It uses the
+same simple dark look as the Live Score Board: a nearly black header, the event
+name centered, the result-entry QR on the left, and the event logo on the
+right. **Show Sections** and **Show Rounds of Current Section** sit below the
+horizontal divider, with no second line below the buttons. Keep that iPad open
+so another player can rescan the QR from it. Green check marks show recorded
+boards, completed rounds, and sections whose paired rounds are all complete.
+Sections without any paired rounds do not get a completion check.
+
+You may enter an **Optional submission PIN** before starting. Use 4 to 12
+digits, or leave it blank. The PIN is not in the QR code, not in the address,
+and is not saved to the event file. After result entry starts, FreePair clears
+the PIN box in this window; the running session remains protected by the PIN
+you just set until you press **Stop result entry**, close the event, switch to
+another event, or close FreePair. To stop and restart result entry, type the
+new optional PIN you want for the new session — FreePair does not restore the
+old one. After repeated wrong PIN attempts, FreePair pauses submissions briefly
+to slow brute-force guessing. The cooldown is shared enough to protect a laptop
+on a busy venue network, so if many people mistype the PIN at once, wait a
+minute and try again.
+
+The phone and iPad flow is deliberately narrow:
+
+1. Scan the **Result entry QR** (not the read-only Live Score Board QR).
+2. Tap **Show Sections** if needed, then choose a large section tile.
+3. Choose the round. **Show Rounds of Current Section** stays visible in the
+   header once a section is selected, so a player can get back without losing
+   their place. Completed rounds show green checks; any round with unrecorded
+   games says **Tap to input results**, including earlier rounds in a Quads or
+   round-robin schedule paired all at once.
+4. Find the board in the scrolling list and press **Tap to enter result**
+   between White and Black. Only this button opens result entry; touching player
+   names or the rest of the board does not, so players can scroll safely.
+   Recorded results replace the button in large type, with forfeits labelled
+   there too. Recorded boards keep their green check, and correction guidance
+   appears once above the list.
+5. Pick one large result tile. The six choices are **White win (1-0)**,
+   **Draw (1/2-1/2)**, **Black win (0-1)**, **White won by forfeit**,
+   **Double Forfeit**, and **Black won by forfeit**. This first tap does not
+   send anything.
+6. Tap **Submit Result**. Below the players, a large white score and one short
+   sentence identify the winner, draw, or forfeit. If required, enter the masked
+   PIN beside the large **TD PIN** label. Large square tiles and buttons keep
+   this easy to use on a shared iPad.
+7. Tap **Confirm** to send the result. Wrong PIN, server, and network errors
+   stay in the confirmation dialog. An incorrect PIN can be retried without
+   reselecting the board or result. On success, the PIN clears, the dialog
+   closes, the same section and round list returns at the same scroll position,
+   and the board shows a green recorded check.
+
+The desktop **Pairings** grid updates when a result is entered, but the phone
+receives success only after FreePair saves the event file. If saving fails,
+changes can remain visible on the TD laptop without being saved; the error
+asks the player to contact the TD rather than submit again. The TD should
+resolve the save error and save the event. A lost network acknowledgement is
+also a reason to check with the TD before retrying.
+
+An **unrecorded game in any paired round** can be submitted. Quads and
+round-robin sections often pair their whole schedule in advance; later paired
+rounds do not lock earlier games. The first accepted submission wins.
+If the TD has already entered or corrected the result, if the round was
+unpaired/re-paired, or if colours or opponents changed, the phone asks the
+player to refresh or contact the TD. Byes and all corrections stay TD-only in
+the desktop Pairings grid; forfeits are allowed through result entry and remain
+marked as forfeits.
+
+This page is for trusted LAN use, not remote publishing. It is plain HTTP, so
+it is not encrypted. The QR link is a session capability and the PIN is a
+shared room PIN, not player identity; anyone who has both can submit any
+eligible board. Turn it off during breaks or after the round if you do not want
+more submissions. FreePair does not change router, NAT, firewall, UPnP, or
+tunnel settings. If phones cannot connect, check that Windows allowed FreePair
+through the private-network firewall, that every device is on the same SSID,
+that guest/client isolation is off, and that the laptop stays awake. Try the
+other listed addresses when the laptop has both Wi-Fi and Ethernet.
 
 ### Sharing the Live Score Board on NA Chess Hub
 
@@ -5429,7 +5523,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.113.20260913**. It is updated whenever a
+This guide describes FreePair **v0.114.20260913**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
