@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.114.20260913**
+**Applies to FreePair v0.115.20260917**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -398,10 +398,12 @@ out, so you can see that byes exist; the roll call itself is a keystroke
 away on leaving focus mode, and the Byes tab has it in full.
 
 **The round's byes are a table of their own**, further down the Pairings
-tab, with the same sorting, resizing and font control as any other. They
-have their own **Focus (F11)** button too, so you can give the byes the
-whole window when you are checking who is sitting out — the banner then
-reads "Round 3 Byes" rather than "Round 3 Pairings", so there is no
+tab, with the same sorting, resizing and font control as any other. While
+the board pairings are also open, the byes table is capped so it cannot
+crowd the board grid down to only a couple of rows on a laptop screen.
+They have their own **Focus (F11)** button too, so you can give the byes
+the whole window when you are checking who is sitting out — the banner
+then reads "Round 3 Byes" rather than "Round 3 Pairings", so there is no
 doubt which table you are looking at. Requested byes for a future round
 are tinted green, the same as on the wall chart.
 
@@ -448,9 +450,12 @@ and does not travel in each direction.
 
 **An event reopens where you left it.** If you were on the U1200
 section's Pairings tab when you closed, that is what you get back — no
-navigating to the same place after every lunch break. Because it is
-stored in the event file rather than on the computer, it also follows the
-event to a second machine at the other end of the table.
+navigating to the same place after every lunch break. If there is no
+remembered section tab yet, sections open on **Roster** rather than
+Overview, because that is usually the first working page once an event is
+in progress. Because the remembered view is stored in the event file
+rather than on the computer, it also follows the event to a second
+machine at the other end of the table.
 
 It is written only when you actually moved. Open an event, read
 something, close it again, and the file is left exactly as it was — its
@@ -820,9 +825,8 @@ bare.
 
 Three things on that roster matter more than they look:
 
-- **Withdrawals.** A player whose Status reads *Withdrawn* arrives
-  withdrawn. The other statuses are about money and say nothing about who
-  is playing.
+- **Withdrawals.** A withdrawn player arrives withdrawn and is visible in
+  the **Byes & Withdrawals** panel on the Roster tab.
 - **Requested byes.** The Byes column holds the rounds each player asked to
   sit out, and they come across as bye requests. That is the part you would
   otherwise be re-keying from a printout on the morning of round one.
@@ -1624,12 +1628,16 @@ matches the supplement, it says so and does nothing.
 If the database cannot be reached, the round pairs as though the check were
 off; an outage must not be able to stop a round going out. Which supplement
 applies is decided by the event's start date — see *Which rating supplement
-your event is paired on*.### Optional columns
+your event is paired on*.
+
+### Optional columns
 
 **⚙ Optional Columns** chooses which columns the roster shows. By default
 columns with no data are hidden so the grid stays readable; turn on the
 "show empty columns" option when you are about to fill them in. The
-choice is saved with the section.
+Status column is also hidden by default because it is normally blank;
+turn it on when you want a compact **Withdrawn**, **Soft-deleted**, or
+**Byes** callout. The choice is saved with the section.
 
 **Title** is shown by default. On a FIDE-rated section it decides the
 order of players on equal ratings, so it is worth seeing next to the
@@ -1965,10 +1973,13 @@ matches players on them, which is why the same child appears once and
 not twice when you open files from two different years.
 
 **The grade is a letter, not an age.** `A` is kindergarten, `B` is grade
-1, and so on up to `N`, which means beyond grade 12. FreePair shows it
-the way you would say it — `K`, `1` to `12`, or `Adult`. A letter
-outside `A`–`N` leaves the grade blank rather than guessing, because a
-guessed grade puts a child in the wrong section.
+1, and so on up to `N`, which means beyond grade 12. FreePair reads the
+explicit NA Chess Hub keys `NWSRSSchoolCode` and `NWSRS Grade` when they
+are present, and falls back to SwissSys-compatible `Club` and `Age` on
+NWSRS files. FreePair shows the grade the way you would say it — `K`,
+`1` to `12`, or `Adult`. A letter outside `A`–`N` leaves the grade blank
+rather than guessing, because a guessed grade puts a child in the wrong
+section.
 
 **Most players have no NWSRS record, and that is normal.** Nobody is
 held out of a pairing for it, and no warning is raised.
@@ -3706,14 +3717,14 @@ cannot render it.
 ### Printing the whole event at once
 
 The **🖨** icon at the top right of the window — or **Event Operations →
-🖨 Print** — holds four items that print every section in one go, so a
-ten-quad scholastic does not mean ten trips through the section tabs and
-ten save dialogs:
+🖨 Print** — holds the event-wide print jobs, so a ten-quad scholastic does
+not mean ten trips through the section tabs and ten save dialogs:
 
 - **All Pairings**
 - **All Standings**
 - **All Wall Charts**
 - **All Crosstables**
+- **Print QR Codes**
 
 Each opens a chooser listing every section. **Sections that have been
 paired start ticked**; one that has not started yet is listed but left
@@ -3729,9 +3740,16 @@ tuned on a section tab is the one the event-wide sheet uses. Cancel
 there abandons the print but keeps any adjustment you made, because page
 settings save as they change.
 
+**Print QR Codes** is different: it prints one page listing every QR code FreePair
+can currently offer — pairings/event files, live score board links, result
+entry links — with the purpose text beside each code. It also asks for an
+optional venue Wi-Fi network name and password; when you enter them, the same
+sheet includes a standard Wi-Fi QR code plus the network and password in text.
+Leave those fields blank to print only FreePair links.
+
 The file is written next to your event file, named after it — for example
-`MyEvent-all-pairings.pdf` — and opens in your PDF viewer, where your
-printer's own dialog takes over. Printing again overwrites it, since the
+`MyEvent-all-pairings.pdf` or `MyEvent-qr-codes.pdf` — and opens in your PDF
+viewer, where your printer's own dialog takes over. Printing again overwrites it, since the
 report is rebuilt from the event each time.
 
 **Which round gets printed.** Sections in a mixed event are rarely on the
@@ -3956,10 +3974,16 @@ read-only: people can look, and cannot change the event. The same window
 can also share the board publicly on NA Chess Hub — see *Sharing
 the Live Score Board on NA Chess Hub* below.
 
-Press **Start sharing** and FreePair shows an address like
-`http://192.168.1.50:8080/` with a QR code beside it. Sharing stays on
-until you turn it off or close FreePair, and the page updates itself as
-you pair and score — nobody needs to refresh anything.
+Press **Start sharing** and FreePair shows every laptop network address it can
+offer, each with its own QR code. The code itself says **Score Board** in the
+center so it is not confused with result entry or pairings. A Wi-Fi address is
+marked **Recommended Wi-Fi** when one is available; start with that QR for
+phones, TVs and tablets on the venue Wi-Fi or the laptop hotspot. Ethernet,
+dock, VPN and other adapters are shown as alternatives to try if the recommended
+one does not work. Each address card has **Copy link** and **Open in browser**
+for that exact address. Sharing stays on until you turn it off or close
+FreePair, and the page updates itself as you pair and score — nobody needs to
+refresh anything.
 
 **It is the same board as the projector.** The shared page and the
 full-screen Live Score Board read one set of settings, so they always show the
@@ -4001,17 +4025,22 @@ first time you start sharing, Windows may ask whether to allow FreePair
 through the firewall — say yes, or nothing outside the laptop will
 connect.
 
-If the first address does not work, the window lists the others. A
-laptop that is on Wi-Fi *and* in a dock has more than one, and only one
-of them is on the same network as the TV.
+If the recommended address does not work, scan or type another card from the
+same list. A laptop that is on Wi-Fi *and* in a dock has more than one address,
+and only the one on the same network as the TV can work.
 
 ### Entering results from phones on the local network
 
 The same **Share** window also has **Enter Results from phones on this Wi-Fi**.
 Press **Start result entry** and FreePair starts a separate local page with its
-own QR code and address. It works without NA Chess Hub credentials and without
-internet access; phones and iPads only need to be on the same Wi-Fi or hotspot
-as the TD laptop.
+own list of links. Each link has its own QR code, marked **Results** in the
+center, and ends with the same four-letter code for this result-entry session,
+such as `http://172.25.16.1:56446/jguk`. The code is case-insensitive, so
+`JGUK` works too. Start with the **Recommended Wi-Fi** QR when one is shown;
+try the other adapters only if the recommended one does not work. Each link can
+also be copied or opened directly from its own card. It works without NA Chess
+Hub credentials and without internet access; phones and iPads only need to be on
+the same Wi-Fi or hotspot as the TD laptop.
 
 The result-entry page is designed for an iPad at the score table. It uses the
 same simple dark look as the Live Score Board: a nearly black header, the event
@@ -4028,15 +4057,18 @@ and is not saved to the event file. After result entry starts, FreePair clears
 the PIN box in this window; the running session remains protected by the PIN
 you just set until you press **Stop result entry**, close the event, switch to
 another event, or close FreePair. To stop and restart result entry, type the
-new optional PIN you want for the new session — FreePair does not restore the
-old one. After repeated wrong PIN attempts, FreePair pauses submissions briefly
-to slow brute-force guessing. The cooldown is shared enough to protect a laptop
-on a busy venue network, so if many people mistype the PIN at once, wait a
-minute and try again.
+new optional PIN you want for the new session — FreePair generates a new
+four-letter code and does not restore the old PIN. Four-letter codes are short
+enough to type, which also means they are guessable; use a PIN when the result
+entry page is visible to more than trusted score-table helpers. After repeated
+wrong code or PIN attempts, FreePair pauses access briefly to slow brute-force
+guessing. The cooldown is shared enough to protect a laptop on a busy venue
+network, so if many people mistype at once, wait a minute and try again.
 
 The phone and iPad flow is deliberately narrow:
 
-1. Scan the **Result entry QR** (not the read-only Live Score Board QR).
+1. Scan one **Result entry** QR (not the read-only Live Score Board QR), usually
+   the recommended Wi-Fi one.
 2. Tap **Show Sections** if needed, then choose a large section tile.
 3. Choose the round. **Show Rounds of Current Section** stays visible in the
    header once a section is selected, so a player can get back without losing
@@ -4049,14 +4081,15 @@ The phone and iPad flow is deliberately narrow:
    Recorded results replace the button in large type, with forfeits labelled
    there too. Recorded boards keep their green check, and correction guidance
    appears once above the list.
-5. Pick one large result tile. The six choices are **White win (1-0)**,
-   **Draw (1/2-1/2)**, **Black win (0-1)**, **White won by forfeit**,
-   **Double Forfeit**, and **Black won by forfeit**. This first tap does not
-   send anything.
+5. Pick one result button. **White win (1-0)** and **Black win (0-1)** sit
+   side by side, **Draw (1/2-1/2)** sits below them, and all three regular
+   results use green text. The forfeit choices are smaller, red, and separated
+   below a line: **White won by forfeit**, **Black won by forfeit**, and
+   **Double forfeit**. This first tap does not send anything.
 6. Tap **Submit Result**. Below the players, a large white score and one short
    sentence identify the winner, draw, or forfeit. If required, enter the masked
-   PIN beside the large **TD PIN** label. Large square tiles and buttons keep
-   this easy to use on a shared iPad.
+   PIN beside the large **TD PIN** label. The buttons remain finger-sized without
+   pushing the final confirmation off a phone screen.
 7. Tap **Confirm** to send the result. Wrong PIN, server, and network errors
    stay in the confirmation dialog. An incorrect PIN can be retried without
    reselecting the board or result. On success, the PIN clears, the dialog
@@ -4080,14 +4113,14 @@ the desktop Pairings grid; forfeits are allowed through result entry and remain
 marked as forfeits.
 
 This page is for trusted LAN use, not remote publishing. It is plain HTTP, so
-it is not encrypted. The QR link is a session capability and the PIN is a
-shared room PIN, not player identity; anyone who has both can submit any
-eligible board. Turn it off during breaks or after the round if you do not want
-more submissions. FreePair does not change router, NAT, firewall, UPnP, or
+it is not encrypted. The QR link's four-letter code opens the current session,
+and the PIN is a shared room PIN, not player identity; anyone who has both can
+submit any eligible board. Turn it off during breaks or after the round if you
+do not want more submissions. FreePair does not change router, NAT, firewall, UPnP, or
 tunnel settings. If phones cannot connect, check that Windows allowed FreePair
 through the private-network firewall, that every device is on the same SSID,
 that guest/client isolation is off, and that the laptop stays awake. Try the
-other listed addresses when the laptop has both Wi-Fi and Ethernet.
+other listed addresses when the laptop has both Wi-Fi and Ethernet or a dock.
 
 ### Sharing the Live Score Board on NA Chess Hub
 
@@ -4181,9 +4214,10 @@ across a room.
 **In the app.** Small codes appear at the right-hand end of the tab row —
 beside *Overview / Roster / Pairings / …* on a section, and beside
 *Basic / Team Event / NA Chess Hub / …* on **Event Configuration**.
-Click one for a large, properly scannable copy with the address written
-underneath. They appear only while you are actually sharing, so the row
-is unchanged if you never use the feature.
+Each code says **Score Board** in its center. Click one for a large,
+properly scannable copy with the address written underneath. They appear
+only while you are actually sharing, so the row is unchanged if you never
+use the feature.
 
 The Event Configuration copy is there because setting the event up is
 when somebody is most likely to lean over and ask for the address, and
@@ -4196,9 +4230,9 @@ before the round starts, or for putting it on a projector — not everyone
 who wants the board has a phone in their hand.
 
 **On every printed sheet.** Pairings, standings, wall charts, prize
-lists — all of them carry the codes in the header, beside the event QR.
-Tape a pairing sheet to the wall and a player can scan it and watch the
-rest of the round from their phone.
+lists — all of them carry the **Score Board** codes in the header, beside
+the event QR. Tape a pairing sheet to the wall and a player can scan it
+and watch the rest of the round from their phone.
 
 **There are two codes because they fail in opposite situations**, and a
 player has no way of knowing which situation they are in:
@@ -4243,9 +4277,10 @@ say yes.
 
 When the event has NA Chess Hub details filled in, pairings, standings
 and wall chart reports print a small QR code in the top-right corner,
-labelled **Scan for pairings**. It opens the event's page on a phone, so
-a player can check where they are sitting without pushing to the front
-of the crowd around the wall chart. The page needs no sign-in.
+labelled **Scan for pairings** and marked **Pairings** in the center of
+the code. It opens the event's page on a phone, so a player can check
+where they are sitting without pushing to the front of the crowd around
+the wall chart. The page needs no sign-in.
 
 The QR appears **only** when the event has both a hub event ID and a
 passcode. Strictly the page needs just the ID, but an ID with no
@@ -5352,9 +5387,15 @@ main **ID** and **Rating** columns, because those are the numbers it
 pairs from. SwissSys arranges them the other way round — the US
 Chess ID in **ID**, the NWSRS ID in **ID2** — and that second column is
 the only place NWSRS looks for it. The report swaps them back for you.
-You do not need to do anything about this, and your event file is not
-changed; but it is worth knowing that the report and your event will
-show those two columns the other way round.
+If a player does not have an NWSRS ID yet, the report puts a starter
+prefix such as `TSTN` in **ID2** when the school code and grade are
+known. That prefix comes from `NWSRSSchoolCode` and `NWSRS Grade` when
+NA Chess Hub exported them, or from the compatible `Club` and `Age` slots
+on NWSRS files. It gives the rating team enough context to assign the
+full ID to the right school-year bucket. You do not need to do anything
+about this, and your event file is not changed; but it is worth knowing
+that the report and your event will show those two columns the other way
+round.
 
 **FreePair will not export a report with no games in it.** If no section
 has a completed round, the export stops and says so rather than writing
@@ -5523,7 +5564,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.114.20260913**. It is updated whenever a
+This guide describes FreePair **v0.115.20260917**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
