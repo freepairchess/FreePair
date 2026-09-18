@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.115.20260917**
+**Applies to FreePair v0.116.20260917**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -3740,12 +3740,15 @@ tuned on a section tab is the one the event-wide sheet uses. Cancel
 there abandons the print but keeps any adjustment you made, because page
 settings save as they change.
 
-**Print QR Codes** is different: it prints one page listing every QR code FreePair
-can currently offer — pairings/event files, live score board links, result
-entry links — with the purpose text beside each code. It also asks for an
-optional venue Wi-Fi network name and password; when you enter them, the same
-sheet includes a standard Wi-Fi QR code plus the network and password in text.
-Leave those fields blank to print only FreePair links.
+**Print QR Codes** is different: it prints one page listing the QR codes you
+select — pairings/event files, live score board links, result entry links —
+with the purpose text beside each code. The dialog starts with all available
+FreePair codes ticked. It also has an optional **Include venue Wi-Fi QR code**
+row; when you tick it and enter the network name/password, the same sheet
+includes a standard Wi-Fi QR code plus the network and password in text.
+Leave Wi-Fi unchecked to print only selected FreePair links. The sheet compacts
+itself into multiple columns as the list grows so the selected codes stay on one
+page instead of spilling onto a second sheet.
 
 The file is written next to your event file, named after it — for example
 `MyEvent-all-pairings.pdf` or `MyEvent-qr-codes.pdf` — and opens in your PDF
@@ -3974,23 +3977,16 @@ read-only: people can look, and cannot change the event. The same window
 can also share the board publicly on NA Chess Hub — see *Sharing
 the Live Score Board on NA Chess Hub* below.
 
-Press **Start sharing** and FreePair shows every laptop network address it can
-offer, each with its own QR code. The code itself says **Score Board** in the
-center so it is not confused with result entry or pairings. A Wi-Fi address is
-marked **Recommended Wi-Fi** when one is available; start with that QR for
-phones, TVs and tablets on the venue Wi-Fi or the laptop hotspot. Ethernet,
-dock, VPN and other adapters are shown as alternatives to try if the recommended
-one does not work. Each address card has **Copy link** and **Open in browser**
-for that exact address. Sharing stays on until you turn it off or close
-FreePair, and the page updates itself as you pair and score — nobody needs to
-refresh anything.
+The Share window puts the two **Live Score Board** choices side by side:
+**This network** for local Wi-Fi/hotspot devices, and **NA Chess Hub** for the
+public live-board page. Start one or both. Each address card has its own QR,
+**Copy link**, and **Open in browser** button. The QR says **Score Board** in
+the center so it is not confused with result entry or pairings.
 
-**It is the same board as the projector.** The shared page and the
-full-screen Live Score Board read one set of settings, so they always show the
-same sections, the same columns and the same rotation. **⚙ Live Score Board
-settings…** in this window opens the same setup panel described above.
-Changes reach anyone watching within a few seconds; nobody has to
-reload, and you do not need to stop and restart sharing.
+**It is the same board as the projector.** The shared pages and the full-screen
+Live Score Board read one set of settings, so they show the same sections,
+columns and rotation. **⚙ Live Score Board settings…** opens that setup panel.
+Changes reach viewers within a few seconds.
 
 What to do with the address depends on the screen:
 
@@ -4031,16 +4027,12 @@ and only the one on the same network as the TV can work.
 
 ### Entering results from phones on the local network
 
-The same **Share** window also has **Enter Results from phones on this Wi-Fi**.
-Press **Start result entry** and FreePair starts a separate local page with its
-own list of links. Each link has its own QR code, marked **Results** in the
-center, and ends with the same four-letter code for this result-entry session,
-such as `http://172.25.16.1:56446/jguk`. The code is case-insensitive, so
-`JGUK` works too. Start with the **Recommended Wi-Fi** QR when one is shown;
-try the other adapters only if the recommended one does not work. Each link can
-also be copied or opened directly from its own card. It works without NA Chess
-Hub credentials and without internet access; phones and iPads only need to be on
-the same Wi-Fi or hotspot as the TD laptop.
+Below the Live Score Board choices, the Share window has **Result Entry**.
+Press **Start** and FreePair starts a separate local page for players to submit
+unrecorded results. Each result-entry link has its own QR code marked
+**Results**, plus **Copy link** and **Open in browser**. It works without NA
+Chess Hub or internet access; phones only need to be on the same Wi-Fi or
+hotspot as the TD laptop.
 
 The result-entry page is designed for an iPad at the score table. It uses the
 same simple dark look as the Live Score Board: a nearly black header, the event
@@ -4069,7 +4061,12 @@ The phone and iPad flow is deliberately narrow:
 
 1. Scan one **Result entry** QR (not the read-only Live Score Board QR), usually
    the recommended Wi-Fi one.
-2. Tap **Show Sections** if needed, then choose a large section tile.
+2. Tap **Show Sections** if needed, then choose a large section tile. The
+   section list has filters beside **Choose a section**: **All Sections**,
+   **Sections missing Results**, and **Sections with complete results**. All
+   Sections is the default; the other two are useful late in the round when
+   players only need to find boards still missing scores, or confirm a section
+   is complete.
 3. Choose the round. **Show Rounds of Current Section** stays visible in the
    header once a section is selected, so a player can get back without losing
    their place. Completed rounds show green checks; any round with unrecorded
@@ -4211,18 +4208,21 @@ Once you are sharing the board — either way — FreePair puts a QR code
 where people can get at it, so nobody has to read a web address aloud
 across a room.
 
-**In the app.** Small codes appear at the right-hand end of the tab row —
-beside *Overview / Roster / Pairings / …* on a section, and beside
-*Basic / Team Event / NA Chess Hub / …* on **Event Configuration**.
-Each code says **Score Board** in its center. Click one for a large,
-properly scannable copy with the address written underneath. They appear
-only while you are actually sharing, so the row is unchanged if you never
-use the feature.
+**In the app.** A compact **QR** dropdown appears at the right-hand end of the
+tab row — beside *Overview / Roster / Pairings / …* on a section, and beside
+*Basic / Team Event / NA Chess Hub / …* on **Event Configuration**. It lists
+every QR code FreePair can currently offer: event pairings/files, Score Board
+links, Result Entry links, and the session-only Wi-Fi QR if you entered one
+while printing QR codes. Hover the dropdown to see what it is for; open it for
+a large scannable code and the address/text underneath. It appears only while
+there is something to scan.
 
 The Event Configuration copy is there because setting the event up is
 when somebody is most likely to lean over and ask for the address, and
 you should not have to click away from the page you are working on to
-answer.
+answer. Event Configuration uses the same full workspace width as the
+section tabs, so the QR dropdown lives in the tab row rather than forcing
+the form into a narrow centered column.
 
 **Open in browser.** The enlarged code has a button that opens the same
 address on this computer. Useful for checking the board looks right
@@ -4308,6 +4308,11 @@ FreePair automatically writes changes to your event file, and the **Save
 event** dialog tells you where that file is. A cancelled or failed save can
 leave changes only in memory: heed the save status or error, and make sure
 the event is saved before closing it.
+
+Routine autosaves show **Saving...** in the event card's **Last saved** line,
+without opening a banner or moving the workspace. The timestamp updates
+when the save completes. Pending or cancelled saves and save errors still
+show notices that need your attention.
 
 The dialog is split into three tabs, because a save and a backup are
 different things and mixing them in one list is what made TDs unsure
@@ -5564,7 +5569,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.115.20260917**. It is updated whenever a
+This guide describes FreePair **v0.116.20260917**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
