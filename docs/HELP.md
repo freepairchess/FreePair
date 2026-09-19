@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.116.20260917**
+**Applies to FreePair v0.118.20260918**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -153,9 +153,10 @@ The event commands — **New Event**, **Open Event**, **Save Event**,
 the left. The controls that belong to the program rather than to the
 event sit at the right-hand end of the same row:
 
-- **🖥 Live Score Board** opens pairings and standings for a second screen
+- **🖥 Scoreboard** opens pairings and standings for a second screen
   or projector. **Share**, marked by three connected dots, shares that
-  display with TVs and phones.
+  display with TVs and phones. A compact **QR** dropdown appears after
+  **Share** whenever FreePair has a QR code or a share action to offer.
 - **🖨 Print** prints the whole event: **All Pairings**, **All Standings**,
   **All Wall Charts** or **All Crosstables**, one PDF with a section to
   a page. These are the same four reports as **Event Operations →
@@ -187,7 +188,7 @@ event sit at the right-hand end of the same row:
     does, and what it needs open to work. See
     [Keyboard shortcuts](#keyboard-shortcuts).
 
-Live Score Board, Share and Print appear only once an event is open; Settings
+Scoreboard, Share, QR and Print appear only once an event is open; Settings
 and Help are always there. The **Theme** picker is in **Settings → Display**
 to leave more toolbar space for event commands.
 
@@ -279,7 +280,7 @@ question.
 | `Ctrl+W` | Close the event |
 | `Ctrl+Z` | Undo the last change |
 | `Ctrl+Y` | Redo it (`Ctrl+Shift+Z` does the same) |
-| `F5` | Pair the next round of the selected section |
+| `F5` | Pair the selected section; on a Quad section this is **Pair as Quads** |
 | `Shift+F5` | Pair the next round of every ready section |
 | `Ctrl+Shift+Delete` | Delete that section's last round — asks first |
 | `Ctrl+Shift+K` | Choose sections and rounds to delete — asks first |
@@ -689,13 +690,12 @@ beside the address box, as there is on the Event ID and Passcode fields:
 the address always comes from somewhere else — a browser, an email, a
 message — so pasting it is the only way it ever gets there.
 
-**This one needs you signed in to NA Chess Hub.** The **Create** button
-stays greyed out until you are, and the dialog offers the sign-in itself
-so you do not have to go to Settings and come back. If you have no
-account there is a **Create a free account** button beside it — an
-account at nachesshub.com costs nothing and takes about a minute. See
-[Signing in to NA Chess Hub](#signing-in-to-na-chess-hub) for what
-signing in does and does not involve.
+**This does not require a NA Chess Hub sign-in.** Web-event import reads
+public pages, so **Create** works as soon as the address is filled in. If
+you are not signed in, the dialog still offers sign-in as a convenience
+for later cloud features, with a **Create a free account** button beside
+it. See [Signing in to NA Chess Hub](#signing-in-to-na-chess-hub) for
+what signing in does and does not involve.
 
 **If the address will not read**, the failure message offers a way round
 it rather than leaving you stuck — see [When FreePair cannot read your
@@ -714,9 +714,11 @@ not whoever happens to run the first section. It is most useful for having a rea
 which is exactly what the Norms tab wants.
 
 **Every section is imported**, each under its own name, so a multi-section
-event arrives whole and you do not have to run it once per group. If two
-sections happen to share a name, the second is given a number, because
-elsewhere in FreePair a section's name is how it is identified.
+event arrives whole and you do not have to run it once per group. If a
+ChessReg event title says it is quads, the imported sections default to
+FreePair's **Quad** pairing rule. If two sections happen to share a name,
+the second is given a number, because elsewhere in FreePair a section's
+name is how it is identified.
 
 A large event is a lot to read, so the dialog stays open and tells you
 which section it is on. **Cancel** stops a read in progress.
@@ -2136,6 +2138,14 @@ leaving you to guess. The usual answers are:
 - **A player is soft-deleted.** Restore them or delete them permanently
   on **Roster** before pairing the next round, not just round 1.
 
+When local result entry is shared, the Pairings table shows **Result Enter -
+Where** and **Result Enter - By Who** at the far right, after the **?** column.
+Results entered on the TD laptop show **TD Computer** / **TD**. Results entered
+from the local result-entry page show **On Site Tablet** and either **Player**
+or **Player by PIN**, depending on whether the result-entry session required a
+PIN. Future NA Chess Hub result entry will use **Online** for its source. These
+columns are screen-only; they are not offered for printed pairing sheets.
+
 **The first round opens “Start Pairing R1 for Section {section name}”.**
 This is one place to review the section, prepare its roster and approve its
 pairings. It applies only when pairing one section's first round; **Pair all
@@ -2438,14 +2448,16 @@ and why a section is or is not ready.
   would do nothing.
 
 > **In a quad, avoiding teammates means something different**, and the
-> row says so: it reads **in different quads**, with no round count. A
-> quad is a four-player round robin, so two teammates in the same quad
-> are *certain* to play each other and no later pairing decision can
-> prevent it — "avoid for rounds 1–3" would be the whole event restated.
-> Instead, FreePair separates them when it cuts the field up, moving the
-> fewest players it can so the seeding stays as close to the ratings as
-> the separation allows. Players left over in the mini-Swiss are not
-> moved: there, avoidance is an ordinary pairing constraint.
+> row says so: it reads **Pair teammates in different quads**, with no
+> round count. The same checkbox is also in the **Pair Section as Quads**
+> dialog, so you can make the choice at the moment the section is split. A quad is a
+> four-player round robin, so two teammates in the same quad are
+> *certain* to play each other and no later pairing decision can prevent
+> it — "avoid for rounds 1–3" would be the whole event restated. Instead,
+> FreePair separates them when it cuts the field up, moving the fewest
+> players it can so the seeding stays as close to the ratings as the
+> separation allows. Players left over in the mini-Swiss are not moved:
+> there, avoidance is an ordinary pairing constraint.
 >
 > **Two cases cannot be fully separated, and FreePair tells you which.**
 > A section of exactly four players *is* one quad — everybody plays
@@ -2464,10 +2476,16 @@ and why a section is or is not ready.
 > pairing constraint.
 
 **Every split reports what it made.** Pairing quads from the section's
-own button ends with a summary — how many quads, whether there is a
-mini-Swiss, and what happened to the teammate separation: nothing to
-do, done by moving *N* players out of rating order, or not fully
-possible and why. In a batch run the same summary appears on the
+own button opens **Pair Section as Quads**, where **Make Teams with same
+family names** runs the same review-and-apply flow as **Roster Update → Make
+Teams With Same Family Name** for that section. That button is enabled only
+when **Pair teammates in different quads** is checked, because family teams
+matter to the split only when teammate separation is on. The split ends with a
+summary — how many quads, whether there is a mini-Swiss, and what happened to the teammate
+separation: nothing to do, done by moving *N* players out of rating order, or
+not fully possible and why. Once a quad section is paired, its **Rounds** count
+is fixed at the generated schedule; Swiss sections can still raise **Rounds**
+after pairing when the event adds another round. In a batch run the same summary appears on the
 section's row in the dashboard.
 
 **The mini-Swiss is paired too — its round 1.** A split leaves the quads
@@ -2734,8 +2752,45 @@ configure the on-screen grid and the printed sheet side by side, or from
 **Page setup → Columns…** when the report is the pairing sheet, to
 adjust the printed sheet alone.
 
-**This one applies to every section**, unlike its neighbour on the same
-menu — see below.
+**These are app-wide preferences, shared by every section**, unlike the
+advanced pairing options below. Save a column change from any section and
+it applies to the others, including newly created quads and already-open
+popped-out Pairings windows. Switching sections or rounds and entering
+results does not change the chosen layout. The saved preferences also apply
+the next time you open an event; grid and print layouts remain separate.
+
+Each layout has two independently saved switches, both checked by default:
+
+- **Same columns for both players** shows one choice per paired field:
+  Rating, Title, Name, Player (combined), Pairing #, Team, Color History,
+  Due Color, Score and Result (write-in). A visibility or custom-header
+  edit applies to both White and Black. Uncheck it to see and edit **both
+  sides separately**. Board, the central Result / Score Selector and the
+  screen-only result-entry audit columns remain single choices.
+- **Mirror display columns** places player names toward the center, with
+  White's details in the opposite direction to Black's. The preview shows
+  the actual order and combined text. Turn mirroring off to use your custom
+  order; toggling it never discards that order. Up/Down (or the drag handle
+  in Display & Print Columns) edits the saved custom order. While linked,
+  moving one player field past another reorders their counterparts too.
+
+**Turning linking on explicitly uses White's visibility and custom headers
+for both sides.** Opening the picker does not synchronize an older saved
+layout: different White and Black choices stay intact, even when the link
+switch is checked. Uncheck it to inspect those differences, or switch it off
+and back on to adopt White's choices. This avoids silently replacing a
+custom layout just because you opened the window.
+
+The combined **Player (combined)** choice absorbs its detail columns instead
+of duplicating them. For example, **Rating** controls the rating inside both
+player blocks while linked. With linking off, **White Rating** and **Black
+Rating** control their own side independently. Renaming a linked field
+shares the custom header too; clearing it restores each side's default
+header.
+
+**Restore Default** resets that layout and checks both switches again;
+**Restore default columns** does the same in the print-only picker. Neither
+changes the other layout.
 
 The two views want opposite things of the result columns, and FreePair
 sets them up that way:
@@ -2751,9 +2806,11 @@ If you tick or untick one of those three against the recommendation,
 FreePair explains why it is unusual and asks you to confirm. Every other
 column is a matter of taste and is never questioned.
 
-**Copy from grid** copies the grid's arrangement to the printed sheet,
-but deliberately leaves the result columns as they are, so copying a
-layout across cannot cost you the write-in boxes.
+**Copy from grid** copies the grid's arrangement and both switches to the
+printed sheet, but deliberately keeps the result columns' visibility, so copying a
+layout across cannot cost you the write-in boxes. It also ignores the
+screen-only **Result Enter - Where** and **Result Enter - By Who** columns;
+these are never offered in either print-column list or printed preview.
 
 ### Advanced pairing options
 
@@ -2807,7 +2864,7 @@ answer rather than an empty space.
 **A section paired as quads reads differently, because it works
 differently.** Acceleration is not shown at all: a quad's schedule is
 fixed in advance, so there is nothing for it to accelerate. Teammate
-avoidance *is* shown, but labelled **Keep teammates in different
+avoidance *is* shown, but labelled **Pair teammates in different
 quads** and without a round window — a quad is three rounds long and
 everybody meets everybody, so a round count would restate the event
 instead of settling anything. The explanation underneath is the quad
@@ -3741,14 +3798,16 @@ there abandons the print but keeps any adjustment you made, because page
 settings save as they change.
 
 **Print QR Codes** is different: it prints one page listing the QR codes you
-select — pairings/event files, live score board links, result entry links —
-with the purpose text beside each code. The dialog starts with all available
-FreePair codes ticked. It also has an optional **Include venue Wi-Fi QR code**
-row; when you tick it and enter the network name/password, the same sheet
-includes a standard Wi-Fi QR code plus the network and password in text.
-Leave Wi-Fi unchecked to print only selected FreePair links. The sheet compacts
-itself into multiple columns as the list grows so the selected codes stay on one
-page instead of spilling onto a second sheet.
+select — pairings/event files, scoreboard links, result entry links and any
+venue Wi-Fi QR you added — with the purpose text beside each code. The dialog
+starts with all available FreePair codes ticked. It also has an optional
+**Include venue Wi-Fi QR code** row; when you tick it and enter the network
+name, the same sheet includes a standard Wi-Fi QR code plus the network in
+text. **Show Password** is off by default; tick it only if the QR and printed
+text should include the password too. Leave Wi-Fi unchecked to print only
+selected FreePair links. The sheet compacts itself into multiple columns as the list
+grows so the selected codes stay on one page instead of spilling onto a second
+sheet.
 
 The file is written next to your event file, named after it — for example
 `MyEvent-all-pairings.pdf` or `MyEvent-qr-codes.pdf` — and opens in your PDF
@@ -3970,18 +4029,20 @@ be a list of zeroes in seeding order.
 
 ### Putting the Live Score Board on a TV or on phones
 
-The **📺** icon — next to the Live Score Board icon at the top right, or
+The **Share** button — next to **Scoreboard** at the top right, or
 **Event Operations → Share Live Score Board** — turns the
 board into a web page that anything on the same network can open. It is
 read-only: people can look, and cannot change the event. The same window
 can also share the board publicly on NA Chess Hub — see *Sharing
 the Live Score Board on NA Chess Hub* below.
 
-The Share window puts the two **Live Score Board** choices side by side:
-**This network** for local Wi-Fi/hotspot devices, and **NA Chess Hub** for the
-public live-board page. Start one or both. Each address card has its own QR,
-**Copy link**, and **Open in browser** button. The QR says **Score Board** in
-the center so it is not confused with result entry or pairings.
+The **Share** window is split into tabs. **Scoreboard sharing** stacks the local
+Wi-Fi/Ethernet board and the NA Chess Hub public live-board page so the QR cards
+have room. Start one or both. If NA Chess Hub is not configured, the tab shows
+the same **Open Online settings** shortcut used by pairing sharing. Each address
+card has its own QR, **Copy link**, and **Open in browser** button. The QR says
+**Score Board** in the center so it is not confused with result entry or
+pairings.
 
 **It is the same board as the projector.** The shared pages and the full-screen
 Live Score Board read one set of settings, so they show the same sections,
@@ -4027,9 +4088,9 @@ and only the one on the same network as the TV can work.
 
 ### Entering results from phones on the local network
 
-Below the Live Score Board choices, the Share window has **Result Entry**.
-Press **Start** and FreePair starts a separate local page for players to submit
-unrecorded results. Each result-entry link has its own QR code marked
+The Share window's **Result entry** tab starts a separate local page for
+players to submit unrecorded results. Press **Start** there. Each result-entry
+link has its own QR code marked
 **Results**, plus **Copy link** and **Open in browser**. It works without NA
 Chess Hub or internet access; phones only need to be on the same Wi-Fi or
 hotspot as the TD laptop.
@@ -4069,9 +4130,11 @@ The phone and iPad flow is deliberately narrow:
    is complete.
 3. Choose the round. **Show Rounds of Current Section** stays visible in the
    header once a section is selected, so a player can get back without losing
-   their place. Completed rounds show green checks; any round with unrecorded
-   games says **Tap to input results**, including earlier rounds in a Quads or
-   round-robin schedule paired all at once.
+   their place. The round list has the same kind of filters: **All Rounds**,
+   **Rounds missing Results**, and **Rounds with complete results**. Completed
+   rounds show green checks; any round with unrecorded games says **Tap to input
+   results**, including earlier rounds in a Quads or round-robin schedule paired
+   all at once.
 4. Find the board in the scrolling list and press **Tap to enter result**
    between White and Black. Only this button opens result entry; touching player
    names or the rest of the board does not, so players can scroll safely.
@@ -4079,12 +4142,13 @@ The phone and iPad flow is deliberately narrow:
    there too. Recorded boards keep their green check, and correction guidance
    appears once above the list.
 5. Pick one result button. **White win (1-0)** and **Black win (0-1)** sit
-   side by side, **Draw (1/2-1/2)** sits below them, and all three regular
-   results use green text. The forfeit choices are smaller, red, and separated
-   below a line: **White won by forfeit**, **Black won by forfeit**, and
-   **Double forfeit**. This first tap does not send anything.
-6. Tap **Submit Result**. Below the players, a large white score and one short
-   sentence identify the winner, draw, or forfeit. If required, enter the masked
+   side by side, **Draw (1/2-1/2)** sits below them, and tapping any of the
+   three regular results goes straight to **Confirm result**. For forfeits, tap
+   **Game is forfeited?** under Draw to reveal **White won by forfeit**, **Black
+   won by forfeit**, and **Double forfeit**, then tap the right one.
+6. Check the confirmation. Below the players, a large score and one short
+   sentence identify the winner, draw, or forfeit; forfeit scores are red so
+   they stand apart from played results. If required, enter the masked
    PIN beside the large **TD PIN** label. The buttons remain finger-sized without
    pushing the final confirmation off a phone screen.
 7. Tap **Confirm** to send the result. Wrong PIN, server, and network errors
@@ -4208,21 +4272,24 @@ Once you are sharing the board — either way — FreePair puts a QR code
 where people can get at it, so nobody has to read a web address aloud
 across a room.
 
-**In the app.** A compact **QR** dropdown appears at the right-hand end of the
-tab row — beside *Overview / Roster / Pairings / …* on a section, and beside
-*Basic / Team Event / NA Chess Hub / …* on **Event Configuration**. It lists
-every QR code FreePair can currently offer: event pairings/files, Score Board
-links, Result Entry links, and the session-only Wi-Fi QR if you entered one
-while printing QR codes. Hover the dropdown to see what it is for; open it for
-a large scannable code and the address/text underneath. It appears only while
-there is something to scan.
-
-The Event Configuration copy is there because setting the event up is
-when somebody is most likely to lean over and ask for the address, and
-you should not have to click away from the page you are working on to
-answer. Event Configuration uses the same full workspace width as the
-section tabs, so the QR dropdown lives in the tab row rather than forcing
-the form into a narrow centered column.
+**In the app.** A compact **QR** dropdown appears in the top toolbar after
+**Share**. It lists every QR code FreePair can currently offer: event
+pairings/files, scoreboard links, Result Entry links, and the venue Wi-Fi QR if
+you added one. Local scoreboard and result-entry links are labelled by adapter,
+such as **On Wi-Fi - Guest** or **Ethernet - Dock**, instead of a generic
+"this network". **Add Venue Wi-Fi QR** asks for the network name and optional
+password; **Show Password** is off by default, and while it is off the Wi-Fi QR
+and menu row include only the network name. Tick **Save for future events** to
+remember it in this user's app settings. The Wi-Fi row has **Remove**, which
+removes it from the menu and clears any saved venue Wi-Fi settings. If
+Scoreboard or result entry is not running yet, the menu shows a **Not Available
+- Click to start** row that opens **Share** so you can start it. If the event
+has no NA Chess Hub Event ID and Passcode, the pairings/event-files QR shows a
+not-available row that takes you to **Event Configuration → Online**. Hover the
+dropdown to see what it is for; click a QR code to open a large centered
+preview that takes most of the window, so someone can scan it from a
+phone without leaning over the director's keyboard. It appears only while there
+is something to scan or start.
 
 **Open in browser.** The enlarged code has a button that opens the same
 address on this computer. Useful for checking the board looks right
@@ -4237,9 +4304,9 @@ and watch the rest of the round from their phone.
 **There are two codes because they fail in opposite situations**, and a
 player has no way of knowing which situation they are in:
 
-- **"on this network"** — served from your laptop. The only one that
-  works when the venue has no internet at all. Useless to somebody on
-  mobile data.
+- **"On Wi-Fi - …" / "Ethernet - …"** — served from your laptop through
+  that adapter. The only one that works when the venue has no internet at
+  all. Useless to somebody on mobile data or the wrong network.
 - **"anywhere"** — the NA Chess Hub page. The only one that works when
   the venue Wi-Fi refuses to let devices see each other, which most hotel
   and school networks do.
@@ -4794,6 +4861,10 @@ organizer or a TD for that event; it is not on the public event page.
 
 It is a snapshot: if you keep working after saving one, the cloud copy is
 out of date until you save another.
+
+The Settings option to prompt for this backup runs when you exit FreePair with an
+open event. **Close Event** itself stays local and immediate; use **Save Event**
+if you want to push a cloud backup before closing the event.
 
 Optionally the copy can carry your display settings — theme, fonts, score
 style, column choices, filters and pop-out window positions — so the
@@ -5450,6 +5521,17 @@ is a temporary preview until you choose **Keep theme**. **Close**, the
 window's **X**, and Escape discard any unkept theme preview without
 undoing other preferences you changed.
 
+Preferences are saved per user. On Windows the file is
+`%APPDATA%\FreePair\settings.json`.
+**Restore app defaults** at the bottom of Settings asks for confirmation, then
+replaces saved preferences with the shipped defaults. This clears customized
+columns, printing, fonts, theme, folder choices, recent-file history and saved
+venue Wi-Fi details. It also drops any display preferences adopted from an
+event for this session. Event files and the separately stored NA Chess Hub
+sign-in are not deleted. Cancel leaves your preferences unchanged.
+Settings controls and the open event's pairing layouts refresh immediately;
+restart FreePair afterward to refresh other open windows and background services.
+
 They are split across tabs:
 
 - **Files** — where events are saved, and whether you are prompted for
@@ -5569,7 +5651,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.116.20260917**. It is updated whenever a
+This guide describes FreePair **v0.118.20260918**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
