@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.118.20260918**
+**Applies to FreePair v0.117.20260920**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -793,14 +793,25 @@ and the team wall chart are computed from, so it lands in the **Team**
 column rather than being filed as a club. A scholastic event therefore
 arrives ready to score by school without your retyping a row of it.
 
-Some of those sites publish **two ratings**: the official one and a live
-one that has moved since the last supplement. FreePair seeds and pairs on
-the **official** rating, because that is the one the entry list everybody
-has read is sorted by, and shows the live figure in the second rating
-column so you can see both. A player who has games but has not yet
-appeared in a supplement is therefore **unrated** here rather than rated
-zero — which is the correct reading, and a rating you can fill in
-yourself if the organizer means to pair on the live one.
+Some of those sites publish **two ratings**: the official monthly
+supplement and a live/post-event value that has moved since that
+supplement. FreePair normally seeds and pairs on the **official** rating,
+because that is the one the entry list everybody has read is sorted by,
+and keeps the live figure in the rating breakdown so you can see both. If
+NA Chess Hub marks a section **FreePair use USCF post event rating**, that
+section instead uses the live USCF value for pairing order and quad
+placement. The same option is shown beside **Rating System** on USCF-rated
+event and section settings. When it is on, **ID and Rating → Refresh
+Ratings** also pulls the matching USCF post-event value from the US Chess
+sections API for the rating type used to pair the section; when it is off,
+Refresh Ratings does not ask for post-event ratings.
+The Edit Player dialog also has a **USCF Ratings** tab comparing monthly
+supplemental and post-event values. If no post-event result is found in the
+recent US Chess history window, FreePair treats the post-event value as the
+same as the matching monthly supplemental rating. Entry-fee decisions still
+belong to the monthly supplemental rating, not the live value. A player who
+has games but has not yet appeared in a supplement is therefore **unrated**
+for those fee/official-rating purposes rather than rated zero.
 
 Entrants who have withdrawn, cancelled or expired arrive **withdrawn**.
 So does anyone still on a **waiting list**: they have no place yet, so
@@ -864,12 +875,9 @@ fit comfortably on one screen:
   settings that depend on them stay hidden until both are filled in,
   because none of them can do anything without credentials. Those are:
   whether to **alert when the NA Chess Hub roster has updates to sync**,
-  whether to check NA Chess Hub for roster and bye changes before
-  pairing, and whether to compare player ratings on the NA Chess Hub
-  roster with your own. Underneath, **Before pairing** groups the two
-  gates that run before a round regardless of NA Chess Hub: requiring
-  players to check in, and checking ratings against the rating database
-  before the first pairing.
+  and whether to check NA Chess Hub for roster and bye changes before
+  pairing. Underneath, **Before pairing** covers requiring players to check
+  in before they are paired.
 
   The tab was called *NA Chess Hub*. It is called **Online** because the
   rating-database check on it is not a NA Chess Hub feature at all, and a
@@ -1390,127 +1398,38 @@ and moving ratings would only make the standings argue with the wall chart.
 Pairing all sections at once asks once for the event rather than once per
 section, because the answer is a property of the event.
 
-### The red "!" beside a section
+### NA Chess Hub roster sync does not compare ratings
 
-A section shows a small red **!** — just after the NA Chess Hub change badge,
-if that is showing too — when one or more players are registered for this
-event on NA Chess Hub with a **different rating from the one in your
-roster**. Hovering says how many; clicking opens the list, player by player,
-with both numbers side by side.
+FreePair no longer reports rating differences between your roster and the
+NA Chess Hub event roster. A rating can differ because the TD intentionally
+edited it, refreshed from a federation supplement, or chose post-event USCF
+ratings for pairing. FreePair assumes the TD has reviewed ratings
+deliberately and does not show a separate NACH rating-difference alert or
+offer to overwrite roster ratings from NACH.
 
-**This compares your roster with the event's own roster on NA Chess Hub** —
-the rating each player is registered with for *this* event, the number they
-will read beside their own name on the event page. It is not a lookup in the
-national rating database. If Anthony He shows 2500 on the event page and is
-seeded as 2600 here, that is what this tells you about, because that is what
-he will ask you about.
+### Checking ratings against the rating database
 
-**A marker on the section, and one for the whole event.** Each section shows
-its own **!**, and there is another beside **Sections** carrying every
-section's differences at once — a rating wrong in a section you are not
-looking at is exactly the one you would not find.
+**Rating checks are manual roster actions.** FreePair no longer runs ID
+verification or rating refresh automatically before pairing round 1. Use
+**ID and Rating → Verify IDs** and **ID and Rating → Refresh Ratings** from
+the roster when you want those checks; pairing assumes the TD has already
+done that due diligence.
 
-**On a dual-rated event, both rating columns are compared.** A FIDE-rated
-section carries the FIDE ID and rating in the pairing slots and the US Chess
-pair in ID2 and Rating2, and both numbers are registered on the site. Each
-column gets its own row, with a **Rating** column naming the federation, so a
-player whose FIDE and US Chess numbers have both drifted appears twice and you
-can see which is which. *Sync ratings from NA Chess Hub* then updates both.
+**Refresh Ratings** asks whether your roster matches the published rating
+supplement. It is where a new federation rating supplement shows up, and it
+is now run only when the TD chooses it from the roster.
 
-The two sides are lined up **by federation, not by column position**. NA Chess
-Hub is free to order its columns differently from your file, and comparing
-slot to slot would report every player as hundreds of points out when the two
-rosters actually agree. Where neither side labels its columns — the ordinary
-single-rated event — the pairing ratings are compared directly, as before.
+For multi-section events, **Event Operations → Verify Player IDs for All
+Sections** and **Event Operations → Refresh Ratings for All Sections** run
+those same roster tools section by section. They skip sections where the ID
+and rating tools do not apply.
 
-**It is a marker, not an error.** A difference can mean the registration on
-the site is out of date, or that you corrected a rating by hand and meant to.
-So the dialog suggests and never acts on its own:
+An event can want either, both or neither, but both are now explicit roster
+actions. A field seeded on last month's numbers is a mistake you normally
+find out about from the player it cost, which is why **Refresh Ratings** is
+there — but FreePair will not run it automatically during R1 pairing.
 
-- **Sync ratings from NA Chess Hub** replaces the rating in your roster with
-  the one on the site, for the players listed. It asks you to confirm first,
-  and says why that matters: the site carries the rating captured when the
-  player registered, which can be OLDER than yours — if you have already
-  refreshed from the rating database, this undoes that. Sections not yet
-  paired are re-seeded, because rating decides seeding; sections already
-  paired keep their pair numbers and their pairings.
-- **Ignore for this event** stops the marker appearing again — for this event
-  only. It asks first, and says where to undo it: tick *Compare player ratings
-  on NA Chess Hub roster with FreePair roster* on the event page's **NA Chess
-  Hub** tab. It changes no ratings and nothing about pairing, and does not
-  carry over to your next event.
-- **Close** changes nothing.
-
-**An unrated player with a rating typed over them counts as a difference.**
-If the site has someone unrated and your roster gives them 66, that is
-reported — it is the most deliberate kind of difference there is, and it is
-exactly the number you are pairing them on while the event page shows none.
-Two unrated sides are not a difference, because there is nothing to
-reconcile. The list says "unrated" rather than 0, which would read as a data
-fault.
-
-It rides on the same background check as the sync badge, so it costs no extra
-network calls and needs the event to have NA Chess Hub credentials. A failed
-check leaves the markers as they were, because "could not ask" and
-"everything agrees" are not the same thing.
-
-**One switch, at two levels — a default and an override.** **⚙ Settings →
-Online → Compare player ratings on NA Chess Hub roster with FreePair roster** is
-your default for new events, on out of the box. Every event carries the
-same setting under the same name on its **Online** tab, and starts
-with no answer of its own, following your default.
-
-The first time you tick or untick it on an event — or press *Ignore for
-this event*, which unticks it — that event has answered for itself and
-stops following the default. Changing your default afterwards leaves it
-alone. That is deliberate: the reasons to switch this off are reasons
-about one event, and a default that reached back into events you had
-already decided about would undo those decisions silently.
-
-**Whichever answer applies, switching it off clears the markers** for the
-open event, because that is a definite answer rather than a failed lookup.
-
-**One thing sits above both**, and it is a different setting: **⚙ Settings
-→ Online → Check NA Chess Hub for roster and bye changes**. That is what
-makes FreePair poll the site in the background at all, and the rating
-comparison rides on the same download. Turn *that* off and nothing is
-fetched, so no markers appear for any event no matter what the event's own
-switch says. It is not overruling your choice — it is the difference
-between "do not compare" and "do not look".
-
-### Checking ratings against the rating database before pairing
-
-**Pairing one section's first round uses the central R1 dialog instead of
-silently running this optional check.** Select **3. Refresh ratings to current month's supplement**
-there; its date-aware default and any failure are shown explicitly. The
-automatic pre-pairing check described below still applies to **Pair all
-sections**. The supplement review and its risk acknowledgements are shared.
-See [Pairing a round](#pairing-a-round).
-
-This is a **different question** from the red "!", and the two are next to
-each other on the event page's **Online** tab so the difference is visible.
-
-- The red "!" asks: *does my roster match what this player is registered with
-  on NA Chess Hub for this event?* That is the number they read beside their
-  own name.
-- **Check ratings against the rating database before pairing** asks: *does my
-  roster match the published rating?* That is where a new rating supplement
-  shows up.
-
-An event can want either, both or neither. The second is **on by default**.
-A field seeded on last month's numbers is a mistake you normally find out
-about from the player it cost, and the check is silent on every event it has
-nothing to say about — including, entirely, any event dated in a past month.
-
-**It runs only before round 1, and only for an event starting this month or
-later.** Open an old file to rehearse with, or pair the next round of a
-weekend event that has run into a new month, and nothing is looked up and
-nothing is shown. Such an event keeps the supplement it started on, so the
-answer would always be "change nothing", and a question with one possible
-answer is not worth asking. Untick it on the event page if you want it off
-for an event; that choice is saved with the file.
-
-**Each rating is compared against the right federation.** A section's pairing
+**Each rating is refreshed against the right federation.** A section's pairing
 column is not always US Chess — a FIDE-rated section carries the FIDE ID and
 FIDE rating in the pairing slots, with the US Chess pair in ID2 and Rating2 —
 so FreePair reads the column's federation from the file (or from a *Verify
@@ -1522,9 +1441,9 @@ independently, so the digits of a FIDE ID are frequently a live US Chess ID
 belonging to somebody else, and a record that turns out to be that other
 person is discarded rather than reported.
 
-With it on, pairing round 1 looks each player up and, if anything differs,
-opens a review that answers the question a bare list of numbers cannot:
-**which of the two is the one your event is played on.**
+When you choose **Refresh Ratings**, FreePair looks each player up and, if
+anything differs, opens a review that answers the question a bare list of
+numbers cannot: **which of the two is the one your event is played on.**
 
 The header names the **event**, its **start date**, the **supplement being
 compared against** — "September 2026 supplement [USCF]", or "[FIDE]" on a
@@ -1570,33 +1489,13 @@ it names the month the database actually served — "August 2026 supplement"
 do about it: the ratings you want do not exist on that service yet. Try
 again in a day.
 
-**On the way to pairing, that case does not stop you at all.** You are told
-in the status bar — "the rating database is still publishing August 2026 …
-pairing on the ratings already in the roster" — and the round goes out. The
-only advice a dialog could give is "try again tomorrow", which is not
-something to say to somebody holding a pairing sheet. You will still see the
-full explanation if you ask for **Refresh Ratings** yourself, because there
-you asked the question and are owed the answer.
+FreePair no longer runs this check automatically on the way to pairing. If
+the rating database is behind, you see the explanation when you choose
+**Refresh Ratings** yourself, before anything is written to the roster.
 
 If most records come back on the right list and one straggles, that single
 record does not change the headline — the month reported is the one the
 database as a whole is answering from.
-
-**Nothing about this check can cost you a round.** It runs against somebody
-else's service, and every way that can go wrong ends with the round pairing
-anyway and a line in the status bar:
-
-- **The service is down or unreachable** — pairing continues on the ratings
-  already in your roster. Rosters downloaded from NA Chess Hub normally
-  arrive with current ratings, so this is the ordinary case working, not a
-  failure to worry about.
-- **The service is slow.** The check is given 30 seconds for a section.
-  Past that it is abandoned and the round pairs. An unbounded wait is worse
-  than an outage: with an outage you at least know where you stand.
-- **Nobody could be looked up** — no usable IDs, or no records — and you are
-  told how many, rather than being shown an empty result that looks like
-  agreement.
-- **The database is on the wrong supplement**, as above.
 
 **A partial answer says so.** When some of the section could not be checked,
 the review names the count — "28 of 33 player(s) checked — 5 could not be
@@ -1609,9 +1508,7 @@ even once September's are published; refreshing then would move a running
 event onto a list it is not being played under, and the standings would stop
 agreeing with the seeding. FreePair says so, and the refresh button becomes
 **Refresh anyway** — an explicit override behind a tick rather than the
-obvious thing to press. You will only meet this by asking for **Refresh
-Ratings** yourself: on the way to pairing, a past-dated event is passed over
-in silence.
+obvious thing to press. You will only meet this by asking for **Refresh Ratings** yourself.
 
 When refreshing *is* right, the tick guards the other button instead. The
 discouraged action is always the one you have to acknowledge, whichever it
@@ -1639,7 +1536,10 @@ columns with no data are hidden so the grid stays readable; turn on the
 "show empty columns" option when you are about to fill them in. The
 Status column is also hidden by default because it is normally blank;
 turn it on when you want a compact **Withdrawn**, **Soft-deleted**, or
-**Byes** callout. The choice is saved with the section.
+**Byes** callout. **Email** and **Phone** are also hidden on a fresh
+layout because they are contact details, not pairing/scoring columns; turn
+them on when you need to work contacts from the roster. The choice is saved
+with the section.
 
 **Title** is shown by default. On a FIDE-rated section it decides the
 order of players on equal ratings, so it is worth seeing next to the
@@ -2023,6 +1923,27 @@ names, which made it hard to tell you were even looking at the same
 setting. The only difference now is the first row: an event can be
 **Not recorded**, a section can **Inherit from event**.
 
+**Section ID / rating slot metadata is shown separately.** NA Chess Hub can
+now summarize what the section's **ID**, **ID2**, **Rating**, and
+**Rating2** slots contain. FreePair shows those summary keys on the section
+**Overview** tab before round 1 is paired; after pairing starts they are
+read-only because they define the roster columns the pairings were seeded
+from. Sections with no **ID2** or **Rating2** data hide those secondary
+metadata rows unless the player rows carry rich NA Chess Hub ID/rating data
+that FreePair can use to create those slots. Changing the visible rows before
+round 1 updates the Roster immediately: for example, choosing **FIDEID** makes
+the main ID column **ID [FIDE]** and fills it from each player's FIDE ID, with
+a zero placeholder where no usable ID exists.
+Choosing a USCF rating type makes the main Rating column show that USCF
+rating, or 0 when the player is unrated on that type. If **Use USCF post
+event rating for pairing** is on for the section, a USCF Rating
+slot shows the matching post-event value instead and the header says
+**Rating [USCF Post Event Regular]**, **Quick**, or **Blitz**. Blank means
+no key is written; **custom** means the section is mixed and FreePair falls
+back to each player's row-level labels. These fields describe the file layout
+— they are not database verification. Missing-ID flags are calculated when
+the file is saved, not edited by hand.
+
 **Choosing "NWSRS only" moves the columns.** Each player's NWSRS ID and
 rating move into the pairing **ID** and **Rating** columns, and their
 national ID and rating move out to **ID2** and **Rating2**. This is not
@@ -2153,9 +2074,10 @@ sections** and later rounds retain their own workflow.
 
 Choose **Pairing engine**, **Pairing rule**, **Top seed color** and
 **Starting board** across the compact first row. The second row holds
-**Re-seed before R1**, **Avoid same team** and **Accelerate**, in that order.
-Starting board and round limits are typed
-directly, without spinner buttons.
+**Re-seed before R1**, **Avoid same team**, **Accelerate**, **Cancel** and
+**Start Pair Round 1**, in that order. The action buttons are aligned to the
+right edge with **Use recommended** above them. Starting board and round
+limits are typed directly, without spinner buttons.
 
 **Use recommended**, beside Starting board, recalculates the recommendation
 from the current event without changing its board-packing policy. Hover over
@@ -2177,7 +2099,8 @@ reproduce an externally assigned starting list. This uses the selected
 engine's seeding order rather than hand-edited pair numbers. Its tooltip
 shows that order: FIDE uses descending rating, then title, then name; USCF
 uses descending rating, then name. Existing pair number breaks remaining
-ties. The tooltip updates when the engine or rule changes and explains
+ties. For quads it remains available and controls the order used to form the
+quad groups. The tooltip updates when the engine or rule changes and explains
 fixed-schedule exceptions.
 
 An inherited engine displays its resolved value, such as **Inherit (USCF)**,
@@ -2193,144 +2116,22 @@ uses that result rather than tossing again. Explicit color choices are
 labelled as an override for this section and do not replace the event's toss.
 Quads always group players by rating, so their re-seed checkbox is disabled.
 
-**Pre-Pairing Tasks (Optional)** is off, and its tick-box is to the left
-of that heading. Left clear — which is how the dialog opens — the task
-table is not shown, none of that work runs, and **Start Pair Round 1**
-applies the settings above and goes straight to pairing. Tick the box to
-bring the table back and work through it as before.
+Before any round 1 pairing dialog opens, FreePair shows reminder prompts.
+If the event has a NA Chess Hub event ID, the first reminder says the event
+uses NA Chess Hub registration and asks you to make sure the roster has been
+synced. Choose **Continue** to proceed without running a sync, or **Cancel to
+Sync Roster** to go back and run sync yourself. The next reminder asks you to
+confirm that you have verified player IDs and refreshed player ratings for
+pairing. Choose **Yes** to continue, or **Cancel** to return to the roster and
+run those tools manually.
 
-**Off means skipped, not merely hidden.** These tasks reach out to NA
-Chess Hub and can change ratings; nothing like that happens behind a
-collapsed panel. With the box clear there is also no acknowledgement
-review, because there is nothing you were shown to acknowledge.
+**The pairing safety checks are never skipped.** Check-in checks, final
+validation and the pairing preview still run. The reminders do not run sync,
+ID verification or rating refresh.
 
-**The pairing safety checks are not in this table and are never
-skipped.** The rating-month warning, check-in checks, final validation
-and the pairing preview run whichever way the box is set. What the
-tick-box controls is the housekeeping you would normally do once for an
-event, not the checks that protect a round.
-
-This applies to round 1 only. Later rounds have their own, shorter
-workflow and never showed these tasks.
-
-With the box ticked, the three tasks appear in a fully bordered table.
-**Task** holds the
-checkboxes selecting work to run. **Details** explains the task and its
-default before it runs, then shows what happened, including complete
-confirmation/update/unavailable counts. **Result** contains a **Succeeded**
-checkbox and a short outcome:
-
-1. **1. Sync roster with NA Chess Hub** starts checked when the event has both its
-   NACH event ID and passcode. Otherwise it is disabled with the reason
-   shown. **Compare player ratings with NACH Roster** starts with the event's choice, falling
-   back to the app default only if the event has not chosen.
-   When no differences are found, the task is marked successful and continues
-   automatically; no empty review dialog opens. Differences still open the
-   normal roster review.
-2. **2. Verify IDs** starts checked unless every applicable ID has actual
-   confirmation, including explicit manual TD assertions. A known column
-   federation alone is not verification. No effective ID2 means no automatic
-   secondary-ID query. With no applicable IDs, this task is disabled.
-   In this dialog, verification can fill identity details such as FIDE ID,
-   federation and title, and offer name corrections, but **never changes
-   ratings**, even blank ratings. Leave refresh unchecked to keep historical
-   ratings. Rating changes require the separate refresh task and its risk
-   review, or roster changes you explicitly accept in the NACH sync review.
-3. **3. Refresh ratings to current month's supplement** starts checked only for an event
-   starting in the current month whose known end date has not passed. Historical
-   events, future-month events, events with missing dates and ended events start
-   unchecked, with the reason visible and available as a tooltip. You may
-   select it deliberately; the existing supplement review and risk
-   acknowledgements still apply. With no applicable IDs it is disabled.
-   It also starts unchecked with “All ratings are refreshed and up to date for
-   {month} or TD explicitly checked.” when saved successful refresh evidence confirms every
-   applicable rating against source-reported list dates for the current
-   event month, and the roster identities and ratings are unchanged.
-   This includes **Refresh Ratings** run before opening this dialog.
-   Reseeding and reopening the file do not discard that evidence; changing
-   the relevant roster or rating columns, or a later failed check of those
-   values, invalidates it. A new month requires matching source-list dates
-   for that month before the task can be considered already up to date.
-   An absent ID2 is excluded. Roster ticks (including manual ticks) and
-   undated sources are not supplement proof: missing list dates mean unknown
-   vintage. Valid explicit TD rating confirmations can satisfy preparation
-   too, but the explanation identifies them as TD checks, not dated source
-   evidence. Opening the dialog does not fetch ratings.
-
-Press **Start Pair Round 1** to apply all validated settings together,
-then run the selected tasks. Settings stay locked after application;
-cancel and reopen the dialog to change them. Each task reports progress
-and its own outcome centrally. A roster sync can change which checks are
-needed; automatic choices are reconsidered, but a checkbox you explicitly
-changed is not overridden.
-
-**Already-satisfied tasks start with Succeeded checked**, with an explanation
-such as **Already verified — no need to run again**. Inapplicable tasks are
-explicitly labelled as skipped. Simply deselecting a task does not claim it
-succeeded: an applicable skipped task still needs your acknowledgement before
-pairing. Selected work that has not run starts unchecked.
-
-When an R1 rating refresh confirms the applicable ratings without changing
-any values, its result is shown in the task table without a separate results
-popup. Changed ratings with no unconfirmed players still open the usual
-change report. If **Verify IDs** or **Refresh ratings to current month's
-supplement** returns unconfirmed players, a popup opens automatically above
-the R1 dialog, showing **only those players and their unconfirmed fields**,
-with the captured name, ID, federation and reason. Its headline keeps the
-full lookup counts: for example, 24 confirmed out of 25 means only the
-remaining player appears, not the other 24 (even if their ratings changed).
-Missing or zero ID2 entries are skipped, not failed verifications.
-
-Use **View unconfirmed players** in that task's **Result** cell to reopen
-the same captured report without another lookup. It remains available after
-you manually check **Succeeded**; neither opening nor closing it accepts
-the task or pairs a round. While work is running the link is unavailable;
-if relevant inputs change, it is disabled until another run replaces the
-old result. A failure with no per-player lookup results has no player report:
-read the task's error instead. **Roster Update**'s standalone rating-refresh
-report still includes both changed ratings and ratings needing attention.
-
-Before pairing, a review lists the task outcomes and pauses for your decision.
-When all tasks are successful or acknowledged, continue from that review to
-pairing. If any applicable task still has **Succeeded** unchecked, the review
-identifies it and offers **Continue anyway** or **Go back**. Going back or
-closing the review does not pair a round.
-
-**Failures and partial results stop for your decision.** Fix the issue and
-choose **Retry failed tasks** to retry only selected unsuccessful work.
-Alternatively, check **Succeeded** yourself to accept the outcome for this
-preparation, or choose **Continue** to review the unresolved tasks. A manual
-acceptance is labelled **Accepted by TD** and preserves the actual failure
-details. It never verifies a player's ID/rating or saves a false confirmation.
-Unchecking Succeeded withdraws that acknowledgement without undoing completed
-work. Reselecting a task explicitly requests another run.
-
-**Continue does not automatically retry failed work.** After you accept any
-unresolved outcomes, remaining selected tasks still run; a new failure pauses
-again. Successful work and TD acceptance remain valid only while their relevant
-inputs match. Cancelling the final
-preview leaves it retryable; an existing round prevents this dialog from
-accidentally pairing round 2.
-
-**Stop current task** requests cancellation and waits for the task to finish
-safely. Each preparation task has a three-minute active-work limit, paused
-while you answer a review dialog. **Cancel**, Escape and the window's close
-button also request a stop when busy, then close only after work settles.
-The limit includes waiting to save. Settings saves, checkpoints and final
-saves also have bounded, cancellable work; filesystem operations that do not
-support cancellation must still finish safely.
-Already-applied settings, roster changes and committed rounds are kept in
-memory, not rolled back. If saving is interrupted, saving remains pending
-and normal autosave retries; do not close the event until it is saved.
-**Continue** retries an interrupted settings save even though the
-settings are locked. If rounds were already committed, save and review them
-rather than trying to pair again.
-
-**Pair Round 1 and review pairings** sits below the optional-task table and
-always follows selected preparation. It has no checkbox because it is the
-actual pairing stage, not another optional check. Rating-month warnings, check-in checks, final validation
-and the preview are not bypassed by unchecking tasks. Any question opens
-above the R1 dialog, which stays open until pairing completes or you cancel.
+**Pair Round 1 and review pairings** is the actual pairing stage. Any
+question opens above the R1 dialog, which stays open until pairing completes
+or you cancel.
 Fixed-schedule previews permit board reordering but not opponent, color or
 bye changes. Team previews also keep the board order intact because the first
 board determines each team's color history. Cancel to change the setup.
@@ -2523,61 +2324,15 @@ per section:
   rating scales still gets the right order in each section. Untick it
   only when the pair numbers were assigned elsewhere and must be
   reproduced exactly.
-- **Execute pre-pairing tasks before R1.** **On** by default. Each
-  section about to pair its first round first runs the same optional
-  preparation a section's own round 1 dialog offers: sync the roster
-  with NA Chess Hub, verify player IDs, and refresh ratings to the
-  current supplement. Each task runs only where it applies, chosen by
-  the same rules that dialog uses — so a section with no player IDs, or
-  an event with no NA Chess Hub credentials, simply skips what cannot
-  apply to it.
+- Before the Pair All dashboard opens for round 1, FreePair shows the same
+  reminder prompts as single-section pairing: sync with NA Chess Hub first
+  if the event has a NACH event ID, then confirm IDs and ratings are ready.
+  These are reminders only. They do not run sync, ID verification or rating
+  refresh from the pairing path.
 
-  **It is on here and off on the section's own dialog, and that is
-  deliberate.** Pairing one section at a time, you are already looking
-  at that section and a checklist in front of the button is in the way.
-  Pairing the whole event in one click *is* the sweep these tasks are
-  for, and there is no other moment to ask for it.
-
-  **Untick it and nothing is looked up online before a round is
-  paired.** That includes this event's own **Check ratings against the
-  rating database before pairing** setting, which otherwise reports
-  *Checking ratings…* before each first round. It is the same kind of
-  work — a request per player, with the same wait — so one box governs
-  all of it. Ticked, that setting still decides for itself whether it
-  runs; unticked, nothing reaches the internet before a round.
-
-  You get the same roster you would pairing section by section with
-  Pre-Pairing Tasks left off. That is the point of the box: preparation
-  is something you chose, not a side effect of which button you pressed.
-
-  **The roster check happens once, before anything is paired.** If your
-  event is linked to NA Chess Hub, the run downloads the roster for the
-  whole event first and shows you one review — the same one **Sync Roster
-  with NACH** shows — before a single round is paired. Apply what you
-  want and continue. It is asked up front because that is the only point
-  at which every answer is still available; asked between sections, it
-  would arrive after some rounds already existed.
-
-  **A section whose roster changes you did not apply is not paired.**
-  Its row says so and tells you what to do: review the roster, then pair
-  that section from its own Pairing Operations menu. This is deliberate.
-  Pairing round 1 without a player who registered is undone only by
-  deleting the round, syncing and pairing again — so FreePair leaves the
-  section alone, which costs you a second look instead of the round.
-
-  **If the roster check itself cannot run, the event still pairs.** An
-  unreachable service means no known differences, and grounding an event
-  over a bad network would be the worse failure. The run says the check
-  did not happen.
-
-  **A task that does not finish does not stop the round.** The section
-  still pairs, and its row still says **Paired round 1**. Anything else
-  the preparation found is a grey line underneath — *Preparation: rating
-  refresh: some entries unconfirmed* — with the task's own words in full
-  when you hover it. These are notes, not instructions: a rating refresh
-  reports unconfirmed entries when some players have no ID to look up,
-  which is normal and needs nothing from you. The pairing safety checks
-  are separate from all of this and always run.
+  **If you choose Continue, Pair All uses the roster exactly as it is.** Run
+  **Sync Roster with NACH**, **Verify IDs** and **Refresh Ratings** from the
+  roster/Event Operations before pairing when you need them.
 
 **Pair ready sections asks you to confirm first.** The prompt lists
 every ticked section and what will happen to it — *pairs round 1*,
@@ -4794,39 +4549,6 @@ beside the button:
   The line beside the button tells you when the file has gone missing, so
   you find out while setting up rather than during an event.
 
-**Compare player ratings on NA Chess Hub roster with FreePair roster** sits under
-the same option and is **on**. Each time FreePair checks the site it also
-compares the rating each player is registered with **for this event**
-against the rating in your roster, and puts a red **!** on any section
-where they differ. Click it to see who, and to decide what to do —
-nothing is ever changed for you, and you can dismiss it for the event.
-See *The red "!" beside a section*.
-
-**This one is the default new events start with, not a master switch.**
-Every event carries the same setting, under the same name, on its own
-**Online** tab. An event that has never been asked follows what you
-set here; the moment you tick or untick it on the event, that event has an
-answer of its own and stops following the default. Pressing **Ignore for
-this event** on the rating-difference dialog is the same thing — it
-unticks the event's box, and the event page is where you tick it back on.
-
-Changing your default here therefore does not reach into events you have
-already decided about, which is the point: the reasons to switch this off
-are reasons about one event, not about how you run every event
-afterwards.
-
-This is the event's own roster on NA Chess Hub, not a lookup in the
-national rating database. It uses the same check as the alert above, so
-it makes no extra network calls, and like that alert it needs the event
-to have NA Chess Hub credentials.
-
-It is on by default because the mismatch is invisible from inside
-FreePair: your roster looks perfectly consistent with itself, and the
-first sign of trouble is a player pointing at the event page and asking
-why the number there is not the number they were seeded on. Turn it off
-if you know your ratings differ from the site's and would rather not be
-reminded.
-
 ### Publishing pairings and results
 
 Publishing puts pairings and results on the event's public page so
@@ -5651,7 +5373,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.118.20260918**. It is updated whenever a
+This guide describes FreePair **v0.117.20260920**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
