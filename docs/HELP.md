@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.117.20260920**
+**Applies to FreePair v0.119.20260922**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -224,10 +224,11 @@ It is not saved in the event file and does not survive closing the window.
 A new occurrence of a dismissed message can appear again.
 
 **On a narrow window the toolbar drops the labels and keeps the icons.**
-It does this rather than taking a second row, because the row it would
-take comes out of the pairing grid — and the machines narrow enough to
-trigger it are the same 11-inch laptops that have the least room to
-spare. Nothing is removed: hover any icon and the tooltip names it, and
+On very narrow windows the event commands can wrap to another row. All toolbar
+buttons, including QR, keep the same height; the right-hand controls stay aligned
+to the top row instead of stretching across both rows. This sizing applies only
+to the toolbar buttons; QR images inside the dropdown keep their full square size.
+Nothing is removed: hover any icon and the tooltip names it, and
 every button keeps its place, so a button you have learned the position
 of is still in that position. Widen the window and the labels come back.
 
@@ -2059,12 +2060,16 @@ leaving you to guess. The usual answers are:
 - **A player is soft-deleted.** Restore them or delete them permanently
   on **Roster** before pairing the next round, not just round 1.
 
-When local result entry is shared, the Pairings table shows **Result Enter -
-Where** and **Result Enter - By Who** at the far right, after the **?** column.
+When selected in the screen column settings, the Pairings table shows **Result
+Enter - Where** and **Result Enter - By Who** at the far right, after the **?**
+column. Their visibility follows your selections even when local or NACH
+result entry is stopped; sharing does not need to be running to inspect attribution.
 Results entered on the TD laptop show **TD Computer** / **TD**. Results entered
-from the local result-entry page show **On Site Tablet** and either **Player**
-or **Player by PIN**, depending on whether the result-entry session required a
-PIN. Future NA Chess Hub result entry will use **Online** for its source. These
+from the local result-entry page show **Local Network** / **TD**, and hosted
+TD-PIN entry shows **NA Chess Hub** / **TD**. Each source is recorded by its entry
+path, not guessed from the PIN text. The PIN unlocks TD access, not a player
+identity. Existing stored audit values are unchanged; FreePair updates their
+display labels. These
 columns are screen-only; they are not offered for printed pairing sheets.
 
 **The first round opens “Start Pairing R1 for Section {section name}”.**
@@ -3791,41 +3796,124 @@ read-only: people can look, and cannot change the event. The same window
 can also share the board publicly on NA Chess Hub — see *Sharing
 the Live Score Board on NA Chess Hub* below.
 
-The **Share** window is split into tabs. **Scoreboard sharing** stacks the local
-Wi-Fi/Ethernet board and the NA Chess Hub public live-board page so the QR cards
-have room. Start one or both. If NA Chess Hub is not configured, the tab shows
-the same **Open Online settings** shortcut used by pairing sharing. Each address
+The **Share** window has **Scoreboard Sharing**, **Pairing sharing**, and
+**Streaming to Smart TV** tabs. **Streaming to Smart TV** provides browser-specific
+casting, screen-mirroring and venue-network guidance. Its link table lists the
+active local-computer/network scoreboard addresses, the NACH scoreboard,
+the NACH or custom pairing link from **Pairing sharing**, and the NACH **roster**.
+Only scoreboard, pairing and roster links appear in this table.
+The Share window opens wider to give these links more room.
+Each bordered row has a shortened single-line URL, a copy
+icon for the full address, and **Open in Browser**. Hover over a URL to see it
+in full. NACH roster/scoreboard links need only the event ID in this table;
+the scoreboard may be offline before publishing and restricted pages may require
+login. Buttons use your default browser; copy the link into another browser
+if needed. Choose **Chrome**, **Edge**,
+**Firefox**, **Safari**, **Fire TV** or **Tips** below the table instead of
+scrolling through every browser's instructions. Start sharing first if no links
+are listed; pairing links do not require scoreboard sharing.
+`localhost` works only on the FreePair computer. Do not reveal or type private
+login details or a TD PIN on a public TV.
+**Pairing sharing** shows the NACH pairing-page QR automatically when the event
+has a NACH event ID; no upload passcode is needed to share that public link.
+For an event without a NACH ID, paste its pairing-page URL and click
+**Generate QR**. Use **Copy link** or **Open in browser** beneath the QR.
+This custom link is only kept in the open Share window, not saved in the event file.
+**Scoreboard Sharing** combines scoreboard and results controls, with separate
+**This network** and **Share Scoreboard on NAChessHub** cards. Each has a
+**Start Sharing** button and an independent **Enable Results Entering** setting.
+While sharing is stopped, changing that setting does **not** start a server,
+connect to NACH or prompt for credentials. It chooses whether protected results
+entry starts when you press **Start Sharing**. Local entry is checked by default;
+hosted entry is initially unchecked. While sharing is running, the checkbox turns
+only results entry on or off, leaving the public scoreboard running.
+NACH uses the event ID and upload passcode configured for publishing.
+No NACH login or installation-approval step is needed.
+The scoreboard remains public and read-only unless result entry is explicitly
+enabled and its private session is ready.
+If NA Chess Hub is not configured, **Start Sharing** explains what is missing
+and prompts for the event ID and upload passcode. Cancel leaves sharing stopped.
+Existing credentials are used without another prompt; invalid credentials are
+reported in a dialog. Each address
 card has its own QR, **Copy link**, and **Open in browser** button. The QR says
 **Score Board** in the center so it is not confused with result entry or
 pairings.
 
 **It is the same board as the projector.** The shared pages and the full-screen
-Live Score Board read one set of settings, so they show the same sections,
-columns and rotation. **⚙ Live Score Board settings…** opens that setup panel.
-Changes reach viewers within a few seconds.
+Live Score Board use the same sections, columns, ordering and timing. The local
+web page fits complete rows into the browser's available height and uses more
+pages when needed, rather than leaving results below a vertical scrollbar. A TV
+and a phone can therefore have different page counts while showing the same data.
+Resizing, rotating a device, or changing the header or text size recalculates the
+pages. Very short windows use a more compact header. If even one complete row
+cannot fit, the page explicitly asks you to enlarge the window or reduce the text
+size rather than hiding part of a row. **Display → Rows on each screen** controls
+the native desktop window; it does not override the browser's height-based fit.
 
-What to do with the address depends on the screen:
+**Control this event's pace:** open **⚙ Live Score Board settings… → Timing →
+Seconds on each screen**, choose 2–120 seconds, then press **Close**. This value
+is saved in the event's `.sjson` file and does not change your app default. Shared
+browsers and the native scoreboard pick it up on their next refresh; paused
+screens remain paused.
 
-- **A smart TV or a Fire TV stick** — open the TV's own web browser
-  (Silk on a Fire TV, *Internet* on a Samsung, *Web Browser* on an LG)
-  and type the address. Nothing to install.
-- **A Chromecast, or a TV with Chromecast built in** — press **Open in
-  my browser**, then use **Chrome or Edge's own Cast button** (⋮ menu →
-  Cast) and pick the Chromecast. The browser does the casting; FreePair
-  only supplies the page. This is also the route for Google TV and
-  Android TV boxes, which have Chromecast built in but no browser.
-- **Players' phones** — print the QR code and tape it up, or put it on
-  the projector. Anyone on the network can then read the pairings from
-  where they are sitting instead of crowding the wall.
+**Default for new events:** in **Settings → Boards → Default scoreboard interval
+(seconds)**, choose the starting value for future events. A fresh installation
+starts at **10 seconds**; an existing saved preference (including 12 seconds) is
+preserved. Each new event takes a snapshot of that default and keeps it even if
+you later change the app setting. An older event file without timing adopts the
+current default when first opened and is saved with that value.
 
-**Why FreePair does not have its own Cast button.** Casting to a
-Chromecast from a desktop program is not something the Chromecast
-permits — Google publishes the necessary kit for phones and for Chrome,
-and for nothing else. Amazon abandoned its equivalent years ago, and a
-Fire TV was never a cast target in the first place. A web address, on
-the other hand, is opened by Fire TV, Samsung, LG, every phone in the
-room, *and* by Chrome, which then casts it for you. Handing you a URL
-reaches more screens than a Cast button could.
+The section/round title stays centered above the table. At the far right, a
+countdown appears **before** the page count, for example **10s  6 / 10**. It
+updates each second down to zero, turns the page, then starts the new page's full
+countdown; zero does not add another second to the interval. **Pause** freezes
+the countdown. **Resume**, **Pre**, **Next**, or a swipe starts a full interval;
+ordinary feed refreshes and resizing do not reset the same page's timer. A single
+page shows a dash rather than counting down to a rotation that will not happen.
+
+The local scoreboard has **Pre**, **Pause**, and **Next** controls at the bottom
+right. **Pre** goes back one page; **Pause** becomes **Resume** while stopped.
+On a touchscreen, swipe **left** across the table for the next page, or **right**
+for the previous page. Keyboard **← / →** and **Space** still work. Merely tapping
+the page no longer pauses it, so a swipe cannot accidentally pause the rotation.
+Manual navigation gives the newly selected page a full interval before rotating.
+
+These responsive controls are implemented in FreePair's local page; the same
+behavior is specified for NACH's separately maintained renderer.
+
+**Step 1 — Open the scoreboard link in a browser.** Start sharing, then click
+**Open local board** on this computer or open the published NACH scoreboard link.
+On another device, use the LAN address from Share, not `localhost`. Keep the page
+in **Scoreboard** mode. Put the casting device and receiver on the same Wi-Fi;
+for a local link, the TV must also be able to reach the FreePair computer.
+Keep FreePair running and the casting device awake.
+
+**Step 2 — Follow the steps for your browser and receiver:**
+
+| Browser | How to show the scoreboard on the TV |
+|---|---|
+| **Google Chrome (desktop)** | For Chromecast or a TV with Google Cast: **⋮ → Cast, save, and share → Cast… → Sources → Cast tab**, then select the receiver. Stop with the Cast icon → **Stop casting**. These steps are not Chrome-on-iPhone/iPad tab casting. |
+| **Microsoft Edge (desktop)** | Use **… → More tools → Cast media to device**, if available. Select **Cast tab** under Sources if offered, then the receiver. If the option or Chromecast is unavailable, open the same link in desktop Chrome. |
+| **Firefox** | There is no built-in Chromecast tab casting. Open the link in desktop Chrome for Chromecast, or use Windows screen mirroring to a compatible Fire TV as described below. HDMI also works. |
+| **Safari** | There is no native Chromecast web-page casting. On Mac or iPhone/iPad, use **Control Center → Screen Mirroring** with an Apple TV or AirPlay-compatible TV. Standard Fire TV sticks are not AirPlay receivers; check the TV's stated support. On Mac, desktop Chrome is an alternative for Chromecast. |
+
+**Amazon Fire TV:** the simplest option is to open **Amazon Silk** on the Fire TV
+(install it from its app store if needed), then enter the public scoreboard URL.
+Use the LAN address from Share for local viewing, not `localhost`. This opens
+the page directly rather than casting a browser tab.
+
+For Windows mirroring, on a supported Fire TV choose **Settings → Display &
+Sounds → Enable Display Mirroring**, or hold **Home** and choose **Mirroring**.
+On Windows press **Win+K**, select the Fire TV, and show the browser window.
+Disconnect with **Win+K → Disconnect**. Both devices need Miracast support; if
+the Mirroring option is absent, use Silk or HDMI. **Fire TV is not a native
+Chromecast receiver.** A smart TV with its own browser can also open the link
+directly.
+
+Prefer casting only the scoreboard tab. Screen mirroring exposes the entire
+screen, including notifications and any revealed PIN; hide private information
+first. FreePair supplies the web page; casting/mirroring is handled by the browser
+or operating system. Players can scan the scoreboard QR without casting at all.
 
 **If nothing can reach it.** Most hotel and venue Wi-Fi deliberately
 stops guests seeing each other, which blocks this — and blocks casting
@@ -3843,59 +3931,158 @@ and only the one on the same network as the TV can work.
 
 ### Entering results from phones on the local network
 
-The Share window's **Result entry** tab starts a separate local page for
-players to submit unrecorded results. Press **Start** there. Each result-entry
-link has its own QR code marked
-**Results**, plus **Copy link** and **Open in browser**. It works without NA
-Chess Hub or internet access; phones only need to be on the same Wi-Fi or
-hotspot as the TD laptop.
+The Live Score Board and TD result entry are two modes of **one local site**,
+with the same address and port. Shared links and QR codes always open the
+public, read-only scoreboard; nobody needs a PIN to view it. This works without
+NA Chess Hub or internet access on the same Wi-Fi or hotspot as the TD laptop.
 
-The result-entry page is designed for an iPad at the score table. It uses the
-same simple dark look as the Live Score Board: a nearly black header, the event
-name centered, the result-entry QR on the left, and the event logo on the
-right. **Show Sections** and **Show Rounds of Current Section** sit below the
-horizontal divider, with no second line below the buttons. Keep that iPad open
-so another player can rescan the QR from it. Green check marks show recorded
-boards, completed rounds, and sections whose paired rounds are all complete.
-Sections without any paired rounds do not get a completion check.
+In **Share → Scoreboard Sharing → This network**, leave **Enable Results
+Entering** checked and press **Start Sharing**. FreePair generates a random PIN
+with **two letters and four digits**, such as **NS4567**, for this sharing session;
+you cannot choose or reuse a club PIN. Generated letters are uppercase; the
+browser also accepts lowercase ASCII letters when you type the PIN.
+The read-only PIN control is password-masked, with an **eye icon inside its
+right edge** to reveal or hide it. **Copy PIN** copies the actual active PIN
+without displaying it, and **Change PIN** generates a replacement. All controls
+share the same height in one compact row. Treat the copied PIN as a secret:
+your operating system's clipboard/history may retain it.
+PIN controls are available only while result entry is enabled and running.
+Re-enabling entry generates a fresh PIN without changing the local site's address.
+**Open local board** opens the public scoreboard. The header's mode switch has
+exactly two choices: **Scoreboard** and **Results entry**. **Results entry** stays
+visible but disabled until the TD enables it (allow up to 15 seconds for an
+already-open board to refresh). Selecting it opens a PIN gate with
+the centered **Results Enter and Edit Mode** heading and
+**PIN** [Ask FreePair TD for the 6-alphanumeric PIN]. The outlined eye icon inside
+the field reveals or hides the typed PIN. Enter the PIN and press **Confirm**
+on the right; **Cancel** on the left returns to the scoreboard without unlocking entry.
+**Scoreboard** on the
+PIN gate returns to the public display without authentication. Wrong or missing
+PINs cannot read the protected board feed or submit results, even with an old
+four-letter link; switching modes never bypasses authentication.
 
-You may enter an **Optional submission PIN** before starting. Use 4 to 12
-digits, or leave it blank. The PIN is not in the QR code, not in the address,
-and is not saved to the event file. After result entry starts, FreePair clears
-the PIN box in this window; the running session remains protected by the PIN
-you just set until you press **Stop result entry**, close the event, switch to
-another event, or close FreePair. To stop and restart result entry, type the
-new optional PIN you want for the new session — FreePair generates a new
-four-letter code and does not restore the old PIN. Four-letter codes are short
-enough to type, which also means they are guessable; use a PIN when the result
-entry page is visible to more than trusted score-table helpers. After repeated
-wrong code or PIN attempts, FreePair pauses access briefly to slow brute-force
-guessing. The cooldown is shared enough to protect a laptop on a busy venue
-network, so if many people mistype at once, wait a minute and try again.
+**Keep the TD PIN private. Do not give it to players or put it on a QR sheet.**
+This is TD access on a supervised score-table tablet, not player login. The PIN
+is held only in memory, never saved to settings or the event file, and never put
+in a URL, QR code, or public feed. It is hidden after generation, regeneration,
+or closing the dialog. Reopening the dialog does not stop sharing or reveal it.
+After **three consecutive incorrect attempts**, PIN entry is disabled for
+**30 seconds**, with a countdown before you can retry. The server enforces this
+for both entry and correction PINs, so refreshing the page does not bypass it.
+A successful PIN entry resets the consecutive-attempt count.
+
+**Change the PIN without stopping sharing:** click **Change PIN** to generate
+a different random two-letter/four-digit code. All unlocked tablets and pending correction
+authorizations are immediately revoked, while the local address and public
+scoreboard stay running. Use the **eye icon** to see the replacement privately.
+The old PIN no longer unlocks entry.
+
+Local-network and NACH results entry have **separate PINs**. Use the eye,
+**Copy PIN** and **Change PIN** in the card for the destination you intend.
+Newly generated PINs differ from the other active destination's PIN and from
+the previous code for that destination. Local changes revoke local browser
+credentials only; NACH changes synchronize through its existing private
+configuration before hosted submissions can resume. Starting, reconnecting,
+changing or stopping one destination does not rotate the other's PIN.
+
+An open tablet shows an **in-place PIN form** on its next refresh (up to
+15 seconds) or immediately when it attempts a submission, with the message
+**PIN incorrect - maybe TD changed the pin**. It no longer leaves you on a blank,
+disabled entry screen. The server rejects old credentials immediately, even
+before the screen notices. Pending edits are
+not automatically resubmitted: unlock with the new PIN, recheck the board and
+enter the result again. A result already accepted before the PIN change may
+finish saving; changing the PIN does not undo an accepted score. Refreshing the
+page and selecting **Results entry** also lets the TD enter the new PIN.
+
+Uncheck **Enable Results Entering** to immediately revoke all unlocked tablets
+while leaving the public scoreboard running at the same address. Rechecking
+while sharing is running enables local entry with a fresh local PIN, requiring
+a fresh unlock. While stopped, checking merely selects entry for
+the next **Start Sharing**. Reopening Share does not silently turn entry back on.
+**Stop** under **Scoreboard Sharing → This network** stops
+the whole local site, including result entry. Closing the event,
+switching events, or closing FreePair also stops the whole site. Old write
+credentials never carry into the next event.
+
+The public scoreboard, private PIN gate, and unlocked entry page share one dark
+header. The organizer logo comes first at the top left, followed by available
+NA Chess Hub QR codes labelled **Results entry**, **Scoreboard**, and **Pairings**.
+The scoreboard QR uses the published NACH destination when available; otherwise
+the local page shows **Scoreboard (this network)** for the active LAN address.
+That code works on the same network and does not require NACH publishing.
+Pairings and supported Results entry links remain visible when available.
+Results entry still requires an advertised NACH URL; FreePair does not guess one.
+No Wi-Fi credentials are encoded in these QRs.
+Click or tap a QR image to enlarge it in the center for scanning; use **Close**
+or **Esc** to dismiss it. Click its purpose caption to open that NACH page in a
+new browser tab without leaving the current scoreboard or results-entry page.
+
+On a wide screen, the event name is centered on the screen, independent of the
+width of the QR group or controls. The smaller **Scoreboard** / **Results entry**
+slider shares its row. Small text underneath shows the organizer name, each QR's
+purpose, and the event's date range and location beneath its title. Both organizer
+logo and name open its NACH details in a new tab when an organizer ID is available;
+missing metadata is omitted. The PIN gate avoids repeating the PIN-required
+heading and hint; availability and connection warnings still appear when needed.
+
+The FreePair logo has a white background beside the controls, with a **Powered by
+FreePair** version caption using the running build's version, not a fixed release
+number. Clicking the logo or caption opens FreePair's NACH help topic in a new tab.
+On mobile, the event title and details come first, followed by a
+centered row containing equal-height organizer, QR, and FreePair images, with
+all their captions aligned underneath. The mode switch and PIN hint sit below;
+multiple QR codes wrap within their group.
+The section, round, and current screen sit **below the horizontal line**, immediately
+above the content; the event header does not rotate with them. In scoreboard mode,
+the page count is at the right of that row and connection warnings sit in the footer.
+
+The selector works with touch or keyboard, not just dragging. Each selection of
+**Results entry** requires a fresh private TD PIN before entering that mode; you
+do not enter it again for each result while unlocked. The selector is disabled
+while a result is saving or the tablet is locking. Late organizer logos and new
+NACH links appear on the next branding check (about every 15 seconds), without
+restarting sharing. Unchanged QR images and logos stay visible during refresh.
+
+**Show Sections** and **Show Rounds of Current Section** remain separate entry
+navigation controls, not modes in the header selector. Green checks mark recorded
+boards, completed rounds, and sections whose paired rounds are complete; sections
+with no paired rounds do not get a completion check.
 
 The phone and iPad flow is deliberately narrow:
 
-1. Scan one **Result entry** QR (not the read-only Live Score Board QR), usually
-   the recommended Wi-Fi one.
+1. Scan the public **Score Board** QR, usually the recommended Wi-Fi one. Select
+   **Results entry** in the header, enter the PIN from the TD, then **Confirm**.
+   Only after a successful unlock do the section/round/board controls appear.
 2. Tap **Show Sections** if needed, then choose a large section tile. The
    section list has filters beside **Choose a section**: **All Sections**,
    **Sections missing Results**, and **Sections with complete results**. All
    Sections is the default; the other two are useful late in the round when
-   players only need to find boards still missing scores, or confirm a section
+   TDs only need to find boards still missing scores, or confirm a section
    is complete.
 3. Choose the round. **Show Rounds of Current Section** stays visible in the
-   header once a section is selected, so a player can get back without losing
+   entry navigation once a section is selected, so a TD can get back without losing
    their place. The round list has the same kind of filters: **All Rounds**,
    **Rounds missing Results**, and **Rounds with complete results**. Completed
    rounds show green checks; any round with unrecorded games says **Tap to input
    results**, including earlier rounds in a Quads or round-robin schedule paired
    all at once.
-4. Find the board in the scrolling list and press **Tap to enter result**
-   between White and Black. Only this button opens result entry; touching player
-   names or the rest of the board does not, so players can scroll safely.
-   Recorded results replace the button in large type, with forfeits labelled
-   there too. Recorded boards keep their green check, and correction guidance
-   appears once above the list.
+4. **Hide games with results** is checked by default, so recorded games disappear
+   from the board list after they are saved. Uncheck it to review or correct a
+   recorded game. Use **Filter by name or board** beside the section/round heading
+   to narrow the visible list as you type. Text searches either player's name or
+   title; numeric terms search **board numbers only**, never ratings. The **X
+   inside the textbox** clears the filter. Ratings remain visible but are not searched.
+   The filter stays through result updates and clears when you choose a new
+   section or round. Player titles appear before names, with ratings underneath
+   (**Unrated** when no positive rating is available).
+   The page header and navigation stay fixed; only the board list scrolls, on
+   desktop and mobile. The large board
+   number is **to the left of White's name**, with a **green checked box before
+   the number** once recorded. Press **Tap to enter result** between White and
+   Black for an unrecorded game. Touching player names or the surrounding row
+   does not open entry, so TDs can scroll safely. Recorded scores appear in
+   large type in the center, with forfeits labelled there too.
 5. Pick one result button. **White win (1-0)** and **Black win (0-1)** sit
    side by side, **Draw (1/2-1/2)** sits below them, and tapping any of the
    three regular results goes straight to **Confirm result**. For forfeits, tap
@@ -3903,36 +4090,55 @@ The phone and iPad flow is deliberately narrow:
    won by forfeit**, and **Double forfeit**, then tap the right one.
 6. Check the confirmation. Below the players, a large score and one short
    sentence identify the winner, draw, or forfeit; forfeit scores are red so
-   they stand apart from played results. If required, enter the masked
-   PIN beside the large **TD PIN** label. The buttons remain finger-sized without
-   pushing the final confirmation off a phone screen.
-7. Tap **Confirm** to send the result. Wrong PIN, server, and network errors
-   stay in the confirmation dialog. An incorrect PIN can be retried without
-   reselecting the board or result. On success, the PIN clears, the dialog
-   closes, the same section and round list returns at the same scroll position,
-   and the board shows a green recorded check.
+   they stand apart from played results. You do not re-enter the PIN for each
+   result while the tablet is unlocked.
+7. Tap **Confirm** to send the result. Server and network errors stay in the
+   confirmation dialog. On success, the dialog closes, the same section and
+   round list returns at the same scroll position, and the board shows a green check.
+8. Before leaving the tablet or showing the public board, select **Scoreboard**
+   in the header. FreePair waits for the server to confirm that this tablet's
+   credential is revoked, then clears it from browser memory and returns to the
+   public site. Other unlocked tablets are unaffected. If locking fails, the
+   tablet stays in entry mode and an error asks you to retry or stop result entry
+   on the TD computer before leaving the tablet. The mode selector is disabled
+   while locking or saving a result. Browser Back, refresh, and closing the page
+   discard its in-memory credential and attempt to revoke it; unlike the header
+   selector, they cannot guarantee delivery during a network failure.
+   Returning requires a new PIN unlock. Credentials expire after eight hours
+   at the latest; there is no automatic inactivity lock. Never leave an unlocked
+   tablet unsupervised.
 
 The desktop **Pairings** grid updates when a result is entered, but the phone
 receives success only after FreePair saves the event file. If saving fails,
 changes can remain visible on the TD laptop without being saved; the error
-asks the player to contact the TD rather than submit again. The TD should
+asks for TD attention rather than another submission. The TD should
 resolve the save error and save the event. A lost network acknowledgement is
 also a reason to check with the TD before retrying.
 
-An **unrecorded game in any paired round** can be submitted. Quads and
-round-robin sections often pair their whole schedule in advance; later paired
-rounds do not lock earlier games. The first accepted submission wins.
-If the TD has already entered or corrected the result, if the round was
-unpaired/re-paired, or if colours or opponents changed, the phone asks the
-player to refresh or contact the TD. Byes and all corrections stay TD-only in
-the desktop Pairings grid; forfeits are allowed through result entry and remain
-marked as forfeits.
+**Correcting a recorded result:** tap the recorded score, re-enter the private
+TD PIN, and press **Unlock correction**. Only then can you choose and confirm
+its replacement. A fresh PIN is required each time you open a correction, even
+on an already-unlocked tablet. This authorization is single-use, expires after
+five minutes, and applies only to that board's current result. Cancel closes the
+correction; reopening it asks for the PIN again. Wrong PINs are rate-limited.
+
+An **unrecorded game in any paired round** can be submitted without another PIN
+while the tablet is unlocked. Quads and round-robin sections often pair their
+whole schedule in advance; later paired rounds do not lock earlier games.
+Ordinary entry never overwrites a recorded score. If the result, opponents,
+colours, or pairing change while a correction is open, refresh and authorize
+it again rather than overwriting somebody else's newer entry. Saved corrections
+update the desktop grid and standings through the normal TD scoring path.
+Byes and team/bughouse results still require the desktop; forfeits remain allowed.
 
 This page is for trusted LAN use, not remote publishing. It is plain HTTP, so
-it is not encrypted. The QR link's four-letter code opens the current session,
-and the PIN is a shared room PIN, not player identity; anyone who has both can
-submit any eligible board. Turn it off during breaks or after the round if you
-do not want more submissions. FreePair does not change router, NAT, firewall, UPnP, or
+it is not encrypted: use a trusted private venue network, not public Wi-Fi or a
+public tunnel. Anyone with the private TD PIN can enter any eligible board as
+**TD**; no typed name or ID grants player identity. Team/bughouse games and byes
+still require the desktop. This does not implement remote NA Chess
+Hub player login; that needs verified identities and event registrations on the
+Hub. Stop result entry during breaks or after the round if you do not want more
+submissions. FreePair does not change router, NAT, firewall, UPnP, or
 tunnel settings. If phones cannot connect, check that Windows allowed FreePair
 through the private-network firewall, that every device is on the same SSID,
 that guest/client isolation is off, and that the laptop stays awake. Try the
@@ -3940,18 +4146,139 @@ other listed addresses when the laptop has both Wi-Fi and Ethernet or a dock.
 
 ### Sharing the Live Score Board on NA Chess Hub
 
-Below the address, the same window has **Share Live Score Board on NA Chess Hub**.
+#### Hosted TD result entry
+
+**This is a new TD-only integration.** Use a disposable test event for the first
+connection with your NACH deployment. Player-account result entry is not enabled.
+LAN sharing remains independent. NACH public publishing and hosted results
+share one event-scoped ownership session, even when results entry is disabled.
+Only one FreePair instance can share an event with NACH at a time.
+
+Save the event locally and open **Share → Scoreboard Sharing → Share Scoreboard
+on NAChessHub**. Check **Enable Results Entering**, then press **Start Sharing**.
+The checkbox alone does not connect while sharing is stopped. If the event's
+NACH ID or upload passcode is missing, Start prompts for both; otherwise it uses
+the saved credentials directly. FreePair first acquires exclusive NACH sharing
+ownership, publishes the selected event's current board, and enables results
+entry if requested. A genuinely new accepted run initializes fresh hosted
+sharing state once; retrying that same active Start does not reset it again.
+**No account login, installation approval page or extra confirmation is required.**
+If public sharing is already running, the checkbox turns hosted entry on/off
+without stopping that scoreboard or affecting LAN sharing. If private setup
+fails, the public scoreboard can remain available and the failure is shown.
+
+Fresh web imports can enable hosted entry after saving, without closing and
+reopening the event. For older events still open in memory, missing section IDs
+are assigned when the first hosted journal is created and saved;
+public-only sharing leaves those missing in-memory IDs untouched. Existing
+journal identities are never reset. Blank or duplicate section IDs are ambiguous
+and block hosted entry rather than silently changing identities.
+
+The NACH server must support the matching **single-active-sharing-session**
+protocol and **two-letter/four-digit PIN**. FreePair does not fall back to
+unfenced passcode-only publishing or four-digit PINs for an older server.
+Hosted capabilities must advertise **SharingSession** authentication and
+**sharing-session-v1**, together with the existing scoring features. Player
+account readiness is separate: `playerEntryReady: false` does not prevent TD-PIN
+entry. If the capability check fails, the message names the unmet requirement;
+an older FP build that still expects EventPasscode needs updating, not an event reset.
+
+If NACH says **Another FreePair instance is sharing this event. Stop it first.**,
+stop on that instance and wait for its
+confirmed release before starting here. Two running copies on the same computer
+still count as two instances. There is no takeover button or account-login step.
+Ownership renews every ten seconds with a thirty-second lease. If the owner
+crashes or loses the lease, a new explicit Start is required. FreePair does not
+automatically claim a new run or reset the server in the background.
+
+Within the active sharing run, FreePair verifies the private protocol,
+sets up its writer, provisions the PIN and publishes a fresh private snapshot before
+reporting that TD entry is running. The **eye icon** in the NACH card shows its
+own generated PIN, different from the local-network code. Open the NACH results
+page and enter the NACH PIN. The upload passcode
+authorizes management of this event, not another event or a named person's
+identity, and is never sent to the browser's entry page.
+
+Keep the upload passcode private. If NACH rejects changed or revoked credentials,
+correct the event ID/passcode and reconnect; a new connection must acquire
+ownership before publishing or accepting new results. Local scores, receipts and
+audit history are not erased to reconnect. Ordinary automatic sharing-token
+renewal does not change the PIN. Within a run, uncertain submissions are handled
+by the existing result acknowledgement/reconciliation flow, never blind replay.
+
+After closing and reopening FreePair, use the **eye icon** again: the actual PIN
+is not stored in the event file, so hosted entry needs a fresh NACH PIN.
+The saved writer and result history are resumed separately from that secret.
+Reconnecting hosted entry also rotates the NACH PIN if its previous
+acknowledged secret is no longer known. Use the newly displayed NACH PIN for
+hosted entry; the LAN PIN and its unlocked browsers remain unchanged.
+Do not use a second FreePair process or delete saved state to take over a writer.
+If the service rejects a replacement PIN with `pin_must_change`, intake stays
+blocked rather than treating an unacknowledged PIN as ready.
+
+FreePair contacts NACH over outbound HTTPS; no port forwarding or public tunnel
+is needed. Hosted submissions stay pending until FreePair saves the official
+score and acknowledgement receipt in the same `.sjson` file. The Pairings grid
+shows **NA Chess Hub / TD**, including after reopening the saved event. Local TD
+or tablet edits that win a race make an old hosted proposal conflict rather than
+overwrite a newer result.
+
+The event file contains a versioned **FreePair hosted results** block with durable
+participant/round/game IDs, revisions, audit and applied-submission receipts.
+It also records writer identity and pending configuration, snapshot and stop
+operations, so interrupted requests do not silently reset recovery state.
+There is **no SQLite database**. The block contains no PIN, bearer token or commit
+permit. Receipt capacity is bounded; FreePair blocks new hosted intake instead
+of deleting replay-protection records. Undo preserves receipt history and advances
+result revisions. A different computer/profile or file path alone no longer
+blocks sharing. **FreePair publishes the selected file's current contents**;
+it does not compare alternate files to decide which is newest or merge offline
+edits. Choose the correct event file before starting. A new sharing run does not
+delete local scores or receipts, and you should not remove the journal manually.
+
+Within an active run, a lost acknowledgement can be settled from the original
+saved outcome without applying the score twice. An unresolved permit without a
+matching saved receipt or a failed save stops intake and surfaces a message.
+FreePair never obtains a fresh permit merely to replay uncertain work. If NACH
+Force Reset discards pending hosted state, an already-saved local score still
+remains saved. Check the official score before submitting again; an interrupted
+browser response is not proof that a result failed.
+NACH communication is not a reason to hold FreePair open: if a remote result
+does not arrive or its acknowledgement is interrupted, check the score in the
+Pairings grid and enter/correct it on the TD computer as needed. Do not assume
+an unconfirmed browser submission was recorded. Already-saved local results
+remain intact.
+Local scoring can continue while a snapshot acknowledgement is pending; its
+older acknowledgement cannot rewind a newer local score or revision.
+
+Sharing-session and recovery response fields are checked strictly. A `schema_error`
+means FreePair could not accept the received response; share the safe field/code
+with the developers rather than retrying score submission blindly. Older
+FreePair builds incorrectly required a player-identity mapping for TD-PIN
+deliveries (`deliveries.submission.identityMappingRevision`). Update FreePair
+and reconnect the same event file before submitting again; that field is not
+needed for TD entry. Check the existing submission's status after reconnecting
+rather than assuming it must be sent twice. A hosted test against your deployment is still required
+before relying on this path for a real tournament. If NACH still reports an
+approval-related error or an unavailable sharing-session endpoint, its deployed
+server needs the matching update; update/reconnect,
+not follow the retired approval workflow.
+
+The same window has **Share Scoreboard on NAChessHub**.
 This puts the same board on a public web page — one anybody can open,
 from anywhere, without being on the venue Wi-Fi at all.
 
-It is available only when the event has an **NA Chess Hub event ID and
-passcode** filled in on the Event tab. Those are what prove to the hub
-that it is you sending the board. A local club night has neither, which
-is not an error: the address above is the whole feature for those
-events.
+It needs an **NACH Event ID and Passcode**. If either is missing, clicking
+**Start Sharing** prompts for both, with any existing value prefilled and the
+passcode masked. Cancelling does not start sharing. Those credentials prove to
+the hub that you may publish this event. A local club night can keep using LAN
+sharing without NACH credentials.
 
-Press **Start sharing on NA Chess Hub**. FreePair sends the board straight away, then
-keeps sending it as you pair and score. Once the first copy has landed
+Press **Start Sharing** in the NACH card. FreePair acquires ownership before
+sending the first board, then keeps sending it as you pair and score.
+Leave **Enable Results Entering** unchecked to share only the read-only
+scoreboard; no hosted result-entry setup is needed, including for newly formed quads.
+Once the first copy has landed
 you get the public link and a QR code for it, and **Open in my browser**
 to check it looks right.
 
@@ -3985,13 +4312,26 @@ last update. So a break does not clear the screen in the playing hall;
 it only stamps what is on it as possibly out of date, which is exactly
 what a player standing in front of it needs to know.
 
-**Turning it off.** **Stop sharing on NA Chess Hub** takes the board down
-there and then. Closing the window does not — sharing carries on,
-deliberately, because it is something you switch on in the morning and
-forget. Closing FreePair also leaves the board up: it stops being marked
-live within minutes, and the hub removes it a few hours later. If you
-want it gone immediately, press **Stop sharing** rather than just
-quitting.
+**Turning it off.** **Stop** in the NACH card stops accepting new hosted results
+and makes a short, best-effort request to release ownership. NACH timeouts,
+cancelled acknowledgements and remote reconciliation do not prevent closing
+the event or application. FreePair still finishes any local file write already
+in progress; a local disk-save failure is reported separately.
+
+If release is not confirmed, sharing stops locally and lease renewal stops.
+NACH may keep the old owner until its **30-second lease** expires, so another
+instance may need to wait briefly before starting. FreePair does not falsely
+report a pending result as recorded or a failed remote release as confirmed.
+On confirmed release NACH retains the board marked offline with its original
+last-update time. Closing the Share window alone does not stop sharing.
+
+**Force Reset on NACH is different from Stop.** An authorized organizer/delegate
+can clear hosted state, including its current sharing owner and pending/history
+data. This does not change event details, sections, registrations, payments, the
+upload passcode or scores already saved in FreePair. The old run becomes invalid;
+choose **Start Sharing** explicitly to start a new run when the event is free.
+FP does not invoke Force Reset automatically. No legacy-adoption or expanded
+recovery workflow is required for a new run.
 
 **If it will not send.** Three messages are worth knowing:
 
@@ -4008,13 +4348,14 @@ quitting.
 - *The live board was removed on NA Chess Hub* — somebody with access to
   the event pressed **Delete Live Board** on its page there. That might
   have been you, or another director. FreePair stops rather than putting
-  it straight back; press **Start sharing on NA Chess Hub** again if it
+  it straight back; press **Start Sharing** in the NACH card again if it
   was not meant.
 
 FreePair stops trying after any of those, because none of them fix
 themselves and retrying a wrong passcode every few seconds all day is
 not a polite thing to do to somebody else's server. A dropped network,
-by contrast, it simply keeps trying through.
+by contrast, can be retried while ownership remains valid. Once the ownership
+lease expires, start a new sharing session instead of reviving the old one.
 
 **What is on the page.** Exactly what the projector shows: names,
 ratings, boards, results, standings. The same information that is pinned
@@ -4029,16 +4370,22 @@ across a room.
 
 **In the app.** A compact **QR** dropdown appears in the top toolbar after
 **Share**. It lists every QR code FreePair can currently offer: event
-pairings/files, scoreboard links, Result Entry links, and the venue Wi-Fi QR if
-you added one. Local scoreboard and result-entry links are labelled by adapter,
-such as **On Wi-Fi - Guest** or **Ethernet - Dock**, instead of a generic
-"this network". **Add Venue Wi-Fi QR** asks for the network name and optional
+pairings/files, scoreboard links, and the venue Wi-Fi QR if you added one.
+Web cards use the titles **Pairing and Results - NAChessHub**,
+**Scoreboard - NAChessHub** and **Scoreboard - Local Network**. Under each title
+is the link with a copy icon, followed by **Open in browser**, without explanatory
+paragraphs. Long links shorten to fit; hover for the full URL or copy it.
+Clicking a QR opens a larger preview with the same title/link/copy controls.
+The menu fits the window width without horizontal scrolling; long lists remain
+scrollable by wheel or touch. **Add Venue Wi-Fi QR** asks for the network name and optional
 password; **Show Password** is off by default, and while it is off the Wi-Fi QR
 and menu row include only the network name. Tick **Save for future events** to
 remember it in this user's app settings. The Wi-Fi row has **Remove**, which
 removes it from the menu and clears any saved venue Wi-Fi settings. If
-Scoreboard or result entry is not running yet, the menu shows a **Not Available
-- Click to start** row that opens **Share** so you can start it. If the event
+the scoreboard is not running yet, the menu shows a **Not Available
+- Click to start** row that opens **Share** so you can start it. There is no
+separate Result Entry start item: enable it in **Share → Scoreboard Sharing**.
+If the event
 has no NA Chess Hub Event ID and Passcode, the pairings/event-files QR shows a
 not-available row that takes you to **Event Configuration → Online**. Hover the
 dropdown to see what it is for; click a QR code to open a large centered
@@ -5373,7 +5720,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.117.20260920**. It is updated whenever a
+This guide describes FreePair **v0.119.20260922**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
