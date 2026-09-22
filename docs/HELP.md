@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.120.20260922**
+**Applies to FreePair v0.121.20260922**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -219,14 +219,15 @@ focus mode first if the navigation is hidden. History scrolls within the page,
 newest first, with each message's original time and severity. **Show again**
 brings one past warning or error back below the toolbar, or one past
 information message back as a toast; it does not repeat the operation,
-duplicate history, or replace current status. Active notices remain visible
-in focus mode too.
+duplicate history, or replace current status. **Delete all messages** clears
+the tab and any active message from this window when the list has grown too
+long. Active notices remain visible in focus mode too.
 
 Message history belongs to the current application window's session. It
 also retains messages whose operation has already cleared them. If no event
 is open, use **Messages** on the empty-event page to see the same history.
 It is not saved in the event file and does not survive closing the window.
-A new occurrence of a dismissed message can appear again.
+A new occurrence of a dismissed or deleted message can appear again.
 
 **On a narrow window the toolbar drops the labels and keeps the icons.**
 On very narrow windows the event commands can wrap to another row. All toolbar
@@ -4170,10 +4171,12 @@ share one event-scoped ownership session, even when results entry is disabled.
 Only one FreePair instance can share an event with NACH at a time.
 
 Save the event locally and open **Share → Scoreboard Sharing → Share Scoreboard
-on NAChessHub**. Check **Enable Results Entering**, then press **Start Sharing**.
-The checkbox alone does not connect while sharing is stopped. If the event's
-NACH ID or upload passcode is missing, Start prompts for both; otherwise it uses
-the saved credentials directly. FreePair first acquires exclusive NACH sharing
+on NAChessHub**. Check **Enable Results Entering** before **Start Sharing** if TDs
+will enter results from the NACH page. The checkbox alone does not connect while
+sharing is stopped, but it does prepare the NACH TD PIN immediately so you can
+reveal, copy or change it before the public board goes live. If the event's NACH
+ID or upload passcode is missing, Start prompts for both; otherwise it uses the
+saved credentials directly. FreePair first acquires exclusive NACH sharing
 ownership, publishes the selected event's current board, and enables results
 entry if requested. A genuinely new accepted run initializes fresh hosted
 sharing state once; retrying that same active Start does not reset it again.
@@ -4207,12 +4210,12 @@ crashes or loses the lease, a new explicit Start is required. FreePair does not
 automatically claim a new run or reset the server in the background.
 
 Within the active sharing run, FreePair verifies the private protocol,
-sets up its writer, provisions the PIN and publishes a fresh private snapshot before
-reporting that TD entry is running. The **eye icon** in the NACH card shows its
-own generated PIN, different from the local-network code. Open the NACH results
-page and enter the NACH PIN. The upload passcode
-authorizes management of this event, not another event or a named person's
-identity, and is never sent to the browser's entry page.
+sets up its writer, sends the already prepared PIN and publishes a fresh private
+snapshot before reporting that TD entry is running. The **eye icon** in the NACH
+card shows its own generated PIN, different from the local-network code. Open
+the NACH results page and enter the NACH PIN. The upload passcode authorizes
+management of this event, not another event or a named person's identity, and is
+never sent to the browser's entry page.
 
 Keep the upload passcode private. If NACH rejects changed or revoked credentials,
 correct the event ID/passcode and reconnect; a new connection must acquire
@@ -5737,7 +5740,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.120.20260922**. It is updated whenever a
+This guide describes FreePair **v0.121.20260922**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
