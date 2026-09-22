@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.119.20260922**
+**Applies to FreePair v0.120.20260922**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -192,30 +192,35 @@ Scoreboard, Share, QR and Print appear only once an event is open; Settings
 and Help are always there. The **Theme** picker is in **Settings → Display**
 to leave more toolbar space for event commands.
 
-**Action messages appear below the entire toolbar**, including Live Score
+**Warnings and errors appear below the entire toolbar**, including Live Score
 Board, Share and Print, rather than alongside the left-hand buttons.
-Each notice is labelled **Information**, **Warning**, or **Error**, with
-matching colours. Identical status and error/warning text appears only
-once. A rating refresh that completes with some ratings unconfirmed is a
-**Warning**, not a failed operation; use each player's rating indicator
-for the individual outcome. A failure that prevents completion is an
-**Error**. Saving or other progress does not hide a distinct warning or
-error that still needs attention.
+Each notice is labelled **Warning** or **Error**, with matching colours.
+Identical status and error/warning text appears only once. A rating refresh
+that completes with some ratings unconfirmed is a **Warning**, not a failed
+operation; use each player's rating indicator for the individual outcome. A
+failure that prevents completion is an **Error**. Saving or other progress
+does not hide a distinct warning or error that still needs attention.
 
-Use **Dismiss** to hide any notice without changing the event or cancelling
-an operation. When no notices remain, the area below the toolbar takes no
-space. A brief overlay says **Message dismissed. Find it in Event > Messages.**
-It disappears after a few seconds, or you can use **Close**. It does not
-interrupt your work or switch pages automatically. **Open Messages** leaves
-focus mode and opens the event's **Messages** tab.
+Routine **Information** messages, such as a result accepted from a TD tablet,
+appear as a bottom-right toast instead of pushing the workspace down. The
+toast disappears by itself after about five seconds, or you can use
+**Dismiss**. It does not interrupt your work or switch pages automatically.
+
+Use **Dismiss** to hide any warning or error without changing the event or
+cancelling an operation. When no warnings or errors remain, the area below
+the toolbar takes no space. A brief overlay says **Message dismissed. Find
+it in Event > Messages.** It disappears after a few seconds, or you can use
+**Close**. **Open Messages** leaves focus mode and opens the event's
+**Messages** tab.
 
 To find history later, click the event card in the left navigation and choose
 **Messages**. This is an event-level tab, not a tab in each section. Leave
 focus mode first if the navigation is hidden. History scrolls within the page,
 newest first, with each message's original time and severity. **Show again**
-brings one past notice back below the toolbar, labelled **From session history**;
-it does not repeat the operation, duplicate history, or replace current status.
-Active notices remain visible in focus mode too.
+brings one past warning or error back below the toolbar, or one past
+information message back as a toast; it does not repeat the operation,
+duplicate history, or replace current status. Active notices remain visible
+in focus mode too.
 
 Message history belongs to the current application window's session. It
 also retains messages whose operation has already cleared them. If no event
@@ -1931,10 +1936,15 @@ now summarize what the section's **ID**, **ID2**, **Rating**, and
 read-only because they define the roster columns the pairings were seeded
 from. Sections with no **ID2** or **Rating2** data hide those secondary
 metadata rows unless the player rows carry rich NA Chess Hub ID/rating data
-that FreePair can use to create those slots. Changing the visible rows before
+Changing the visible rows before
 round 1 updates the Roster immediately: for example, choosing **FIDEID** makes
 the main ID column **ID [FIDE]** and fills it from each player's FIDE ID, with
-a zero placeholder where no usable ID exists.
+a zero placeholder where no usable ID exists. If a Web-imported section has
+unlabeled IDs, set **ID** to the correct type before pairing; FreePair keeps
+the current IDs and records them under that federation for later refreshes.
+If the same section has known USCF IDs but no rating-type labels, set
+**Rating** to **USCFRegularRating** (or the matching USCF slot); FreePair keeps
+the current pairing ratings and records the column as that USCF rating type.
 Choosing a USCF rating type makes the main Rating column show that USCF
 rating, or 0 when the player is unrated on that type. If **Use USCF post
 event rating for pairing** is on for the section, a USCF Rating
@@ -3844,6 +3854,8 @@ Live Score Board use the same sections, columns, ordering and timing. The local
 web page fits complete rows into the browser's available height and uses more
 pages when needed, rather than leaving results below a vertical scrollbar. A TV
 and a phone can therefore have different page counts while showing the same data.
+On phones, the scoreboard hides the organizer and FreePair logos and moves the
+QR links to the bottom of the page just above **Pre**, **Pause**, and **Next**.
 Resizing, rotating a device, or changing the header or text size recalculates the
 pages. Very short windows use a more compact header. If even one complete row
 cannot fit, the page explicitly asks you to enlarge the window or reduce the text
@@ -4053,20 +4065,21 @@ The phone and iPad flow is deliberately narrow:
 
 1. Scan the public **Score Board** QR, usually the recommended Wi-Fi one. Select
    **Results entry** in the header, enter the PIN from the TD, then **Confirm**.
-   Only after a successful unlock do the section/round/board controls appear.
+   On phones, the PIN page also hides organizer/FreePair logos and keeps only QR
+   links at the bottom. Only after a successful unlock do the section/round/board
+   controls appear.
 2. Tap **Show Sections** if needed, then choose a large section tile. The
-   section list has filters beside **Choose a section**: **All Sections**,
-   **Sections missing Results**, and **Sections with complete results**. All
-   Sections is the default; the other two are useful late in the round when
-   TDs only need to find boards still missing scores, or confirm a section
-   is complete.
+   centered **Choose a section** card has a full-width section filter dropdown:
+   **All Sections** is selected by default, with **Sections missing Results**
+   and **Sections with complete results** available for late-round checks. The
+   filtered section tiles stay the same width as the dropdown.
 3. Choose the round. **Show Rounds of Current Section** stays visible in the
    entry navigation once a section is selected, so a TD can get back without losing
-   their place. The round list has the same kind of filters: **All Rounds**,
-   **Rounds missing Results**, and **Rounds with complete results**. Completed
-   rounds show green checks; any round with unrecorded games says **Tap to input
-   results**, including earlier rounds in a Quads or round-robin schedule paired
-   all at once.
+   their place. The round card uses the same full-width dropdown: **All Rounds**
+   is selected by default, with **Rounds missing Results** and **Rounds with
+   complete results** available for late-round checks. Completed rounds show
+   green checks; any round with unrecorded games says **Tap to input results**,
+   including earlier rounds in a Quads or round-robin schedule paired all at once.
 4. **Hide games with results** is checked by default, so recorded games disappear
    from the board list after they are saved. Uncheck it to review or correct a
    recorded game. Use **Filter by name or board** beside the section/round heading
@@ -4075,23 +4088,25 @@ The phone and iPad flow is deliberately narrow:
    inside the textbox** clears the filter. Ratings remain visible but are not searched.
    The filter stays through result updates and clears when you choose a new
    section or round. Player titles appear before names, with ratings underneath
-   (**Unrated** when no positive rating is available).
-   The page header and navigation stay fixed; only the board list scrolls, on
-   desktop and mobile. The large board
-   number is **to the left of White's name**, with a **green checked box before
-   the number** once recorded. Press **Tap to enter result** between White and
-   Black for an unrecorded game. Touching player names or the surrounding row
-   does not open entry, so TDs can scroll safely. Recorded scores appear in
-   large type in the center, with forfeits labelled there too.
+   (**Unrated** when no positive rating is available). On desktop, the page header
+   and navigation stay fixed while the board list scrolls. On phones, the compact
+   header leaves more room for boards, QR links move to one responsive row at
+   the bottom of the page without the organizer or FreePair logos, the whole page
+   scrolls normally, and each card centers the board number above White, the result button or score,
+   and Black. Recorded forfeit scores and labels are red. Press **Tap to enter
+   result** between White and Black for an unrecorded game. Touching player names
+   or the surrounding row does not open entry, so TDs can scroll safely. Recorded
+   scores appear in large type in the center.
 5. Pick one result button. **White win (1-0)** and **Black win (0-1)** sit
    side by side, **Draw (1/2-1/2)** sits below them, and tapping any of the
    three regular results goes straight to **Confirm result**. For forfeits, tap
    **Game is forfeited?** under Draw to reveal **White won by forfeit**, **Black
    won by forfeit**, and **Double forfeit**, then tap the right one.
-6. Check the confirmation. Below the players, a large score and one short
-   sentence identify the winner, draw, or forfeit; forfeit scores are red so
-   they stand apart from played results. You do not re-enter the PIN for each
-   result while the tablet is unlocked.
+6. Check the confirmation. On phones it is centered top to bottom: White,
+   the score and outcome, Black, then **Confirm**, with **Back/edit** and
+   **Cancel** underneath. Forfeit scores are red so they stand apart from
+   played results. You do not re-enter the PIN for each result while the tablet
+   is unlocked.
 7. Tap **Confirm** to send the result. Server and network errors stay in the
    confirmation dialog. On success, the dialog closes, the same section and
    round list returns at the same scroll position, and the board shows a green check.
@@ -4480,8 +4495,10 @@ the event is saved before closing it.
 
 Routine autosaves show **Saving...** in the event card's **Last saved** line,
 without opening a banner or moving the workspace. The timestamp updates
-when the save completes. Pending or cancelled saves and save errors still
-show notices that need your attention.
+when the save completes. The folder icon beside the file name opens the
+containing folder, and the copy icon copies the full `.sjson` path when you
+need to paste it into another tool. Pending or cancelled saves and save
+errors still show notices that need your attention.
 
 The dialog is split into three tabs, because a save and a backup are
 different things and mixing them in one list is what made TDs unsure
@@ -5720,7 +5737,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.119.20260922**. It is updated whenever a
+This guide describes FreePair **v0.120.20260922**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
