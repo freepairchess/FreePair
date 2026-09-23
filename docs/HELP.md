@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.123.20260922**
+**Applies to FreePair v0.124.20260923**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -4233,16 +4233,13 @@ audit history are not erased to reconnect. Ordinary automatic sharing-token
 renewal does not change the PIN. Within a run, uncertain submissions are handled
 by the existing result acknowledgement/reconciliation flow, never blind replay.
 
-Within the same FreePair session, stopping and reconnecting hosted entry for the
-same event keeps the same NACH PIN unless you click **Change PIN**. After closing
-and reopening FreePair, use the **eye icon** again: the actual PIN is not stored
-in the event file, so hosted entry may need a fresh NACH PIN. The saved writer
-and result history are resumed separately from that secret. Use the displayed
-NACH PIN for hosted entry; the LAN PIN and its unlocked browsers remain
-unchanged.
+When hosted entry stops normally, FreePair tells NACH that result entry is
+disabled before releasing its writer, so the NACH page can show a stopped message
+instead of accepting more TD submissions. Stopping and reconnecting hosted entry
+for the same event keeps the same NACH PIN unless you click **Change PIN**. The
+saved writer and result history are resumed separately from that secret. The LAN
+PIN and its unlocked browsers remain unchanged.
 Do not use a second FreePair process or delete saved state to take over a writer.
-If the service rejects a replacement PIN with `pin_must_change`, intake stays
-blocked rather than treating an unacknowledged PIN as ready.
 
 FreePair contacts NACH over outbound HTTPS; no port forwarding or public tunnel
 is needed. Hosted submissions stay pending until FreePair saves the official
@@ -5752,7 +5749,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.123.20260922**. It is updated whenever a
+This guide describes FreePair **v0.124.20260923**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
