@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.122.20260922**
+**Applies to FreePair v0.123.20260922**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -4082,10 +4082,15 @@ The phone and iPad flow is deliberately narrow:
    complete results** available for late-round checks. Completed rounds show
    green checks; any round with unrecorded games says **Tap to input results**,
    including earlier rounds in a Quads or round-robin schedule paired all at once.
-4. **Hide games with results** is checked by default, so recorded games disappear
-   from the board list after they are saved. Uncheck it to review or correct a
-   recorded game. Use **Filter by name or board** beside the section/round heading
-   to narrow the visible list as you type. Text searches either player's name or
+4. The board-list tools sit on their own centered row under the section/round
+   heading. The **Game filter** dropdown starts on **Games in Play** whenever
+   any board still needs a result, so recorded games disappear after they are
+   saved and the TD can focus on the remaining boards. When the last game in the
+   round gets a result, FreePair automatically switches the filter to **All
+   Games** so the completed round stays visible. Switch to **Games with
+   Results** to review or correct recorded games before the round is complete,
+   or **All Games** to see both. Use **Filter by name or board** beside it to
+   narrow the visible list as you type. Text searches either player's name or
    title; numeric terms search **board numbers only**, never ratings. The **X
    inside the textbox** clears the filter. Ratings remain visible but are not searched.
    The filter stays through result updates and clears when you choose a new
@@ -4104,6 +4109,9 @@ The phone and iPad flow is deliberately narrow:
    three regular results goes straight to **Confirm result**. For forfeits, tap
    **Game is forfeited?** under Draw to reveal **White won by forfeit**, **Black
    won by forfeit**, and **Double forfeit**, then tap the right one.
+   If a TD entered a result too early, tap the recorded score, re-enter the TD
+   PIN, and choose **Game still in play**. Confirming it clears the score back to
+   not recorded so the game can be entered later.
 6. Check the confirmation. On phones it is centered top to bottom: White,
    the score and outcome, Black, then **Confirm**, with **Back/edit** and
    **Cancel** underneath. Forfeit scores are red so they stand apart from
@@ -5744,7 +5752,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.122.20260922**. It is updated whenever a
+This guide describes FreePair **v0.123.20260922**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
