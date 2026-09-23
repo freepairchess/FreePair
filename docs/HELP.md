@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.121.20260922**
+**Applies to FreePair v0.122.20260922**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -3949,18 +3949,19 @@ with the same address and port. Shared links and QR codes always open the
 public, read-only scoreboard; nobody needs a PIN to view it. This works without
 NA Chess Hub or internet access on the same Wi-Fi or hotspot as the TD laptop.
 
-In **Share → Scoreboard Sharing → This network**, leave **Enable Results
-Entering** checked and press **Start Sharing**. FreePair generates a random PIN
-with **two letters and four digits**, such as **NS4567**, for this sharing session;
-you cannot choose or reuse a club PIN. Generated letters are uppercase; the
-browser also accepts lowercase ASCII letters when you type the PIN.
-The read-only PIN control is password-masked, with an **eye icon inside its
-right edge** to reveal or hide it. **Copy PIN** copies the actual active PIN
-without displaying it, and **Change PIN** generates a replacement. All controls
-share the same height in one compact row. Treat the copied PIN as a secret:
-your operating system's clipboard/history may retain it.
-PIN controls are available only while result entry is enabled and running.
-Re-enabling entry generates a fresh PIN without changing the local site's address.
+In **Share → Scoreboard Sharing → This network**, checking **Enable Results
+Entering** prepares the TD PIN immediately, before **Start Sharing**, so the TD
+can reveal, copy or change it before the public board goes live. FreePair
+generates a random PIN with **two letters and four digits**, such as **NS4567**,
+for this sharing session; you cannot choose or reuse a club PIN. Generated
+letters are uppercase; the browser also accepts lowercase ASCII letters when you
+type the PIN. The read-only PIN control is password-masked, with an **eye icon
+inside its right edge** to reveal or hide it. **Copy PIN** copies the prepared or
+active PIN without displaying it, and **Change PIN** generates a replacement. All
+controls share the same height in one compact row. Treat the copied PIN as a
+secret: your operating system's clipboard/history may retain it. Stopping and
+re-enabling entry for the same event keeps the same PIN but revokes old unlocked
+browser sessions; click **Change PIN** when you intentionally want a new one.
 **Open local board** opens the public scoreboard. The header's mode switch has
 exactly two choices: **Scoreboard** and **Results entry**. **Results entry** stays
 visible but disabled until the TD enables it (allow up to 15 seconds for an
@@ -4224,12 +4225,13 @@ audit history are not erased to reconnect. Ordinary automatic sharing-token
 renewal does not change the PIN. Within a run, uncertain submissions are handled
 by the existing result acknowledgement/reconciliation flow, never blind replay.
 
-After closing and reopening FreePair, use the **eye icon** again: the actual PIN
-is not stored in the event file, so hosted entry needs a fresh NACH PIN.
-The saved writer and result history are resumed separately from that secret.
-Reconnecting hosted entry also rotates the NACH PIN if its previous
-acknowledged secret is no longer known. Use the newly displayed NACH PIN for
-hosted entry; the LAN PIN and its unlocked browsers remain unchanged.
+Within the same FreePair session, stopping and reconnecting hosted entry for the
+same event keeps the same NACH PIN unless you click **Change PIN**. After closing
+and reopening FreePair, use the **eye icon** again: the actual PIN is not stored
+in the event file, so hosted entry may need a fresh NACH PIN. The saved writer
+and result history are resumed separately from that secret. Use the displayed
+NACH PIN for hosted entry; the LAN PIN and its unlocked browsers remain
+unchanged.
 Do not use a second FreePair process or delete saved state to take over a writer.
 If the service rejects a replacement PIN with `pin_must_change`, intake stays
 blocked rather than treating an unacknowledged PIN as ready.
@@ -4395,15 +4397,17 @@ is the link with a copy icon, followed by **Open in browser**, without explanato
 paragraphs. Long links shorten to fit; hover for the full URL or copy it.
 Clicking a QR opens a larger preview with the same title/link/copy controls.
 The menu fits the window width without horizontal scrolling; long lists remain
-scrollable by wheel or touch. **Add Venue Wi-Fi QR** asks for the network name and optional
-password; **Show Password** is off by default, and while it is off the Wi-Fi QR
-and menu row include only the network name. Tick **Save for future events** to
+scrollable by wheel or touch. **Add Venue Wi-Fi QR** asks for the network name
+and optional password, then disappears while a venue Wi-Fi QR is already in the
+menu. **Show Password** is off by default, and while it is off the Wi-Fi QR and
+menu row include only the network name. Tick **Save for future events** to
 remember it in this user's app settings. The Wi-Fi row has **Remove**, which
-removes it from the menu and clears any saved venue Wi-Fi settings. If
-the scoreboard is not running yet, the menu shows a **Not Available
-- Click to start** row that opens **Share** so you can start it. There is no
-separate Result Entry start item: enable it in **Share → Scoreboard Sharing**.
-If the event
+removes it from the menu and clears any saved venue Wi-Fi settings. A bottom
+**Print QR Codes** item opens the same one-page QR sheet dialog as
+**Print → Print QR Codes**. If the scoreboard is not running yet, the menu shows
+a **Not Available - Click to start** row that opens **Share** so you can start
+it. There is no separate Result Entry start item: enable it in **Share →
+Scoreboard Sharing**. If the event
 has no NA Chess Hub Event ID and Passcode, the pairings/event-files QR shows a
 not-available row that takes you to **Event Configuration → Online**. Hover the
 dropdown to see what it is for; click a QR code to open a large centered
@@ -5740,7 +5744,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.121.20260922**. It is updated whenever a
+This guide describes FreePair **v0.122.20260922**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
