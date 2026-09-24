@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.124.20260923**
+**Applies to FreePair v0.125.20260924**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -812,13 +812,13 @@ event and section settings. When it is on, **ID and Rating → Refresh
 Ratings** also pulls the matching USCF post-event value from the US Chess
 sections API for the rating type used to pair the section; when it is off,
 Refresh Ratings does not ask for post-event ratings.
-The Edit Player dialog also has a **USCF Ratings** tab comparing monthly
-supplemental and post-event values. If no post-event result is found in the
-recent US Chess history window, FreePair treats the post-event value as the
-same as the matching monthly supplemental rating. Entry-fee decisions still
-belong to the monthly supplemental rating, not the live value. A player who
-has games but has not yet appeared in a supplement is therefore **unrated**
-for those fee/official-rating purposes rather than rated zero.
+The player editor's **USCF** tab shows monthly supplemental and post-event
+values. If no post-event result is found in the recent US Chess history
+window, FreePair treats the post-event value as the same as the matching
+monthly supplemental rating. Entry-fee decisions still belong to the monthly
+supplemental rating, not the live value. A player who has games but has not
+yet appeared in a supplement is therefore **unrated** for those fee/official-
+rating purposes rather than rated zero.
 
 Entrants who have withdrawn, cancelled or expired arrive **withdrawn**.
 So does anyone still on a **waiting list**: they have no place yet, so
@@ -912,9 +912,17 @@ standings and prizes.
   watch two sections side by side.
 
 Each row in the sections list collapses with the chevron on its right, so
-a long list stays scannable. A collapsed row still carries the two
-numbers you are usually scanning for, in brackets after the name —
-`Open [123, 3/9]` is 123 players, 3 rounds played of 9.
+ a long list stays scannable. A collapsed row shows the player count first,
+ followed by the current round and total rounds in brackets. **⌛** marks the
+ first unfinished round; **✔** means all games in the shown round are complete.
+ In a pre-paired Quad or round-robin, the number advances as each round
+ finishes: for example, `4 [ 1⌛/3]`, then `4 [ 2⌛/3]`, then `4 [ 3✔/3]`.
+ A Swiss section with only
+ round 1 paired shows `123 [ 1✔/9]` after its results are in, until round 2 is
+ paired. With no rounds paired it shows `123 [ 0/9]`. Expanded rows spell out
+ the same progress—for example, `4 players · 2⌛/3 rounds`—so both views agree.
+ A pending NA Chess Hub roster alert appears before these counts so it is easy
+ to spot.
 
 **The whole sidebar collapses too**, with the chevron at the top of it.
 It becomes a narrow rail showing the start of each section's name, and
@@ -1034,7 +1042,36 @@ players are already sitting at.
 ### Adding players to a roster
 
 The **Roster** tab holds the players in a section. Use **Roster Update →
-Add** to open the Add-player form.
+Add** to open the Add-player form. It opens on **Required**, with the name,
+ID, ID2, Rating and Rating 2 used for pairing. Notes under the ID and rating
+fields name the federation or rating scale expected by the section. If the
+values are in the wrong slots, use **Swap ID / ID2** or **Swap Rating /
+Rating 2**.
+
+The form keeps the other player details in their own tabs: **Bye Requests**
+for past and future byes; **Affiliation & Contact** for Club, State, Team,
+Email and Phone; **USCF** for the USCF profile, ratings and (when the section
+uses them) post-event ratings; **FIDE**, **CFC** and **NWSRS** for the
+corresponding federation fields. The USCF tab shows monthly and post-event
+ratings together; the post-event columns appear only when the section uses
+them for pairing. **USCF Membership Expiration Date** is at the bottom of the
+USCF tab. Click its date field to choose an expiration from the calendar;
+**Clear** removes it. NWSRS grade is selected as K, grades 1–12, Adult, or
+Not set. In Edit, fields on all tabs can be changed manually.
+
+**Search Player DB…** beside the **Name** box looks up the player online.
+Results include NWSRS ID, grade, rating and school code when the player has
+an NWSRS profile. Choosing a result fills the matching identity, rating and
+profile fields on the tabs, including those NWSRS values; review them before
+Add. Details you already entered that are not supplied by the result,
+including affiliation, contact, check-in and bye choices, stay in place.
+Nothing is added until you press the form's **Add** button.
+
+In the Roster grid, double-click a player's cell to edit them on the tab for
+that field. Optional column headers have an **×** button: click it to hide the
+column and update the saved roster-column choices. Fixed pairing columns
+cannot be hidden, and USCF comparison columns needed for post-event pairing
+stay visible while that option is in use.
 
 Type the player manually if you already know the details, or press
 **Search Player DB…** beside the **Name** box to look them up online.
@@ -1064,8 +1101,8 @@ round a search should work.
 **Use the "Narrow results" box to sift a long list.** A common name can
 come back forty or more players deep. Typing in that box filters the rows
 already on screen — it does not run another search, so it is instant — and
-it matches any column, so a middle initial, a state, or part of an ID all
-work. Clearing the box brings the full list back.
+it matches any column, so a middle initial, a state, an NWSRS grade or school,
+or part of any ID works. Clearing the box brings the full list back.
 
 Adding a player after the event has started is supported. FreePair works
 out what the late entrant should be scored for the rounds already played
@@ -2410,7 +2447,9 @@ The leftover group defaults to **Mini Swiss**. With **Include parent section
 name** checked, it becomes **Friday Night Quads — Mini Swiss**.
 
 Either way the players are re-seeded by rating first, because the
-round-robin schedule is built around the top seed.
+round-robin schedule is built around the top seed. Generated quads and the
+Mini Swiss inherit the parent's **Use USCF post-event rating** setting, so
+the split sections keep the same pairing rating source.
 
 ### Pairing as a round-robin
 
@@ -5749,7 +5788,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.124.20260923**. It is updated whenever a
+This guide describes FreePair **v0.125.20260924**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
