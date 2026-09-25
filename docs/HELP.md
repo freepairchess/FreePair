@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.125.20260924**
+**Applies to FreePair v0.126.20260924**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -674,8 +674,9 @@ event.
 If you are **signed in to NA Chess Hub** (see
 [Signing in to NA Chess Hub](#signing-in-to-na-chess-hub)), the quickest
 route is **➕ New Event → Create New Event Using Online Registry → My
-Events on NA Chess Hub…**. That lists the events your account runs and
-opens the one you pick straight away — **no passcode at all**.
+Events on NA Chess Hub…**. That lists the events your account runs, including
+events with no SJSON file saved on NACH. Pick one and FreePair uses your account
+to retrieve its roster; you do not have to type a passcode.
 
 Otherwise, creating an event from an online registry and opening a
 cloud-saved one both ask for an **Event ID** and a **Passcode**. Once you
@@ -687,6 +688,12 @@ clipboard.
 
 Passcodes keep working whether or not you sign in, and you will still need
 one for an event somebody else runs and has shared with you.
+
+When an event has no roster hosted on NA Chess Hub but includes an external
+registration link, FreePair imports it automatically if the site is supported.
+If not, FreePair tells you that the registration site is unsupported. The
+created event retains its NA Chess Hub event ID and upload credential so
+pairing uploads and scoreboard/results entry remain available.
 
 ### Web events
 
@@ -2126,11 +2133,13 @@ pairings. It applies only when pairing one section's first round; **Pair all
 sections** and later rounds retain their own workflow.
 
 Choose **Pairing engine**, **Pairing rule**, **Top seed color** and
-**Starting board** across the compact first row. The second row holds
-**Re-seed before R1**, **Avoid same team**, **Accelerate**, **Cancel** and
-**Start Pair Round 1**, in that order. The action buttons are aligned to the
-right edge with **Use recommended** above them. Starting board and round
-limits are typed directly, without spinner buttons.
+**Starting board** across the first row. The dialog opens wider when the screen
+has room; on narrower displays, settings wrap and content scrolls vertically
+rather than showing a horizontal scrollbar. The second row holds **Re-seed
+before R1**, **Avoid same team** and **Accelerate**, with **Cancel** and
+**Start Pair Round 1** kept to the right. The action buttons are aligned to the
+right edge with **Use recommended** above them. Starting board and round limits
+are typed directly, without spinner buttons.
 
 **Use recommended**, beside Starting board, recalculates the recommendation
 from the current event without changing its board-packing policy. Hover over
@@ -3087,8 +3096,16 @@ You can also assign a bye mid-event once a round is already paired.
 
 ### Entering results
 
-Results are entered on the **Pairings** tab, board by board. Standings,
-tiebreaks and the wall chart update immediately.
+Results are entered on the **Pairings** tab, board by board. In a team
+section, the top **Team Pairings** table summarizes team matches. Expand a
+match and turn off **Team View** to enter individual board results there; with
+Team View on, use the **Board pairings** grid to enter them. Team scores are
+derived from those individual board results. The LAN and NACH result-entry
+pages also accept results by individual board, not by team match. On the local
+LAN page, team boards are listed in match/board order with labels such as **1.1**,
+**1.2**, then **2.1**. These display labels can differ from physical board IDs,
+but each still maps to its own board result. Standings, tiebreaks and the wall
+chart update immediately.
 
 **A forfeit win counts as a full point for USCF pairing score groups,**
 just as it does in the standings. Because no game was played, a forfeit
@@ -3671,13 +3688,14 @@ remembered for next time:
 **A team event shows its team tables too.** Before the board pairings
 for a team section, the rotation puts up the round's team match-ups —
 match number, the two teams with their seeds, and the board score as it
-stands. Before the player standings it puts up the **team standings** —
-place, team, match points, board points, which is what the event is
-actually decided on. That is the question a captain and a spectator are asking; the
-boards that follow are how a player finds their own game. A running
-match shows its score part-finished, because that is what a room
-watches; one where nobody has finished a board shows a dash rather than
-0–0, which would read as a set of draws.
+stands. The board list follows in that same match-and-board order (1.1, 1.2,
+2.1...), keeping each match together even when physical board IDs differ.
+Before the player standings it puts up the **team standings** — place, team,
+match points, board points, which is what the event is actually decided on.
+That is the question a captain and a spectator are asking; the boards that
+follow are how a player finds their own game. A running match shows its score
+part-finished, because that is what a room watches; one where nobody has
+finished a board shows a dash rather than 0–0, which would read as a set of draws.
 - **Pairing columns** — the Live Score Board's own, separate from the grid and
   the printed sheet. A projector read across a room has far less width
   than a sheet of paper, so fewer columns and larger type. **Rule lines
@@ -4138,8 +4156,9 @@ The phone and iPad flow is deliberately narrow:
    and navigation stay fixed while the board list scrolls. On phones, the compact
    header leaves more room for boards, QR links move to one responsive row at
    the bottom of the page without the organizer or FreePair logos, the whole page
-   scrolls normally, and each card centers the board number above White, the result button or score,
-   and Black. Recorded forfeit scores and labels are red. Press **Tap to enter
+   scrolls normally, and each card centers the board label above White, the result
+   button or score, and Black. Team boards use labels such as **1.2** to show the
+   match and board. Recorded forfeit scores and labels are red. Press **Tap to enter
    result** between White and Black for an unrecorded game. Touching player names
    or the surrounding row does not open entry, so TDs can scroll safely. Recorded
    scores appear in large type in the center.
@@ -4815,8 +4834,9 @@ tonight's tournament.
 opened.** Publishing pairings and results, cloud backup and roster sync
 are unchanged by signing in. This is deliberate: an upload works or
 fails for the same reason every time, whether you are signed in or not.
-Nothing is lost by it, because an event you downloaded by signing in
-brings its passcode with it — FreePair already has what it needs.
+NA Chess Hub supplies the upload credential for events you manage, and
+FreePair keeps it with the created event even when the roster came from an
+external registration site.
 
 **Signing in is optional and changes nothing else.** Per-event passcodes
 work exactly as before, which is what you still want when somebody hands
@@ -5788,7 +5808,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.125.20260924**. It is updated whenever a
+This guide describes FreePair **v0.126.20260924**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
