@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.126.20260924**
+**Applies to FreePair v0.127.20260925**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -1897,7 +1897,12 @@ the current data rather than deleting anything you have not confirmed.
 
 **⇄ Move players…** transfers players between sections, carrying their
 history with them. This is the correct way to handle a player who was
-entered in the wrong section.
+entered in the wrong section. Use **Copy (keep players in the source section too)**
+when both sections should retain the player.
+
+If the destination has paired rounds, choose a result under **Result for
+already-paired rounds** for each one. The dialog content scrolls as needed;
+**Cancel** and **Move** stay available at the bottom.
 
 ### Scholastic events rated by NWSRS
 
@@ -2115,9 +2120,9 @@ leaving you to guess. The usual answers are:
 - **A player is soft-deleted.** Restore them or delete them permanently
   on **Roster** before pairing the next round, not just round 1.
 
-When selected in the screen column settings, the Pairings table shows **Result
-Enter - Where** and **Result Enter - By Who** at the far right, after the **?**
-column. Their visibility follows your selections even when local or NACH
+When selected in the screen column settings, the Pairings table shows **Results
+From** and **Results Who** at the far right, after the **?** column. Their
+visibility follows your selections even when local or NACH
 result entry is stopped; sharing does not need to be running to inspect attribution.
 Results entered on the TD laptop show **TD Computer** / **TD**. Results entered
 from the local result-entry page show **Local Network** / **TD**, and hosted
@@ -2628,8 +2633,8 @@ column is a matter of taste and is never questioned.
 **Copy from grid** copies the grid's arrangement and both switches to the
 printed sheet, but deliberately keeps the result columns' visibility, so copying a
 layout across cannot cost you the write-in boxes. It also ignores the
-screen-only **Result Enter - Where** and **Result Enter - By Who** columns;
-these are never offered in either print-column list or printed preview.
+screen-only **Results From** and **Results Who** columns; these are never offered
+in either print-column list or printed preview.
 
 ### Advanced pairing options
 
@@ -5808,7 +5813,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.126.20260924**. It is updated whenever a
+This guide describes FreePair **v0.127.20260925**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
