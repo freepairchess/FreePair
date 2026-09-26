@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.128.20260925**
+**Applies to FreePair v0.129.20260925**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -444,6 +444,11 @@ Use **➕ New Event**. You will be asked for the event name, dates
 and location, and then for at least one section. An event with no
 sections cannot be paired, so it is normal to create the first section
 immediately.
+
+If you choose an existing `.sjson` in the save picker and confirm replacing
+it, FreePair creates a fresh event file at that path. The old event's sections,
+unmodeled metadata and hosted-results journal are not carried into the new
+event. Choose a different filename to keep the old event.
 
 ### Opening an existing event
 
@@ -5821,7 +5826,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.128.20260925**. It is updated whenever a
+This guide describes FreePair **v0.129.20260925**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
