@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.127.20260925**
+**Applies to FreePair v0.128.20260925**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -4995,6 +4995,14 @@ Publishing puts pairings and results on the event's public page so
 players can follow along. You can set new events to publish
 automatically under **⚙ Settings → Online**.
 
+To update NACH after scoring, open **F7 Publish pairings and results online**
+and enable **Automatically publish results when an individual game result is
+entered**. FreePair saves the result first, then uploads the refreshed
+pairing/results JSON in the background. Results entered on the TD computer or
+through the local-network page also upload the SwissSys file. Hosted NACH results
+upload only the JSON because NACH already has the event file. If an upload fails,
+FreePair shows an error; use **Publish now** to retry.
+
 **Forfeits stay marked as forfeits in the published results.** The results
 JSON uses `X` for a forfeit win and `F` for a forfeit loss, with board
 results `(1X-0F)`, `(0F-1X)` or `(0F-0F)` for a double forfeit. The last
@@ -5813,7 +5821,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.127.20260925**. It is updated whenever a
+This guide describes FreePair **v0.128.20260925**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
