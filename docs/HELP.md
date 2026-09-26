@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.129.20260925**
+**Applies to FreePair v0.130.20260926**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -3642,9 +3642,10 @@ starts with all available FreePair codes ticked. It also has an optional
 name, the same sheet includes a standard Wi-Fi QR code plus the network in
 text. **Show Password** is off by default; tick it only if the QR and printed
 text should include the password too. Leave Wi-Fi unchecked to print only
-selected FreePair links. The sheet compacts itself into multiple columns as the list
-grows so the selected codes stay on one page instead of spilling onto a second
-sheet.
+selected FreePair links. One or two codes are enlarged and spread down the page;
+three or four use a larger two-column, two-row grid, with a lone third code
+centered in the second row. As the list grows, the sheet compacts the codes into
+multiple columns so every selected code stays on one page.
 
 The file is written next to your event file, named after it — for example
 `MyEvent-all-pairings.pdf` or `MyEvent-qr-codes.pdf` — and opens in your PDF
@@ -4303,10 +4304,17 @@ by the existing result acknowledgement/reconciliation flow, never blind replay.
 
 When hosted entry stops normally, FreePair tells NACH that result entry is
 disabled before releasing its writer, so the NACH page can show a stopped message
-instead of accepting more TD submissions. Stopping and reconnecting hosted entry
-for the same event keeps the same NACH PIN unless you click **Change PIN**. The
-saved writer and result history are resumed separately from that secret. The LAN
-PIN and its unlocked browsers remain unchanged.
+instead of accepting more TD submissions. A NACH server implementing the
+result-entry error contract distinguishes inactive or expired sharing, disabled
+entry, a TD session that needs reauthentication, an incorrect PIN, and PIN-attempt
+cooldown; only an explicit incorrect-PIN message means the submitted PIN was
+wrong. If re-enabling reports that NACH recovery data is missing a delivery ID,
+FreePair blocks restart rather than guessing which saved result to acknowledge;
+keep public sharing on and ask NACH to correct its reconciliation response. Do
+not delete the local results journal. Stopping and reconnecting hosted entry for
+the same event keeps the same NACH PIN unless you click **Change PIN**. The saved
+writer and result history are resumed separately from that secret. The LAN PIN
+and its unlocked browsers remain unchanged.
 Do not use a second FreePair process or delete saved state to take over a writer.
 
 FreePair contacts NACH over outbound HTTPS; no port forwarding or public tunnel
@@ -5826,7 +5834,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.129.20260925**. It is updated whenever a
+This guide describes FreePair **v0.130.20260926**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
