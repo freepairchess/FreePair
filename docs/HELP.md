@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.130.20260926**
+**Applies to FreePair v0.131.20260928**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -197,9 +197,11 @@ Board, Share and Print, rather than alongside the left-hand buttons.
 Each notice is labelled **Warning** or **Error**, with matching colours.
 Identical status and error/warning text appears only once. A rating refresh
 that completes with some ratings unconfirmed is a **Warning**, not a failed
-operation; use each player's rating indicator for the individual outcome. A
-failure that prevents completion is an **Error**. Saving or other progress
-does not hide a distinct warning or error that still needs attention.
+operation. Unconfirmed zero ratings get a red **!** before the value in the
+Roster, with the lookup reason available on hover. Refreshes do not open a
+results dialog. A failure that prevents completion is an **Error**. Saving or
+other progress does not hide a distinct warning or error that still needs
+attention.
 
 Routine **Information** messages, such as a result accepted from a TD tablet,
 appear as a bottom-right toast instead of pushing the workspace down. The
@@ -739,6 +741,13 @@ FreePair's **Quad** pairing rule. If two sections happen to share a name,
 the second is given a number, because elsewhere in FreePair a section's
 name is how it is identified.
 
+For ChessReg, FreePair takes the event name and advertised time control from
+the event details page, not the roster page. A description such as
+*"3 rounds time control G30+5"* fills both the event and section time controls
+as **G/30;+5**. When a roster is reached through an NA Chess Hub event, its
+NA Chess Hub name takes precedence for the event, folder and `.sjson` filename;
+the registration site's title is not substituted.
+
 A large event is a lot to read, so the dialog stays open and tells you
 which section it is on. **Cancel** stops a read in progress.
 
@@ -824,6 +833,12 @@ event and section settings. When it is on, **ID and Rating → Refresh
 Ratings** also pulls the matching USCF post-event value from the US Chess
 sections API for the rating type used to pair the section; when it is off,
 Refresh Ratings does not ask for post-event ratings.
+For each successfully refreshed player, a green check appears beside the
+active Rating and its monthly and post-event comparison values. A post-event
+value that differs from the monthly supplement is highlighted in red. If a
+zero rating cannot be confirmed, the Roster shows a red **!** before it; hover
+over the mark for the lookup reason. The warning banner reports the number of
+players affected.
 The player editor's **USCF** tab shows monthly supplemental and post-event
 values. If no post-event result is found in the recent US Chess history
 window, FreePair treats the post-event value as the same as the matching
@@ -1075,9 +1090,13 @@ Not set. In Edit, fields on all tabs can be changed manually.
 Results include NWSRS ID, grade, rating and school code when the player has
 an NWSRS profile. Choosing a result fills the matching identity, rating and
 profile fields on the tabs, including those NWSRS values; review them before
-Add. Details you already entered that are not supplied by the result,
-including affiliation, contact, check-in and bye choices, stay in place.
-Nothing is added until you press the form's **Add** button.
+Add. The section's configured ID and Rating slots determine which matching
+federation values are used for pairing, including a USCF post-event rating
+when enabled and available. If a matching rich value is unavailable, a value
+you entered directly in the pairing field is kept. Details you already entered
+that are not supplied by the result, including affiliation, contact, check-in
+and bye choices, stay in place. Nothing is added until you press the form's
+**Add** button.
 
 In the Roster grid, double-click a player's cell to edit them on the tab for
 that field. Optional column headers have an **×** button: click it to hide the
@@ -1116,9 +1135,11 @@ already on screen — it does not run another search, so it is instant — and
 it matches any column, so a middle initial, a state, an NWSRS grade or school,
 or part of any ID works. Clearing the box brings the full list back.
 
-Adding a player after the event has started is supported. FreePair works
-out what the late entrant should be scored for the rounds already played
-and shows you the result before you commit.
+Adding a player after the event has started is supported. For rounds already
+paired, FreePair defaults the earliest missed rounds to half-point byes up to
+the section's effective allowance, then uses zero-point byes for the rest. The
+Add-player form shows each choice on **Bye Requests**, where you can change
+any missed-round result before committing the player.
 
 ### Working on several players at once
 
@@ -1242,6 +1263,12 @@ database in your browser, searched for that name. It is a search rather
 than a jump to one profile, because a name can match nobody, one person
 or several — the identification is yours to make, not FreePair's.
 
+**The pairing Rating value opens the matching rating profile.** For USCF- and
+FIDE-rated columns, click the number to open that player's federation profile.
+When **Use USCF post-event rating** is enabled, the USCF Rating value opens the
+player's tournament ratings page instead. If FreePair has no matching
+federation ID, the number remains plain text.
+
 **Only national IDs are checked.** US Chess, FIDE and CFC IDs are digits
 only, so an ID carrying letters is not one of them and is never looked
 up as one — it is left unchecked and labelled as such rather than
@@ -1272,7 +1299,10 @@ checks FIDE directly; it does not send that number to US Chess first.
 It appears whether the primary number changed or was already current. A
 confirmed USCF rating still gets its tick when an optional FIDE rating is
 unavailable; a successful Rating2 lookup alone cannot tick an unchecked
-primary rating. Hover over the tick for each column's outcome.
+primary rating. When post-event pairing is active, the same tick also appears
+before the matching USCF monthly and post-event comparison values. The red
+difference color remains independent of that confirmation. Hover over a tick
+for the refresh outcome.
 
 **Pairing does not undo your roster checks.** Saved
 automatic ID-verification and rating-refresh indicators survive pairing,
@@ -1350,42 +1380,18 @@ or unreachable service is not proof of being unrated and earns no tick.
 A missing rating never clears a positive stored number: even a definitive
 unrated response leaves it in place, unconfirmed, with an explanation.
 
-**Rating refresh results** counts every player in its headline, but lists
-only changed ratings and entries needing attention. For example, a section
-of 23 players can report **22 ratings confirmed (22 already up to date);
-0 updated; 1 not available/not confirmed**, with only that last player in
-the table. Confirmed, unchanged players do not clutter the details.
-**Updated** and **Needs attention** show primary and Rating2 outcomes
-in fully bordered tables with **Player** and federation-labelled columns
-such as **Rating [USCF]** and **Rating2 [FIDE]**. Rating2 is omitted when
-it is absent from the section's source file. Columns automatically size to
-their contents, and the wider dialog can be resized.
-When Rating2 is shown, its summary gives separate applicable, confirmed,
-updated and unconfirmed counts; missing ID2 entries are counted as skipped.
-
-Beside the player's name, a **green check** means all applicable ratings are
-confirmed, a **yellow !** means only one of two is confirmed, and a **red !**
-means none are confirmed. A single-rating section is judged on Rating alone.
-When Rating2 is displayed but ID2 is absent, it is labelled **Not attempted —
-no ID2**, with a neutral dash, and does not count against the player's status.
-Beside each rating, a **green check** means confirmed and unchanged, a
-**green !** means the value was refreshed and changed, and a **red !** means
-it could not be confirmed. Changed ratings show both values directly in the
-cell, such as **2140 → 2040**, with the green **!** beside them. Each rating
-also includes a short explanation on the same line, such as **Confirmed —
-already up to date** or **FIDE rating not available**. When the rating type
-is not explicitly recorded, the corresponding ID column's federation supplies
-the label; missing lookups do not turn a known FIDE column into “mixed”.
-Hover for the full reason a rating could not be confirmed, including service
-or identity issues, and the change details, including
-**Refreshed from 1800 to 1823**.
-
-“No ratings changed” does not mean nobody was checked. The report also
-explains why a column could not be confirmed. Running the refresh again
-still confirms values that already match. A preview with no differences
-skips only the review dialog, not the actual refresh. Confirmations describe
-the returned rating data, not a guarantee that the service has published
-the supplement your event needs — the timing warnings still matter.
+**Refresh feedback stays in the Roster.** The warning banner reports how
+many players' ratings could not be confirmed; it does not open a results
+dialog. A stored zero that the lookup could not confirm gets a red **!** in
+the theme's error color. Hover over it for the lookup reason. A zero is not
+assumed to mean unrated: when US Chess authoritatively confirms an unrated
+player, the rating gets the usual green check instead. Confirmed, unchanged
+ratings also get green checks, while changed values remain highlighted as
+usual. Running the refresh again still checks values that already match. A
+preview with no differences skips only the review dialog, not the refresh.
+Confirmations describe the returned rating data, not a guarantee that the
+service has published the supplement your event needs — the timing warnings
+still matter.
 
 Two warnings exist here on purpose:
 
@@ -1596,6 +1602,13 @@ turn it on when you want a compact **Withdrawn**, **Soft-deleted**, or
 layout because they are contact details, not pairing/scoring columns; turn
 them on when you need to work contacts from the roster. The choice is saved
 with the section.
+
+The **View** menu beside **Focus** opens the same chooser or restores the
+roster's default view. The fixed **ID**, **Name** and **Rating** columns stay
+visible; ID and Rating follow the section's slot metadata. The default layout
+also enables **Title**, **State**, **Team**, **Score**, and half-, zero- and
+full-point bye columns. Optional columns with no data remain hidden unless
+**Show empty columns** is enabled.
 
 **Title** is shown by default. On a FIDE-rated section it decides the
 order of players on equal ratings, so it is worth seeing next to the
@@ -1905,9 +1918,17 @@ history with them. This is the correct way to handle a player who was
 entered in the wrong section. Use **Copy (keep players in the source section too)**
 when both sections should retain the player.
 
-If the destination has paired rounds, choose a result under **Result for
-already-paired rounds** for each one. The dialog content scrolls as needed;
-**Cancel** and **Move** stay available at the bottom.
+After a successful move or copy, FreePair opens the destination on
+**Standings**. The crosstable makes new arrivals easier to distinguish from
+players with history in earlier rounds. Switch to **Roster** or **Pairings**
+when you are ready to review their details or pair them.
+
+If the destination has paired rounds, FreePair defaults the earliest missed
+rounds to half-point byes up to the destination's effective allowance, then
+uses zero-point byes for the rest. Choose a result under **Result for
+already-paired rounds** to change any default; that choice applies to each
+selected player. The dialog content scrolls as needed; **Cancel** and **Move**
+stay available at the bottom.
 
 ### Scholastic events rated by NWSRS
 
@@ -1984,15 +2005,17 @@ names, which made it hard to tell you were even looking at the same
 setting. The only difference now is the first row: an event can be
 **Not recorded**, a section can **Inherit from event**.
 
-**Section ID / rating slot metadata is shown separately.** NA Chess Hub can
-now summarize what the section's **ID**, **ID2**, **Rating**, and
-**Rating2** slots contain. FreePair shows those summary keys on the section
-**Overview** tab before round 1 is paired; after pairing starts they are
-read-only because they define the roster columns the pairings were seeded
-from. Sections with no **ID2** or **Rating2** data hide those secondary
-metadata rows unless the player rows carry rich NA Chess Hub ID/rating data
-Changing the visible rows before
-round 1 updates the Roster immediately: for example, choosing **FIDEID** makes
+**Section ID / rating slot metadata is on the Roster tab.** NA Chess Hub can
+summarize what the section's **ID**, **ID2**, **Rating**, and **Rating2** slots
+contain. FreePair shows those controls in the roster-grid header beside
+**Roster**. They are editable before round 1 is paired; after pairing starts
+they are read-only because they define the roster columns the pairings were
+seeded from. Each secondary selector appears only while its matching **ID2**
+or **Rating2** roster column is visible. If rich NA Chess Hub data can populate
+an empty secondary column, enable **Show empty columns** to reveal that column
+while configuring its slot. Sparse sections without a secondary data source keep
+both selectors hidden. Changing the selected slots before round 1 updates the Roster immediately: for
+example, choosing **FIDEID** makes
 the main ID column **ID [FIDE]** and fills it from each player's FIDE ID, with
 a zero placeholder where no usable ID exists. If a Web-imported section has
 unlabeled IDs, set **ID** to the correct type before pairing; FreePair keeps
@@ -2001,14 +2024,19 @@ If the same section has known USCF IDs but no rating-type labels, set
 **Rating** to **USCFRegularRating** (or the matching USCF slot); FreePair keeps
 the current pairing ratings and records the column as that USCF rating type.
 Choosing a USCF rating type makes the main Rating column show that USCF
-rating, or 0 when the player is unrated on that type. If **Use USCF post
-event rating for pairing** is on for the section, a USCF Rating
-slot shows the matching post-event value instead and the header says
-**Rating [USCF Post Event Regular]**, **Quick**, or **Blitz**. Blank means
-no key is written; **custom** means the section is mixed and FreePair falls
-back to each player's row-level labels. These fields describe the file layout
-— they are not database verification. Missing-ID flags are calculated when
-the file is saved, not edited by hand.
+rating, or 0 when the player is unrated on that type. The **Use USCF
+post-event rating** checkbox appears after **Rating** here only when the
+selected slot has a matching USCF post-event value (Regular, Quick, Blitz,
+or Online). When enabled, the main column uses that type's post-event value
+and its header says **Rating [USCF Post Event Regular]**, **Quick**, **Blitz**,
+or the matching **Online** type. The same type's monthly supplement and
+post-event columns appear beside it, in that order. The effective Rating and
+post-event value are shown in red when they differ from the monthly
+supplement; matching values remain in the normal text color. Blank means no
+key is written; **custom** means the section is mixed and FreePair falls back
+to each player's row-level labels. These fields describe the file layout —
+they are not database verification. Missing-ID flags are calculated when the
+file is saved, not edited by hand.
 
 **Choosing "NWSRS only" moves the columns.** Each player's NWSRS ID and
 rating move into the pairing **ID** and **Rating** columns, and their
@@ -2576,10 +2604,10 @@ TD or keep it with your notes.
 ### Pairing sheet columns
 
 Which columns appear, in what order and under what heading, is yours to
-set. Open it from **Pairing Operations → Display & Print Columns…** to
-configure the on-screen grid and the printed sheet side by side, or from
-**Page setup → Columns…** when the report is the pairing sheet, to
-adjust the printed sheet alone.
+set. On the Pairings grid, open **View → Display & Print Columns…** beside
+Focus to configure the on-screen grid and printed sheet side by side, or use
+**Page setup → Columns…** when the report is the pairing sheet to adjust the
+printed sheet alone.
 
 **These are app-wide preferences, shared by every section**, unlike the
 advanced pairing options below. Save a column change from any section and
@@ -2588,14 +2616,25 @@ popped-out Pairings windows. Switching sections or rounds and entering
 results does not change the chosen layout. The saved preferences also apply
 the next time you open an event; grid and print layouts remain separate.
 
+For a quick change in the on-screen Pairings grid, click the **x** at the
+right edge of a White or Black player-column header. FreePair hides that
+column and its matching column for the other player, then saves the change
+in the screen layout. **Results From**, **Results Who** and **Pairing Rule**
+have their own **x** because they have no paired counterpart. These changes
+never alter the printed-sheet layout. Use **View → Restore Default View** to
+bring back the Board and combined player blocks with Title, Rating, Score,
+Color History and Due, followed by the result selector, result-attribution
+columns and Pairing Rule at the end.
+
 Each layout has two independently saved switches, both checked by default:
 
 - **Same columns for both players** shows one choice per paired field:
   Rating, Title, Name, Player (combined), Pairing #, Team, Color History,
   Due Color, Score and Result (write-in). A visibility or custom-header
   edit applies to both White and Black. Uncheck it to see and edit **both
-  sides separately**. Board, the central Result / Score Selector and the
-  screen-only result-entry audit columns remain single choices.
+  sides separately**. Board, the central Result / Score Selector, the
+  screen-only Results From / Results Who columns and Pairing Rule remain
+  single choices.
 - **Mirror display columns** places player names toward the center, with
   White's details in the opposite direction to Black's. The preview shows
   the actual order and combined text. Turn mirroring off to use your custom
@@ -2637,8 +2676,8 @@ column is a matter of taste and is never questioned.
 
 **Copy from grid** copies the grid's arrangement and both switches to the
 printed sheet, but deliberately keeps the result columns' visibility, so copying a
-layout across cannot cost you the write-in boxes. It also ignores the
-screen-only **Results From** and **Results Who** columns; these are never offered
+layout across cannot cost you the write-in boxes. It ignores the screen-only
+**Results From**, **Results Who** and **Pairing Rule** columns; none is offered
 in either print-column list or printed preview.
 
 ### Advanced pairing options
@@ -3006,11 +3045,14 @@ pairing engines are not involved.
 ## Byes and withdrawals
 
 **Byes & Withdrawals** sits at the top of the **Roster** tab, folded away
-until you open it. The heading carries the count, so you can see whether
-there is anything to look at without opening it. It used to be a tab of
-its own; it moved because it is a short list you consult while working on
-the roster, and having it elsewhere meant leaving the roster to answer a
-question about the roster.
+until you open it. The heading shows bye counts by round (for example,
+**R1: 4, R2: 3, R3: 0**) so you can see how byes are distributed without
+opening the panel. It includes assigned byes and future requests for players
+still in the roster; paired rounds with no byes show zero. Historical bye
+rows for players no longer listed can remain in the expanded panel, but are
+not included in the heading. It used to be a tab of its own; it moved because
+it is a short list you consult while working on the roster, and having it
+elsewhere meant leaving the roster to answer a question about the roster.
 
 - **Half-point byes** are requested in advance by the player. Record them
   and the player is withheld from that round's pairing pool.
@@ -3160,9 +3202,12 @@ is done.
 ### Standings and tiebreaks
 
 The **Standings** tab ranks players by score and then by tiebreak.
-**🏆 Tiebreaks…** chooses which tiebreak systems apply and in what order.
-Tiebreak columns are sortable, and sort by the underlying value rather
-than the displayed text.
+**🏆 Tiebreaks…** chooses which tiebreak systems apply and in what order
+for this section. The selection affects standings order as well as which
+columns appear. New sections created from a selected or source section
+inherit its tiebreak selection, including an explicit choice to show none;
+each section can then be configured independently. Tiebreak columns are
+sortable, and sort by the underlying value rather than the displayed text.
 
 Full-point, half-point and zero-point requests appear in their own columns, so you can
 check them against your written list at a glance.
@@ -5834,7 +5879,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.130.20260926**. It is updated whenever a
+This guide describes FreePair **v0.131.20260928**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
