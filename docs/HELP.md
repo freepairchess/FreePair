@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.131.20260928**
+**Applies to FreePair v0.132.20260929**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -937,6 +937,11 @@ standings and prizes.
   event has several similarly configured sections.
 - **🪟 Open in Window** pops a section out into its own window, so you can
   watch two sections side by side.
+
+A soft-deleted section shows a warning banner in its view. **Dismiss** hides
+only the warning; the section remains locked and excluded from publishing.
+Use the restore or permanent-delete icon beside its name in the Sections list
+to take action later.
 
 Each row in the sections list collapses with the chevron on its right, so
  a long list stays scannable. A collapsed row shows the player count first,
@@ -4330,7 +4335,15 @@ confirmed release before starting here. Two running copies on the same computer
 still count as two instances. There is no takeover button or account-login step.
 Ownership renews every ten seconds with a thirty-second lease. If the owner
 crashes or loses the lease, a new explicit Start is required. FreePair does not
-automatically claim a new run or reset the server in the background.
+automatically claim a new run or reset the server in the background. If NACH says
+the run was retired, check the Pairings grid for unrecorded results, then click
+**Start Sharing** to create a fresh run. If NACH still reports the event as busy,
+wait up to 30 seconds and retry.
+
+On Windows, FreePair prevents automatic system sleep while NACH sharing is active;
+the display may still turn off. This uses battery and does not override an explicit
+Sleep command or lid-close power setting. On other platforms, system sleep is not
+inhibited.
 
 Within the active sharing run, FreePair verifies the private protocol,
 sets up its writer, sends the already prepared PIN and publishes a fresh private
@@ -5879,7 +5892,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.131.20260928**. It is updated whenever a
+This guide describes FreePair **v0.132.20260929**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
