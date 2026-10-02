@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.132.20260929**
+**Applies to FreePair v0.133.20261002**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -4109,8 +4109,10 @@ authorizations are immediately revoked, while the local address and public
 scoreboard stay running. Use the **eye icon** to see the replacement privately.
 The old PIN no longer unlocks entry.
 
-Local-network and NACH results entry have **separate PINs**. Use the eye,
-**Copy PIN** and **Change PIN** in the card for the destination you intend.
+Local-network and NACH results entry have **separate PINs**. Use the eye and
+**Copy PIN** in the card for the destination you intend. The local card's
+**Change PIN** generates a replacement; the NACH card offers **Set PIN** for a
+manually chosen code and **Generate** for a random replacement.
 Newly generated PINs differ from the other active destination's PIN and from
 the previous code for that destination. Local changes revoke local browser
 credentials only; NACH changes synchronize through its existing private
@@ -4299,12 +4301,12 @@ share one event-scoped ownership session, even when results entry is disabled.
 Only one FreePair instance can share an event with NACH at a time.
 
 Save the event locally and open **Share → Scoreboard Sharing → Share Scoreboard
-on NAChessHub**. Check **Enable Results Entering** before **Start Sharing** if TDs
-will enter results from the NACH page. The checkbox alone does not connect while
-sharing is stopped, but it does prepare the NACH TD PIN immediately so you can
-reveal, copy or change it before the public board goes live. If the event's NACH
-ID or upload passcode is missing, Start prompts for both; otherwise it uses the
-saved credentials directly. FreePair first acquires exclusive NACH sharing
+on NAChessHub**. **Enable Results Entering** is checked by default; uncheck it
+before **Start Sharing** if you want a read-only scoreboard. The checkbox alone
+does not connect while sharing is stopped, but it does prepare the NACH TD PIN
+immediately so you can reveal, copy or change it before the public board goes
+live. If the event's NACH ID or upload passcode is missing, Start prompts for
+both; otherwise it uses the saved credentials directly.
 ownership, publishes the selected event's current board, and enables results
 entry if requested. A genuinely new accepted run initializes fresh hosted
 sharing state once; retrying that same active Start does not reset it again.
@@ -4312,6 +4314,17 @@ sharing state once; retrying that same active Start does not reset it again.
 If public sharing is already running, the checkbox turns hosted entry on/off
 without stopping that scoreboard or affecting LAN sharing. If private setup
 fails, the public scoreboard can remain available and the failure is shown.
+While NACH is reconnecting, an amber message explains whether FreePair is
+retrying the connection, waiting for the previous sharing lease, or rebuilding
+the page from the saved event. Leave sharing on; the message clears after the
+scoreboard is republished. The same warning appears in the event's message
+banner and remains in **Messages** session history after recovery. Any result
+not yet saved in FreePair may need to be entered again.
+The hosted PIN row starts with a generated two-letter/four-digit PIN. Use
+**Set PIN** to choose one in that format, or **Generate** for a random
+replacement. It must differ from the local-network PIN. Changing it revokes
+existing hosted TD unlocks; browsers must enter the new PIN. PINs stay in
+FreePair's process memory and are not written to the event file.
 
 Fresh web imports can enable hosted entry after saving, without closing and
 reopening the event. For older events still open in memory, missing section IDs
@@ -4333,12 +4346,19 @@ If NACH says **Another FreePair instance is sharing this event. Stop it first.**
 stop on that instance and wait for its
 confirmed release before starting here. Two running copies on the same computer
 still count as two instances. There is no takeover button or account-login step.
-Ownership renews every ten seconds with a thirty-second lease. If the owner
-crashes or loses the lease, a new explicit Start is required. FreePair does not
-automatically claim a new run or reset the server in the background. If NACH says
-the run was retired, check the Pairings grid for unrecorded results, then click
-**Start Sharing** to create a fresh run. If NACH still reports the event as busy,
-wait up to 30 seconds and retry.
+Ownership renews every ten seconds with a thirty-second lease. During a NACH
+deployment, IIS reset, reboot, or other temporary outage, FreePair retries
+connection and scoreboard publication automatically while sharing remains on.
+It retries transient failures and a busy event with the same proposed run ID;
+when NACH retires the run or replaces its session identity, FreePair establishes
+the appropriate fresh generation and rebuilds
+the hosted page and scoreboard from the event saved in FreePair. Results already
+saved locally return on the rebuilt board. A result that existed only on NACH
+may need to be entered again. Invalid event credentials and other protocol
+errors are reported instead of retried as if they were an outage.
+
+Do not click Stop just because NACH is temporarily unavailable. Stop cancels
+automatic recovery; an intentional new share after Stop is a separate run.
 
 On Windows, FreePair prevents automatic system sleep while NACH sharing is active;
 the display may still turn off. This uses battery and does not override an explicit
@@ -4370,7 +4390,7 @@ wrong. If re-enabling reports that NACH recovery data is missing a delivery ID,
 FreePair blocks restart rather than guessing which saved result to acknowledge;
 keep public sharing on and ask NACH to correct its reconciliation response. Do
 not delete the local results journal. Stopping and reconnecting hosted entry for
-the same event keeps the same NACH PIN unless you click **Change PIN**. The saved
+the same event keeps the same NACH PIN unless you click **Set PIN** or **Generate**. The saved
 writer and result history are resumed separately from that secret. The LAN PIN
 and its unlocked browsers remain unchanged.
 Do not use a second FreePair process or delete saved state to take over a writer.
@@ -4380,7 +4400,9 @@ is needed. Hosted submissions stay pending until FreePair saves the official
 score and acknowledgement receipt in the same `.sjson` file. The Pairings grid
 shows **NA Chess Hub / TD**, including after reopening the saved event. Local TD
 or tablet edits that win a race make an old hosted proposal conflict rather than
-overwrite a newer result.
+overwrite a newer result. A TD can correct a recorded hosted result, including
+choosing **Game still in play** to clear it back to Unplayed; FreePair saves that
+correction before acknowledging it, and the board becomes available for result entry again.
 
 The event file contains a versioned **FreePair hosted results** block with durable
 participant/round/game IDs, revisions, audit and applied-submission receipts.
@@ -4423,6 +4445,17 @@ approval-related error or an unavailable sharing-session endpoint, its deployed
 server needs the matching update; update/reconnect,
 not follow the retired approval workflow.
 
+**NACH diagnostics.** FreePair writes local-only JSONL diagnostics while NACH
+sharing or hosted result entry is active. On Windows, find them in
+`%APPDATA%\FreePair\Diagnostics`; the newest 14 diagnostic files are retained.
+They record UTC times, safe protocol error codes/statuses, configuration and
+PIN revisions, and SHA-256 hashes of event/opaque identifiers. They do not
+contain the event ID, PIN, upload passcode, access token, commit permit, player
+information or submitted scores, and FreePair does not upload them. For support,
+share the relevant file rather than credentials. NACH support can correlate its
+server-side entries using the lowercase SHA-256 of the trimmed event ID encoded
+as UTF-8; FreePair uses the same hash for each event in its log.
+
 The same window has **Share Scoreboard on NAChessHub**.
 This puts the same board on a public web page — one anybody can open,
 from anywhere, without being on the venue Wi-Fi at all.
@@ -4435,11 +4468,14 @@ sharing without NACH credentials.
 
 Press **Start Sharing** in the NACH card. FreePair acquires ownership before
 sending the first board, then keeps sending it as you pair and score.
-Leave **Enable Results Entering** unchecked to share only the read-only
-scoreboard; no hosted result-entry setup is needed, including for newly formed quads.
-Once the first copy has landed
-you get the public link and a QR code for it, and **Open in my browser**
-to check it looks right.
+Uncheck **Enable Results Entering** to share only the read-only scoreboard;
+no hosted result-entry setup is needed, including for newly formed quads.
+Once the first copy has landed you get the public link and a QR code for it,
+and **Open in my browser** to check it looks right. Connecting and publishing
+the first scoreboard is shown as information, not a warning; connection retries
+and recovery still show warnings. While the first connection is retrying,
+**Stop** remains available to cancel the attempt. It is temporarily unavailable
+while hosted result-entry setup is still finishing.
 
 **It is not either/or.** Sharing on the hub and sharing on the local
 network are separate switches and you can run both. They solve different
@@ -5892,7 +5928,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.132.20260929**. It is updated whenever a
+This guide describes FreePair **v0.133.20261002**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
