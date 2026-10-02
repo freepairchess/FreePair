@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.133.20261002**
+**Applies to FreePair v0.134.20261002**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -2363,7 +2363,9 @@ and why a section is or is not ready.
 > FreePair separates them when it cuts the field up, moving the fewest
 > players it can so the seeding stays as close to the ratings as the
 > separation allows. Players left over in the mini-Swiss are not moved:
-> there, avoidance is an ordinary pairing constraint.
+> when this checkbox is on, the mini-Swiss also avoids pairing teammates
+> against each other for all three rounds. The quad separation happens at
+> the split; the mini-Swiss uses the ordinary per-round pairing constraint.
 >
 > **Two cases cannot be fully separated, and FreePair tells you which.**
 > A section of exactly four players *is* one quad — everybody plays
@@ -4928,6 +4930,13 @@ box that remembers what you last typed:
   you have already been running and saved to NA Chess Hub, with its
   pairings and results as you left them.
 
+In **My Events Saved on NA Chess Hub**, **Saved by** and **Saved at** show
+the latest cloud working-file upload when NA Chess Hub provides that
+information. The time is shown in this computer's local time zone.
+**Not recorded** means the Hub did not supply provenance; it does not
+mean the event has no saved file. These columns do not describe when
+FreePair last saved the file on this computer.
+
 Both open the event you pick with no passcode, and both list events
 delegated to you as well as ones you registered yourself.
 
@@ -5004,6 +5013,13 @@ with changes waiting, and beside the Sections header for the event total.
 Clicking a section's badge opens the review for that section; clicking
 the header total opens the whole event. You review every change before
 anything is applied.
+
+The review shows **Last edited on NACH** for each player's registration
+when NA Chess Hub provides it, in your computer's local time. **Not
+available** means there was no timestamp for that player (including
+players found only in FreePair). This is the registration's most recent
+edit, not necessarily the time of the particular bye or check-in change
+shown on that row; a later edit may have updated it.
 
 Most of what is counted is something you can act on. A walk-up entrant
 who is not on NA Chess Hub is a permanent difference, not a pending
@@ -5138,6 +5154,12 @@ organizer or a TD for that event; it is not on the public event page.
 
 It is a snapshot: if you keep working after saving one, the cloud copy is
 out of date until you save another.
+
+When you are signed in to NA Chess Hub, FreePair includes the account name
+shown in the app with the cloud-copy upload. Without a sign-in, it sends no
+name. NACH can show the latest save time for either kind of upload once its
+server supports save details; the name is client-reported display information,
+not proof of who performed the upload. The event passcode is still required.
 
 The Settings option to prompt for this backup runs when you exit FreePair with an
 open event. **Close Event** itself stays local and immediate; use **Save Event**
@@ -5928,7 +5950,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.133.20261002**. It is updated whenever a
+This guide describes FreePair **v0.134.20261002**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
