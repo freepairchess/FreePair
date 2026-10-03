@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.134.20261002**
+**Applies to FreePair v0.135.20261002**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -2665,7 +2665,10 @@ header.
 
 **Restore Default** resets that layout and checks both switches again;
 **Restore default columns** does the same in the print-only picker. Neither
-changes the other layout.
+changes the other layout. The printed default shows Board #, write-in result
+boxes and combined player blocks containing Title, Rating, Color History,
+Due Color and Score. Pairing #, Team, separate Name and the central result
+selector start hidden. Saved custom print layouts keep their existing choices.
 
 The two views want opposite things of the result columns, and FreePair
 sets them up that way:
@@ -3626,8 +3629,11 @@ would be describing a rule that did not run.
 
 A quad is four players and three rounds of two boards, so a sheet per
 round is three pages carrying six lines between them. FreePair prints the
-whole quad on **one** page instead: rounds 1 and 2 side by side, round 3
-below round 1. Ten quads costs ten sheets rather than thirty.
+whole quad on **one** page instead: rounds 1, 2 and 3 stacked vertically,
+each in a full-width row with room between them to use the page. Beside
+each round heading is a **Starting Time** line for the director to fill in.
+The **W#** and **B#** column headings stay on one line. Ten quads costs ten
+sheets rather than thirty.
 
 This is the default, and it does not matter how far along the section is.
 All three rounds of a quad are paired the moment you pair it, so the
@@ -3646,9 +3652,10 @@ not yet finished — not round 3 just because round 3 is the last one on the
 schedule. The Round dropdown at the top of the Pairings tab opens on that
 same round, and whatever you pick there is what prints.
 
-The quad sheet is always **landscape**, even if you set the pairing sheet
-to portrait. Two tables side by side need the width; on portrait paper the
-type would shrink until the sheet was unreadable.
+The quad sheet uses the pairing sheet's chosen **Orientation**, including
+portrait. Each round has the full page width for player names and results.
+Landscape uses smaller gaps between rounds so all three tables still fit
+when the sheet has long names or a QR-code header.
 
 The file is named for the section rather than for a round — for example
 `Quad 1-pairings.pdf` — because every round is on it.
@@ -5950,7 +5957,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.134.20261002**. It is updated whenever a
+This guide describes FreePair **v0.135.20261002**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
