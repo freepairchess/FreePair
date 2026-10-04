@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.135.20261002**
+**Applies to FreePair v0.136.20261004**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -3968,7 +3968,9 @@ only results entry on or off, leaving the public scoreboard running.
 NACH uses the event ID and upload passcode configured for publishing.
 No NACH login or installation-approval step is needed.
 The scoreboard remains public and read-only unless result entry is explicitly
-enabled and its private session is ready.
+enabled and its private session is ready. Hosted result entry shows each player's
+separate title and the pairing rating from the event roster, including custom or
+regional ratings; an unknown rating stays blank rather than becoming zero.
 If NA Chess Hub is not configured, **Start Sharing** explains what is missing
 and prompts for the event ID and upload passcode. Cancel leaves sharing stopped.
 Existing credentials are used without another prompt; invalid credentials are
@@ -5957,7 +5959,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.135.20261002**. It is updated whenever a
+This guide describes FreePair **v0.136.20261004**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
