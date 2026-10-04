@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.136.20261004**
+**Applies to FreePair v0.137.20261004**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -2622,6 +2622,8 @@ it applies to the others, including newly created quads and already-open
 popped-out Pairings windows. Switching sections or rounds and entering
 results does not change the chosen layout. The saved preferences also apply
 the next time you open an event; grid and print layouts remain separate.
+In a Pairings window, a bye row shows the player's bye message instead of
+an opponent; its game-result cell stays blank because no game was played.
 
 For a quick change in the on-screen Pairings grid, click the **x** at the
 right edge of a White or Black player-column header. FreePair hides that
@@ -3928,11 +3930,11 @@ be a list of zeroes in seeding order.
 ### Putting the Live Score Board on a TV or on phones
 
 The **Share** button — next to **Scoreboard** at the top right, or
-**Event Operations → Share Live Score Board** — turns the
-board into a web page that anything on the same network can open. It is
-read-only: people can look, and cannot change the event. The same window
-can also share the board publicly on NA Chess Hub — see *Sharing
-the Live Score Board on NA Chess Hub* below.
+**Event Operations → Share Live Score Board** — shares the scoreboard
+publicly on NA Chess Hub. Viewers can open it from phones or TVs without
+joining the venue network. See *Sharing the Live Score Board on NA Chess Hub*
+below. Local-network scoreboard sharing is retained internally but is not
+currently offered in the Share window.
 
 The **Share** window has **Scoreboard Sharing**, **Pairing sharing**, and
 **Streaming to Smart TV** tabs. **Streaming to Smart TV** provides browser-specific
@@ -3957,14 +3959,13 @@ has a NACH event ID; no upload passcode is needed to share that public link.
 For an event without a NACH ID, paste its pairing-page URL and click
 **Generate QR**. Use **Copy link** or **Open in browser** beneath the QR.
 This custom link is only kept in the open Share window, not saved in the event file.
-**Scoreboard Sharing** combines scoreboard and results controls, with separate
-**This network** and **Share Scoreboard on NAChessHub** cards. Each has a
-**Start Sharing** button and an independent **Enable Results Entering** setting.
-While sharing is stopped, changing that setting does **not** start a server,
-connect to NACH or prompt for credentials. It chooses whether protected results
-entry starts when you press **Start Sharing**. Local entry is checked by default;
-hosted entry is initially unchecked. While sharing is running, the checkbox turns
-only results entry on or off, leaving the public scoreboard running.
+**Scoreboard Sharing** shows **Share Scoreboard on NA Chess Hub**, with
+**Start Sharing** and an **Enable Results Entering** setting. The local-network
+sharing card and **Open local board** button are hidden. While sharing is
+stopped, changing the setting does **not** connect to NACH or prompt for
+credentials. It chooses whether protected results entry starts when you press
+**Start Sharing**. While sharing is running, the checkbox turns only results
+entry on or off, leaving the public scoreboard running.
 NACH uses the event ID and upload passcode configured for publishing.
 No NACH login or installation-approval step is needed.
 The scoreboard remains public and read-only unless result entry is explicitly
@@ -4023,12 +4024,9 @@ Manual navigation gives the newly selected page a full interval before rotating.
 These responsive controls are implemented in FreePair's local page; the same
 behavior is specified for NACH's separately maintained renderer.
 
-**Step 1 — Open the scoreboard link in a browser.** Start sharing, then click
-**Open local board** on this computer or open the published NACH scoreboard link.
-On another device, use the LAN address from Share, not `localhost`. Keep the page
-in **Scoreboard** mode. Put the casting device and receiver on the same Wi-Fi;
-for a local link, the TV must also be able to reach the FreePair computer.
-Keep FreePair running and the casting device awake.
+**Step 1 — Open the scoreboard link in a browser.** Start sharing on NA Chess
+Hub, then open its published scoreboard link. Put the casting device and receiver
+on the same Wi-Fi, and keep FreePair running and the casting device awake.
 
 **Step 2 — Follow the steps for your browser and receiver:**
 
@@ -4069,9 +4067,16 @@ connect.
 
 If the recommended address does not work, scan or type another card from the
 same list. A laptop that is on Wi-Fi *and* in a dock has more than one address,
-and only the one on the same network as the TV can work.
+and only the one on the same network as the TV can work. These local-network
+troubleshooting steps apply to an existing session; the current Share window
+cannot start one.
 
-### Entering results from phones on the local network
+### Local-network result entry (previously available in Share)
+
+The local sharing card is hidden in the current Share window, so the following
+instructions describe the retained local feature rather than an available way
+to start it. Use **Share Scoreboard on NA Chess Hub** for current sharing and
+hosted TD result entry.
 
 The Live Score Board and TD result entry are two modes of **one local site**,
 with the same address and port. Shared links and QR codes always open the
@@ -4467,18 +4472,22 @@ share the relevant file rather than credentials. NACH support can correlate its
 server-side entries using the lowercase SHA-256 of the trimmed event ID encoded
 as UTF-8; FreePair uses the same hash for each event in its log.
 
-The same window has **Share Scoreboard on NAChessHub**.
-This puts the same board on a public web page — one anybody can open,
-from anywhere, without being on the venue Wi-Fi at all.
+**Share Scoreboard on NA Chess Hub** puts the board on a public web page —
+one anybody can open from anywhere without being on the venue Wi-Fi.
 
 It needs an **NACH Event ID and Passcode**. If either is missing, clicking
 **Start Sharing** prompts for both, with any existing value prefilled and the
 passcode masked. Cancelling does not start sharing. Those credentials prove to
-the hub that you may publish this event. A local club night can keep using LAN
-sharing without NACH credentials.
+the hub that you may publish this event.
 
 Press **Start Sharing** in the NACH card. FreePair acquires ownership before
 sending the first board, then keeps sending it as you pair and score.
+NACH player standings include **Standings @** (each player's distinct row
+number, even when places tie), Place, Title, Player, Rating, Score and a
+result column for each paired round (`R1`, `R2`, etc.), even when the local
+Live Score Board's optional **Round results** columns are off. Round codes
+match the **Standings** tab, including byes and pending games; corrected or
+cleared results are sent with the next scoreboard update.
 Uncheck **Enable Results Entering** to share only the read-only scoreboard;
 no hosted result-entry setup is needed, including for newly formed quads.
 Once the first copy has landed you get the public link and a QR code for it,
@@ -4488,12 +4497,10 @@ and recovery still show warnings. While the first connection is retrying,
 **Stop** remains available to cancel the attempt. It is temporarily unavailable
 while hosted result-entry setup is still finishing.
 
-**It is not either/or.** Sharing on the hub and sharing on the local
-network are separate switches and you can run both. They solve different
-problems — the local address is the only thing that works when the venue
-has no internet, and the hub is the only thing that works when the venue
-Wi-Fi refuses to let devices see each other, which most hotel and school
-Wi-Fi does.
+**NA Chess Hub requires internet access.** The local-network sharing
+implementation remains in FreePair but its controls are hidden in the Share
+window. Public viewers can use the hosted link without connecting to the
+venue Wi-Fi.
 
 **Why the page says when it was last updated.** A board that has stopped
 updating but still looks perfectly normal is the worst thing this
@@ -5959,7 +5966,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.136.20261004**. It is updated whenever a
+This guide describes FreePair **v0.137.20261004**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
