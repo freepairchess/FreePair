@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.137.20261004**
+**Applies to FreePair v0.138.20261004**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -157,20 +157,17 @@ event sit at the right-hand end of the same row:
   or projector. **Share**, marked by three connected dots, shares that
   display with TVs and phones. A compact **QR** dropdown appears after
   **Share** whenever FreePair has a QR code or a share action to offer.
-- **🖨 Print** prints the whole event: **All Pairings**, **All Standings**,
-  **All Wall Charts** or **All Crosstables**, one PDF with a section to
-  a page. These are the same four reports as **Event Operations →
-  Print**; they are also up here because printing the pairings is the
-  most repeated action of a round, and three levels of menu is a lot for
-  something done every forty minutes. To print one section rather than
-  the whole event, use the **Print as PDF** button on that section's
-  tab.
-- All three show an icon and text when there is room. In the toolbar's
-  compact mode, labels hide but icons and tooltips remain.
-  All three are also in **Event Operations**
-  under their full names — **Live Score Board (full screen)**, **Share
-  Live Score Board** and **Print** — if you would rather find
-  them by name.
+- **🖨 Print** includes **Print R1 Pairing**, with section/board order and
+  alphabetical player order on two landscape pages, and the full
+  **All Pairings**, **All Standings**, **All Wall Charts** and
+  **All Crosstables** PDFs. The same actions are under **Event Operations →
+  Print**. To print one section rather than the whole event, use **Print as
+  PDF** on its tab.
+- Scoreboard, Share and Print show an icon and text when there is room.
+  In the toolbar's compact mode, labels hide but icons and tooltips remain.
+  All three are also in **Event Operations** under their full names —
+  **Live Score Board (full screen)**, **Share Live Score Board** and
+  **Print** — if you would rather find them by name.
 - **⚙ Settings** opens the application preferences in a window of
   their own. See [Settings](#settings).
 - **📖 Help** opens a short menu:
@@ -3675,19 +3672,36 @@ The **🖨** icon at the top right of the window — or **Event Operations →
 🖨 Print** — holds the event-wide print jobs, so a ten-quad scholastic does
 not mean ten trips through the section tabs and ten save dialogs:
 
+- **Print R1 Pairing** — immediately writes a **two-page landscape PDF**
+  so you can choose which page to put on the TV or projector. Page 1,
+  **[event name] - Round 1 Pairing by Section**, groups sections in event
+  order, with boards in numeric order. Each bordered section table shows
+  **Board**, **White**, **Result**, and **Black**, including byes. Page 2,
+  **[event name] - Round 1 Pairing by Name**, lists every player in
+  alphabetical Last, First Middle order. Its bordered columns are
+  **Name [Rating]**, **Section**, **Board**, **Color**, and
+  **Opponent [Rating]**; both players have their own row. Titles appear
+  before names; unrated players show UNR. Byes have no board or color
+  on page 2 and are labeled in the Opponent column. Sections without
+  round 1 are skipped. Each page adapts its tables to fill one page;
+  the name page can continue alphabetically into two or three vertical
+  columns. Save the event first:
+  the PDF is written beside it as `[event]-r1-pairings.pdf` and opened in
+  your PDF viewer. If nobody has paired round 1 yet, FreePair shows an
+  error instead of an empty PDF. There is no chooser or page setup.
 - **All Pairings**
 - **All Standings**
 - **All Wall Charts**
 - **All Crosstables**
 - **Print QR Codes**
 
-Each opens a chooser listing every section. **Sections that have been
-paired start ticked**; one that has not started yet is listed but left
-unticked, because it would only add a page of empty rows. Untick anything
-else you do not want on the wall — the side-game, the practice group. A
-section that cannot go in this particular report at all is listed but
-disabled, with the reason under its status, so you can see FreePair left
-it out on purpose rather than wondering where it went.
+The four **All** reports open a chooser listing every section. **Sections
+that have been paired start ticked**; one that has not started yet is
+listed but left unticked, because it would only add a page of empty rows.
+Untick anything else you do not want on the wall — the side-game, the
+practice group. A section that cannot go in this particular report at all
+is listed but disabled, with the reason under its status, so you can see
+FreePair left it out on purpose rather than wondering where it went.
 
 **Continue** then shows the same **Page setup** you get from any other
 print button, on the same report — so an orientation or font size you
@@ -3695,7 +3709,7 @@ tuned on a section tab is the one the event-wide sheet uses. Cancel
 there abandons the print but keeps any adjustment you made, because page
 settings save as they change.
 
-**Print QR Codes** is different: it prints one page listing the QR codes you
+**Print QR Codes** is different:
 select — pairings/event files, scoreboard links, result entry links and any
 venue Wi-Fi QR you added — with the purpose text beside each code. The dialog
 starts with all available FreePair codes ticked. It also has an optional
@@ -5966,7 +5980,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.137.20261004**. It is updated whenever a
+This guide describes FreePair **v0.138.20261004**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
