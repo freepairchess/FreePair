@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.138.20261004**
+**Applies to FreePair v0.139.20261005**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -286,8 +286,8 @@ question.
 | `Ctrl+W` | Close the event |
 | `Ctrl+Z` | Undo the last change |
 | `Ctrl+Y` | Redo it (`Ctrl+Shift+Z` does the same) |
-| `F5` | Pair the selected section; on a Quad section this is **Pair as Quads** |
-| `Shift+F5` | Pair the next round of every ready section |
+| `F5` | On the event view, pair every ready section; on a section view, pair that section (for a Quad section, **Pair as Quads**) |
+| `Shift+F5` | Pair the next round of every ready section, regardless of the selected view |
 | `Ctrl+Shift+Delete` | Delete that section's last round — asks first |
 | `Ctrl+Shift+K` | Choose sections and rounds to delete — asks first |
 | `F6` | Sync all rosters with NA Chess Hub |
@@ -335,11 +335,12 @@ A few of these are worth a sentence:
   pairings, on Standings the standings, and so on — the same PDF as the
   **Print as PDF** button on that tab. On Overview it does nothing,
   because there is nothing there to print.
-- **The `Shift` versions widen a key to the whole event.** `F5` pairs
-  the section you have selected; `Shift+F5` pairs every section that is
-  ready. `Ctrl+P` prints the tab in front of you; `Ctrl+Shift+P` prints
-  every section's pairings. That is a real difference in scope, so check
-  which one you are reaching for during a round.
+- **`F5` follows the selected view.** With the event card selected, it
+  pairs every ready section; with a section selected, it pairs only that
+  section. `Shift+F5` always pairs every ready section, even while you
+  are viewing a section. Likewise, `Ctrl+P` prints the tab in front of
+  you, while `Ctrl+Shift+P` prints every section's pairings. Check the
+  selected view before pressing `F5` during a round.
 - **Only the operations repeated during a round have keys.** Event
   Operations holds a good deal more — merging sections, renumbering
   boards, rating reports. Those stay one click away in the menu, because
@@ -358,9 +359,9 @@ A few of these are worth a sentence:
   keystroke is never a shorter route to throwing pairings away than the
   click it stands in for.
 - **A shortcut that needs something does nothing until it has it.**
-  `F5` with no section selected, or `Ctrl+S` with no event open, is
-  silent rather than broken. **Help → Keyboard Shortcuts** says what
-  each one needs.
+  `F5` without an event or section selected, or `Ctrl+S` with no event
+  open, is silent rather than broken. **Help → Keyboard Shortcuts** says
+  what each one needs.
 
 Keys cannot be reassigned in this release.
 
@@ -1088,6 +1089,33 @@ USCF tab. Click its date field to choose an expiration from the calendar;
 **Clear** removes it. NWSRS grade is selected as K, grades 1–12, Adult, or
 Not set. In Edit, fields on all tabs can be changed manually.
 
+The **USCF**, **FIDE**, **CFC** and **NWSRS** tabs each have a **Pull … Ratings**
+button beside their ID. If that federation's ID is available on the tab or
+in a typed ID/ID2 pairing field, click the button to look up the player.
+FIDE, CFC and NWSRS use the NA Chess Hub player database: FIDE supplies
+standard rating and profile details, CFC supplies regular rating, and
+NWSRS supplies rating, school and grade. Rapid, blitz and K-values that
+the service does not provide are left alone. If a record or rating is
+missing, FreePair leaves existing values in place and reports it in the
+form; **Save** is still needed to apply a successful pull. The FIDE tab
+shows one ID, which is saved as both the player's FIDE ID and the FIDE
+ratings ID. A pull does not change the name or pairing rating on
+**Required**.
+
+On **Required**, **Verify ID** and **Verify ID2** check the player's ID
+against NA Chess Hub. They can recognize an NWSRS ID, including an
+alphanumeric full ID, and fill other federation IDs from the same player's
+profile. A previous successful Roster check appears when you open **Edit**;
+its player-specific ID type takes precedence over the section's usual ID
+type, so you can verify again to fetch linked IDs without guessing. The
+form checks the name as well as the number and does not copy another
+player's profile. When a short number matches multiple federations and
+its type has not been verified, check the ID type in the Roster first.
+Existing IDs are not replaced: a conflicting ID is reported for your
+review. Available ratings fill empty pairing fields only for their known
+rating scales; review all changes and press **Save** to apply them. Editing
+the name or an ID clears that field's displayed verification.
+
 **Search Player DB…** beside the **Name** box looks up the player online.
 Results include NWSRS ID, grade, rating and school code when the player has
 an NWSRS profile. Choosing a result fills the matching identity, rating and
@@ -1225,10 +1253,22 @@ database and fills in the current ratings.
 name to verify an ID, because the same number can identify different people
 in USCF and FIDE.
 
+Repeated **Verify IDs** and **Refresh Ratings** checks only applicable ID or
+rating columns that are not yet confirmed. An existing green check or manual
+confirmation stays intact; an unresolved column can still be retried. If
+some columns are already confirmed, choose **Check outstanding only** (or
+**Keep confirmations (no lookup)** when all are confirmed). To deliberately
+replace earlier evidence, tick the acknowledgement and choose **Recheck
+all**. Cancelling leaves everything unchanged. An all-confirmed default
+does not contact a rating service or replace warnings. NWSRS IDs are
+classified locally; outstanding NWSRS ratings are fetched from the NWSRS
+service, not from the US Chess/FIDE rating preview. The existing paired-round
+and rating-supplement warnings still apply before a requested lookup.
+
 **On a FIDE-rated section it also fills in the FIDE half of the roster.**
 Plenty of events arrive with national IDs and national ratings and nothing
-else — an event imported from a national source usually does. For every
-player still missing FIDE details, FreePair looks up their **FIDE ID,
+else — an event imported from a national source usually does. For each
+player being checked who is still missing FIDE details, FreePair looks up their **FIDE ID,
 rating, federation and title** and fills in whatever was blank. Without
 them the Norms tab sees a field of unrated, untitled, federation-less
 players and reports that nobody is near a norm, which looks like an answer
@@ -3782,6 +3822,36 @@ That is the question a captain and a spectator are asking; the boards that
 follow are how a player finds their own game. A running match shows its score
 part-finished, because that is what a room watches; one where nobody has
 finished a board shows a dash rather than 0–0, which would read as a set of draws.
+
+On the **NA Chess Hub scoreboard**, team match-ups also show each side's
+cumulative **match points** and average pairing rating. Team standings show
+the official best-first order, tied-place range, cumulative **match** and
+**board** points, and the result of each completed round from that team's
+perspective. Match points are not the board score shown between the two
+teams: a match win earns 2 match points, a draw 1, and a loss 0; team byes
+use the section's selected bye policy. Both views calculate totals only
+through the last *consecutively completed* round in that section. A match
+still being played shows its board score so far, marked pending, but gives
+neither side match points until its round finishes. A forfeit remains
+identified as a forfeit; an unplayed game is not reported as a zero score.
+Each completed **R1**, **R2**, etc. cell gives that team's board points first,
+then its opponent's, followed by **W**, **D**, or **L** and the opponent's
+**current Standing row** (for example, `4.0–0.0 (W5)`). The number can change
+as standings change; it is not the opponent's seed or its standing in that
+past round. Byes stay labeled as byes, and pending matches have no W/D/L.
+Team names retain their seed numbers so similarly named teams can be
+identified across views.
+
+The displayed average rating is FreePair's **team seeding rating**, from
+the section's selected primary pairing-rating slot: by default it averages
+the highest-rated players up to the match size (or the whole squad if the
+match size is unset or exceeds the squad). The **whole squad** setting
+averages every active member, including reserves. Both use the same
+round-to-nearest-integer, midpoint-away-from-zero calculation used for
+team pairing. An explicitly unrated member counts as zero; if any rating
+needed for that average was *not supplied*, the public average is left
+blank rather than shown as a guessed zero.
+
 - **Pairing columns** — the Live Score Board's own, separate from the grid and
   the printed sheet. A projector read across a room has far less width
   than a sheet of paper, so fewer columns and larger type. **Rule lines
@@ -4389,6 +4459,11 @@ errors are reported instead of retried as if they were an outage.
 
 Do not click Stop just because NACH is temporarily unavailable. Stop cancels
 automatic recovery; an intentional new share after Stop is a separate run.
+If a temporary outage lasts past the sharing lease, FreePair keeps trying to
+reconnect with the saved run ID. If NACH has retired that run, FreePair creates
+a replacement and rebuilds the board from the saved event. There is no
+30-minute cutoff: leave sharing on if you want it to resume when NACH
+recovers, or click **Stop** to cancel further attempts.
 
 On Windows, FreePair prevents automatic system sleep while NACH sharing is active;
 the display may still turn off. This uses battery and does not override an explicit
@@ -4402,6 +4477,20 @@ card shows its own generated PIN, different from the local-network code. Open
 the NACH results page and enter the NACH PIN. The upload passcode authorizes
 management of this event, not another event or a named person's identity, and is
 never sent to the browser's entry page.
+
+On a compatible NACH server, a **Bughouse Pairing Section** using Double Swiss
+can accept TD-PIN results for each of its two games independently. The paired
+physical rounds keep their FreePair labels: **Round 1 · Game 1 of 2** and
+**Round 2 · Game 2 of 2**. A not-yet-paired return game is not offered for entry,
+and byes still require the desktop. Other Bughouse section types remain
+ineligible. If NACH lacks the required bughouse and double-game capabilities,
+FreePair leaves Bughouse Pairing entry disabled and warns in the hosted-entry
+status; ordinary sections continue to work. The NACH results page must also
+support these capabilities before the new grouping appears to viewers.
+
+While hosted entry runs, FreePair refreshes the private snapshot well before it
+expires so players can keep using the NACH results page. A temporary NACH outage
+can still interrupt entry; keep sharing on so FreePair can retry automatically.
 
 Keep the upload passcode private. If NACH rejects changed or revoked credentials,
 correct the event ID/passcode and reconnect; a new connection must acquire
@@ -4502,6 +4591,12 @@ result column for each paired round (`R1`, `R2`, etc.), even when the local
 Live Score Board's optional **Round results** columns are off. Round codes
 match the **Standings** tab, including byes and pending games; corrected or
 cleared results are sent with the next scoreboard update.
+For a Double Swiss or Bughouse Pairing encounter, the public pairing rotation
+shows each physical game that has actually been paired, in round order: for
+example, **Round 5 · Game 1 of 2** followed by **Round 6 · Game 2 of 2**.
+Each keeps its own boards, colors, byes and pages. If only the first game is
+paired, the second is not shown; removing the return game removes its screens
+on the next update. The local Live Score Board still shows the current round.
 Uncheck **Enable Results Entering** to share only the read-only scoreboard;
 no hosted result-entry setup is needed, including for newly formed quads.
 Once the first copy has landed you get the public link and a QR code for it,
@@ -4780,11 +4875,11 @@ discretionary calls you make, with the reason you gave. It covers:
 - **Deleting** a round, a section's rounds, or a section.
 - **Renumbering** starting boards.
 
-When you make one of these calls FreePair asks you why. **You can always
-skip.** A prompt you cannot dismiss only ever gets nonsense typed into
-it, which is worse than a blank, and a reason can be added later: any
-entry without one shows *"No reason given — click to add one"*, and
-clicking it opens the box.
+When recording is enabled and you make one of these calls, FreePair asks
+why. **You can always skip.** A prompt you cannot dismiss only ever gets
+nonsense typed into it, which is worse than a blank, and a reason can be
+added later: any entry without one shows *"No reason given — click to add
+one"*, and clicking it opens the box.
 
 For the pairing preview, the note you type into the **TD manual
 override** box *is* the reason — it is not asked twice. If you skipped
@@ -4814,13 +4909,14 @@ every decision, its time and place, and either the reason you gave or
 "No reason given", so a reader can tell a decision you chose not to
 explain from one the printout left out.
 
-#### Turning the log off
+#### Turning the log on or off
 
-It is on by default. To switch it off, either untick **Record my
-decisions, and ask why** in **Event Details → Options**, or tick **Stop
-recording decisions for this event** on any of the "why?" prompts — the
-moment you decide you would rather not be asked is usually the moment
-you are being asked.
+It is off by default, including for event files without a saved choice.
+To start recording, tick **Record my decisions, and ask why** in **Event
+Details → Options**. Once enabled, **Decision Log** appears in Event
+Operations and FreePair asks why when you make a discretionary change.
+To stop, untick that option or tick **Stop recording decisions for this
+event** on a "why?" prompt.
 
 Turning it off stops **every** "why?" prompt, including the one for a
 hand-edited pairing, and removes **Decision Log** from Event Operations.
@@ -4830,9 +4926,8 @@ pairing?", just without a note of your own.
 It **does not delete anything already recorded**: turn it back on in
 Event Details and your earlier decisions are still there.
 
-The setting belongs to the event, not to FreePair, so it travels with the
-file — a club that never wants the prompts sets it once per event, and an
-event handed to another TD keeps whatever you chose.
+The setting belongs to the event, not to FreePair, so an explicit opt-in
+travels with the file when another TD opens it.
 
 ---
 
@@ -5980,7 +6075,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.138.20261004**. It is updated whenever a
+This guide describes FreePair **v0.139.20261005**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
