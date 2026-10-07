@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.141.20261007**
+**Applies to FreePair v0.142.20261007**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -1509,7 +1509,13 @@ NA Chess Hub event roster. A rating can differ because the TD intentionally
 edited it, refreshed from a federation supplement, or chose post-event USCF
 ratings for pairing. FreePair assumes the TD has reviewed ratings
 deliberately and does not show a separate NACH rating-difference alert or
-offer to overwrite roster ratings from NACH.
+offer to overwrite roster ratings from NACH. **New registrants** do bring in
+the player details available in the downloaded roster, including federation
+IDs and ratings; existing players' edited values are not overwritten. In
+USCF sections, a valid pairing ID also links the monthly and post-event
+ratings to the player's profile when the separate USCF ID field is absent.
+The import is not a database verification: run **ID and Rating → Verify IDs**
+and **Refresh Ratings** when you want those checks.
 
 ### Checking ratings against the rating database
 
@@ -6085,7 +6091,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.141.20261007**. It is updated whenever a
+This guide describes FreePair **v0.142.20261007**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
