@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.140.20261006**
+**Applies to FreePair v0.141.20261007**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -2072,13 +2072,16 @@ selected slot has a matching USCF post-event value (Regular, Quick, Blitz,
 or Online). When enabled, the main column uses that type's post-event value
 and its header says **Rating [USCF Post Event Regular]**, **Quick**, **Blitz**,
 or the matching **Online** type. The same type's monthly supplement and
-post-event columns appear beside it, in that order. The effective Rating and
-post-event value are shown in red when they differ from the monthly
-supplement; matching values remain in the normal text color. Blank means no
-key is written; **custom** means the section is mixed and FreePair falls back
-to each player's row-level labels. These fields describe the file layout —
-they are not database verification. Missing-ID flags are calculated when the
-file is saved, not edited by hand.
+post-event columns appear beside it, in that order. If a newly synced player
+has not had their ID or rating refreshed yet, toggling this setting keeps
+their existing pairing ID and rating instead of replacing missing federation
+data with zero placeholders. Refresh Ratings to retrieve their federation
+values. The effective Rating and post-event value are shown in red when they
+differ from the monthly supplement; matching values remain in the normal
+text color. Blank means no key is written; **custom** means the section is
+mixed and FreePair falls back to each player's row-level labels. These fields
+describe the file layout — they are not database verification. Missing-ID
+flags are calculated when the file is saved, not edited by hand.
 
 **Choosing "NWSRS only" moves the columns.** Each player's NWSRS ID and
 rating move into the pairing **ID** and **Rating** columns, and their
@@ -6082,7 +6085,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.140.20261006**. It is updated whenever a
+This guide describes FreePair **v0.141.20261007**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
