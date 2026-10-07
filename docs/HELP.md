@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.139.20261005**
+**Applies to FreePair v0.140.20261006**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -2344,7 +2344,10 @@ exactly as they were paired.
 section that is ready, without you visiting each one. A section is ready
 when at least two players are active, the previous round's results are
 all in, and more rounds remain; the others are listed for context and
-skipped.
+skipped. When you open a freshly paired Double Swiss section, the **Pairings**
+tab starts on game 1 while it is still in play, even though game 2 is already
+paired. Once game 1 is finished, it starts on game 2; you can choose either
+round in the **Round** dropdown at any time.
 
 The bottom half is a table of the whole event, one row per section:
 players, rounds paired, **pairing rule**, starting board and the board
@@ -4594,9 +4597,13 @@ cleared results are sent with the next scoreboard update.
 For a Double Swiss or Bughouse Pairing encounter, the public pairing rotation
 shows each physical game that has actually been paired, in round order: for
 example, **Round 5 · Game 1 of 2** followed by **Round 6 · Game 2 of 2**.
-Each keeps its own boards, colors, byes and pages. If only the first game is
-paired, the second is not shown; removing the return game removes its screens
-on the next update. The local Live Score Board still shows the current round.
+Each keeps its own boards, colors, byes and pages. NA Chess Hub receives the
+shared encounter number and game number on every pairing page, so it can group
+the two games and show their combined score without replacing either game's
+individual result. Return games can be later than the next round. If only the
+first game is paired, the second is not shown; removing the return game removes
+its screens on the next update. The local Live Score Board still shows the
+current round.
 Uncheck **Enable Results Entering** to share only the read-only scoreboard;
 no hosted result-entry setup is needed, including for newly formed quads.
 Once the first copy has landed you get the public link and a QR code for it,
@@ -6075,7 +6082,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.139.20261005**. It is updated whenever a
+This guide describes FreePair **v0.140.20261006**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
