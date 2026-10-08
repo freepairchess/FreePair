@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.142.20261007**
+**Applies to FreePair v0.143.20261008**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -4042,8 +4042,9 @@ The Share window opens wider to give these links more room.
 Each bordered row has a shortened single-line URL, a copy
 icon for the full address, and **Open in Browser**. Hover over a URL to see it
 in full. NACH roster/scoreboard links need only the event ID in this table;
-the scoreboard may be offline before publishing and restricted pages may require
-login. Buttons use your default browser; copy the link into another browser
+they use the event's selected NACH site. The scoreboard may be offline before
+publishing and restricted pages may require login. Buttons use your default
+browser; copy the link into another browser
 if needed. Choose **Chrome**, **Edge**,
 **Firefox**, **Safari**, **Fire TV** or **Tips** below the table instead of
 scrolling through every browser's instructions. Start sharing first if no links
@@ -4410,7 +4411,20 @@ other listed addresses when the laptop has both Wi-Fi and Ethernet or a dock.
 connection with your NACH deployment. Player-account result entry is not enabled.
 LAN sharing remains independent. NACH public publishing and hosted results
 share one event-scoped ownership session, even when results entry is disabled.
-Only one FreePair instance can share an event with NACH at a time.
+Only one FreePair instance can share an event with NACH at a time. To use a
+staging or other NACH deployment for a disposable event, set **Settings → Online
+→ NA Chess Hub URL** to that deployment's HTTPS origin (for example,
+`https://stage.nachesshub.com`) before creating or opening the event, or set the
+event's publishing URL to that origin. Use only a service you trust with the
+event's upload passcode and result-entry credentials; a path, query, URL-embedded
+credentials or an HTTP URL is not accepted for sharing. New and opened events
+inherit that URL for scoreboard sharing and hosted TD results entry;
+**View on NACH** and registry event links also point to the selected service.
+An already-open event keeps its publishing URL until reopened or changed in
+the Publish dialog. After the new URL is saved, sign-in uses it without a
+restart. Switching services removes the previous sign-in from this computer;
+sign in to the selected service again before browsing its private events.
+Use staging event credentials rather than production ones.
 
 Save the event locally and open **Share → Scoreboard Sharing → Share Scoreboard
 on NAChessHub**. **Enable Results Entering** is checked by default; uncheck it
@@ -4418,10 +4432,17 @@ before **Start Sharing** if you want a read-only scoreboard. The checkbox alone
 does not connect while sharing is stopped, but it does prepare the NACH TD PIN
 immediately so you can reveal, copy or change it before the public board goes
 live. If the event's NACH ID or upload passcode is missing, Start prompts for
-both; otherwise it uses the saved credentials directly.
+both; otherwise it uses the saved credentials directly. Start Sharing acquires
 ownership, publishes the selected event's current board, and enables results
-entry if requested. A genuinely new accepted run initializes fresh hosted
-sharing state once; retrying that same active Start does not reset it again.
+entry if requested. The toolbar's **Share** label turns bold and green, with a
+📡 indicator after it, only while the board has been published and its NACH
+connection is healthy; it returns to its normal appearance when sharing stops
+or FreePair is reconnecting. If a fatal
+error stops sharing, the dialog shows **Start Sharing** again after the run
+finishes releasing; while FreePair is automatically retrying, **Stop** remains
+available and the warning explains what is happening. A genuinely new accepted
+run initializes fresh hosted sharing state once; retrying that same active Start
+does not reset it again.
 **No account login, installation approval page or extra confirmation is required.**
 If public sharing is already running, the checkbox turns hosted entry on/off
 without stopping that scoreboard or affecting LAN sharing. If private setup
@@ -5038,6 +5059,9 @@ list of who has registered and the rating each of them is registered with.
 That is the page worth reaching, rather than the event-details page — it
 is where the numbers behind the red **!** actually live, so when FreePair
 says a rating disagrees with the site you land on the disagreement itself.
+The logo and roster link use this event's selected NACH site (initially from
+Settings), including test sites such as PPE; they do not switch back to
+production.
 
 The badge appears as soon as the event has an **NACH Event ID**, whether
 it came from opening the event off NA Chess Hub or from pasting the id in
@@ -6091,7 +6115,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.142.20261007**. It is updated whenever a
+This guide describes FreePair **v0.143.20261008**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
