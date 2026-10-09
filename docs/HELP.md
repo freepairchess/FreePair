@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.145.20261009**
+**Applies to FreePair v0.146.20261009**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -148,10 +148,14 @@ first.
 There are no tabs. The window shows the event you have open, and a single
 toolbar runs across the top of it.
 
-The event commands — **New Event**, **Open Event**, **Save Event**,
-**Close Event**, **Event Operations**, **Undo** and **Redo** — run from
-the left. The controls that belong to the program rather than to the
-event sit at the right-hand end of the same row:
+The event commands — **New**, **Open**, **Save**, **Close**,
+**Event Operations**, **Edit** and **Pairing - All Sections** — run from the left.
+**Edit** holds **Undo** and **Redo** for changes made in this session; their
+`Ctrl+Z` and `Ctrl+Y` shortcuts still work. **Pairing - All Sections**,
+immediately after Edit, holds **Pair All Sections** and **Delete Pairings…**
+(shown when the event has pairings). The section toolbar has
+**Pairing - Current Section** for actions on the selected section. The controls at
+the right-hand end of the same row include:
 
 - **🖥 Scoreboard** opens pairings and standings for a second screen
   or projector. **Share**, marked by three connected dots, shares that
@@ -283,8 +287,8 @@ question.
 | `Ctrl+Shift+O` | Browse your cloud-saved events |
 | `Ctrl+S` | Save the event |
 | `Ctrl+W` | Close the event |
-| `Ctrl+Z` | Undo the last change |
-| `Ctrl+Y` | Redo it (`Ctrl+Shift+Z` does the same) |
+| `Ctrl+Z` | Undo the last change (**Edit → Undo**) |
+| `Ctrl+Y` | Redo it (**Edit → Redo**; `Ctrl+Shift+Z` does the same) |
 | `F5` | On the event view, pair every ready section; on a section view, pair that section (for a Quad section, **Pair as Quads**) |
 | `Shift+F5` | Pair the next round of every ready section, regardless of the selected view |
 | `Ctrl+Shift+Delete` | Delete that section's last round — asks first |
@@ -324,8 +328,8 @@ A few of these are worth a sentence:
 - **`Ctrl+Shift+V` is the odd one out and worth knowing.** It re-opens an
   event of yours already saved on NA Chess Hub, pairings and results
   intact. Every other key above *starts* an event; this one returns you
-  to work in progress, which is why it sits under **Open Event** rather
-  than **New Event**.
+  to work in progress, which is why it sits under **Open** rather
+  than **New**.
 - **`Ctrl+Shift+N` is for starting an event from a registration list**,
   not for opening one you already have — it browses NA Chess Hub and
   builds a new event from what it finds, which is why it sits beside
@@ -346,7 +350,7 @@ A few of these are worth a sentence:
   a shortcut list long enough to need scrolling is a list nobody learns.
   Every key that does exist is printed beside its item in the menu.
 - **A menu only prints a key that does exactly what the item does.** A
-  section's **Pairing Operations** menu shows `F5` beside *Pair Next
+  section's **Pairing** menu shows `F5` beside *Pair Next
   Round* and `Ctrl+Shift+Delete` beside *Delete last round*, and nothing
   beside Check Section, Pairing Quality or Sync Roster — because `F8`,
   `F9` and `F6` act on the **whole event**, not on the section in front
@@ -439,7 +443,7 @@ toolbar gone the next morning would be alarming rather than helpful.
 
 ### Creating a new event
 
-Use **➕ New Event**. You will be asked for the event name, dates
+Use **➕ New**. You will be asked for the event name, dates
 and location, and then for at least one section. An event with no
 sections cannot be paired, so it is normal to create the first section
 immediately.
@@ -451,7 +455,7 @@ event. Choose a different filename to keep the old event.
 
 ### Opening an existing event
 
-**📂 Open Event** offers the events you have worked on recently.
+**📂 Open** offers the events you have worked on recently.
 You can also browse the file system for an `.sjson` event file, or
 browse events published to NA Chess Hub.
 
@@ -485,7 +489,7 @@ make the close look as though it had not taken. The event stays in
 
 ### Quick Event from a roster file
 
-**➕ New Event → Quick Event from a Roster File …** is the fast route
+**➕ New → Quick Event from a Roster File …** is the fast route
 when you already have the entry list as a spreadsheet. It reads the file,
 makes one section, puts everybody in it, and hands you an event that is
 ready to pair. A club night can go from a CSV to round one in well under
@@ -677,7 +681,7 @@ event.
 
 If you are **signed in to NA Chess Hub** (see
 [Signing in to NA Chess Hub](#signing-in-to-na-chess-hub)), the quickest
-route is **➕ New Event → Create New Event Using Online Registry → My
+route is **➕ New → Create New Event Using Online Registry → My
 Events on NA Chess Hub…**. That lists the events your account runs, including
 events with no SJSON file saved on NACH. Pick one and FreePair uses your account
 to retrieve its roster; you do not have to type a passcode.
@@ -701,7 +705,7 @@ pairing uploads and scoreboard/results entry remain available.
 
 ### Web events
 
-**➕ New Event → Create New Web Event …** builds an event from one that is
+**➕ New → Create New Web Event …** builds an event from one that is
 already published online. Paste the event's address and FreePair reads the
 entry list and any rounds that have been played. There is a 📋 button
 beside the address box, as there is on the Event ID and Passcode fields:
@@ -1039,7 +1043,7 @@ plays whom.
 Three places do it without re-pairing. Only the numbers move: the pairings,
 the colours and the results are untouched.
 
-- **The section's Pairings tab → Pairing Operations → Renumber Round N
+- **The section's Pairings tab → Pairing → Renumber Round N
   Boards…** Acts on the round you are looking at, and the menu names it, so
   there is no doubt which round is about to move. It asks which board first,
   opening on the number the section is on now, with a **Use recommended**
@@ -1826,7 +1830,7 @@ past.
 Large opens often run one event on two schedules — a 3-day and a 2-day
 that starts a day later and plays its early rounds faster — and join them
 into a single field partway through. **⚖ Merge Sections** does that. It
-is on **Event Operations**, and on a section's **Pairing Operations**
+is on **Event Operations**, and on a section's **Pairing** menu
 where that section starts already ticked.
 
 The dialog lists every section with its pairing engine, pairing rule,
@@ -2180,10 +2184,10 @@ much less disruptive to get the pool right first.
 
 ### Pairing a round
 
-**Pairing Operations** pairs the next round for the section. To pair
-every section at once, use **Pair all sections** on the event page —
+**Pairing** (♟) pairs the next round for the section. To pair
+every section at once, use **Pairing → Pair All Sections** on the event toolbar —
 see [Pairing every section at once](#pairing-every-section-at-once).
-**Sync Roster with NACH** is on this menu as well as the Roster
+**Sync Roster with NACH** is on the section's Pairing menu as well as the Roster
 tab's **Roster Update** menu, since checking for late entries is
 normally the step just before pairing.
 
@@ -2349,9 +2353,9 @@ exactly as they were paired.
 
 ### Pairing every section at once
 
-**Pair all sections** on the event page pairs the next round of every
-section that is ready, without you visiting each one. A section is ready
-when at least two players are active, the previous round's results are
+**Pairing → Pair All Sections** on the event toolbar pairs the next round
+of every section that is ready, without you visiting each one. A section
+is ready when at least two players are active, the previous round's results are
 all in, and more rounds remain; the others are listed for context and
 skipped. When you open a freshly paired Double Swiss section, the **Pairings**
 tab starts on game 1 while it is still in play, even though game 2 is already
@@ -2602,7 +2606,7 @@ There are three ways in, all doing the same job at different sizes:
 
 - **🔍 Check this round** — in the pairing preview, on the round you are
   about to accept.
-- **🔍 Check Section** — Pairings tab → *Pairing Operations*. Every round
+- **🔍 Check Section** — Pairings tab → *Pairing*. Every round
   this section has, plus the things no single round can answer.
 - **🔍 Check Event** — *Event Operations*. Every section, plus the checks
   that compare them. Worth a click before you print or publish.
@@ -2743,7 +2747,7 @@ in either print-column list or printed preview.
 
 ### Advanced pairing options
 
-**Pairing Operations → Advanced Pairing Options…** holds the two settings
+**Pairing → Advanced Pairing Options…** holds the two settings
 that change how a section is *paired*, rather than how it is displayed:
 **Accelerate pairings** and **Avoid pairing teammates**, each with the
 number of opening rounds it covers.
@@ -2769,7 +2773,7 @@ set, it is left alone.
 **The same two settings appear in three places, and they are the same
 settings.** Changing one changes all of them:
 
-- **Pairing Operations → Advanced Pairing Options…** — the window
+- **Pairing → Advanced Pairing Options…** — the window
   described above.
 - **The section's Overview tab**, under *Advanced Pairing*. This is
   where to look when you want to know how a section is set up without
@@ -2954,7 +2958,7 @@ not going to be enough.
 
 Two ways in:
 
-- **📊 Pairing Quality** — Pairings tab → *Pairing Operations*, for this
+- **📊 Pairing Quality** — Pairings tab → *Pairing*, for this
   section.
 - **📊 Pairing Quality** — *Event Operations*, for every section at once.
   You get event-wide totals first, then each section underneath.
@@ -3037,9 +3041,9 @@ Deleting pairings for the whole event at once works the same way.
 
 #### Deleting pairings across the event
 
-**Delete Pairings…** on the event page clears rounds in more than one
-section at a time. It used to be all-or-nothing — every pairing and
-every result in the event — which was rarely what anyone actually
+**Pairing → Delete Pairings…** on the event toolbar clears rounds in more
+than one section at a time. It used to be all-or-nothing — every pairing
+and every result in the event — which was rarely what anyone actually
 wanted. You now choose.
 
 The dialog lists every section with its rounds, and says of each round
@@ -3070,7 +3074,7 @@ second, red confirmation that lists each section, exactly which rounds
 go, and how many results each loses. **Cancel** is the default there, so
 Enter and Esc both back out; the button that goes ahead is red. A
 checkpoint is taken before anything is removed, so the event can still
-be recovered from **Save Event → Earlier versions**.
+be recovered from **Save → Earlier versions**.
 
 Players, their seeding and their requested byes are always kept, so you
 can pair again from whichever round you cleared back to. Pairings you
@@ -4054,8 +4058,8 @@ are listed; pairing links do not require scoreboard sharing.
 `localhost` works only on the FreePair computer. Do not reveal or type private
 login details or a TD PIN on a public TV.
 **Pairing sharing** contains the NACH destination, **NA Chess Hub URL**,
-editable Event ID and Passcode, **Auto-publish** choices and **Publish now**
-action. The URL is the same app-wide setting shown on the Scoreboard Sharing
+editable Event ID and Passcode, **Auto-publish** choices, **Publish now** and
+**Delete Pairing from NA Chess Hub**.
 tab and under **Settings → Online**. Event ID and Passcode changes save to
 this event's `.sjson` file when you leave either field; if both are initially
 blank, enter both before leaving the second field. The passcode is masked
@@ -4064,10 +4068,17 @@ is running; stop sharing to edit credentials. You can also edit them on the
 Event tab. Auto-publish choices save to the event when clicked.
 With a valid NACH URL and Event ID, the calculated pairing-page address
 appears as a clickable link. **Copy link**, **Open in browser**, and
-**Publish now** sit together in the row beneath it.
+**Publish now** and **Delete Pairing from NA Chess Hub** sit together in the row beneath it.
 It updates as you edit either field; the page may not exist until published.
 **Publish now** saves any pending credential edits before uploading the event
-file and its results JSON. After a successful upload, one area shows the
+file and its results JSON. **Delete Pairing from NA Chess Hub** asks for
+confirmation, then deletes only the published pairing/results JSON for the
+selected NACH Event ID using its upload passcode. It does not remove the uploaded
+tournament SJSON, other files, scoreboard, or local FreePair data. If automatic
+publishing is enabled, a later pairing or result change can publish the JSON
+again. The same delete action is available immediately below **Publish Pairing
+to NA Chess Hub** in the event and section menus; it affects the whole event,
+not just the current section. After a successful upload, one area shows the
 NACH pairing-page QR, link, **Copy link** and **Open in browser**; an event ID
 alone does not mean the page has been published. No upload passcode is needed
 to share that public link. For an event without a NACH ID, paste a custom
@@ -5035,7 +5046,7 @@ see what it actually says is worth a great deal.
 ### Opening events made in SwissSys
 
 **FreePair opens events created in SwissSys.** Browse to the file with
-**📂 Open Event → Re-Open Locally Saved Event**, and it opens
+**📂 Open → Re-Open Locally Saved Event**, and it opens
 like any other event: players, sections, pairings, results and
 standings.
 
@@ -5136,11 +5147,11 @@ both a personal login and a club one.
 Once signed in, two menus list your own events, each with its own search
 box that remembers what you last typed:
 
-- **➕ New Event → Create New Event Using Online Registry → My Events on
+- **➕ New → Create New Event Using Online Registry → My Events on
   NA Chess Hub…** — start a *new* event from its NA Chess Hub entry list.
-- **📂 Open Event → My Events Saved on NA Chess Hub…** — re-open an event
-  you have already been running and saved to NA Chess Hub, with its
-  pairings and results as you left them.
+- **📂 Open → Re-Open Cloud-Saved Events → My Events Saved on NA Chess
+  Hub…** — re-open an event you have already been running and saved to NA
+  Chess Hub, with its pairings and results as you left them.
 
 In **My Events Saved on NA Chess Hub**, **Saved by** and **Saved at** show
 the latest cloud working-file upload when NA Chess Hub provides that
@@ -5374,7 +5385,7 @@ server supports save details; the name is client-reported display information,
 not proof of who performed the upload. The event passcode is still required.
 
 The Settings option to prompt for this backup runs when you exit FreePair with an
-open event. **Close Event** itself stays local and immediate; use **Save Event**
+open event. **Close** itself stays local and immediate; use **Save**
 if you want to push a cloud backup before closing the event.
 
 Optionally the copy can carry your display settings — theme, fonts, score
@@ -6162,7 +6173,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.145.20261009**. It is updated whenever a
+This guide describes FreePair **v0.146.20261009**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
