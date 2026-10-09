@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.143.20261008**
+**Applies to FreePair v0.144.20261009**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -157,12 +157,11 @@ event sit at the right-hand end of the same row:
   or projector. **Share**, marked by three connected dots, shares that
   display with TVs and phones. A compact **QR** dropdown appears after
   **Share** whenever FreePair has a QR code or a share action to offer.
-- **🖨 Print** includes **Print R1 Pairing**, with section/board order and
-  alphabetical player order on two landscape pages, and the full
-  **All Pairings**, **All Standings**, **All Wall Charts** and
-  **All Crosstables** PDFs. The same actions are under **Event Operations →
-  Print**. To print one section rather than the whole event, use **Print as
-  PDF** on its tab.
+- **🖨 Print** includes **Pairings in 1 page**, which lets you choose rounds
+  and print one page per selected view, and the full **All Pairings**,
+  **All Standings**, **All Wall Charts** and **All Crosstables** PDFs.
+  The same actions are under **Event Operations → Print**. To print one
+  section rather than the whole event, use **Print as PDF** on its tab.
 - Scoreboard, Share and Print show an icon and text when there is room.
   In the toolbar's compact mode, labels hide but icons and tooltips remain.
   All three are also in **Event Operations** under their full names —
@@ -3681,7 +3680,8 @@ would be describing a rule that did not run.
 A quad is four players and three rounds of two boards, so a sheet per
 round is three pages carrying six lines between them. FreePair prints the
 whole quad on **one** page instead: rounds 1, 2 and 3 stacked vertically,
-each in a full-width row with room between them to use the page. Beside
+each in a full-width row with room between them to use the page. Extra space
+below the page header leaves room to write the first round's start time. Beside
 each round heading is a **Starting Time** line for the director to fill in.
 The **W#** and **B#** column headings stay on one line. Ten quads costs ten
 sheets rather than thirty.
@@ -3724,23 +3724,22 @@ The **🖨** icon at the top right of the window — or **Event Operations →
 🖨 Print** — holds the event-wide print jobs, so a ten-quad scholastic does
 not mean ten trips through the section tabs and ten save dialogs:
 
-- **Print R1 Pairing** — immediately writes a **two-page landscape PDF**
-  so you can choose which page to put on the TV or projector. Page 1,
-  **[event name] - Round 1 Pairing by Section**, groups sections in event
-  order, with boards in numeric order. Each bordered section table shows
-  **Board**, **White**, **Result**, and **Black**, including byes. Page 2,
-  **[event name] - Round 1 Pairing by Name**, lists every player in
-  alphabetical Last, First Middle order. Its bordered columns are
-  **Name [Rating]**, **Section**, **Board**, **Color**, and
-  **Opponent [Rating]**; both players have their own row. Titles appear
-  before names; unrated players show UNR. Byes have no board or color
-  on page 2 and are labeled in the Opponent column. Sections without
-  round 1 are skipped. Each page adapts its tables to fill one page;
-  the name page can continue alphabetically into two or three vertical
-  columns. Save the event first:
-  the PDF is written beside it as `[event]-r1-pairings.pdf` and opened in
-  your PDF viewer. If nobody has paired round 1 yet, FreePair shows an
-  error instead of an empty PDF. There is no chooser or page setup.
+- **Pairings in 1 page** — opens a chooser with **Pairings by name** and
+  **Pairings from all sections** both checked. Below them, every paired
+  round is listed by section, with the latest round in each section
+  checked by default. Check or uncheck rounds to include; you can choose
+  several rounds from the same section. Select at least one round and one
+  view, then choose **Print**. Each chosen view fits on **one landscape
+  page**: with both checked, the PDF has two pages; with either alone, it
+  has one. The section/board view groups rounds in event order, with
+  boards in numeric order and results and byes alongside the players.
+  The name view lists both players of each board alphabetically, with
+  section, board, color and opponent; when multiple rounds of one section
+  are chosen, its round number appears in the Section column. Both views
+  include the same selected rounds. The PDF is saved next to the event
+  as `[event]-pairings-one-page.pdf` and opened in your PDF viewer;
+  save the event first. Cancel leaves the file untouched. If no rounds
+  have pairings yet, FreePair shows an error instead of an empty PDF.
 - **All Pairings**
 - **All Standings**
 - **All Wall Charts**
@@ -4051,17 +4050,55 @@ scrolling through every browser's instructions. Start sharing first if no links
 are listed; pairing links do not require scoreboard sharing.
 `localhost` works only on the FreePair computer. Do not reveal or type private
 login details or a TD PIN on a public TV.
-**Pairing sharing** shows the NACH pairing-page QR automatically when the event
-has a NACH event ID; no upload passcode is needed to share that public link.
-For an event without a NACH ID, paste its pairing-page URL and click
-**Generate QR**. Use **Copy link** or **Open in browser** beneath the QR.
+**Pairing sharing** contains the NACH destination, **NA Chess Hub URL**,
+editable Event ID and Passcode, **Auto-publish** choices and **Publish now**
+action. The URL is the same app-wide setting shown on the Scoreboard Sharing
+tab and under **Settings → Online**. Event ID and Passcode changes save to
+this event's `.sjson` file when you leave either field; if both are initially
+blank, enter both before leaving the second field. The passcode is masked
+until you select the eye icon in its field, including while scoreboard sharing
+is running; stop sharing to edit credentials. You can also edit them on the
+Event tab. Auto-publish choices save to the event when clicked.
+With a valid NACH URL and Event ID, the calculated pairing-page address
+appears as a clickable link. **Copy link**, **Open in browser**, and
+**Publish now** sit together in the row beneath it.
+It updates as you edit either field; the page may not exist until published.
+**Publish now** saves any pending credential edits before uploading the event
+file and its results JSON. After a successful upload, one area shows the
+NACH pairing-page QR, link, **Copy link** and **Open in browser**; an event ID
+alone does not mean the page has been published. No upload passcode is needed
+to share that public link. For an event without a NACH ID, paste a custom
+pairing-page URL and click **Generate QR**; its QR and link actions appear
+without publishing to NACH.
 This custom link is only kept in the open Share window, not saved in the event file.
 **Scoreboard Sharing** shows **Share Scoreboard on NA Chess Hub**, with
-**Start Sharing** and an **Enable Results Entering** setting. The local-network
-sharing card and **Open local board** button are hidden. While sharing is
-stopped, changing the setting does **not** connect to NACH or prompt for
-credentials. It chooses whether protected results entry starts when you press
-**Start Sharing**. While sharing is running, the checkbox turns only results
+**⚙ Live Score Board settings…**, **Delete Scoreboard from NACH**, and
+**Start Sharing** or **Stop** inside the scoreboard panel, below the sharing
+status. **Close** remains at the bottom of the window. When sharing is stopped,
+**Delete Scoreboard from NACH** asks for confirmation, then removes
+the public scoreboard using this event's saved Event ID and upload passcode.
+It does not delete the local event file or its credentials. Start sharing again
+to republish the scoreboard. It also has an **Enable Results Entering** setting.
+**NA Chess Hub URL**
+shows the same app-wide address as **Settings → Online**. Edit it here while
+sharing is stopped; leaving the field saves it for future events and makes the
+current event use that service. Use only an HTTPS service you trust. Set
+**Seconds on each screen** (2–120) next to the shorter NACH URL field; leaving
+the control saves this event's timing
+in its `.sjson` file. This is the same setting as **Timing → Seconds on each
+screen** in Live Score Board setup. **Include previous rounds** saves to the same file as soon
+as you click it. Previous rounds with recorded results appear on NACH only; the
+local board still shows the current round. The option is off by default. You can
+update timing and previous rounds while sharing; the next NACH update picks up
+the change without stopping and restarting sharing (normally after the 10-second
+publish debounce). **Delete Scoreboard from NACH** is enabled only while sharing
+and hosted results entry are stopped. Stopping sharing alone only stops live
+updates; it does not delete the last published board. The local-network
+sharing card and **Open local board** button are hidden. While sharing is stopped,
+changing **Enable Results Entering** does
+**not** connect to NACH or prompt for credentials. It chooses whether protected
+results entry starts when you press **Start Sharing**. While sharing is running,
+the checkbox turns only results
 entry on or off, leaving the public scoreboard running.
 NACH uses the event ID and upload passcode configured for publishing.
 No NACH login or installation-approval step is needed.
@@ -4072,13 +4109,16 @@ regional ratings; an unknown rating stays blank rather than becoming zero.
 If NA Chess Hub is not configured, **Start Sharing** explains what is missing
 and prompts for the event ID and upload passcode. Cancel leaves sharing stopped.
 Existing credentials are used without another prompt; invalid credentials are
-reported in a dialog. Each address
+reported in a dialog. If another FreePair instance already owns the event's
+scoreboard, FreePair reports the conflict and stops trying until you start
+sharing again. Each address
 card has its own QR, **Copy link**, and **Open in browser** button. The QR says
 **Score Board** in the center so it is not confused with result entry or
 pairings.
 
 **It is the same board as the projector.** The shared pages and the full-screen
-Live Score Board use the same sections, columns, ordering and timing. The local
+Live Score Board use the same sections, columns, ordering and timing, except when
+**Include previous rounds** adds scored history to the NACH rotation. The local
 web page fits complete rows into the browser's available height and uses more
 pages when needed, rather than leaving results below a vertical scrollbar. A TV
 and a phone can therefore have different page counts while showing the same data.
@@ -4098,7 +4138,7 @@ screens remain paused.
 
 **Default for new events:** in **Settings → Boards → Default scoreboard interval
 (seconds)**, choose the starting value for future events. A fresh installation
-starts at **10 seconds**; an existing saved preference (including 12 seconds) is
+starts at **8 seconds**; an existing saved preference (including 10 or 12 seconds) is
 preserved. Each new event takes a snapshot of that default and keeps it even if
 you later change the app setting. An older event file without timing adopts the
 current default when first opened and is saved with that value.
@@ -4413,16 +4453,18 @@ LAN sharing remains independent. NACH public publishing and hosted results
 share one event-scoped ownership session, even when results entry is disabled.
 Only one FreePair instance can share an event with NACH at a time. To use a
 staging or other NACH deployment for a disposable event, set **Settings → Online
-→ NA Chess Hub URL** to that deployment's HTTPS origin (for example,
-`https://stage.nachesshub.com`) before creating or opening the event, or set the
-event's publishing URL to that origin. Use only a service you trust with the
+→ NA Chess Hub URL** or **Share → Scoreboard Sharing → NA Chess Hub URL** to
+that deployment's HTTPS origin (for example, `https://stage.nachesshub.com`).
+Both controls edit the same app-wide setting; Share also updates the open event's
+publishing URL. Use only a service you trust with the
 event's upload passcode and result-entry credentials; a path, query, URL-embedded
 credentials or an HTTP URL is not accepted for sharing. New and opened events
 inherit that URL for scoreboard sharing and hosted TD results entry;
 **View on NACH** and registry event links also point to the selected service.
-An already-open event keeps its publishing URL until reopened or changed in
-the Publish dialog. After the new URL is saved, sign-in uses it without a
-restart. Switching services removes the previous sign-in from this computer;
+Changing the URL in Settings alone does not change an already-open event's
+publishing URL; Share or the Publish dialog can change it without reopening.
+After the new URL is saved, sign-in uses it without a restart. Switching
+services removes the previous sign-in from this computer;
 sign in to the selected service again before browsing its private events.
 Use staging event credentials rather than production ones.
 
@@ -6115,7 +6157,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.143.20261008**. It is updated whenever a
+This guide describes FreePair **v0.144.20261009**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
