@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.144.20261009**
+**Applies to FreePair v0.145.20261009**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -1300,9 +1300,10 @@ lookup, each saying which it is. Cancelling keeps whatever had already
 been found.
 
 **Every name in the roster is a link.** Clicking one opens the player
-database in your browser, searched for that name. It is a search rather
-than a jump to one profile, because a name can match nobody, one person
-or several — the identification is yours to make, not FreePair's.
+database in your browser, searched for that exact name instead of the slower
+fuzzy search. It is a search rather than a jump to one profile, because a name
+can match nobody, one person or several — the identification is yours to make,
+not FreePair's.
 
 **The pairing Rating value opens the matching rating profile.** For USCF- and
 FIDE-rated columns, click the number to open that player's federation profile.
@@ -3643,6 +3644,8 @@ footnote stating the sharing rules that produced the numbers.
 standings, wall chart, roster or prizes. Reports are landscape by default
 because tournament tables are wide, and each carries the event name,
 section, time control, location, dates, a page number and a timestamp.
+When available, the organizer's logo and name appear beside the FreePair
+logo; the product name and version are centered on separate lines below it.
 
 **Print Setup** controls page options, and the grid and print fonts can
 be adjusted independently, which is useful when a wall chart is one
@@ -4845,23 +4848,25 @@ The prompt says how many players would change and shows the first few, so
 you can decline if the order is deliberate. Nothing happens unless you
 say yes.
 
-### The event QR code
+### The event QR codes
 
-When the event has NA Chess Hub details filled in, pairings, standings
-and wall chart reports print a small QR code in the top-right corner,
-labelled **Scan for pairings** and marked **Pairings** in the center of
-the code. It opens the event's page on a phone, so a player can check
-where they are sitting without pushing to the front of the crowd around
-the wall chart. The page needs no sign-in.
+When the event has an NA Chess Hub event ID, pairings, standings and wall chart
+reports print a **Pairing** QR on one side of the logos and a **Scoreboard** QR
+on the other. The pairing code is marked **Pairings** in its center and opens
+the event's files page on a phone, so a player can check where they are sitting
+without pushing to the front of the crowd around the wall chart. It needs no
+sign-in.
 
-The QR appears **only** when the event has both a hub event ID and a
-passcode. Strictly the page needs just the ID, but an ID with no
-passcode is usually one typed in and never linked to a real hub event —
-printing a code that leads nowhere is worse than printing none, because
-the player has walked away before finding out. Local events simply get
-no QR, which is not an error.
+An event ID alone is enough to print both codes,
+whether or not the event files or scoreboard have been published yet.
+Both use the event's selected NACH service and print at the same size, on
+opposite sides of the organizer and FreePair logos so players can scan them
+separately. A page may not be available until it is published or sharing
+starts. Shared local-network scoreboards add their own QR beside the public
+scoreboard; a shared public scoreboard does not add a duplicate. Events
+without a NACH event ID get no public event QR.
 
-Roster, prizes, byes and the crosstable do not carry the QR. Those are
+Roster, prizes, byes and the crosstable do not carry the event QR. Those are
 your documents rather than the ones players crowd around.
 
 The same code appears in the **popped-out Pairings, Standings and Wall
@@ -6157,7 +6162,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.144.20261009**. It is updated whenever a
+This guide describes FreePair **v0.145.20261009**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
