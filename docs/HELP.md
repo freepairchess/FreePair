@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.146.20261009**
+**Applies to FreePair v0.147.20261009**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -936,10 +936,10 @@ standings and prizes.
   how many rounds and results you are about to lose.
 - **Copy section** duplicates a section's setup, which is useful when an
   event has several similarly configured sections.
-- **🪟 Open in Window** pops a section out into its own window, so you can
+- **🪟 Window** pops a section out into its own window, so you can
   watch two sections side by side.
 
-A soft-deleted section shows a warning banner in its view. **Dismiss** hides
+A soft-deleted section shows a warning banner in its view.
 only the warning; the section remains locked and excluded from publishing.
 Use the restore or permanent-delete icon beside its name in the Sections list
 to take action later.
@@ -2720,10 +2720,13 @@ header.
 
 **Restore Default** resets that layout and checks both switches again;
 **Restore default columns** does the same in the print-only picker. Neither
-changes the other layout. The printed default shows Board #, write-in result
-boxes and combined player blocks containing Title, Rating, Color History,
-Due Color and Score. Pairing #, Team, separate Name and the central result
-selector start hidden. Saved custom print layouts keep their existing choices.
+changes the other layout. The board column is labeled **Board** on screen and
+in print by default; in the PDF it uses only enough width for its heading or
+longest board number, leaving more room for player names. The printed default
+shows Board, write-in result boxes and combined player blocks containing
+Title, Rating, Color History, Due Color and Score. Pairing #, Team, separate
+Name and the central result selector start hidden. Saved custom print layouts
+keep their existing choices.
 
 The two views want opposite things of the result columns, and FreePair
 sets them up that way:
@@ -3082,17 +3085,21 @@ have already printed or published are not retracted.
 
 ### PGN headers for recording games
 
-**♟ PGN headers** on the Pairings tab writes a `.PGN` file containing the
-game headers with **no moves** — choose **This round** or **All rounds**.
-Open the file in a chess program, find the game, and type the moves in.
+**Event Operations → Export Report → PGN headers** opens a chooser for sections
+and their individual paired rounds. Tick the games you need, then **Export**
+to save one `.PGN` file with game headers and **no moves**. All eligible
+rounds in active sections start selected; unpaired rounds and deleted
+sections are unavailable. You can use **All** or **None** on a section, or
+**Select all** / **Select none** for the event. Open the file in a chess
+program, find the game, and type the moves in.
 
 The point is that everything tedious is already filled in: event name,
 section, date, time control, board number, both players' names, titles,
 ratings, and their USCF, FIDE and CFC IDs. That metadata is identical for
 every game of a round, and nobody should key it eighty times.
 
-Files are named `{Event}_{Section}_Round{x}_Header.PGN`, or `AllRounds`
-in place of the round for the whole-event file.
+The save dialog suggests `{Event}_Header.PGN` in the event's folder. Games
+are ordered by section, round, then board.
 
 Games that have not been played yet carry a result of `*`, so you can
 export before the round starts and fill games in as they finish. Byes are
@@ -3383,8 +3390,8 @@ never all meet, so a crosstable would be mostly empty; the wall chart
 is the report for that format.
 
 **The crosstable also shows in a window.** Open the Pairings or Wall
-Chart tab in a window (**🪟 Open in Window**) and the crosstable appears
-above the grid, with a **Show crosstable** tick box to hide it. It is on
+Chart tab in a window (**🪟 Window**) and the crosstable appears
+above the grid, with a **Show crosstable** tick box to hide it.
 by default for round robin and quad sections, because for those formats
 it is usually the view you want — the round below is one slice of it.
 
@@ -3646,10 +3653,18 @@ footnote stating the sharing rules that produced the numbers.
 
 **🖨 Print** produces a PDF of whatever you are looking at — pairings,
 standings, wall chart, roster or prizes. Reports are landscape by default
-because tournament tables are wide, and each carries the event name,
-section, time control, location, dates, a page number and a timestamp.
-When available, the organizer's logo and name appear beside the FreePair
-logo; the product name and version are centered on separate lines below it.
+because tournament tables are wide. The left side of the header shows the
+event name followed by a compact date or date range in square brackets on top
+(for example, `[10/09, 2026]`, `[Oct 6-7, 2026]`, or
+`[09/30-10/02, 2026]`; a range crossing years shows both years). A larger
+**Section** name sits below it for section reports, then the time control
+(such as `G/30;+5`) on the third line. If there is no time control, that line
+stays blank; location is not printed in the header. The event name and time
+control have no labels; each line shrinks to fit beside the QR codes and logos
+instead of wrapping. Event-wide reports omit the section and time-control
+lines. The footer carries a page number and timestamp. When available, the organizer's
+logo and name appear beside the FreePair logo; the product name and version
+are centered on separate lines below it.
 
 **Print Setup** controls page options, and the grid and print fonts can
 be adjusted independently, which is useful when a wall chart is one
@@ -3688,10 +3703,10 @@ A quad is four players and three rounds of two boards, so a sheet per
 round is three pages carrying six lines between them. FreePair prints the
 whole quad on **one** page instead: rounds 1, 2 and 3 stacked vertically,
 each in a full-width row with room between them to use the page. Extra space
-below the page header leaves room to write the first round's start time. Beside
-each round heading is a **Starting Time** line for the director to fill in.
-The **W#** and **B#** column headings stay on one line. Ten quads costs ten
-sheets rather than thirty.
+below the page header leaves room to write the first round's start time. Each
+round has a prominent centered heading such as **Quads 1 - Round 1**, with a
+**Starting Time** write-in line at the far right. The **W#** and **B#** column
+headings stay on one line. Ten quads costs ten sheets rather than thirty.
 
 This is the default, and it does not matter how far along the section is.
 All three rounds of a quad are paired the moment you pair it, so the
@@ -4102,10 +4117,12 @@ the control saves this event's timing
 in its `.sjson` file. This is the same setting as **Timing → Seconds on each
 screen** in Live Score Board setup. **Include previous rounds** saves to the same file as soon
 as you click it. Previous rounds with recorded results appear on NACH only; the
-local board still shows the current round. The option is off by default. You can
-update timing and previous rounds while sharing; the next NACH update picks up
-the change without stopping and restarting sharing (normally after the 10-second
-publish debounce). **Delete Scoreboard from NACH** is enabled only while sharing
+local board still shows the current round. The option is on for new events,
+including events created from an online registry roster. A registry seed with an
+explicit choice keeps it; existing and cloud-saved events keep their saved choice
+(older files without a saved choice remain off). You can update timing and
+previous rounds while sharing; the next NACH update picks up the change without
+stopping and restarting sharing (normally after the 10-second publish debounce).
 and hosted results entry are stopped. Stopping sharing alone only stops live
 updates; it does not delete the last published board. The local-network
 sharing card and **Open local board** button are hidden. While sharing is stopped,
@@ -4880,11 +4897,8 @@ without a NACH event ID get no public event QR.
 Roster, prizes, byes and the crosstable do not carry the event QR. Those are
 your documents rather than the ones players crowd around.
 
-The same code appears in the **popped-out Pairings, Standings and Wall
-Chart windows**, with a **Show event QR** tick box to hide it. TDs often
-throw those windows onto a projector or a large screen, and a QR on the
-big screen can be scanned from across the hall by a dozen people at
-once.
+**🪟 Window** shows Pairings, Standings and Wall Chart without QR codes;
+those remain available on printed reports.
 
 ---
 
@@ -6173,7 +6187,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.146.20261009**. It is updated whenever a
+This guide describes FreePair **v0.147.20261009**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
