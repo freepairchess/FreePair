@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.147.20261009**
+**Applies to FreePair v0.148.20261010**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -163,9 +163,9 @@ the right-hand end of the same row include:
   **Share** whenever FreePair has a QR code or a share action to offer.
 - **🖨 Print** includes **Pairings in 1 page**, which lets you choose rounds
   and print one page per selected view, and the full **All Pairings**,
-  **All Standings**, **All Wall Charts** and **All Crosstables** PDFs.
-  The same actions are under **Event Operations → Print**. To print one
-  section rather than the whole event, use **Print as PDF** on its tab.
+  **All Standings**, **All Wall Charts** and **All Crosstables** PDFs, plus
+  **Print Quads Wall Chart**. The same actions are under **Event Operations → Print**.
+  To print one section rather than the whole event, use **Print as PDF** on its tab.
 - Scoreboard, Share and Print show an icon and text when there is room.
   In the toolbar's compact mode, labels hide but icons and tooltips remain.
   All three are also in **Event Operations** under their full names —
@@ -304,6 +304,7 @@ question.
 | `Ctrl+Shift+D` | Print every section's standings |
 | `Ctrl+Shift+L` | Print every section's wall charts |
 | `Ctrl+Shift+T` | Print every round-robin and quad section's crosstable |
+| `Ctrl+Shift+Q` | Print the quads wall chart |
 | `Ctrl+,` | Open Settings |
 | `F11` | Focus mode — give the table the whole window |
 | `Esc` | Leave focus mode |
@@ -3766,7 +3767,22 @@ not mean ten trips through the section tabs and ten save dialogs:
 - **All Standings**
 - **All Wall Charts**
 - **All Crosstables**
+- **Print Quads Wall Chart**
 - **Print QR Codes**
+
+**Print Quads Wall Chart** lists only live quad sections. Paired four-player
+quads start ticked; unpaired or incomplete quads are listed but disabled,
+because their actual schedule is not yet available. The portrait PDF groups
+three quads per page: each numbered player has columns for rounds 1–3 showing
+**W#** or **B#** for their color and opponent's number within that quad. Played
+results appear next to the opponent; unplayed games leave a blank box for
+writing in the result. The PDF is saved beside the event as
+`[event]-quads-wall-chart.pdf`. Save the event first. The header carries the
+same pairing and scoreboard QR codes as other event prints when the event has
+public links. After choosing sections, **Page setup** lets you choose portrait
+or landscape, font, text size, row spacing and margins independently of the
+ordinary wall chart. Portrait is the default and fits up to three quads per
+page; landscape fits up to two.
 
 The four **All** reports open a chooser listing every section. **Sections
 that have been paired start ticked**; one that has not started yet is
@@ -3777,23 +3793,27 @@ is listed but disabled, with the reason under its status, so you can see
 FreePair left it out on purpose rather than wondering where it went.
 
 **Continue** then shows the same **Page setup** you get from any other
-print button, on the same report — so an orientation or font size you
-tuned on a section tab is the one the event-wide sheet uses. Cancel
-there abandons the print but keeps any adjustment you made, because page
-settings save as they change.
+print button, on the selected report. Cancel there abandons the print but
+keeps any adjustment you made, because page settings save as they change.
 
-**Print QR Codes** is different:
-select — pairings/event files, scoreboard links, result entry links and any
-venue Wi-Fi QR you added — with the purpose text beside each code. The dialog
-starts with all available FreePair codes ticked. It also has an optional
-**Include venue Wi-Fi QR code** row; when you tick it and enter the network
-name, the same sheet includes a standard Wi-Fi QR code plus the network in
-text. **Show Password** is off by default; tick it only if the QR and printed
-text should include the password too. Leave Wi-Fi unchecked to print only
-selected FreePair links. One or two codes are enlarged and spread down the page;
-three or four use a larger two-column, two-row grid, with a lone third code
-centered in the second row. As the list grows, the sheet compacts the codes into
-multiple columns so every selected code stays on one page.
+**Print QR Codes** opens a dialog to select pairings/event files, scoreboard
+links and any venue Wi-Fi QR you added, with the purpose text beside each code.
+With an NA Chess Hub Event ID, both public pairings and scoreboard links are
+built from that ID and the configured Hub URL, even before sharing starts. The
+pages may not have content until published. The dialog starts with all available
+codes ticked. Local-network codes appear only while their servers run. The
+optional **Include venue Wi-Fi QR code** row lets you add a standard Wi-Fi QR
+and the network name in text. **Show Password** is off by default; tick it only
+if the QR and printed text should include the password too. Leave Wi-Fi
+unchecked to print only selected FreePair links. On the sheet, the public
+codes have prominent **Pairing** and **Scoreboard** titles above the QR images,
+without URLs or extra text; venue Wi-Fi and local-network codes retain their
+network details. The header centers the event name above a smaller date and
+location line when those details are set. One or two codes are enlarged and
+spread down the page; three
+or four use a larger two-column, two-row grid, with a lone third code centered
+in the second row. As the list grows, the sheet compacts the codes into multiple
+columns so every selected code stays on one page.
 
 The file is written next to your event file, named after it — for example
 `MyEvent-all-pairings.pdf` or `MyEvent-qr-codes.pdf` — and opens in your PDF
@@ -4814,15 +4834,14 @@ and optional password, then disappears while a venue Wi-Fi QR is already in the
 menu. **Show Password** is off by default, and while it is off the Wi-Fi QR and
 menu row include only the network name. Tick **Save for future events** to
 remember it in this user's app settings. The Wi-Fi row has **Remove**, which
-removes it from the menu and clears any saved venue Wi-Fi settings. A bottom
-**Print QR Codes** item opens the same one-page QR sheet dialog as
-**Print → Print QR Codes**. If the scoreboard is not running yet, the menu shows
-a **Not Available - Click to start** row that opens **Share** so you can start
-it. There is no separate Result Entry start item: enable it in **Share →
-Scoreboard Sharing**. If the event
-has no NA Chess Hub Event ID and Passcode, the pairings/event-files QR shows a
-not-available row that takes you to **Event Configuration → Online**. Hover the
-dropdown to see what it is for; click a QR code to open a large centered
+removes it from the menu and clears any saved venue Wi-Fi settings. **Print QR
+Codes** opens the same one-page QR sheet dialog as **Print → Print QR Codes**.
+There is no unavailable-scoreboard row: with an NA Chess Hub Event ID, the
+public scoreboard QR is shown even before sharing starts; the page may have
+no content until published. To start sharing, use **Share → Scoreboard Sharing**.
+If the event has no NA Chess Hub Event ID and Passcode, the pairings/event-files
+QR shows a not-available row that takes you to **Event Configuration → Online**.
+Hover the dropdown to see what it is for; click a QR code to open a large centered
 preview that takes most of the window, so someone can scan it from a
 phone without leaning over the director's keyboard. It appears only while there
 is something to scan or start.
@@ -6187,7 +6206,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.147.20261009**. It is updated whenever a
+This guide describes FreePair **v0.148.20261010**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
