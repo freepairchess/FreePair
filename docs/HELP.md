@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.149.20261012**
+**Applies to FreePair v0.150.20261012**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -148,30 +148,54 @@ first.
 There are no tabs. The window shows the event you have open, and a single
 toolbar runs across the top of it.
 
-The event commands — **New**, **Open**, **Save**, **Close**,
-**Event Operations**, **Edit** and **Pairing** — run from the left.
-**Edit** (pencil icon) holds **Undo** and **Redo** for changes made in this session; their
-`Ctrl+Z` and `Ctrl+Y` shortcuts still work. **Pairing**, immediately after
-Edit, holds **Pair All Sections**, **Delete Pairings…** (shown when the event
-has pairings), **Publish Pairing to NA Chess Hub** and **Delete Pairing from
-NA Chess Hub**. The section toolbar has **Pairing - Section** for actions
-on the selected section. The controls at
-the right-hand end of the same row include:
+The event commands — **New**, **Open**, **Save**, **Close**, **Edit**,
+**Sections**, **Rosters** and **Pairing** — run from the left.
+**Edit** (pencil icon), immediately after Close, holds **Undo** and **Redo**
+for changes made in this session; their `Ctrl+Z` and `Ctrl+Y` shortcuts still
+work. **Sections** (file-dividers icon) has event-wide board renumbering,
+merging and section deletion. **Current Section [name]** shows the selected
+section's quick actions when a section is selected. **Sections → Sections**
+lists every section, including soft-deleted ones, with its own quick actions:
+pair or clear rounds when available, edit, copy, move players and soft-delete,
+or restore and permanently delete a soft-deleted section. Clicking a section
+name in this list focuses that section; its actions target it. **Rosters**
+(two-person icon) has roster sync, ID checks, rating refresh and **Make Teams
+With Same Family Name for All Sections**. Below a separator, **Current Section
+[name]** shows the selected section's **Roster Update** actions when one is
+selected. **Rosters → Sections** lists every section and its roster actions;
+clicking a name there focuses that section too. Per-section actions include
+sync when available, add, move, import, family teams, and selection-based bulk
+edit, delete and restore (disabled until players are selected). **Pairing** holds
+**Pair All Sections**, **Delete Pairings**, **Check Event**, event-wide
+**Pairing Quality**, and **Decision Log** (when recording is on).
+**Current Section [section name]** has the selected section's pairing,
+round-board and review actions (and Bughouse section creation when available).
+**Pairing → Sections** lists every section with those same actions; clicking
+a section name focuses it before you use its actions. The current-section
+submenu appears only when a section is selected. **Publish Pairing to NA Chess
+Hub**, **Delete Pairing from NA Chess Hub**, and **Export Report** (USCF, FIDE,
+NWSRS, PGN headers or engine TRF) remain at the top level. Roster sync is in
+**Rosters** and section merging is in **Sections**. The section toolbar still
+has **Pairing - Section**.
+The controls at the right-hand end of the same row include:
 
-- **🖥 Scoreboard** opens pairings and standings for a second screen
-  or projector. **Share**, marked by three connected dots, shares that
-  display with TVs and phones. A compact **QR** dropdown appears after
-  **Share** whenever FreePair has a QR code or a share action to offer.
+- **🖥 View**, immediately before Share, has **📺 Scoreboard → Local Scoreboard**
+  (opens the Live Score Board setup dialog, which can also close a running
+  board) and **Scoreboard → Share Scoreboard to NACH** (opens the same Share
+  window as the Share button, on Scoreboard Sharing). **Popup Windows** opens
+  separate read-only Pairings, Standings and Wall Charts for every section.
+- **Share**, marked by three connected dots, shares the scoreboard with
+  TVs and phones. A compact **QR** dropdown appears after **Share** whenever
+  FreePair has a QR code or a share action to offer.
 - **🖨 Print** includes **Pairings in 1 page**, which lets you choose rounds
   and print one page per selected view, and the full **All Pairings**,
   **All Standings**, **All Wall Charts** and **All Crosstables** PDFs, plus
-  **Print Quads Wall Chart**. The same actions are under **Event Operations → Print**.
-  To print one section rather than the whole event, use **Print as PDF** on its tab.
-- Scoreboard, Share and Print show an icon and text when there is room.
-  In the toolbar's compact mode, labels hide but icons and tooltips remain.
-  All three are also in **Event Operations** under their full names —
-  **Live Score Board (full screen)**, **Share Live Score Board** and
-  **Print** — if you would rather find them by name.
+  **Print Quads Wall Chart**. To print one section rather than the whole event,
+  use **Print as PDF** on its tab.
+- View, Share and Print show an icon and text when there is room. In the toolbar's
+  compact mode, labels hide but icons and tooltips remain. Hover for the full
+  action name. The section toolbar also shows only icons on narrow screens,
+  keeping its menus on one row.
 - **⚙ Settings** opens the application preferences in a window of
   their own. See [Settings](#settings).
 - **📖 Help** opens a short menu:
@@ -189,12 +213,12 @@ the right-hand end of the same row include:
     does, and what it needs open to work. See
     [Keyboard shortcuts](#keyboard-shortcuts).
 
-Scoreboard, Share, QR and Print appear only once an event is open; Settings
+View, Share, QR and Print appear only once an event is open; Settings
 and Help are always there. The **Theme** picker is in **Settings → Display**
 to leave more toolbar space for event commands.
 
-**Warnings and errors appear below the entire toolbar**, including Live Score
-Board, Share and Print, rather than alongside the left-hand buttons.
+**Warnings and errors appear below the entire toolbar**, including Share and
+Print, rather than alongside the left-hand buttons.
 Each notice is labelled **Warning** or **Error**, with matching colours.
 Identical status and error/warning text appears only once. A rating refresh
 that completes with some ratings unconfirmed is a **Warning**, not a failed
@@ -233,6 +257,8 @@ It is not saved in the event file and does not survive closing the window.
 A new occurrence of a dismissed or deleted message can appear again.
 
 **On a narrow window the toolbar drops the labels and keeps the icons.**
+The section tab action menus do the same when the section workspace is narrow;
+hover over an icon for its full name. Filters and round selectors keep their labels.
 On very narrow windows the event commands can wrap to another row. All toolbar
 buttons, including QR, keep the same height; the right-hand controls stay aligned
 to the top row instead of stretching across both rows. This sizing applies only
@@ -1052,7 +1078,7 @@ the colours and the results are untouched.
   opening on the number the section is on now, with a **Use recommended**
   button beside it and the same overlap notice you get when pairing. This is
   the quick one during an event.
-- **Event Operations → 🔢 Renumber boards** gives each section a **Renumber
+**Sections → 🔢 Renumber boards** gives each section a **Renumber
   R*n*** button beside its row. That applies the number typed in *that row*
   and moves the section's latest paired round onto it in one go — so you can
   fix one section without touching the others. Sections that have not been
@@ -1545,8 +1571,8 @@ done that due diligence.
 supplement. It is where a new federation rating supplement shows up, and it
 is now run only when the TD chooses it from the roster.
 
-For multi-section events, **Event Operations → Verify Player IDs for All
-Sections** and **Event Operations → Refresh Ratings for All Sections** run
+For multi-section events, **Rosters → Verify Player IDs for All
+Sections** and **Rosters → Refresh Ratings for All Sections** run
 those same roster tools section by section. They skip sections where the ID
 and rating tools do not apply.
 
@@ -1793,11 +1819,13 @@ puts everyone who shares a surname onto one team, which is what
 It is in two places, and they do the same thing to different amounts of
 the event:
 
-- **Event Operations → Make Teams With Same Family Name** — every
+- **Rosters → Make Teams With Same Family Name for All Sections** — every
   section, all ticked to start with. Untick the ones to leave out.
-- A section's **Roster Update → Make Teams With Same Family Name** —
-  that section only. The section list is not shown, because there is
-  nothing to choose.
+- **Roster Update → Make Teams With Same Family Name** in a section, or
+  **Rosters → Current Section [name] → Make Teams With Same Family Name**, or
+  **Rosters → Sections → [section name] → Make Teams With Same Family Name** —
+  that section only. The section list is not shown, because there is nothing
+  to choose.
 
 **Nothing changes until you press Make teams.** The dialog is a preview:
 it lists every player it would move, with the team they have now — shown
@@ -1842,7 +1870,7 @@ past.
 Large opens often run one event on two schedules — a 3-day and a 2-day
 that starts a day later and plays its early rounds faster — and join them
 into a single field partway through. **⚖ Merge Sections** does that. It
-is on **Event Operations**, and on a section's **Pairing** menu
+is on **Sections**, and on a section's **Pairing** menu
 where that section starts already ticked.
 
 The dialog lists every section with its pairing engine, pairing rule,
@@ -1943,7 +1971,7 @@ twice.
 
 ### Deleting several sections
 
-**Event Operations → Delete Sections** removes several sections at once —
+**Sections → Delete Sections** removes several sections at once —
 for example, thirty quads you no longer need. **Nothing starts selected.**
 Each row shows the section name, full **Roster size** (including withdrawn
 and soft-deleted players), existing **Rounds**, and soft-deleted status.
@@ -2196,9 +2224,10 @@ much less disruptive to get the pool right first.
 
 ### Pairing a round
 
-**Pairing - Section** (♟) on the section toolbar offers **Pair Next Round**
-for the selected section. To pair every section at once, use **Pairing → Pair
-All Sections** on the event toolbar — see
+**Pairing - Section** (⚔) on the section toolbar offers **Pair Next Round**
+for the selected section. The same actions are under **Pairing → Current Section
+[section name]** on the event toolbar; the name follows the selected section.
+To pair every section at once, use **Pairing → Pair All Sections** — see
 [Pairing every section at once](#pairing-every-section-at-once).
 **Sync Roster with NACH** is on **Pairing - Section** as well as the Roster
 tab's **Roster Update** menu, since checking for late entries is
@@ -2508,7 +2537,7 @@ per section:
 
   **If you choose Continue, Pair All uses the roster exactly as it is.** Run
   **Sync Roster with NACH**, **Verify IDs** and **Refresh Ratings** from the
-  roster/Event Operations before pairing when you need them.
+  section's roster or **Rosters** before pairing when you need them.
 
 **Pair ready sections asks you to confirm first.** The prompt lists
 every ticked section and what will happen to it — *pairs round 1*,
@@ -2624,8 +2653,8 @@ There are three ways in, all doing the same job at different sizes:
   about to accept.
 - **🔍 Check Section** — Pairings tab → *Pairing*. Every round
   this section has, plus the things no single round can answer.
-- **🔍 Check Event** — *Event Operations*. Every section, plus the checks
-  that compare them. Worth a click before you print or publish.
+- **🔍 Check Event** — *Pairing* on the event toolbar. Every section, plus
+  the checks that compare them. Worth a click before you print or publish.
 
 It looks for:
 
@@ -2979,8 +3008,8 @@ Two ways in:
 
 - **📊 Pairing Quality** — Pairings tab → *Pairing*, for this
   section.
-- **📊 Pairing Quality** — *Event Operations*, for every section at once.
-  You get event-wide totals first, then each section underneath.
+- **📊 Pairing Quality** — *Pairing* on the event toolbar, for every section
+  at once. You get event-wide totals first, then each section underneath.
 
 It reports on:
 
@@ -3101,7 +3130,7 @@ have already printed or published are not retracted.
 
 ### PGN headers for recording games
 
-**Event Operations → Export Report → PGN headers** opens a chooser for sections
+**Pairing → Export Report → PGN headers** opens a chooser for sections
 and their individual paired rounds. Tick the games you need, then **Export**
 to save one `.PGN` file with game headers and **no moves**. All eligible
 rounds in active sections start selected; unpaired rounds and deleted
@@ -3765,9 +3794,9 @@ cannot render it.
 
 ### Printing the whole event at once
 
-The **🖨** icon at the top right of the window — or **Event Operations →
-🖨 Print** — holds the event-wide print jobs, so a ten-quad scholastic does
-not mean ten trips through the section tabs and ten save dialogs:
+The **🖨 Print** button at the top right of the window holds the event-wide
+print jobs, so a ten-quad scholastic does not mean ten trips through the
+section tabs and ten save dialogs:
 
 - **Pairings in 1 page** — opens a chooser with **Pairings by name** and
   **Pairings from all sections** both checked. Below them, every paired
@@ -3874,10 +3903,10 @@ same games.
 
 ### The Live Score Board
 
-The **🖥** icon at the top right of the window — or **Event Operations →
-Live Score Board (full screen)** — opens a full-screen display for a projector
-or a spare monitor — the screen in the skittles room that stops players
-crowding round the paper on the wall.
+**View → Scoreboard → Local Scoreboard** opens the setup dialog for a
+full-screen display on a projector or spare monitor — the screen in the
+skittles room that stops players crowding round the paper on the wall.
+`Ctrl+B` opens it too.
 
 **Setting it up.** A short dialog opens first, and what you choose is
 remembered for next time:
@@ -4052,10 +4081,9 @@ window. At the screen itself:
 - **← →** step back and forward a screen.
 - **F11** switches between full screen and an ordinary window.
 
-**You can also close it from the desk.** Once a board is up, **Event
-Operations → Close Live Score Board** appears, and the setup panel — the
-🖥 button, or `Ctrl+B` — grows a **Close Live Score Board** button beside
-its usual two. Either shuts the board down where you are standing.
+**You can also close it from the desk.** Once a board is up, the setup
+panel — opened from **View → Scoreboard → Local Scoreboard** or `Ctrl+B` —
+shows a **Close Live Score Board** button beside its usual two.
 
 That matters more than it sounds. The board opens full screen on the
 display your working window is *not* on, which is the whole point of it;
@@ -4088,12 +4116,13 @@ be a list of zeroes in seeding order.
 
 ### Putting the Live Score Board on a TV or on phones
 
-The **Share** button — next to **Scoreboard** at the top right, or
-**Event Operations → Share Live Score Board** — shares the scoreboard
-publicly on NA Chess Hub. Viewers can open it from phones or TVs without
-joining the venue network. See *Sharing the Live Score Board on NA Chess Hub*
-below. Local-network scoreboard sharing is retained internally but is not
-currently offered in the Share window.
+**View → Scoreboard → Share Scoreboard to NACH** opens the same **Share**
+window as the Share button at the top right, with **Scoreboard Sharing**
+selected. From there, you can share the scoreboard publicly on NA Chess Hub;
+viewers can open it from phones or TVs without joining the venue network.
+See *Sharing the Live Score Board on NA Chess Hub* below. Local-network
+scoreboard sharing is retained internally but is not currently offered in
+the Share window.
 
 The **Share** window has **Scoreboard Sharing**, **Pairing sharing**, and
 **Streaming to Smart TV** tabs. **Streaming to Smart TV** provides browser-specific
@@ -5011,7 +5040,7 @@ can open one to compare against your current event, or go back to it.
 
 ### The decision log
 
-**Event Operations → 📓 Decision Log** keeps a record of the
+**Pairing → 📓 Decision Log** keeps a record of the
 discretionary calls you make, with the reason you gave. It covers:
 
 - Everything you change in the **pairing preview** — swapping colours,
@@ -5063,13 +5092,13 @@ explain from one the printout left out.
 
 It is off by default, including for event files without a saved choice.
 To start recording, tick **Record my decisions, and ask why** in **Event
-Details → Options**. Once enabled, **Decision Log** appears in Event
-Operations and FreePair asks why when you make a discretionary change.
+Details → Options**. Once enabled, **Decision Log** appears in **Pairing**
+and FreePair asks why when you make a discretionary change.
 To stop, untick that option or tick **Stop recording decisions for this
 event** on a "why?" prompt.
 
 Turning it off stops **every** "why?" prompt, including the one for a
-hand-edited pairing, and removes **Decision Log** from Event Operations.
+hand-edited pairing, and removes **Decision Log** from **Pairing**.
 Hand-edited boards are still marked as a TD override in "Why this
 pairing?", just without a note of your own.
 
@@ -5562,7 +5591,7 @@ it recognises them by, so do not rename them.
 
 ## Filing the FIDE rating report
 
-**Event Operations → 📤 Export Report → FIDE Rating Report** writes a TRF
+**Pairing → 📤 Export Report → FIDE Rating Report** writes a TRF
 report for one section,
 ready to send for FIDE rating. FreePair asks which section, fills in
 everything the event already knows and asks you for the rest: host city,
@@ -6024,7 +6053,7 @@ Ctrl+P on the Norms tab prints the summary.
 
 ## Filing the NWSRS rating report
 
-**🎒 NWSRS Report** on **Event Operations → 📤 Export Report** writes the file NWSRS
+**🎒 NWSRS Report** on **Pairing → 📤 Export Report** writes the file NWSRS
 needs to rate your event. It appears only when something in the event is
 NWSRS-rated, so on a purely US Chess or FIDE event you will not see it.
 
@@ -6243,7 +6272,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.149.20261012**. It is updated whenever a
+This guide describes FreePair **v0.150.20261012**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
