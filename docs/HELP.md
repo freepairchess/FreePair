@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.148.20261010**
+**Applies to FreePair v0.149.20261012**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -149,12 +149,13 @@ There are no tabs. The window shows the event you have open, and a single
 toolbar runs across the top of it.
 
 The event commands — **New**, **Open**, **Save**, **Close**,
-**Event Operations**, **Edit** and **Pairing - All Sections** — run from the left.
-**Edit** holds **Undo** and **Redo** for changes made in this session; their
-`Ctrl+Z` and `Ctrl+Y` shortcuts still work. **Pairing - All Sections**,
-immediately after Edit, holds **Pair All Sections** and **Delete Pairings…**
-(shown when the event has pairings). The section toolbar has
-**Pairing - Current Section** for actions on the selected section. The controls at
+**Event Operations**, **Edit** and **Pairing** — run from the left.
+**Edit** (pencil icon) holds **Undo** and **Redo** for changes made in this session; their
+`Ctrl+Z` and `Ctrl+Y` shortcuts still work. **Pairing**, immediately after
+Edit, holds **Pair All Sections**, **Delete Pairings…** (shown when the event
+has pairings), **Publish Pairing to NA Chess Hub** and **Delete Pairing from
+NA Chess Hub**. The section toolbar has **Pairing - Section** for actions
+on the selected section. The controls at
 the right-hand end of the same row include:
 
 - **🖥 Scoreboard** opens pairings and standings for a second screen
@@ -289,6 +290,7 @@ question.
 | `Ctrl+W` | Close the event |
 | `Ctrl+Z` | Undo the last change (**Edit → Undo**) |
 | `Ctrl+Y` | Redo it (**Edit → Redo**; `Ctrl+Shift+Z` does the same) |
+| `Ctrl+A` | Open **Roster Update → Add** for the selected section (selects all instead when typing in a text box) |
 | `F5` | On the event view, pair every ready section; on a section view, pair that section (for a Quad section, **Pair as Quads**) |
 | `Shift+F5` | Pair the next round of every ready section, regardless of the selected view |
 | `Ctrl+Shift+Delete` | Delete that section's last round — asks first |
@@ -1076,11 +1078,12 @@ players are already sitting at.
 ### Adding players to a roster
 
 The **Roster** tab holds the players in a section. Use **Roster Update →
-Add** to open the Add-player form. It opens on **Required**, with the name,
-ID, ID2, Rating and Rating 2 used for pairing. Notes under the ID and rating
-fields name the federation or rating scale expected by the section. If the
-values are in the wrong slots, use **Swap ID / ID2** or **Swap Rating /
-Rating 2**.
+Add** (or `Ctrl+A` with a section selected) to open the Add-player form.
+`Ctrl+A` still selects text while typing in a text box. The form opens on
+**Required**, with the name, ID, ID2, Rating and Rating 2 used for pairing.
+Notes under the ID and rating fields name the federation or rating scale
+expected by the section. If the values are in the wrong slots, use
+**Swap ID / ID2** or **Swap Rating / Rating 2**.
 
 The form keeps the other player details in their own tabs: **Bye Requests**
 for past and future byes; **Affiliation & Contact** for Club, State, Team,
@@ -1106,10 +1109,15 @@ shows one ID, which is saved as both the player's FIDE ID and the FIDE
 ratings ID. A pull does not change the name or pairing rating on
 **Required**.
 
-On **Required**, **Verify ID** and **Verify ID2** check the player's ID
-against NA Chess Hub. They can recognize an NWSRS ID, including an
-alphanumeric full ID, and fill other federation IDs from the same player's
-profile. A previous successful Roster check appears when you open **Edit**;
+On **Required** in the Add form, **Search by ID** beside **ID** looks up
+that player's profile in the section's ID federation. Pressing Enter in
+**ID** does the same; choose **Add** in the search results to fill the form,
+then review and press the form's **Add** to add the player. **ID2** still has
+**Verify**, as does **ID** when editing an existing player. These Verify
+buttons check the player's ID against NA Chess Hub. They can recognize an
+NWSRS ID, including an alphanumeric full ID, and fill other federation IDs
+from the same player's profile. A previous successful Roster check appears
+when you open **Edit**;
 its player-specific ID type takes precedence over the section's usual ID
 type, so you can verify again to fetch linked IDs without guessing. The
 form checks the name as well as the number and does not copy another
@@ -1121,7 +1129,8 @@ rating scales; review all changes and press **Save** to apply them. Editing
 the name or an ID clears that field's displayed verification.
 
 **Search Player DB…** beside the **Name** box looks up the player online.
-Results include NWSRS ID, grade, rating and school code when the player has
+Pressing Enter in **Name** on the Add form opens the same search instead of
+submitting the form. Results include NWSRS ID, grade, rating and school code when the player has
 an NWSRS profile. Choosing a result fills the matching identity, rating and
 profile fields on the tabs, including those NWSRS values; review them before
 Add. The section's configured ID and Rating slots determine which matching
@@ -1154,14 +1163,16 @@ result. Search is available for individual-player rosters, not calculated
 Bughouse team rows.
 
 **A number is looked up as a member ID; anything else is a name search.**
-A name is searched two ways at once — an exact match and a close ("fuzzy")
-match — and the two lists are merged with the nearest names first. That
-matters because the player database's exact match ignores middle names:
-searching *David W. Martin* finds everyone called *David Martin*, and on
-its own it would never show you the *David W. Martin* you asked for.
-Running both searches and putting the fuller name matches at the top means
-the more of the name you know, the better the result, which is the way
-round a search should work.
+The exact matches appear first. You can press **Add** as soon as you see the
+right player; that cancels the still-running close ("fuzzy") search. If you
+wait, the fuzzy matches join the list, duplicates are removed, and the
+closest names move to the top. This matters because the player database's
+exact match ignores middle names: searching *David W. Martin* can initially
+show everyone called *David Martin*, while the fuzzy search may find the
+*David W. Martin* you asked for. If the exact search finds nobody, the list
+waits for the fuzzy search before showing "No players found." Fuzzy searches
+can take longer than exact searches, so let the search finish before assuming
+no match exists.
 
 **Use the "Narrow results" box to sift a long list.** A common name can
 come back forty or more players deep. Typing in that box filters the rows
@@ -2185,12 +2196,16 @@ much less disruptive to get the pool right first.
 
 ### Pairing a round
 
-**Pairing** (♟) pairs the next round for the section. To pair
-every section at once, use **Pairing → Pair All Sections** on the event toolbar —
-see [Pairing every section at once](#pairing-every-section-at-once).
-**Sync Roster with NACH** is on the section's Pairing menu as well as the Roster
+**Pairing - Section** (♟) on the section toolbar offers **Pair Next Round**
+for the selected section. To pair every section at once, use **Pairing → Pair
+All Sections** on the event toolbar — see
+[Pairing every section at once](#pairing-every-section-at-once).
+**Sync Roster with NACH** is on **Pairing - Section** as well as the Roster
 tab's **Roster Update** menu, since checking for late entries is
-normally the step just before pairing.
+normally the step just before pairing. **Publish Pairing to NA Chess Hub** is
+at the bottom of that section menu and also in the event-level **Pairing**
+menu. It publishes pairings and results for the whole event, not just this
+section.
 
 **If "Pair Next Round" is greyed out, hover over it.** The tooltip names
 the specific thing standing in the way and where to fix it, rather than
@@ -3279,8 +3294,15 @@ The **Standings** tab ranks players by score and then by tiebreak.
 for this section. The selection affects standings order as well as which
 columns appear. New sections created from a selected or source section
 inherit its tiebreak selection, including an explicit choice to show none;
-each section can then be configured independently. Tiebreak columns are
-sortable, and sort by the underlying value rather than the displayed text.
+each section can then be configured independently. For new events, choose
+**Settings → Pairing → Choose default tiebreaks...** to save an ordered
+selection for future events. Select none there to start new events without
+tiebreak columns; equal scores then rank by rating. The preference applies
+when creating an event in FreePair or downloading a registration roster from
+NA Chess Hub. It does not change events already open, local event files, or
+cloud-saved working copies. A section with its own saved choice keeps it.
+Tiebreak columns are sortable, and sort by the underlying value rather than
+the displayed text.
 
 Full-point, half-point and zero-point requests appear in their own columns, so you can
 check them against your written list at a glance.
@@ -5268,7 +5290,10 @@ FreePair checks periodically and shows a red count beside any section
 with changes waiting, and beside the Sections header for the event total.
 Clicking a section's badge opens the review for that section; clicking
 the header total opens the whole event. You review every change before
-anything is applied.
+anything is applied. If an existing player's **Team** differs from NA
+Chess Hub, the review offers a **Team** change showing both values. You
+can deselect it to keep the local team; applying it updates only that
+player's team, including clearing it when the Hub team is blank.
 
 The review shows **Last edited on NACH** for each player's registration
 when NA Chess Hub provides it, in your computer's local time. **Not
@@ -5475,6 +5500,18 @@ event, and asks you for the affiliate and TD details it cannot infer.
 The ID check that runs before the export looks only at the sections you
 chose, so leaving a section out also stops it warning you about IDs in
 it.
+
+### Choosing the rating system
+
+The **Rating system** field uses US Chess codes for over-the-board games:
+**B** means Blitz (total 5–10), **Q** means Quick only (over 10, under 30),
+**D** means both Regular and Quick (30–65), and **R** means Regular only
+(over 65). For these ranges, add the main time in **minutes** to the delay
+or increment in **seconds** as a number; do not convert the seconds to
+minutes. For example, **G/27; d2** totals 27 + 2 = 29, so select **Q**, not
+D. FreePair may prefill this field from the event; check the actual time
+control before exporting. The dialog has a button to open the US Chess
+rating-system specification (April 6, 2026) in your browser when online.
 
 ### Checking the affiliate and TD IDs
 
@@ -6206,7 +6243,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.148.20261010**. It is updated whenever a
+This guide describes FreePair **v0.149.20261012**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
