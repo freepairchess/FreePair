@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.150.20261012**
+**Applies to FreePair v0.151.20261014**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -1122,10 +1122,16 @@ USCF tab. Click its date field to choose an expiration from the calendar;
 **Clear** removes it. NWSRS grade is selected as K, grades 1–12, Adult, or
 Not set. In Edit, fields on all tabs can be changed manually.
 
-The **USCF**, **FIDE**, **CFC** and **NWSRS** tabs each have a **Pull … Ratings**
-button beside their ID. If that federation's ID is available on the tab or
-in a typed ID/ID2 pairing field, click the button to look up the player.
-FIDE, CFC and NWSRS use the NA Chess Hub player database: FIDE supplies
+The **USCF**, **FIDE**, **CFC** and **NWSRS** tabs have **Find ID by name**
+next to their ID fields. When an ID or rating is missing, search for the
+player's roster name in the NA Chess Hub database, compare the results,
+and choose **This is me**. The selected federation's ID, available rating
+and (for NWSRS) school code and grade fill missing fields. The roster name
+and existing values are not replaced; review the form and press **Save**.
+**Pull … Ratings** is beside the federation's rating fields. If that
+federation's ID is available on the tab or in a typed ID/ID2 pairing field,
+click the button to look up the player by ID. FIDE, CFC and NWSRS use the
+NA Chess Hub player database: FIDE supplies
 standard rating and profile details, CFC supplies regular rating, and
 NWSRS supplies rating, school and grade. Rapid, blitz and K-values that
 the service does not provide are left alone. If a record or rating is
@@ -1138,8 +1144,11 @@ ratings ID. A pull does not change the name or pairing rating on
 On **Required** in the Add form, **Search by ID** beside **ID** looks up
 that player's profile in the section's ID federation. Pressing Enter in
 **ID** does the same; choose **Add** in the search results to fill the form,
-then review and press the form's **Add** to add the player. **ID2** still has
-**Verify**, as does **ID** when editing an existing player. These Verify
+then review and press the form's **Add** to add the player. Where the section
+knows the federation of **ID** or **ID2**, **Find ID by name** also searches
+for the roster name and fills the selected missing ID (or a zero-only
+placeholder) after you choose **This is me**. **ID2** still has **Verify**,
+as does **ID** when editing an existing player. These Verify
 buttons check the player's ID against NA Chess Hub. They can recognize an
 NWSRS ID, including an alphanumeric full ID, and fill other federation IDs
 from the same player's profile. A previous successful Roster check appears
@@ -6272,7 +6281,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.150.20261012**. It is updated whenever a
+This guide describes FreePair **v0.151.20261014**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
