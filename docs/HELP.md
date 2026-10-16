@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.151.20261014**
+**Applies to FreePair v0.152.20261016**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -182,8 +182,9 @@ The controls at the right-hand end of the same row include:
 - **🖥 View**, immediately before Share, has **📺 Scoreboard → Local Scoreboard**
   (opens the Live Score Board setup dialog, which can also close a running
   board) and **Scoreboard → Share Scoreboard to NACH** (opens the same Share
-  window as the Share button, on Scoreboard Sharing). **Popup Windows** opens
-  separate read-only Pairings, Standings and Wall Charts for every section.
+  window as the Share button, on Scoreboard Sharing). **Popup Windows** offers
+  read-only Roster, Pairings, Standings, Wall Charts and Prizes windows. Choose
+  which sections to open; each window updates as the event changes.
 - **Share**, marked by three connected dots, shares the scoreboard with
   TVs and phones. A compact **QR** dropdown appears after **Share** whenever
   FreePair has a QR code or a share action to offer.
@@ -965,8 +966,9 @@ standings and prizes.
   how many rounds and results you are about to lose.
 - **Copy section** duplicates a section's setup, which is useful when an
   event has several similarly configured sections.
-- **🪟 Window** pops a section out into its own window, so you can
-  watch two sections side by side.
+- **🖥 View → Popup Windows** opens selected sections' Roster, Pairings,
+  Standings, Wall Charts or Prizes in read-only windows, so you can watch
+  sections side by side without extra Window buttons on each tab.
 
 A soft-deleted section shows a warning banner in its view.
 only the warning; the section remains locked and excluded from publishing.
@@ -1878,7 +1880,7 @@ past.
 
 Large opens often run one event on two schedules — a 3-day and a 2-day
 that starts a day later and plays its early rounds faster — and join them
-into a single field partway through. **⚖ Merge Sections** does that. It
+into a single field partway through. **Merge Sections** does that. It
 is on **Sections**, and on a section's **Pairing** menu
 where that section starts already ticked.
 
@@ -3450,8 +3452,8 @@ The button does not appear on Swiss sections. In a Swiss the players
 never all meet, so a crosstable would be mostly empty; the wall chart
 is the report for that format.
 
-**The crosstable also shows in a window.** Open the Pairings or Wall
-Chart tab in a window (**🪟 Window**) and the crosstable appears
+**The crosstable also shows in a window.** Use **View → Popup Windows →
+Pairings** or **Wall Charts** and select the section; the crosstable appears
 above the grid, with a **Show crosstable** tick box to hide it.
 by default for round robin and quad sections, because for those formats
 it is usually the view you want — the round below is one slice of it.
@@ -3706,7 +3708,9 @@ says.
 
 **🖨 Print** produces the whole thing as a PDF: winners, unawarded
 prizes with their reasons, the fund with its eligibility column, and a
-footnote stating the sharing rules that produced the numbers.
+footnote stating the sharing rules that produced the numbers. In **Page
+setup → Columns…**, you can choose, reorder and rename the printed columns
+separately for each prize table, including projections and team medals.
 
 ---
 
@@ -3727,9 +3731,16 @@ lines. The footer carries a page number and timestamp. When available, the organ
 logo and name appear beside the FreePair logo; the product name and version
 are centered on separate lines below it.
 
-**Print Setup** controls page options, and the grid and print fonts can
-be adjusted independently, which is useful when a wall chart is one
-column too wide for the page.
+**Page setup** appears before printing. For **Player list**, **Standings**,
+**Wall chart**, **Prizes** and the **Pairing sheet**, select **Columns…** to
+choose which columns appear in the PDF, move them and rename headings.
+These are print-only, app-wide choices saved per report; they do not change
+on-screen grids. Roster printouts never include private contact or birth-date
+fields. On team reports the column picker changes the individual player page
+of the combined report, not the separate team page. With no saved choice,
+existing printed layouts stay the same (the roster follows its section's
+optional columns). Page options and grid and print fonts can be adjusted
+independently, which is useful when a wall chart is one column too wide.
 
 ### The colour-due legend prints only when it explains something
 
@@ -4976,8 +4987,8 @@ without a NACH event ID get no public event QR.
 Roster, prizes, byes and the crosstable do not carry the event QR. Those are
 your documents rather than the ones players crowd around.
 
-**🪟 Window** shows Pairings, Standings and Wall Chart without QR codes;
-those remain available on printed reports.
+**View → Popup Windows** shows Roster, Pairings, Standings, Wall Charts and
+Prizes without QR codes; those remain available on printed reports.
 
 ---
 
@@ -5464,9 +5475,9 @@ Hub](#sharing-the-live-score-board-on-na-chess-hub).
 
 ### Cloud backup
 
-**Save a copy (backup) to NA Chess Hub** stores a copy of the event file
-in the cloud so you can open it from another computer. It is a backup,
-not a publish — it does not make pairings visible to spectators.
+In **Save event → Backup**, **Save a copy to NA Chess Hub** stores a copy
+of the event file in the cloud so you can open it from another computer.
+It is a backup, not a publish — it does not make pairings visible to spectators.
 
 To see the file on NA Chess Hub you must be signed in as the event
 organizer or a TD for that event; it is not on the public event page.
@@ -6281,7 +6292,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.151.20261014**. It is updated whenever a
+This guide describes FreePair **v0.152.20261016**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
