@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.152.20261016**
+**Applies to FreePair v0.153.20261017**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -199,6 +199,11 @@ The controls at the right-hand end of the same row include:
   keeping its menus on one row.
 - **⚙ Settings** opens the application preferences in a window of
   their own. See [Settings](#settings).
+- **Log in**, between Settings and Help, opens the NA Chess Hub account
+  menu when signed out, offering **Log in to NA Chess Hub**. Once signed
+  in, the button reads **NA Chess Hub** and its menu starts with **My Portal
+  [account name]** (when the account type is known), followed by **Log out**
+  and **Log in as a different user**.
 - **📖 Help** opens a short menu:
   - **About FreePair** — what the program is, **the version you are
     running**, its publisher **Chessnique LLC** and FreePair copyright,
@@ -828,7 +833,10 @@ many entrants they hold, and FreePair compares that against what it actually
 read. If the two disagree the import is refused rather than completed. A
 roster that is quietly short is the worst outcome available: nothing looks
 wrong, the event opens, and the missing players are discovered when they
-turn up to play.
+turn up to play. ChessAction counts active players separately from withdrawn
+ones; only active players enter the new event, and FreePair checks their count.
+If none are active, it reports that there are no active entrants to import.
+Other web sources still retain withdrawn entrants as withdrawn.
 
 Where such a roster carries both a scholastic
 (NWSRS) and a US Chess rating, FreePair works out per section which one the
@@ -843,8 +851,8 @@ be paired bottom board against the field for want of a number nobody has
 issued yet.
 
 Titles and withdrawals are sometimes printed into the player's name. Both
-are lifted out, so the name is a name, the title is a title, and a player
-listed as withdrawn arrives withdrawn rather than in the pairing pool.
+are recognized: titles are kept separately from names, and ChessAction
+withdrawals are left out of the new event.
 
 **On a scholastic entry list, the school becomes the team.** Where players
 register through a school, that school is what team standings, team prizes
@@ -1886,7 +1894,12 @@ where that section starts already ticked.
 
 The dialog lists every section with its pairing engine, pairing rule,
 scheduled rounds, rounds paired so far and player count. Tick the ones to
-combine.
+combine, or use **Select All** and **Deselect All** above the list to change
+all the ticks at once. These buttons only change the selection; they do not
+merge or delete anything. The list fills the available window height;
+resize the dialog to see more sections at once. If there are more than fit,
+scroll the list. When duplicates or compatibility warnings need review,
+those areas scroll separately so the section list remains accessible.
 
 Sections can only merge when they agree on the things that would
 otherwise contradict each other: the same pairing engine, the same
@@ -4617,11 +4630,56 @@ the page from the saved event. Leave sharing on; the message clears after the
 scoreboard is republished. The same warning appears in the event's message
 banner and remains in **Messages** session history after recovery. Any result
 not yet saved in FreePair may need to be entered again.
-The hosted PIN row starts with a generated two-letter/four-digit PIN. Use
-**Set PIN** to choose one in that format, or **Generate** for a random
-replacement. It must differ from the local-network PIN. Changing it revokes
-existing hosted TD unlocks; browsers must enter the new PIN. PINs stay in
-FreePair's process memory and are not written to the event file.
+**Enable Results Entering** is checked by default for a new event. Its
+checkbox forms the heading of the NACH PIN group; uncheck it to share the
+scoreboard without results entry. An explicit off choice is remembered for the
+event in the current FreePair session. If NACH advertises tagged-PIN support,
+active PIN assignments appear in a numbered table instead of the legacy
+single-PIN row. Each assignment keeps its PIN, buttons, tag and actions on one
+line at normal window widths; controls wrap if the window is very narrow.
+The first newly assigned PIN is tagged **Venue iPad** (existing saved tags
+are preserved). **Add PIN**, above the table, opens a dialog requiring
+a unique tag and a PIN: type two letters followed by four digits or choose
+**Generate PIN**, then select **Add PIN** in the dialog. The **PIN** column
+has an eye icon to reveal/hide the secret and a **Copy** action. **Set PIN**
+and **Generate** appear only for a PIN unavailable after reopening the event:
+**Set PIN** re-enters its original value; **Generate** revokes that identity
+and adds a new assignment with the same tag. Neither changes an active PIN.
+The PIN and tag are display-only labels, not editable fields. The **Tag**
+column shows the assignment beside **Edit tag** (hover for the full tag if it
+is long); the **Action** column offers **Delete**, which revokes the PIN after
+confirmation. Up to 16 PINs can be active. Deleting the last PIN leaves entry
+locked until another is added. An active PIN cannot be edited; delete it and
+add a new one. Tag comparison ignores capitalization and surrounding spaces;
+secrets must be distinct and different from the local-network PIN. A tag
+labels a shared PIN assignment, **not proof of which person or device entered
+a result**. Editing the tag changes only future **Results Who** values; it does
+not rotate NACH PINs or sign out unlocked browsers. Previously saved results
+retain their original tag even after a tag edit or revocation.
+
+A PIN edit waits for any result already being saved; that saved result stands.
+FreePair then blocks new local application under the old PIN configuration,
+saves nonsecret PIN IDs and tags in the event file, and sends the complete active
+PIN set to NACH. If the save fails, the edit can be retried and local intake
+stays blocked. Remote revocation remains **pending** until NACH acknowledges it;
+do not rely on remote revocation before that acknowledgement. Changes can require
+**all** unlocked browsers to unlock again. Saved results and their receipts
+remain intact. Secrets stay in memory, not in the event file. After reopening
+an event, use **Set PIN** on each unavailable row to re-enter its original PIN
+before enabling hosted results. **Generate** deliberately replaces an
+unavailable assignment with a new PIN identity; FreePair does not silently
+replace missing secrets.
+An older NACH server without tagged-PIN support continues to use the legacy
+single **Set PIN** / **Generate** row for events that have never used tagged
+PINs. An event already using tagged PINs does not downgrade to single-PIN mode.
+When NACH first adds tagged-PIN support to a previously saved single-PIN event,
+**Set PIN** or **Generate** in the legacy row before starting if FreePair has
+been restarted; it will not silently replace the old credential during migration.
+
+In legacy mode, the hosted PIN row starts with a generated two-letter/four-digit
+PIN. **Set PIN** chooses one in that format, and **Generate** replaces it. It
+must differ from the local-network PIN. Changing it revokes existing hosted TD
+unlocks; browsers must enter the new PIN. Secrets stay in process memory.
 
 Fresh web imports can enable hosted entry after saving, without closing and
 reopening the event. For older events still open in memory, missing section IDs
@@ -5245,8 +5303,18 @@ website — **FreePair never sees your password**, and any two-factor step
 stays between you and them. When it finishes, the browser says so and you
 come back to FreePair, which shows which account is connected — by its NA
 Chess Hub name, such as **PNW Chess Center (PNWCC - Organizer)**, rather
-than the email address it was registered with. Worth a glance if you hold
-both a personal login and a club one.
+than the email address it was registered with. The window title also shows
+**[Signed in to NA Chess Hub as 'account name']** after the FreePair version
+and before the event name. If the Hub has not supplied an account name yet,
+it simply says **[Signed in to NA Chess Hub]**. Worth a glance if you hold
+both a personal login and a club one. The **Log in** button between
+**Settings** and **Help** becomes **NA Chess Hub** once signed in; its menu
+provides sign-in, sign-out and switch-account actions without opening
+Settings. **My Portal [account name]**, the first item when your account
+type is known, opens the Player, Organizer or Admin portal for your account
+on the **NA Chess Hub URL** selected under **Settings → Online** (including
+a test environment, if you configured one). The browser can ask you to
+sign in separately if it is using a different account from FreePair.
 
 Once signed in, two menus list your own events, each with its own search
 box that remembers what you last typed:
@@ -5302,11 +5370,12 @@ shown, and signing out of FreePair and back in gives you the same account
 again. That is because NA Chess Hub remembers you in the *browser*, and
 signing out of FreePair only removes the sign-in from this computer.
 
-To change accounts, use **Use a different account…** next to the sign-in
-buttons. It signs your browser out of NA Chess Hub and opens their
-sign-in page so you can pick the account you want — one click, nothing to
-do by hand. It is worth knowing this if you hold both a personal login
-and a club one.
+To change accounts, use **Log in as a different user** in the toolbar's
+**NA Chess Hub** menu, or **Use a different account…** next to the sign-in
+buttons in Settings.
+and opens its sign-in page so you can pick the account you want — one
+click, nothing to do by hand. It is worth knowing this if you hold both a
+personal login and a club one.
 
 **You can do all of this from the My Events window itself.** Both lists
 show a **Signed in as …** banner naming the account whose events you are
@@ -6292,7 +6361,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.152.20261016**. It is updated whenever a
+This guide describes FreePair **v0.153.20261017**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
