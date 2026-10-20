@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.153.20261017**
+**Applies to FreePair v0.154.20261019**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -201,9 +201,18 @@ The controls at the right-hand end of the same row include:
   their own. See [Settings](#settings).
 - **Log in**, between Settings and Help, opens the NA Chess Hub account
   menu when signed out, offering **Log in to NA Chess Hub**. Once signed
-  in, the button reads **NA Chess Hub** and its menu starts with **My Portal
-  [account name]** (when the account type is known), followed by **Log out**
-  and **Log in as a different user**.
+  in, the button reads **NA Chess Hub** and its menu offers **My Portal
+  [account name]** (when the account type is known), **Account status**,
+  **Log out**, and **Log in as a different user**. **Account status** shows
+  your login, the membership and expiration last reported by NA Chess Hub,
+  and whether FreePair currently has a verified signed entitlement (with
+  its expiration). **Refresh entitlement** requests new signed access from
+  official NA Chess Hub without logging out. Membership information alone
+  does not enable paid features. If the status says the entitlement endpoint
+  returned 404 or 501, NA Chess Hub has not deployed or enabled the FreePair
+  signing endpoint yet: logging in or buying membership cannot fix that
+  server-side requirement. You can still use free local events and open
+  your own or delegated events through **My Events on NA Chess Hub**.
 - **📖 Help** opens a short menu:
   - **About FreePair** — what the program is, **the version you are
     running**, its publisher **Chessnique LLC** and FreePair copyright,
@@ -213,11 +222,35 @@ The controls at the right-hand end of the same row include:
     is the answer — press **📋 Copy** beside it and paste. **📝 Change
     log** opens the list of every published release, newest first, in
     your browser.
+  - **Using FreePair** — shows the free and membership scenarios in a table,
+    with sign-in, purchase, and entitlement-check instructions. **Purchase
+    membership** in the **Other events** row opens the NA Chess Hub
+    membership page; the URL is also selectable in the dialog.
   - **User Guide** — this guide. F1 still opens it directly, without
     going through the menu.
   - **Keyboard Shortcuts** — every key FreePair responds to, what it
     does, and what it needs open to work. See
     [Keyboard shortcuts](#keyboard-shortcuts).
+
+**Using FreePair: access at a glance**
+
+| Scenario | Cost | Limits and how to use it |
+|---|---|---|
+| Local events | Free | Up to **20 players** and **4 rounds**; add players manually or import a CSV roster. No login needed. |
+| Events on NA Chess Hub | Free | Event organizers and delegated tournament directors can download and pair their events for free after logging in to NA Chess Hub. Open them through **My Events on NA Chess Hub…** or **My Events Saved on NA Chess Hub…**; NACH must authorize each download. Player registration alone is not enough. No local size limit. |
+| Other events | Membership | To use FreePair to pair other NACH events, events from external registration sites, or local events above the free limits, a tournament director must have an active membership and log in to NA Chess Hub. FreePair must verify the signed entitlement. Select **Purchase membership** in the dialog to open the membership page. |
+
+To log in, select **Log in** between Settings and Help, choose **Log in to
+NA Chess Hub**, and finish signing in through your browser. To purchase or
+renew, select **Help → Using FreePair → Other events → Purchase membership**
+and complete the purchase on NA Chess Hub; existing members can skip the
+purchase. Then select **NA Chess Hub → Account status → Refresh entitlement**
+and check that **Signed entitlement to use FreePair** says **Verified**. Sign
+out and back in if the displayed membership details need refreshing. Signing
+in or seeing an active membership alone does not unlock membership-only
+features; NACH must issue a valid signed entitlement. If the
+signing endpoint is unavailable, those features remain locked, but free
+local use and authorized own/delegated events remain available.
 
 View, Share, QR and Print appear only once an event is open; Settings
 and Help are always there. The **Theme** picker is in **Settings → Display**
@@ -537,9 +570,9 @@ site has changed — this is how you get the roster in anyway, without
 typing it. See [When FreePair cannot read your
 site](#when-freepair-cannot-read-your-site) below.
 
-**This one needs you signed in to NA Chess Hub.** The menu item stays
-greyed out until you are; its tooltip says so. See [Signing in to NA
-Chess Hub](#signing-in-to-na-chess-hub).
+**No sign-in is needed for a local event of up to 20 players and 4 rounds.**
+For a larger local event, sign in with an active NA Chess Hub membership.
+See **Help → Using FreePair** for the membership link.
 
 **Two ways in**, on two tabs:
 
@@ -721,19 +754,17 @@ Events on NA Chess Hub…**. That lists the events your account runs, including
 events with no SJSON file saved on NACH. Pick one and FreePair uses your account
 to retrieve its roster; you do not have to type a passcode.
 
-Otherwise, creating an event from an online registry and opening a
-cloud-saved one both ask for an **Event ID** and a **Passcode**. Once you
-have entered the event ID, the **Passcode** caption becomes a link to that
-event's own page, where the passcode is shown — click it if you do not
-have the passcode to hand, and copy it from there rather than hunting
-through email. Both fields also have a 📋 button to paste from the
-clipboard.
-
-Passcodes keep working whether or not you sign in, and you will still need
-one for an event somebody else runs and has shared with you.
+For other events, **Browse Online Events…**, **Browse Cloud-Saved Events…**
+and the Event ID + Passcode routes require sign-in with an active NA Chess Hub
+membership. Your own or delegated events remain free through **My Events on
+NA Chess Hub…** or **My Events Saved on NA Chess Hub…** instead. On the paid
+by-ID route, the **Passcode** caption links to the event's page so you can
+copy its passcode; both fields have a 📋 button to paste from the clipboard.
 
 When an event has no roster hosted on NA Chess Hub but includes an external
-registration link, FreePair imports it automatically if the site is supported.
+registration link, importing that roster requires an active membership,
+even if the event appears under My Events. You can still use a CSV roster
+for a small local event.
 If not, FreePair tells you that the registration site is unsupported. The
 created event retains its NA Chess Hub event ID and upload credential so
 pairing uploads and scoreboard/results entry remain available.
@@ -747,12 +778,10 @@ beside the address box, as there is on the Event ID and Passcode fields:
 the address always comes from somewhere else — a browser, an email, a
 message — so pasting it is the only way it ever gets there.
 
-**This does not require a NA Chess Hub sign-in.** Web-event import reads
-public pages, so **Create** works as soon as the address is filled in. If
-you are not signed in, the dialog still offers sign-in as a convenience
-for later cloud features, with a **Create a free account** button beside
-it. See [Signing in to NA Chess Hub](#signing-in-to-na-chess-hub) for
-what signing in does and does not involve.
+**This requires sign-in with an active NA Chess Hub membership.** Reading
+public web rosters is part of broader event use, not the free local tier.
+For a small event, use **Quick Event from a Roster File …** to import a CSV
+without signing in. See **Help → Using FreePair** for membership details.
 
 **If the address will not read**, the failure message offers a way round
 it rather than leaving you stuck — see [When FreePair cannot read your
@@ -4598,10 +4627,12 @@ inherit that URL for scoreboard sharing and hosted TD results entry;
 **View on NACH** and registry event links also point to the selected service.
 Changing the URL in Settings alone does not change an already-open event's
 publishing URL; Share or the Publish dialog can change it without reopening.
-After the new URL is saved, sign-in uses it without a restart. Switching
-services removes the previous sign-in from this computer;
-sign in to the selected service again before browsing its private events.
-Use staging event credentials rather than production ones.
+Account sign-in, membership verification, **My Events** and account-authorized
+downloads always use the official `https://www.nachesshub.com` service.
+Changing the event URL does not change the signed-in account or make events
+on a staging service available through **My Events**. Use a staging event
+passcode for staging files and publishing; FreePair never sends the official
+account token to a configurable service.
 
 Save the event locally and open **Share → Scoreboard Sharing → Share Scoreboard
 on NAChessHub**. **Enable Results Entering** is checked by default; uncheck it
@@ -5269,13 +5300,12 @@ read at this size; enlarging a raster logo cannot add missing detail.
 
 The club logo is fetched in the background the first time you open the
 event and then kept on your machine for a month, so it costs nothing on
-later launches and an event opens just as fast offline. If it cannot be
-fetched — no connection, or the club has not uploaded one — the card shows
-the NA Chess Hub logo and nothing is reported. It is a picture; it is not
-worth interrupting a round for.
-
-**Click the logo to open that event's roster page** in your browser: the
-list of who has registered and the rating each of them is registered with.
+later launches and an event opens just as fast offline. **Click the logo**
+to refresh it from NA Chess Hub, even if the cached copy is still fresh, and
+to open that event's roster page in your browser without waiting for the
+refresh. If the site is unreachable, the previous cached image remains. If
+the organizer has removed their logo, the card shows the NA Chess Hub logo.
+The roster page lists who has registered and their registered ratings.
 That is the page worth reaching, rather than the event-details page — it
 is where the numbers behind the red **!** actually live, so when FreePair
 says a rating disagrees with the site you land on the disagreement itself.
@@ -5289,7 +5319,7 @@ yourself. It does not wait for a passcode: the id is what makes it the
 same event; the passcode only decides whether FreePair may sync with it.
 
 Clicking the logo does not select the Event Configuration page behind the
-browser — only the browser opens.
+browser; the logo refresh runs in the background.
 
 ### Signing in to NA Chess Hub
 
@@ -5310,11 +5340,14 @@ it simply says **[Signed in to NA Chess Hub]**. Worth a glance if you hold
 both a personal login and a club one. The **Log in** button between
 **Settings** and **Help** becomes **NA Chess Hub** once signed in; its menu
 provides sign-in, sign-out and switch-account actions without opening
-Settings. **My Portal [account name]**, the first item when your account
-type is known, opens the Player, Organizer or Admin portal for your account
-on the **NA Chess Hub URL** selected under **Settings → Online** (including
-a test environment, if you configured one). The browser can ask you to
-sign in separately if it is using a different account from FreePair.
+**My Portal [account name]**, the first item when your account
+type is known, opens the Player, Organizer or Admin portal on the official
+NA Chess Hub site, regardless of the event URL selected under Settings.
+The browser can ask you to sign in separately if it is using a different
+account from FreePair. Paid features require a separately verified, signed
+membership entitlement. It expires within five minutes unless renewed;
+if NACH is unavailable, a previously verified entitlement only works until
+its original expiry. Sign-out clears it immediately on this computer.
 
 Once signed in, two menus list your own events, each with its own search
 box that remembers what you last typed:
@@ -6361,7 +6394,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.153.20261017**. It is updated whenever a
+This guide describes FreePair **v0.154.20261019**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
