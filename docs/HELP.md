@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.154.20261019**
+**Applies to FreePair v0.155.20261021**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -206,7 +206,8 @@ The controls at the right-hand end of the same row include:
   **Log out**, and **Log in as a different user**. **Account status** shows
   your login, the membership and expiration last reported by NA Chess Hub,
   and whether FreePair currently has a verified signed entitlement (with
-  its expiration). **Refresh entitlement** requests new signed access from
+  its expiration). Each status appears indented beneath a clear heading.
+  **Refresh entitlement** requests new signed access from
   official NA Chess Hub without logging out. Membership information alone
   does not enable paid features. If the status says the entitlement endpoint
   returned 404 or 501, NA Chess Hub has not deployed or enabled the FreePair
@@ -223,8 +224,10 @@ The controls at the right-hand end of the same row include:
     log** opens the list of every published release, newest first, in
     your browser.
   - **Using FreePair** — shows the free and membership scenarios in a table,
-    with sign-in, purchase, and entitlement-check instructions. **Purchase
-    membership** in the **Other events** row opens the NA Chess Hub
+    with sign-in, purchase, and entitlement-check instructions. The same
+    dialog opens with the reason when an access limit blocks an action; it
+    is also available from **Account status → Free use & membership**.
+    **Purchase membership** in the **Other events** row opens the NA Chess Hub
     membership page; the URL is also selectable in the dialog.
   - **User Guide** — this guide. F1 still opens it directly, without
     going through the menu.
@@ -237,8 +240,8 @@ The controls at the right-hand end of the same row include:
 | Scenario | Cost | Limits and how to use it |
 |---|---|---|
 | Local events | Free | Up to **20 players** and **4 rounds**; add players manually or import a CSV roster. No login needed. |
-| Events on NA Chess Hub | Free | Event organizers and delegated tournament directors can download and pair their events for free after logging in to NA Chess Hub. Open them through **My Events on NA Chess Hub…** or **My Events Saved on NA Chess Hub…**; NACH must authorize each download. Player registration alone is not enough. No local size limit. |
-| Other events | Membership | To use FreePair to pair other NACH events, events from external registration sites, or local events above the free limits, a tournament director must have an active membership and log in to NA Chess Hub. FreePair must verify the signed entitlement. Select **Purchase membership** in the dialog to open the membership page. |
+| Events on NA Chess Hub | Free | Event organizers and delegated tournament directors can pair their events for free after logging in. Open through **My Events on NA Chess Hub…**, **My Events Saved on NA Chess Hub…**, or reopen a locally saved SJSON file. For a local file, FreePair checks its event ID against the account's own or delegated events and confirms access online; the ID and passcode alone do not grant access. Player registration alone is not enough. No local size limit once verified. |
+| Other events | Membership | To pair other NA Chess Hub events, events from external registration sites, or local events above the free limits, a tournament director must log in with an active membership. FreePair must verify the signed entitlement. Select **Purchase membership** in the dialog to open the membership page. |
 
 To log in, select **Log in** between Settings and Help, choose **Log in to
 NA Chess Hub**, and finish signing in through your browser. To purchase or
@@ -6394,7 +6397,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.154.20261019**. It is updated whenever a
+This guide describes FreePair **v0.155.20261021**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
