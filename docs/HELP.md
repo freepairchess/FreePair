@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.155.20261021**
+**Applies to FreePair v0.156.20261030**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -3332,6 +3332,14 @@ LAN page, team boards are listed in match/board order with labels such as **1.1*
 but each still maps to its own board result. Standings, tiebreaks and the wall
 chart update immediately.
 
+The **Result** cell uses the same colors as NA Chess Hub: **purple** for any
+forfeit (including a double forfeit), **red** when the lower-rated player wins,
+and **yellow** for a draw when the ratings differ by at least 200 points.
+Forfeits take priority over rating comparisons. A displayed rating of 0 is
+compared like any other number; unplayed boards, byes and other results have
+no color highlight. These colors describe the recorded result, not prize
+eligibility: a forfeit or an unrated win does not qualify for Biggest Upset.
+
 **A forfeit win counts as a full point for USCF pairing score groups,**
 just as it does in the standings. Because no game was played, a forfeit
 adds neither colour history nor a played opponent for repeat-opponent
@@ -6397,7 +6405,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.155.20261021**. It is updated whenever a
+This guide describes FreePair **v0.156.20261030**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
