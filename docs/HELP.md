@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.156.20261030**
+**Applies to FreePair v0.157.20261101**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -177,6 +177,20 @@ Hub**, **Delete Pairing from NA Chess Hub**, and **Export Report** (USCF, FIDE,
 NWSRS, PGN headers or engine TRF) remain at the top level. Roster sync is in
 **Rosters** and section merging is in **Sections**. The section toolbar still
 has **Pairing - Section**.
+
+**Sections → Full Point Bye Side Sections** creates a side-game section from
+players awarded a full-point bye in the *trailing paired round* of each
+selected standard section. The dialog preselects eligible sections and shows
+their own round numbers (for example, Open R5 and U1700 R7) and player counts.
+Uncheck sections you do not want. The suggested name is **Sidegame - Round 5**
+when all selected sections are on round 5, or **Sidegame - Rounds 5, 7** when
+rounds differ; you can edit it. **Create Section** copies the selected players
+into a new unpaired, one-round Swiss section and opens it for you to arrange
+the side games. It does **not** move players, pair the games, or change their
+original full-point byes or results. Earlier-round bye requests do not carry
+into the new section. Sections without an awarded full-point bye in their
+trailing round are not offered.
+
 The controls at the right-hand end of the same row include:
 
 - **🖥 View**, immediately before Share, has **📺 Scoreboard → Local Scoreboard**
@@ -488,6 +502,10 @@ the whole window when you are checking who is sitting out — the banner
 then reads "Round 3 Byes" rather than "Round 3 Pairings", so there is no
 doubt which table you are looking at. Requested byes for a future round
 are tinted green, the same as on the wall chart.
+Withdrawn players who have no board or bye in the selected round appear in
+this table as **Withdrawn**, even if the round has no byes. Its header and
+the board-pairings summary count them separately from byes, so you can
+account for everyone without mistaking a withdrawal for someone paired out.
 
 It keeps the tab you are on;
 from Overview — a form rather than a table — it takes you to Pairings.
@@ -1149,6 +1167,12 @@ The **Roster** tab holds the players in a section. Use **Roster Update →
 Add** (or `Ctrl+A` with a section selected) to open the Add-player form.
 `Ctrl+A` still selects text while typing in a text box. The form opens on
 **Required**, with the name, ID, ID2, Rating and Rating 2 used for pairing.
+
+Use the **State** box beside the Roster's general **Filter** box to show
+only players with that exact two-letter state code, regardless of names
+containing the same letters. The player count shows how many match. Both
+filters can be used together and cleared independently.
+
 Notes under the ID and rating fields name the federation or rating scale
 expected by the section. If the values are in the wrong slots, use
 **Swap ID / ID2** or **Swap Rating / Rating 2**.
@@ -1531,8 +1555,9 @@ still matter.
 Two warnings exist here on purpose:
 
 - Once a round has been paired, **Verify IDs** and **Refresh Ratings** show
-  **Warning: this section already has pairings** before starting. The warning
-  names the section and round count. **Cancel** is the default; continuing
+  a warning naming the operation, section and paired-round count before
+  starting. **Do not verify IDs** or **Do not refresh ratings** is the default
+  button and leaves the roster unchanged; continuing
   requires acknowledging the risk and explicitly choosing **Verify IDs anyway**
   or **Refresh ratings anyway**. Save a copy or checkpoint first. Changed
   identities, names, or ratings can conflict with the published starting list.
@@ -2288,9 +2313,10 @@ To pair every section at once, use **Pairing → Pair All Sections** — see
 **Sync Roster with NACH** is on **Pairing - Section** as well as the Roster
 tab's **Roster Update** menu, since checking for late entries is
 normally the step just before pairing. **Publish Pairing to NA Chess Hub** is
-at the bottom of that section menu and also in the event-level **Pairing**
-menu. It publishes pairings and results for the whole event, not just this
-section.
+the last item in both the section and event-level **Pairing** menus. It sits
+immediately after **Delete Pairing from NA Chess Hub**; a separator sets
+these two Hub publication actions apart from the other menu items. Both
+affect the whole event, not just the selected section.
 
 **If "Pair Next Round" is greyed out, hover over it.** The tooltip names
 the specific thing standing in the way and where to fix it, rather than
@@ -3141,7 +3167,8 @@ typed in again from the score sheets if you re-pair. A checkpoint is
 taken first, so the round can still be recovered from **Earlier
 versions**.
 
-Deleting pairings for the whole event at once works the same way.
+The event-wide **Delete Pairings…** flow instead distinguishes rounds with
+recorded results from rounds that only have projected pairings.
 
 #### Deleting pairings across the event
 
@@ -3174,9 +3201,11 @@ you typed in, and says how many. The safe default shows no warning at
 all, which is what makes the warning worth reading.
 
 Pressing **Delete selected…** does not delete anything yet. It opens a
-second, red confirmation that lists each section, exactly which rounds
-go, and how many results each loses. **Cancel** is the default there, so
-Enter and Esc both back out; the button that goes ahead is red. A
+second confirmation that lists each section, exactly which rounds go,
+and how many results each loses. A green banner says **No results are
+affected** if the selected rounds have no results; a red banner warns
+when results would be lost. The button to proceed says **Continue**;
+**Cancel** is the default, so Enter and Esc both back out. A
 checkpoint is taken before anything is removed, so the event can still
 be recovered from **Save → Earlier versions**.
 
@@ -3261,6 +3290,11 @@ played and has been absent ever since. **Coming back ends it**: a player
 who missed a round and then played again is not withdrawn, however the
 missed round was recorded. Only an absence that runs to the last scored
 round counts.
+
+**Roster** and **Standings** show a red **Withdrawn** label beside the
+player's name, even before the next round is paired. This remains visible
+when the Roster's separate Status column is off screen and does not rely
+on an empty future-round cell as the only indication.
 
 Byes are shown on the Roster, on the Pairings tab with a count, and on
 the Standings, so a bye is hard to miss.
@@ -3397,8 +3431,10 @@ cloud-saved working copies. A section with its own saved choice keeps it.
 Tiebreak columns are sortable, and sort by the underlying value rather than
 the displayed text.
 
-Full-point, half-point and zero-point requests appear in their own columns, so you can
-check them against your written list at a glance.
+Full-point, half-point and zero-point byes appear in their own columns,
+including both upcoming requests and byes already awarded in paired rounds.
+An awarded bye stays visible even if its original request no longer appears
+in the event file. Check these columns against your written list at a glance.
 
 **Show pending pairings** is on by default in both **Standings** and
 **Wall Chart**. It shows the assigned opponent and colour as soon as a
@@ -5470,16 +5506,25 @@ change, so it does not sit there pinning the badge on forever. If a
 check fails, the last known counts stay on screen rather than resetting
 to zero — "no changes" and "could not check" are not the same thing.
 
-**Bye requests that arrive too late** are the exception. If a player
-asks on NA Chess Hub for a bye in a round you have already paired, it
-cannot be granted as asked — the pairings for that round already exist.
-FreePair reports it anyway, marked **Too late** and with no Apply
+**Bye changes for an already-paired round** are the exception. If NA Chess
+Hub differs on a bye in a round you have already paired, it cannot be
+applied as asked — the pairings for that round already exist. FreePair
+reports it anyway, marked **Paired round** and with no Apply
 checkbox, because you need to know the player asked. The note tells you
 what the player actually got for that round, which is often not the same
 thing: a player who asks for a half-point bye after the round is paired
 may already have been given a full-point bye by the pairing, or may have
-played a game. Your options are to delete the round and pair it again,
-or to tell the player the request came in after pairing.
+played a game. Review the award with the player. If appropriate, correct
+an already-recorded bye in **Edit Player**, or delete and re-pair the
+round if its pairings must change. Sync never changes a paired result.
+
+If the Hub says half-point but the paired round records zero-point (or
+vice versa), the review shows **one** informational row for the player
+and round rather than separate add/cancel warnings. It does not replace
+the TD's recorded result. **Paired round** describes the state of the
+round, not when the player first committed to a bye. The Hub's **Last
+edited** time cannot establish that earlier commitment deadline; a
+later unrelated edit may have changed it.
 
 A request that the file already satisfied is **not** reported. If the
 player asked for a half-point bye and got exactly that, the two agree,
@@ -5699,6 +5744,11 @@ takes a second and settles it.
 - **"Couldn't reach…" is not a verdict.** It means the lookup failed,
   not that the ID is wrong. Try again when you have a connection.
 
+A TD's USCF ID must be exactly **eight digits**. A partial or non-numeric
+ID gets an immediate message instead of a slow lookup, and cannot be
+exported as a TD ID. The optional Assistant TD ID follows the same rule
+when filled in. Affiliate IDs are different and are checked separately.
+
 **If you do not have a TD's ID to hand, press 🔎 with the box empty.**
 It opens the player database in your browser so you can find them by
 name and copy the ID back. You are already at that button when you
@@ -5709,8 +5759,9 @@ The affiliate 🔎 does not do this, because the player database holds
 players — an affiliate code is not in there to be found. Affiliate codes
 come from your club's US Chess account.
 
-The **🔗** button beside each field still opens the full US Chess page
-for that ID in your browser.
+The **🔗** button beside each field opens the full US Chess page for that
+ID in your browser. For TD IDs, an incomplete ID shows the same immediate
+message instead of opening a blank profile page.
 
 It writes **three files** next to your `.sjson`: `THEXPORT` (the event),
 `TSEXPORT` (the sections) and `TDEXPORT` (the players and their games).
@@ -6405,7 +6456,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.156.20261030**. It is updated whenever a
+This guide describes FreePair **v0.157.20261101**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
