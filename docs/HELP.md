@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.158.20261106**
+**Applies to FreePair v0.159.20261106**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -220,7 +220,8 @@ The controls at the right-hand end of the same row include:
   **Log out**, and **Log in as a different user**. **Account status** shows
   your login, the membership and expiration last reported by NA Chess Hub,
   and whether FreePair currently has a verified signed entitlement (with
-  its expiration). Each status appears indented beneath a clear heading.
+  its expiration in both UTC and this computer's local time and UTC offset).
+  Each status appears indented beneath a clear heading.
   **Refresh entitlement** requests new signed access from
   official NA Chess Hub without logging out. Membership information alone
   does not enable paid features. If the status says the entitlement endpoint
@@ -231,9 +232,24 @@ The controls at the right-hand end of the same row include:
   If a signed entitlement fails verification, the status identifies whether
   its signing key, signature, account, membership, or time window failed;
   it never shows the token or account ID. For a "not valid yet" or "expired"
-  reason, check that the computer's date and time are correct and automatic,
-  then select **Refresh entitlement**. A normal daylight-saving time-zone
-  change alone does not affect the UTC clock used for verification.
+  reason, the status shows the signed start or expiry in UTC and this
+  computer's current UTC **and local** date and time (including its local
+  UTC offset). Confirm the displayed computer time is correct. The message
+  gives clock-sync steps for the current operating system and tells you to
+  select **Refresh entitlement** after correcting the clock. A signed
+  entitlement is limited by its signed expiry and the membership expiry;
+  FreePair accepts at most 14 days and stores a verified proof securely for
+  offline use, including after a restart or normal app upgrade. NA Chess Hub
+  now issues the longer-lived signed proof; **Account status** shows its exact
+  expiry in UTC and this computer's local time with its UTC offset. FreePair
+  renews when online; if **Account status** warns that its signing key is not
+  trusted offline, update FreePair before relying on offline access. Offline
+  access requires the same computer account and a working credential store;
+  signing out clears the saved proof. Expiry of signed access does **not** mean
+  membership has ended.
+  If the computer's UTC time is correct but refreshing still fails, ask NA Chess Hub to investigate; share the status text with support,
+  never the signed token. A daylight-saving time-zone change alone does not
+  affect the UTC clock used for verification.
 - **📖 Help** opens a short menu:
   - **About FreePair** — what the program is, **the version you are
     running**, its publisher **Chessnique LLC** and FreePair copyright,
@@ -277,6 +293,40 @@ in or seeing an active membership alone does not unlock membership-only
 features; NACH must issue a valid signed entitlement. If the
 signing endpoint is unavailable, those features remain locked, but free
 local use and authorized own/delegated events remain available.
+
+**Synchronize the computer clock if entitlement time is wrong.** FreePair
+checks signed access against UTC, not the displayed time zone. Keep the
+computer online while syncing; after the time is corrected, select
+**NA Chess Hub → Account status → Refresh entitlement** again.
+
+- **Windows 11:** Press **Win + I**, open **Time & language → Date & time**,
+  and turn on **Set time automatically**. Under **Additional settings**,
+  select **Sync now**. Wait for **Last successful time synchronization**
+  to update. This is the manual sync button shown in Windows Settings.
+- **macOS:** Open **Apple menu → System Settings → General → Date & Time**
+  and turn on **Set time and date automatically**. Mac settings do not
+  provide a universal **Sync now** button. If the time remains wrong,
+  turn automatic time off and back on while online (an administrator
+  password may be required); if it still does not correct, ask the Mac
+  administrator to check its network time source.
+- **Linux with systemd:** Run `timedatectl status`. If network time is
+  disabled, run `sudo timedatectl set-ntp true`. If NTP is active but time
+  is stale *and the system uses systemd-timesyncd*, run
+  `sudo systemctl restart systemd-timesyncd` to request a fresh sync.
+  Run `timedatectl status` again and check for
+  **System clock synchronized: yes**. On systems using chrony, ntpd,
+  or managed time settings, use
+  that service or ask the administrator instead.
+
+With **Set time automatically** enabled, Windows normally syncs through
+its configured time source, but there is no universal fixed interval:
+polling depends on the network, time service, and any organization policy.
+An administrator can inspect the last sync, source, and current poll interval
+with `w32tm /query /status /verbose`; **Date & time** also shows the last
+successful sync. Windows is not guaranteed to sync when FreePair opens or
+when daylight saving time changes. If **Sync now** fails, check the internet
+connection or ask the device administrator; do not manually change the
+time zone to compensate for an incorrect clock.
 
 View, Share, QR and Print appear only once an event is open; Settings
 and Help are always there. The **Theme** picker is in **Settings → Display**
@@ -5406,9 +5456,16 @@ type is known, opens the Player, Organizer or Admin portal on the official
 NA Chess Hub site, regardless of the event URL selected under Settings.
 The browser can ask you to sign in separately if it is using a different
 account from FreePair. Paid features require a separately verified, signed
-membership entitlement. It expires within five minutes unless renewed;
-if NACH is unavailable, a previously verified entitlement only works until
-its original expiry. Sign-out clears it immediately on this computer.
+membership entitlement. Its signed expiry (shown in **Account status**) is
+never more than 14 days after issue or later than the membership's expiry.
+FreePair renews it online and keeps verified access in the operating system's
+credential store for offline use across restarts and normal app upgrades. NA
+Chess Hub now issues the longer-lived proof. Account status displays the
+signed expiry in UTC and your computer's local time; if the offline proof
+could not be saved or its signing key is not trusted, it warns you. If NACH
+is unavailable, previously verified local pairing access works only until
+the signed expiry; Hub roster sync and online publishing still require an
+internet connection. Sign-out clears the proof immediately on this computer.
 
 Once signed in, two menus list your own events, each with its own search
 box that remembers what you last typed:
@@ -6469,7 +6526,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.158.20261106**. It is updated whenever a
+This guide describes FreePair **v0.159.20261106**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
