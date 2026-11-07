@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.157.20261101**
+**Applies to FreePair v0.158.20261106**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -228,6 +228,12 @@ The controls at the right-hand end of the same row include:
   signing endpoint yet: logging in or buying membership cannot fix that
   server-side requirement. You can still use free local events and open
   your own or delegated events through **My Events on NA Chess Hub**.
+  If a signed entitlement fails verification, the status identifies whether
+  its signing key, signature, account, membership, or time window failed;
+  it never shows the token or account ID. For a "not valid yet" or "expired"
+  reason, check that the computer's date and time are correct and automatic,
+  then select **Refresh entitlement**. A normal daylight-saving time-zone
+  change alone does not affect the UTC clock used for verification.
 - **📖 Help** opens a short menu:
   - **About FreePair** — what the program is, **the version you are
     running**, its publisher **Chessnique LLC** and FreePair copyright,
@@ -258,7 +264,10 @@ The controls at the right-hand end of the same row include:
 | Other events | Membership | To pair other NA Chess Hub events, events from external registration sites, or local events above the free limits, a tournament director must log in with an active membership. FreePair must verify the signed entitlement. Select **Purchase membership** in the dialog to open the membership page. |
 
 To log in, select **Log in** between Settings and Help, choose **Log in to
-NA Chess Hub**, and finish signing in through your browser. To purchase or
+NA Chess Hub**, and finish signing in through your browser. Clicking **Log in**
+always opens an explicit NA Chess Hub sign-in page so you can choose the account,
+even if your browser was already signed in as someone else. A saved FreePair
+sign-in can still be restored quietly when the app starts. To purchase or
 renew, select **Help → Using FreePair → Other events → Purchase membership**
 and complete the purchase on NA Chess Hub; existing members can skip the
 purchase. Then select **NA Chess Hub → Account status → Refresh entitlement**
@@ -4871,7 +4880,12 @@ delete local scores or receipts, and you should not remove the journal manually.
 
 Within an active run, a lost acknowledgement can be settled from the original
 saved outcome without applying the score twice. An unresolved permit without a
-matching saved receipt or a failed save stops intake and surfaces a message.
+matching saved receipt or a save that still fails after a brief retry stops
+intake and surfaces a message. Brief Windows file-access interruptions (for
+example, while OneDrive synchronizes the event file) are retried automatically;
+FreePair does not acknowledge a hosted result until its score and receipt are
+saved together. If the warning persists, check the board on the TD computer
+before resubmitting a result, and check that the event file is writable.
 FreePair never obtains a fresh permit merely to replay uncertain work. If NACH
 Force Reset discards pending hosted state, an already-saved local score still
 remains saved. Check the official score before submitting again; an interrupted
@@ -5443,19 +5457,14 @@ cancel it at NA Chess Hub — there is no way to do that from FreePair yet
 — but it expires on their side on its own within two weeks. On a shared
 or borrowed machine, sign out when you are done.
 
-**Signing out does not let you sign in as somebody else, and this
-surprises people.** If your browser is signed in to NA Chess Hub, so is
-FreePair: clicking Sign in hands you that account instantly, with no page
-shown, and signing out of FreePair and back in gives you the same account
-again. That is because NA Chess Hub remembers you in the *browser*, and
-signing out of FreePair only removes the sign-in from this computer.
-
-To change accounts, use **Log in as a different user** in the toolbar's
-**NA Chess Hub** menu, or **Use a different account…** next to the sign-in
-buttons in Settings.
-and opens its sign-in page so you can pick the account you want — one
-click, nothing to do by hand. It is worth knowing this if you hold both a
-personal login and a club one.
+**Signing out of FreePair does not sign you out of your browser.** The
+next time you click **Log in**, NA Chess Hub opens its sign-in page rather
+than silently reusing the browser's account. If FreePair is already signed
+in, use **Log in as a different user** in the toolbar's **NA Chess Hub**
+menu, or **Use a different account…** next to the sign-in buttons in
+Settings. Those actions first remove FreePair's current sign-in, then open
+the same explicit sign-in page. This is useful if you hold both a personal
+login and a club one.
 
 **You can do all of this from the My Events window itself.** Both lists
 show a **Signed in as …** banner naming the account whose events you are
@@ -5499,6 +5508,10 @@ available** means there was no timestamp for that player (including
 players found only in FreePair). This is the registration's most recent
 edit, not necessarily the time of the particular bye or check-in change
 shown on that row; a later edit may have updated it.
+The newest edits appear first by default, with unavailable dates last.
+Click **Last edited on NACH** to change the date order, or **Detail** to
+sort by the numeric rating associated with each change. Sorting does not
+change which boxes are checked or the order in which changes are applied.
 
 Most of what is counted is something you can act on. A walk-up entrant
 who is not on NA Chess Hub is a permanent difference, not a pending
@@ -6456,7 +6469,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.157.20261101**. It is updated whenever a
+This guide describes FreePair **v0.158.20261106**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
