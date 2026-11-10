@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.159.20261106**
+**Applies to FreePair v0.160.20261110**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -214,21 +214,41 @@ The controls at the right-hand end of the same row include:
 - **⚙ Settings** opens the application preferences in a window of
   their own. See [Settings](#settings).
 - **Log in**, between Settings and Help, opens the NA Chess Hub account
-  menu when signed out, offering **Log in to NA Chess Hub**. Once signed
-  in, the button reads **NA Chess Hub** and its menu offers **My Portal
+  menu when signed out, offering **Account status** and **Log in to NA
+  Chess Hub**. Before sign-in, **Account status** explains the free local
+  limit (20 players and 4 rounds), then explains free Hub pairing after signing
+  in as the event organizer or a player delegated as tournament director, when
+  the roster is hosted on NA Chess Hub. The last bullet links to FreePair
+  membership for unlimited pairing after sign-in and signed-access verification. Once
+  signed in, the button reads **NA Chess Hub** and its menu offers **My Portal
   [account name]** (when the account type is known), **Account status**,
   **Log out**, and **Log in as a different user**. **Account status** shows
-  your login, the membership and expiration last reported by NA Chess Hub,
-  and whether FreePair currently has a verified signed entitlement (with
-  its expiration in both UTC and this computer's local time and UTC offset).
-  Each status appears indented beneath a clear heading.
-  **Refresh entitlement** requests new signed access from
-  official NA Chess Hub without logging out. Membership information alone
+  who is signed in. Organizers see three bullets: free pairing of their own Hub
+  events and the same free access for their event delegates when the roster is
+  hosted on NA Chess Hub, the 20-player/4-round free local limit, and how to
+  purchase membership and sign in as a player for unrestricted pairing.
+  For players, the account panel omits the **Login** heading and shows
+  their FreePair membership status. An active **FreePair membership** link
+  opens its NA Chess Hub page. One-step indented bullets show membership
+  expiry in UTC and local time (without the UTC offset), immediately followed
+  by how to log out and back in to refresh membership status. The remaining
+  bullets explain pairing any event hosted on or off NA Chess Hub when
+  verified, and signed offline-access expiry and renewal steps.
+  Players without active membership see separate, equally indented bullets
+  for their membership status, the local limit and free pairing for Hub events
+  delegated to them as tournament directors when the roster is on NA Chess Hub,
+  and a purchase link. Registration in a section alone
+  does not grant free pairing; FreePair checks event access online.
+  **Refresh entitlement** requests new signed access from official NA Chess
+  Hub without logging out. Signed-access warnings appear only if access
+  needs attention,
+  such as a missing proof for a reported active membership, an unavailable
+  credential store, or a computer clock error. Membership information alone
   does not enable paid features. If the status says the entitlement endpoint
   returned 404 or 501, NA Chess Hub has not deployed or enabled the FreePair
   signing endpoint yet: logging in or buying membership cannot fix that
-  server-side requirement. You can still use free local events and open
-  your own or delegated events through **My Events on NA Chess Hub**.
+  server-side requirement. You can still use free local events and pair your
+  own or delegated Hub events with Hub rosters after online authorization.
   If a signed entitlement fails verification, the status identifies whether
   its signing key, signature, account, membership, or time window failed;
   it never shows the token or account ID. For a "not valid yet" or "expired"
@@ -240,9 +260,10 @@ The controls at the right-hand end of the same row include:
   entitlement is limited by its signed expiry and the membership expiry;
   FreePair accepts at most 14 days and stores a verified proof securely for
   offline use, including after a restart or normal app upgrade. NA Chess Hub
-  now issues the longer-lived signed proof; **Account status** shows its exact
-  expiry in UTC and this computer's local time with its UTC offset. FreePair
-  renews when online; if **Account status** warns that its signing key is not
+  now issues the longer-lived signed proof. FreePair automatically renews
+  it while online. After expiry, reconnect and select **Refresh entitlement**;
+  log in again only if signed out. **Account status** shows the proof's
+  expiry in UTC and local time; if it warns that its signing key is not
   trusted offline, update FreePair before relying on offline access. Offline
   access requires the same computer account and a working credential store;
   signing out clears the saved proof. Expiry of signed access does **not** mean
@@ -276,7 +297,7 @@ The controls at the right-hand end of the same row include:
 | Scenario | Cost | Limits and how to use it |
 |---|---|---|
 | Local events | Free | Up to **20 players** and **4 rounds**; add players manually or import a CSV roster. No login needed. |
-| Events on NA Chess Hub | Free | Event organizers and delegated tournament directors can pair their events for free after logging in. Open through **My Events on NA Chess Hub…**, **My Events Saved on NA Chess Hub…**, or reopen a locally saved SJSON file. For a local file, FreePair checks its event ID against the account's own or delegated events and confirms access online; the ID and passcode alone do not grant access. Player registration alone is not enough. No local size limit once verified. |
+| Events on NA Chess Hub | Free | Event organizers and delegated tournament directors can pair their events for free after logging in when the roster is hosted on NA Chess Hub. Open through **My Events on NA Chess Hub…**, **My Events Saved on NA Chess Hub…**, or reopen a locally saved SJSON file. For a local file, FreePair checks the event ID, the account's director role, and Hub roster access online; the ID, passcode, or player registration alone does not grant access. No local size limit once verified. |
 | Other events | Membership | To pair other NA Chess Hub events, events from external registration sites, or local events above the free limits, a tournament director must log in with an active membership. FreePair must verify the signed entitlement. Select **Purchase membership** in the dialog to open the membership page. |
 
 To log in, select **Log in** between Settings and Help, choose **Log in to
@@ -286,8 +307,9 @@ even if your browser was already signed in as someone else. A saved FreePair
 sign-in can still be restored quietly when the app starts. To purchase or
 renew, select **Help → Using FreePair → Other events → Purchase membership**
 and complete the purchase on NA Chess Hub; existing members can skip the
-purchase. Then select **NA Chess Hub → Account status → Refresh entitlement**
-and check that **Signed entitlement to use FreePair** says **Verified**. Sign
+purchase. Then select **NA Chess Hub → Account status → Refresh entitlement**;
+the **FreePair membership** section describes your pairing access once verified.
+If the signed proof needs attention, the warning below it explains why. Sign
 out and back in if the displayed membership details need refreshing. Signing
 in or seeing an active membership alone does not unlock membership-only
 features; NACH must issue a valid signed entitlement. If the
@@ -6526,7 +6548,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.159.20261106**. It is updated whenever a
+This guide describes FreePair **v0.160.20261110**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
