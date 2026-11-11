@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.161.20261110**
+**Applies to FreePair v0.162.20261110**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -2576,7 +2576,8 @@ round in the **Round** dropdown at any time.
 The bottom half is a table of the whole event, one row per section:
 players, rounds paired, **pairing rule**, starting board and the board
 range that implies, pairing engine, **Avoid same team**, **Accelerate**,
-and why a section is or is not ready.
+and why a section is or is not ready. On a narrow screen, scroll the table
+sideways to see the remaining columns; the headings move with the rows.
 
 - **Pair?** ticks the sections the run will pair. Every ready section
   starts ticked, so the default is still "pair everything"; untick the
@@ -2669,8 +2670,11 @@ code, so they cannot drift apart.
 - **Pairing engine** can be set here for any section that has not paired
   round 1 yet. After that it is locked and shown with a padlock.
 
-Above the table are the questions FreePair would otherwise ask you once
-per section:
+Above the table, **Batch options** opens expanded on larger screens, so you can
+review round 1 and board settings at a glance. It starts collapsed on shorter
+screens to leave room for the section list; select its themed header to show
+all the options at once, then collapse it again to give the table more room.
+The options are read-only while a batch run is in progress:
 
 - **Review each round in the pairing preview before it is committed.**
   **Off** by default. Unticked, nothing stops between sections: each
@@ -6565,7 +6569,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.161.20261110**. It is updated whenever a
+This guide describes FreePair **v0.162.20261110**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
