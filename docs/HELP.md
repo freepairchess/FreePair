@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.160.20261110**
+**Applies to FreePair v0.161.20261110**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -1444,7 +1444,10 @@ limited to before round 1; the bye-only exception is for individual players.
 ### Verifying IDs and ratings
 
 **ID and Rating** verifies USCF and FIDE IDs against the online player
-database and fills in the current ratings.
+database and fills in the current ratings. On the Roster header, the **✓**
+button beside the **ID** selector runs **Verify IDs**, and the **↻** button
+beside **Rating** runs **Refresh Ratings**. They are shortcuts to the same
+menu actions, with the same checks, review dialogs and warnings.
 
 **ID and Rating** → **Verify IDs** requires a known federation and a matching
 name to verify an ID, because the same number can identify different people
@@ -4792,9 +4795,19 @@ not yet saved in FreePair may need to be entered again.
 **Enable Results Entering** is checked by default for a new event. Its
 checkbox forms the heading of the NACH PIN group; uncheck it to share the
 scoreboard without results entry. An explicit off choice is remembered for the
-event in the current FreePair session. If NACH advertises tagged-PIN support,
-active PIN assignments appear in a numbered table instead of the legacy
-single-PIN row. Each assignment keeps its PIN, buttons, tag and actions on one
+event in the current FreePair session. For a saved event with a NACH Event ID,
+the numbered PIN-and-tag table is available before the first share, so you can
+label the initial PIN or add more before the scoreboard goes live. Editing a
+tag or PIN saves tagged assignments locally; NACH verifies tagged-PIN support
+when sharing starts. If an older NACH server does not support tagged PINs, an
+event with edited tagged assignments cannot start hosted entry on that server;
+FreePair does not silently combine distinct PINs into a shared credential.
+If you leave the initial table untouched, an older server uses the legacy
+single-PIN row after the first connection. When NACH supports tagged PINs,
+active PIN assignments remain in the table before, during and after sharing.
+You can add, rename or delete assignments while the scoreboard and pairing
+are ongoing; editing is briefly unavailable during the start and stop transitions.
+Each assignment keeps its PIN, buttons, tag and actions on one
 line at normal window widths; controls wrap if the window is very narrow.
 The first newly assigned PIN is tagged **Venue iPad** (existing saved tags
 are preserved). **Add PIN**, above the table, opens a dialog requiring
@@ -4804,7 +4817,9 @@ has an eye icon to reveal/hide the secret and a **Copy** action. **Set PIN**
 and **Generate** appear only for a PIN unavailable after reopening the event:
 **Set PIN** re-enters its original value; **Generate** revokes that identity
 and adds a new assignment with the same tag. Neither changes an active PIN.
-The PIN and tag are display-only labels, not editable fields. The **Tag**
+The PIN and tag are display-only labels, not editable fields. **Change PIN**
+replaces an available PIN with a new assignment under the same tag, revoking
+the old PIN; use it to rotate a PIN before, during or after sharing. The **Tag**
 column shows the assignment beside **Edit tag** (hover for the full tag if it
 is long); the **Action** column offers **Delete**, which revokes the PIN after
 confirmation. Up to 16 PINs can be active. Deleting the last PIN leaves entry
@@ -4838,7 +4853,9 @@ been restarted; it will not silently replace the old credential during migration
 In legacy mode, the hosted PIN row starts with a generated two-letter/four-digit
 PIN. **Set PIN** chooses one in that format, and **Generate** replaces it. It
 must differ from the local-network PIN. Changing it revokes existing hosted TD
-unlocks; browsers must enter the new PIN. Secrets stay in process memory.
+unlocks; browsers must enter the new PIN. These controls remain available while
+sharing is running, except during start and stop transitions. Secrets stay in
+process memory.
 
 Fresh web imports can enable hosted entry after saving, without closing and
 reopening the event. For older events still open in memory, missing section IDs
@@ -6548,7 +6565,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.160.20261110**. It is updated whenever a
+This guide describes FreePair **v0.161.20261110**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
