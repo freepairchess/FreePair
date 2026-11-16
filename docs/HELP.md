@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.162.20261110**
+**Applies to FreePair v0.163.20261116**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -4353,6 +4353,17 @@ With a valid NACH URL and Event ID, the calculated pairing-page address
 appears as a clickable link. **Copy link**, **Open in browser**, and
 **Publish now** and **Delete Pairing from NA Chess Hub** sit together in the row beneath it.
 It updates as you edit either field; the page may not exist until published.
+Event and pairing links use the event's selected NA Chess Hub URL (shown in
+Share or Publish and inherited from Settings when the event opens):
+`nachesshub.com`, `www.nachesshub.com`, or `ppe.nachesshub.com` if selected.
+New installs default to `https://www.nachesshub.com`; an address you already
+saved, including `https://nachesshub.com`, stays as you set it.
+The pairing and scoreboard QR codes on printed reports use that host too.
+FreePair opens them in your default browser, which may use a different
+signed-in profile from the one you use in FreePair.
+The URL must be HTTPS on `nachesshub.com` or one of its subdomains, with
+no path, query, or embedded credentials. Settings refuses to save an
+invalid URL, and Publish refuses to upload to one.
 **Publish now** saves any pending credential edits before uploading the event
 file and its results JSON. **Delete Pairing from NA Chess Hub** asks for
 confirmation, then deletes only the published pairing/results JSON for the
@@ -4754,6 +4765,8 @@ Only one FreePair instance can share an event with NACH at a time. To use a
 staging or other NACH deployment for a disposable event, set **Settings → Online
 → NA Chess Hub URL** or **Share → Scoreboard Sharing → NA Chess Hub URL** to
 that deployment's HTTPS origin (for example, `https://stage.nachesshub.com`).
+Only `nachesshub.com` and its subdomains are accepted; a different domain
+is rejected without saving or uploading.
 Both controls edit the same app-wide setting; Share also updates the open event's
 publishing URL. Use only a service you trust with the
 event's upload passcode and result-entry credentials; a path, query, URL-embedded
@@ -5726,6 +5739,10 @@ pairing/results JSON in the background. Results entered on the TD computer or
 through the local-network page also upload the SwissSys file. Hosted NACH results
 upload only the JSON because NACH already has the event file. If an upload fails,
 FreePair shows an error; use **Publish now** to retry.
+After a successful upload, **View published pairings and results on NA Chess Hub**
+opens the page on the same host you selected for publishing, in your default
+browser. Browser sign-in is separate from FreePair sign-in; use the browser
+profile where you signed in to that host.
 
 **Forfeits stay marked as forfeits in the published results.** The results
 JSON uses `X` for a forfeit win and `F` for a forfeit loss, with board
@@ -6569,7 +6586,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.162.20261110**. It is updated whenever a
+This guide describes FreePair **v0.163.20261116**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
