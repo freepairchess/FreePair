@@ -1,6 +1,6 @@
 # FreePair user guide
 
-**Applies to FreePair v0.163.20261116**
+**Applies to FreePair v0.164.20261116**
 
 FreePair is a chess tournament pairing program for tournament directors.
 It opens and saves `.sjson` event files, pairs Swiss and round-robin
@@ -198,10 +198,10 @@ The controls at the right-hand end of the same row include:
   board) and **Scoreboard → Share Scoreboard to NACH** (opens the same Share
   window as the Share button, on Scoreboard Sharing). **Popup Windows** offers
   read-only Roster, Pairings, Standings, Wall Charts and Prizes windows. Choose
-  which sections to open; each window updates as the event changes.
+  which sections to open; each window updates as the event changes. **QR Codes**
+  at the bottom opens the QR tab in Share.
 - **Share**, marked by three connected dots, shares the scoreboard with
-  TVs and phones. A compact **QR** dropdown appears after **Share** whenever
-  FreePair has a QR code or a share action to offer.
+  TVs and phones. Open its **QR Codes** tab to preview and share available codes.
 - **🖨 Print** includes **Pairings in 1 page**, which lets you choose rounds
   and print one page per selected view, and the full **All Pairings**,
   **All Standings**, **All Wall Charts** and **All Crosstables** PDFs, plus
@@ -211,9 +211,7 @@ The controls at the right-hand end of the same row include:
   compact mode, labels hide but icons and tooltips remain. Hover for the full
   action name. The section toolbar also shows only icons on narrow screens,
   keeping its menus on one row.
-- **⚙ Settings** opens the application preferences in a window of
-  their own. See [Settings](#settings).
-- **Log in**, between Settings and Help, opens the NA Chess Hub account
+- **Log in**, immediately left of Settings, opens the NA Chess Hub account
   menu when signed out, offering **Account status** and **Log in to NA
   Chess Hub**. Before sign-in, **Account status** explains the free local
   limit (20 players and 4 rounds), then explains free Hub pairing after signing
@@ -271,6 +269,8 @@ The controls at the right-hand end of the same row include:
   If the computer's UTC time is correct but refreshing still fails, ask NA Chess Hub to investigate; share the status text with support,
   never the signed token. A daylight-saving time-zone change alone does not
   affect the UTC clock used for verification.
+- **⚙ Settings** opens the application preferences in a window of
+  their own. See [Settings](#settings).
 - **📖 Help** opens a short menu:
   - **About FreePair** — what the program is, **the version you are
     running**, its publisher **Chessnique LLC** and FreePair copyright,
@@ -300,7 +300,7 @@ The controls at the right-hand end of the same row include:
 | Events on NA Chess Hub | Free | Event organizers and delegated tournament directors can pair their events for free after logging in when the roster is hosted on NA Chess Hub. Open through **My Events on NA Chess Hub…**, **My Events Saved on NA Chess Hub…**, or reopen a locally saved SJSON file. For a local file, FreePair checks the event ID, the account's director role, and Hub roster access online; the ID, passcode, or player registration alone does not grant access. No local size limit once verified. |
 | Other events | Membership | To pair other NA Chess Hub events, events from external registration sites, or local events above the free limits, a tournament director must log in with an active membership. FreePair must verify the signed entitlement. Select **Purchase membership** in the dialog to open the membership page. |
 
-To log in, select **Log in** between Settings and Help, choose **Log in to
+To log in, select **Log in** to the left of Settings, choose **Log in to
 NA Chess Hub**, and finish signing in through your browser. Clicking **Log in**
 always opens an explicit NA Chess Hub sign-in page so you can choose the account,
 even if your browser was already signed in as someone else. A saved FreePair
@@ -442,13 +442,13 @@ question.
 |---|---|
 | `Ctrl+N` | Create a new event |
 | `Ctrl+Shift+N` | Browse events on NA Chess Hub and create one from them |
-| `Ctrl+Shift+R` | Create an event from an online registry by ID and passcode |
+| `Ctrl+Shift+R` | Create an event from NA Chess Hub by ID and passcode |
 | `Ctrl+Shift+W` | Create an event from a published one at a web address |
 | `Ctrl+Shift+H` | Create an event from one your NA Chess Hub account runs |
-| `Ctrl+Shift+V` | Re-open one of your events saved on NA Chess Hub |
+| `Ctrl+Shift+V` | Open one of your events saved on NA Chess Hub |
 | `Ctrl+O` | Open a saved event from this computer |
 | `Ctrl+R` | Open a recent event |
-| `Ctrl+Shift+O` | Browse your cloud-saved events |
+| `Ctrl+Shift+O` | Browse events saved on NA Chess Hub |
 | `Ctrl+S` | Save the event |
 | `Ctrl+W` | Close the event |
 | `Ctrl+Z` | Undo the last change (**Edit → Undo**) |
@@ -847,21 +847,22 @@ yours: **check the names and ratings against the original before you
 pair.** The tool is doing the typing, not taking responsibility for the
 event.
 
-### Events from an online registry
+### Events from NA Chess Hub
 
 If you are **signed in to NA Chess Hub** (see
 [Signing in to NA Chess Hub](#signing-in-to-na-chess-hub)), the quickest
-route is **➕ New → Create New Event Using Online Registry → My
+route is **➕ New → Create New Event using NA Chess Hub → My
 Events on NA Chess Hub…**. That lists the events your account runs, including
 events with no SJSON file saved on NACH. Pick one and FreePair uses your account
 to retrieve its roster; you do not have to type a passcode.
 
-For other events, **Browse Online Events…**, **Browse Cloud-Saved Events…**
-and the Event ID + Passcode routes require sign-in with an active NA Chess Hub
-membership. Your own or delegated events remain free through **My Events on
-NA Chess Hub…** or **My Events Saved on NA Chess Hub…** instead. On the paid
-by-ID route, the **Passcode** caption links to the event's page so you can
-copy its passcode; both fields have a 📋 button to paste from the clipboard.
+For other events, **Browse Events on NA Chess Hub…**, **Browse NA Chess
+Hub Saved Events…** and the Event ID + Passcode routes require sign-in
+with an active NA Chess Hub membership. Your own or delegated events
+remain free through **My Events on NA Chess Hub…** or **My Events Saved
+on NA Chess Hub…** instead. On the paid by-ID route, the **Passcode**
+caption links to the event's page so you can copy its passcode; both
+fields have a 📋 button to paste from the clipboard.
 
 When an event has no roster hosted on NA Chess Hub but includes an external
 registration link, importing that roster requires an active membership,
@@ -3515,7 +3516,8 @@ selection for future events. Select none there to start new events without
 tiebreak columns; equal scores then rank by rating. The preference applies
 when creating an event in FreePair or downloading a registration roster from
 NA Chess Hub. It does not change events already open, local event files, or
-cloud-saved working copies. A section with its own saved choice keeps it.
+working copies saved on NA Chess Hub. A section with its own saved choice
+keeps it.
 Tiebreak columns are sortable, and sort by the underlying value rather than
 the displayed text.
 
@@ -4343,7 +4345,7 @@ login details or a TD PIN on a public TV.
 **Pairing sharing** contains the NACH destination, **NA Chess Hub URL**,
 editable Event ID and Passcode, **Auto-publish** choices, **Publish now** and
 **Delete Pairing from NA Chess Hub**.
-tab and under **Settings → Online**. Event ID and Passcode changes save to
+tab and under **Settings → NA Chess Hub**. Event ID and Passcode changes save to
 this event's `.sjson` file when you leave either field; if both are initially
 blank, enter both before leaving the second field. The passcode is masked
 until you select the eye icon in its field, including while scoreboard sharing
@@ -4388,7 +4390,7 @@ the public scoreboard using this event's saved Event ID and upload passcode.
 It does not delete the local event file or its credentials. Start sharing again
 to republish the scoreboard. It also has an **Enable Results Entering** setting.
 **NA Chess Hub URL**
-shows the same app-wide address as **Settings → Online**. Edit it here while
+shows the same app-wide address as **Settings → NA Chess Hub**. Edit it here while
 sharing is stopped; leaving the field saves it for future events and makes the
 current event use that service. Use only an HTTPS service you trust. Set
 **Seconds on each screen** (2–120) next to the shorter NACH URL field; leaving
@@ -4397,9 +4399,10 @@ in its `.sjson` file. This is the same setting as **Timing → Seconds on each
 screen** in Live Score Board setup. **Include previous rounds** saves to the same file as soon
 as you click it. Previous rounds with recorded results appear on NACH only; the
 local board still shows the current round. The option is on for new events,
-including events created from an online registry roster. A registry seed with an
-explicit choice keeps it; existing and cloud-saved events keep their saved choice
-(older files without a saved choice remain off). You can update timing and
+including events created from a NA Chess Hub roster. A registry seed with an
+explicit choice keeps it; existing events and those saved on NA Chess Hub
+keep their saved choice (older files without a saved choice remain off).
+You can update timing and
 previous rounds while sharing; the next NACH update picks up the change without
 stopping and restarting sharing (normally after the 10-second publish debounce).
 and hosted results entry are stopped. Stopping sharing alone only stops live
@@ -4762,7 +4765,8 @@ connection with your NACH deployment. Player-account result entry is not enabled
 LAN sharing remains independent. NACH public publishing and hosted results
 share one event-scoped ownership session, even when results entry is disabled.
 Only one FreePair instance can share an event with NACH at a time. To use a
-staging or other NACH deployment for a disposable event, set **Settings → Online
+staging or other NACH deployment for a disposable event, set
+**Settings → NA Chess Hub
 → NA Chess Hub URL** or **Share → Scoreboard Sharing → NA Chess Hub URL** to
 that deployment's HTTPS origin (for example, `https://stage.nachesshub.com`).
 Only `nachesshub.com` and its subdomains are accepted; a different domain
@@ -5143,35 +5147,35 @@ no phone numbers — and never your passcode.
 
 ### QR codes for the live board
 
-Once you are sharing the board — either way — FreePair puts a QR code
-where people can get at it, so nobody has to read a web address aloud
-across a room.
+FreePair provides QR codes for available event links and shared boards,
+so nobody has to read a web address aloud across a room.
 
-**In the app.** A compact **QR** dropdown appears in the top toolbar after
-**Share**. It lists every QR code FreePair can currently offer: event
-pairings/files, scoreboard links, and the venue Wi-Fi QR if you added one.
+**In the app.** Choose **View → QR Codes** to open the **QR Codes** tab in
+**Share**, or open **Share** and select that tab. The tab lists every QR
+code FreePair can currently offer: event pairings/files, scoreboard links,
+and the venue Wi-Fi QR if you added one.
 Web cards use the titles **Pairing and Results - NAChessHub**,
 **Scoreboard - NAChessHub** and **Scoreboard - Local Network**. Under each title
-is the link with a copy icon, followed by **Open in browser**, without explanatory
-paragraphs. Long links shorten to fit; hover for the full URL or copy it.
+is the link with a copy icon, followed by **Open in browser**. Long links
+shorten to fit; hover for the full URL or copy it.
 Clicking a QR opens a larger preview with the same title/link/copy controls.
-The menu fits the window width without horizontal scrolling; long lists remain
+The tab fits the window width without horizontal scrolling; long lists remain
 scrollable by wheel or touch. **Add Venue Wi-Fi QR** asks for the network name
 and optional password, then disappears while a venue Wi-Fi QR is already in the
-menu. **Show Password** is off by default, and while it is off the Wi-Fi QR and
-menu row include only the network name. Tick **Save for future events** to
-remember it in this user's app settings. The Wi-Fi row has **Remove**, which
-removes it from the menu and clears any saved venue Wi-Fi settings. **Print QR
+tab. **Show Password** is off by default, and while it is off the Wi-Fi QR
+includes only the network name. Tick **Save for future events** to remember
+it in this user's app settings. The Wi-Fi row has **Remove**, which removes
+it from the tab and clears any saved venue Wi-Fi settings. **Print QR
 Codes** opens the same one-page QR sheet dialog as **Print → Print QR Codes**.
 There is no unavailable-scoreboard row: with an NA Chess Hub Event ID, the
 public scoreboard QR is shown even before sharing starts; the page may have
 no content until published. To start sharing, use **Share → Scoreboard Sharing**.
 If the event has no NA Chess Hub Event ID and Passcode, the pairings/event-files
-QR shows a not-available row that takes you to **Event Configuration → Online**.
-Hover the dropdown to see what it is for; click a QR code to open a large centered
-preview that takes most of the window, so someone can scan it from a
-phone without leaning over the director's keyboard. It appears only while there
-is something to scan or start.
+QR shows a not-available action that switches to **Share → Pairing sharing**,
+where you can enter the Event ID and passcode.
+Click a QR code to open a large centered preview that takes most of the
+window, so someone can scan it from a phone without leaning over the
+director's keyboard.
 
 **Open in browser.** The enlarged code has a button that opens the same
 address on this computer. Useful for checking the board looks right
@@ -5406,7 +5410,7 @@ see what it actually says is worth a great deal.
 ### Opening events made in SwissSys
 
 **FreePair opens events created in SwissSys.** Browse to the file with
-**📂 Open → Re-Open Locally Saved Event**, and it opens
+**📂 Open → Open Locally Saved Event**, and it opens
 like any other event: players, sections, pairings, results and
 standings.
 
@@ -5490,7 +5494,7 @@ browser; the logo refresh runs in the background.
 
 ### Signing in to NA Chess Hub
 
-**⚙ Settings → Online → NA Chess Hub sign-in.** Signing in once lets you
+**⚙ Settings → NA Chess Hub → NA Chess Hub sign-in.** Signing in once lets you
 reach every event your NA Chess Hub account runs without typing a
 passcode for each one.
 
@@ -5504,10 +5508,11 @@ than the email address it was registered with. The window title also shows
 **[Signed in to NA Chess Hub as 'account name']** after the FreePair version
 and before the event name. If the Hub has not supplied an account name yet,
 it simply says **[Signed in to NA Chess Hub]**. Worth a glance if you hold
-both a personal login and a club one. The **Log in** button between
-**Settings** and **Help** becomes **NA Chess Hub** once signed in; its menu
-provides sign-in, sign-out and switch-account actions without opening
-**My Portal [account name]**, the first item when your account
+both a personal login and a club one. The **Log in** button to the left of
+**Settings**, marked with the NA Chess Hub logo, becomes **NA Chess Hub**
+once signed in; its menu provides sign-in, sign-out and switch-account
+actions without opening Settings. **My Portal [account name]**, the first
+item when your account
 type is known, opens the Player, Organizer or Admin portal on the official
 NA Chess Hub site, regardless of the event URL selected under Settings.
 The browser can ask you to sign in separately if it is using a different
@@ -5526,10 +5531,10 @@ internet connection. Sign-out clears the proof immediately on this computer.
 Once signed in, two menus list your own events, each with its own search
 box that remembers what you last typed:
 
-- **➕ New → Create New Event Using Online Registry → My Events on
+- **➕ New → Create New Event using NA Chess Hub → My Events on
   NA Chess Hub…** — start a *new* event from its NA Chess Hub entry list.
-- **📂 Open → Re-Open Cloud-Saved Events → My Events Saved on NA Chess
-  Hub…** — re-open an event you have already been running and saved to NA
+- **📂 Open → Open NA Chess Hub Saved Events → My Events Saved on NA Chess
+  Hub…** — open an event you have already been running and saved to NA
   Chess Hub, with its pairings and results as you left them.
 
 In **My Events Saved on NA Chess Hub**, **Saved by** and **Saved at** show
@@ -5665,7 +5670,7 @@ alongside the requested ones. Before this, those byes showed on the Byes
 appeared to have a bye in one place and none in another.
 
 Turn the alerts on or off, and set how often they run, under
-**⚙ Settings → Online → Alert when NA Chess Hub roster has updates
+**⚙ Settings → NA Chess Hub → Alert when NA Chess Hub roster has updates
 to sync**.
 
 **This one is the default new events start with, and each event can
@@ -5730,7 +5735,7 @@ beside the button:
 
 Publishing puts pairings and results on the event's public page so
 players can follow along. You can set new events to publish
-automatically under **⚙ Settings → Online**.
+automatically under **⚙ Settings → NA Chess Hub**.
 
 To update NACH after scoring, open **F7 Publish pairings and results online**
 and enable **Automatically publish results when an individual game result is
@@ -6476,7 +6481,7 @@ They are split across tabs:
   bundled with the installer and normally need no attention.
 - **Display** — theme, the size of app text and grid text, and
   ASCII-only output for printing.
-- **Online** — publishing defaults, the NA Chess Hub address, and the
+- **NA Chess Hub** — publishing defaults, the NA Chess Hub address, and the
   service used to verify IDs and ratings.
 - **Updates** — update checks, the release channel, your current
   version, and — when a check finds one — a button to install it without
@@ -6586,7 +6591,7 @@ answerable in minutes.
 
 ## About this guide
 
-This guide describes FreePair **v0.163.20261116**. It is updated whenever a
+This guide describes FreePair **v0.164.20261116**. It is updated whenever a
 change affects what you see or do.
 
 The copy that ships with the app is the one that matches your installed
